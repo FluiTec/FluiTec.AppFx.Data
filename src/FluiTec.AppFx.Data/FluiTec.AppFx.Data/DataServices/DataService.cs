@@ -14,7 +14,9 @@ namespace FluiTec.AppFx.Data.DataServices
         /// <exception cref="System.ArgumentNullException">name</exception>
         protected DataService(string name, ILogger<IDataService> logger)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException($"{nameof(name)} must not be null or whitespace.");
+            Name = name;
             Logger = logger; // we allow null here
         }
 
