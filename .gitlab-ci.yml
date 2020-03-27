@@ -1,0 +1,26 @@
+image: mcr.microsoft.com/dotnet/core/sdk:3.1
+
+stages:
+    - build
+    - test
+
+variables:
+    srcDir: "src"
+    projectName: "FluiTec.AppFx.Data"
+    GIT_SUBMODULE_STRATEGY: recursive
+    
+before_script:
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+    - "cd $srcDir"
+    - "dotnet restore"
+
+build:
+    stage: build
+    script:
+        - "dotnet build --no-restore"
+        
+test:
+    stage: test
+    script:
+        - "dotnet test --no-restore --filter $projectName"
