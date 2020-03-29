@@ -1,6 +1,7 @@
 ﻿using System;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.UnitsOfWork
 {
@@ -10,6 +11,10 @@ namespace FluiTec.AppFx.Data.UnitsOfWork
         /// <summary>Gets the data service.</summary>
         /// <value>The data service.</value>
         IDataService DataService { get; }
+
+        /// <summary>Gets the logger.</summary>
+        /// <value>The logger.</value>
+        ILogger<IUnitOfWork> Logger { get; }
 
         /// <summary>	Commits this unit of work. </summary>
         void Commit();

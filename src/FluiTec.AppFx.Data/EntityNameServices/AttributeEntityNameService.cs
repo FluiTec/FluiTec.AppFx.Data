@@ -5,7 +5,10 @@ using System.Reflection;
 
 namespace FluiTec.AppFx.Data.EntityNameServices
 {
-    /// <summary>EntityNameService using <see cref="EntityNameAttribute"/> with a fallback to <see cref="ClassEntityNameService"/>.</summary>
+    /// <summary>
+    ///     EntityNameService using <see cref="EntityNameAttribute" /> with a fallback to
+    ///     <see cref="ClassEntityNameService" />.
+    /// </summary>
     /// <seealso cref="FluiTec.AppFx.Data.EntityNameServices.ClassEntityNameService" />
     public class AttributeEntityNameService : ClassEntityNameService
     {
@@ -23,7 +26,11 @@ namespace FluiTec.AppFx.Data.EntityNameServices
 
             if (EntityNames.ContainsKey(type)) return EntityNames[type];
 
-            EntityNames.Add(type, type.GetTypeInfo().GetCustomAttributes(typeof(EntityNameAttribute)).SingleOrDefault() is EntityNameAttribute attribute ? attribute.Name : base.Name(type));
+            EntityNames.Add(type,
+                type.GetTypeInfo().GetCustomAttributes(typeof(EntityNameAttribute)).SingleOrDefault() is
+                    EntityNameAttribute attribute
+                    ? attribute.Name
+                    : base.Name(type));
 
             return EntityNames[type];
         }

@@ -14,13 +14,15 @@ namespace FluiTec.AppFx.Data.Tests.DataServices
         [DataRow(false)]
         public void SetsCanMigrate(bool enabled)
         {
-            var service = new TestDataService(enabled, "Test", null);
+            var service = new TestDataService(enabled, "Test", null, null);
             Assert.AreEqual(enabled, service.CanMigrate);
         }
 
         protected class TestDataService : MigratingDataService
         {
-            public TestDataService(bool canMigrate, string name, ILogger<IMigratingDataService> logger) : base(canMigrate, name, logger)
+            public TestDataService(bool canMigrate, string name, ILogger<IMigratingDataService> logger,
+                ILoggerFactory loggerFactory) : base(
+                canMigrate, name, logger, loggerFactory)
             {
             }
 

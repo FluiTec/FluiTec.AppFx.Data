@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.UnitsOfWork
 {
@@ -9,33 +10,39 @@ namespace FluiTec.AppFx.Data.UnitsOfWork
     /// <seealso cref="FluiTec.AppFx.Data.UnitsOfWork.IUnitOfWork" />
     public abstract class UnitOfWork : IUnitOfWork
     {
+        #region Constructors
+
+        /// <summary>Initializes a new instance of the <see cref="UnitOfWork" /> class.</summary>
+        /// <param name="dataService">The data service.</param>
+        /// <param name="logger">The logger.</param>
+        /// <exception cref="System.ArgumentNullException">dataService</exception>
+        protected UnitOfWork(IDataService dataService, ILogger<IUnitOfWork> logger)
+        {
+            DataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
+            Logger = logger; // we accept null here
+            RepositoryProviders = new Dictionary<Type, Func<IUnitOfWork, ILogger<IRepository>, IRepository>>();
+            Repositories = new Dictionary<Type, IRepository>();
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>Gets the data service.</summary>
         /// <value>The data service.</value>
         public IDataService DataService { get; }
 
+        /// <summary>Gets the logger.</summary>
+        /// <value>The logger.</value>
+        public ILogger<IUnitOfWork> Logger { get; }
+
         /// <summary>Gets the repository providers.</summary>
         /// <value>The repository providers.</value>
-        protected Dictionary<Type, Func<IUnitOfWork, IRepository>> RepositoryProviders { get; }
+        protected Dictionary<Type, Func<IUnitOfWork, ILogger<IRepository>, IRepository>> RepositoryProviders { get; }
 
         /// <summary>Gets the repositories.</summary>
         /// <value>The repositories.</value>
         protected Dictionary<Type, IRepository> Repositories { get; }
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>Initializes a new instance of the <see cref="UnitOfWork"/> class.</summary>
-        /// <param name="dataService">The data service.</param>
-        /// <exception cref="System.ArgumentNullException">dataService</exception>
-        protected UnitOfWork(IDataService dataService)
-        {
-            DataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
-            RepositoryProviders = new Dictionary<Type, Func<IUnitOfWork, IRepository>>();
-            Repositories = new Dictionary<Type, IRepository>();
-        }
 
         #endregion
 
@@ -54,7 +61,8 @@ namespace FluiTec.AppFx.Data.UnitsOfWork
         /// <param name="repositoryProvider">The repository provider.</param>
         /// <exception cref="System.ArgumentNullException">repositoryProvider</exception>
         /// <exception cref="System.InvalidOperationException">A provider for {repoType.Name} was already registerd!</exception>
-        protected void RegisterRepositoryProvider<TRepository>(Func<IUnitOfWork, TRepository> repositoryProvider)
+        protected void RegisterRepositoryProvider<TRepository>(
+            Func<IUnitOfWork, ILogger<IRepository>, TRepository> repositoryProvider)
             where TRepository : class, IRepository
         {
             if (repositoryProvider == null)
@@ -85,7 +93,8 @@ namespace FluiTec.AppFx.Data.UnitsOfWork
                     $"No provider for {repoType.Name} registered - can't create instance!");
 
             // create, add to list and return
-            var repo = RepositoryProviders[repoType].Invoke(this);
+            var repo = RepositoryProviders[repoType]
+                .Invoke(this, DataService.LoggerFactory?.CreateLogger<TRepository>());
             Repositories.Add(repoType, repo);
             return repo as TRepository;
         }

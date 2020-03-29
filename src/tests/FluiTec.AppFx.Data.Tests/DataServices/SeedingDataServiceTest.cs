@@ -14,13 +14,15 @@ namespace FluiTec.AppFx.Data.Tests.DataServices
         [DataRow(false)]
         public void SetsCanSeed(bool enabled)
         {
-            var service = new TestDataService(enabled, true, "Test", null);
+            var service = new TestDataService(enabled, true, "Test", null, null);
             Assert.AreEqual(enabled, service.CanSeed);
         }
 
         protected class TestDataService : SeedingDataService
         {
-            public TestDataService(bool canSeed, bool canMigrate, string name, ILogger<IMigratingDataService> logger) : base(canSeed, canMigrate, name, logger)
+            public TestDataService(bool canSeed, bool canMigrate, string name, ILogger<IMigratingDataService> logger,
+                ILoggerFactory loggerFactory) :
+                base(canSeed, canMigrate, name, logger, loggerFactory)
             {
             }
 

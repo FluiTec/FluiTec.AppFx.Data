@@ -1,18 +1,13 @@
 ﻿using System.Reflection;
-using FluiTec.AppFx.Data.Sql.Mappers;
+using FluiTec.AppFx.Data.EntityNameServices;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters
 {
     public class SqLiteAdapter : SqlAdapter
     {
-        /// <summary>	Default constructor. </summary>
-        public SqLiteAdapter()
-        {
-        }
-
         /// <summary>	Constructor. </summary>
-        /// <param name="entityNameMapper">	The entity name mapper. </param>
-        public SqLiteAdapter(IEntityNameMapper entityNameMapper) : base(entityNameMapper)
+        /// <param name="entityNameService">	The entity name service. </param>
+        public SqLiteAdapter(IEntityNameService entityNameService) : base(entityNameService)
         {
         }
 

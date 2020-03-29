@@ -6,20 +6,7 @@ namespace FluiTec.AppFx.Data.EntityNameServices
     [AttributeUsage(AttributeTargets.Class)]
     public class EntityNameAttribute : Attribute
     {
-        #region Properties
-
-        /// <summary>	Gets or sets the name. </summary>
-        /// <value>	The name of the entity. </value>
-        public string Name { get; set; }
-
-        #endregion
-
         #region Constructors
-
-        /// <summary>	Default constructor. </summary>
-        public EntityNameAttribute()
-        {
-        }
 
         /// <summary>	Constructor. </summary>
         /// <param name="name">	The name of the entity. </param>
@@ -27,6 +14,14 @@ namespace FluiTec.AppFx.Data.EntityNameServices
         {
             Name = name;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>	Gets or sets the name. </summary>
+        /// <value>	The name of the entity. </value>
+        public string Name { get; set; }
 
         #endregion
     }

@@ -1,19 +1,14 @@
 ﻿using System.Reflection;
-using FluiTec.AppFx.Data.Sql.Mappers;
+using FluiTec.AppFx.Data.EntityNameServices;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters
 {
     /// <summary>	a MySql adapter. </summary>
     public class MySqlAdapter : SqlAdapter
     {
-        /// <summary>	Default constructor. </summary>
-        public MySqlAdapter()
-        {
-        }
-
         /// <summary>	Constructor. </summary>
-        /// <param name="entityNameMapper">	The entity name mapper. </param>
-        public MySqlAdapter(IEntityNameMapper entityNameMapper) : base(entityNameMapper)
+        /// <param name="entityNameService">	The entity name service. </param>
+        public MySqlAdapter(IEntityNameService entityNameService) : base(entityNameService)
         {
         }
 

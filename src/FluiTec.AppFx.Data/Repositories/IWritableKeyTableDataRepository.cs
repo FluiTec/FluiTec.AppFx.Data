@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Data.Entities;
+﻿using System.Collections.Generic;
+using FluiTec.AppFx.Data.Entities;
 
 namespace FluiTec.AppFx.Data.Repositories
 {
@@ -6,9 +7,29 @@ namespace FluiTec.AppFx.Data.Repositories
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <typeparam name="TKey">The type of the key.</typeparam>
     /// <seealso cref="FluiTec.AppFx.Data.Repositories.IKeyTableDataRepository{TEntity, TKey}" />
-    public interface IWritableKeyTableDataRepository<out TEntity, in TKey> : IKeyTableDataRepository<TEntity, TKey>
+    public interface IWritableKeyTableDataRepository<TEntity, in TKey> : IKeyTableDataRepository<TEntity, TKey>
         where TEntity : class, IKeyEntity<TKey>, new()
     {
+        /// <summary>	Adds entity. </summary>
+        /// <param name="entity">	The entity to add. </param>
+        /// <returns>	A TEntity. </returns>
+        TEntity Add(TEntity entity);
 
+        /// <summary>	Adds a range of entities. </summary>
+        /// <param name="entities">	An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
+        void AddRange(IEnumerable<TEntity> entities);
+
+        /// <summary>	Updates the given entity. </summary>
+        /// <param name="entity">	The entity to add. </param>
+        /// <returns>	A TEntity. </returns>
+        TEntity Update(TEntity entity);
+
+        /// <summary>	Deletes the given ID. </summary>
+        /// <param name="id">	The Identifier to delete. </param>
+        void Delete(TKey id);
+
+        /// <summary>	Deletes the given entity. </summary>
+        /// <param name="entity">	The entity to add. </param>
+        void Delete(TEntity entity);
     }
 }

@@ -1,20 +1,15 @@
 ﻿using System.Reflection;
 using System.Text;
-using FluiTec.AppFx.Data.Sql.Mappers;
+using FluiTec.AppFx.Data.EntityNameServices;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters
 {
     /// <summary>	A microsoft SQL adapter. </summary>
     public class MicrosoftSqlAdapter : SqlAdapter
     {
-        /// <summary>	Default constructor. </summary>
-        public MicrosoftSqlAdapter()
-        {
-        }
-
         /// <summary>	Constructor. </summary>
-        /// <param name="entityNameMapper">	The entity name mapper. </param>
-        public MicrosoftSqlAdapter(IEntityNameMapper entityNameMapper) : base(entityNameMapper)
+        /// <param name="entityNameService">	The entity name service. </param>
+        public MicrosoftSqlAdapter(IEntityNameService entityNameService) : base(entityNameService)
         {
         }
 
@@ -49,7 +44,12 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
 
         public override string RenderPropertyName(PropertyInfo propertyInfo)
         {
-            return $"[{propertyInfo.Name}]";
+            return RenderPropertyName(propertyInfo.Name);
+        }
+
+        public override string RenderPropertyName(string propertyName)
+        {
+            return $"[{propertyName}]";
         }
     }
 }

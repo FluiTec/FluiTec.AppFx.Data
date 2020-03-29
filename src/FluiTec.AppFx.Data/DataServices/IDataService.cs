@@ -9,6 +9,10 @@ namespace FluiTec.AppFx.Data.DataServices
     {
         ILogger<IDataService> Logger { get; }
 
+        /// <summary>Gets the logger factory.</summary>
+        /// <value>The logger factory.</value>
+        ILoggerFactory LoggerFactory { get; }
+
         /// <summary>	Gets the name. </summary>
         /// <value>	The name. </value>
         string Name { get; }

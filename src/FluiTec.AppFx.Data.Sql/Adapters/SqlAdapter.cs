@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using FluiTec.AppFx.Data.Sql.Mappers;
+using FluiTec.AppFx.Data.EntityNameServices;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters
 {
@@ -11,18 +11,14 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
     public abstract class SqlAdapter : ISqlAdapter
     {
         /// <summary>	The entity name mapper. </summary>
-        protected readonly IEntityNameMapper EntityNameMapper;
+        protected readonly IEntityNameService EntityNameService;
 
-        /// <summary>	Specialised default constructor for use only by derived class. </summary>
-        protected SqlAdapter() : this(new AttributeTypeEntityNameMapper())
-        {
-        }
 
         /// <summary>	Specialised constructor for use only by derived class. </summary>
-        /// <param name="entityNameMapper">	The entity name mapper. </param>
-        protected SqlAdapter(IEntityNameMapper entityNameMapper)
+        /// <param name="entityNameService">	The entity name service. </param>
+        protected SqlAdapter(IEntityNameService entityNameService)
         {
-            EntityNameMapper = entityNameMapper ?? throw new ArgumentNullException(nameof(entityNameMapper));
+            EntityNameService = entityNameService ?? throw new ArgumentNullException(nameof(entityNameService));
         }
 
         #region Parameters
@@ -186,7 +182,17 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <returns>	A string. </returns>
         public virtual string RenderTableName(Type type)
         {
-            return RenderTableName(EntityNameMapper.GetName(type));
+            // try to find name in cache and return it
+            if (SqlCache.EntityNameCache.TryGetValue(type.TypeHandle, out var name)) return RenderTableName(name);
+
+            // generate name
+            var newName = EntityNameService.Name(type);
+
+            // add name to cache
+            SqlCache.EntityNameCache.TryAdd(type.TypeHandle, newName);
+
+            // return rendered name
+            return RenderTableName(newName);
         }
 
         /// <summary>	Renders the property name described by propertyInfo. </summary>
