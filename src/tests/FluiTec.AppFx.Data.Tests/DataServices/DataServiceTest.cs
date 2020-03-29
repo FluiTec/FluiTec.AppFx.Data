@@ -31,9 +31,9 @@ namespace FluiTec.AppFx.Data.Tests.DataServices
         }
 
         [TestMethod]
-        public void SetsName()
+        [DataRow("Test")]
+        public void SetsName(string name)
         {
-            const string name = "Test";
             var service = new TestDataService(name, null);
             Assert.AreEqual(name, service.Name);
         }

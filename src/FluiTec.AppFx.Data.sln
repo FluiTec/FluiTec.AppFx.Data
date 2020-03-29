@@ -16,9 +16,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\THIRD_PARTY_LICENSES.md = ..\THIRD_PARTY_LICENSES.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data", "FluiTec.AppFx.Data\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj", "{F475DF6A-48EF-49BB-B2D2-AF1688C890EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Tests", "tests\FluiTec.AppFx.Data.Tests\FluiTec.AppFx.Data.Tests.csproj", "{D5860DF3-12AA-4C5A-B328-7E7CE79B58E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Tests", "tests\FluiTec.AppFx.Data.Tests\FluiTec.AppFx.Data.Tests.csproj", "{D5860DF3-12AA-4C5A-B328-7E7CE79B58E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Sql", "FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj", "{AE9AB2E5-44FC-4C6E-A545-9B7CB5226301}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data", "FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj", "{6C90BE1E-F19A-441D-A64E-B58AC310F98E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Sql.Test", "tests\FluiTec.AppFx.Data.Sql.Test\FluiTec.AppFx.Data.Sql.Test.csproj", "{92C05448-5FE3-4893-B8D3-23F43AE28A52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,20 +30,29 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F475DF6A-48EF-49BB-B2D2-AF1688C890EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F475DF6A-48EF-49BB-B2D2-AF1688C890EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F475DF6A-48EF-49BB-B2D2-AF1688C890EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F475DF6A-48EF-49BB-B2D2-AF1688C890EF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D5860DF3-12AA-4C5A-B328-7E7CE79B58E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D5860DF3-12AA-4C5A-B328-7E7CE79B58E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5860DF3-12AA-4C5A-B328-7E7CE79B58E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5860DF3-12AA-4C5A-B328-7E7CE79B58E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE9AB2E5-44FC-4C6E-A545-9B7CB5226301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE9AB2E5-44FC-4C6E-A545-9B7CB5226301}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE9AB2E5-44FC-4C6E-A545-9B7CB5226301}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE9AB2E5-44FC-4C6E-A545-9B7CB5226301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C90BE1E-F19A-441D-A64E-B58AC310F98E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C90BE1E-F19A-441D-A64E-B58AC310F98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C90BE1E-F19A-441D-A64E-B58AC310F98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C90BE1E-F19A-441D-A64E-B58AC310F98E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92C05448-5FE3-4893-B8D3-23F43AE28A52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92C05448-5FE3-4893-B8D3-23F43AE28A52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92C05448-5FE3-4893-B8D3-23F43AE28A52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92C05448-5FE3-4893-B8D3-23F43AE28A52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D5860DF3-12AA-4C5A-B328-7E7CE79B58E9} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
+		{92C05448-5FE3-4893-B8D3-23F43AE28A52} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {132CEE37-A97D-40BB-90D5-CEEE78D7BB25}
