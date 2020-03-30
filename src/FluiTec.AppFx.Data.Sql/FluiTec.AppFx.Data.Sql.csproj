@@ -17,9 +17,6 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\..\THIRD_PARTY_LICENSES.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>

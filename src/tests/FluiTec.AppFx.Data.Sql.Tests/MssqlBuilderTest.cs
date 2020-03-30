@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using FluiTec.AppFx.Data.EntityNameServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Data.Sql.Test
+namespace FluiTec.AppFx.Data.Sql.Tests
 {
     [TestClass]
     public class MssqlBuilderTest
@@ -31,7 +31,7 @@ namespace FluiTec.AppFx.Data.Sql.Test
             var nameService = new AttributeEntityNameService();
             Assert.AreEqual($"[dbo].[{nameService.Name(typeof(Dummy))}]", tableName);
         }
-        
+
         [TestMethod]
         public void TestRenderPropertyName()
         {
@@ -62,17 +62,18 @@ namespace FluiTec.AppFx.Data.Sql.Test
         [TestMethod]
         public void SelectByFilterTest()
         {
-            var sql =  _connection.GetBuilder().SelectByFilter(typeof(Dummy), nameof(Dummy.Name));
+            var sql = _connection.GetBuilder().SelectByFilter(typeof(Dummy), nameof(Dummy.Name));
             Assert.AreEqual("SELECT [Id], [Name] FROM [dbo].[Dummy] WHERE [Name] = @Name", sql);
         }
 
         [TestMethod]
         public void SelectByFilterMultiTest()
         {
-            var sql1  = _connection.GetBuilder().SelectByFilter(typeof(Dummy), new []{nameof(Dummy.Name)});
+            var sql1 = _connection.GetBuilder().SelectByFilter(typeof(Dummy), new[] {nameof(Dummy.Name)});
             Assert.AreEqual("SELECT [Id], [Name] FROM [dbo].[Dummy] WHERE [Name] = @Name", sql1);
 
-            var sql2 = _connection.GetBuilder().SelectByFilter(typeof(Dummy), new[] { nameof(Dummy.Id), nameof(Dummy.Name) });
+            var sql2 = _connection.GetBuilder()
+                .SelectByFilter(typeof(Dummy), new[] {nameof(Dummy.Id), nameof(Dummy.Name)});
             Assert.AreEqual("SELECT [Id], [Name] FROM [dbo].[Dummy] WHERE [Id] = @Id AND [Name] = @Name", sql2);
         }
 

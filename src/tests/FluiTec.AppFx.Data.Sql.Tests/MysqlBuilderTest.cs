@@ -3,7 +3,7 @@ using FluiTec.AppFx.Data.EntityNameServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MySql.Data.MySqlClient;
 
-namespace FluiTec.AppFx.Data.Sql.Test
+namespace FluiTec.AppFx.Data.Sql.Tests
 {
     [TestClass]
     public class MysqlBuilderTest
@@ -69,10 +69,11 @@ namespace FluiTec.AppFx.Data.Sql.Test
         [TestMethod]
         public void SelectByFilterMultiTest()
         {
-            var sql1 = _connection.GetBuilder().SelectByFilter(typeof(Dummy), new[] { nameof(Dummy.Name) });
+            var sql1 = _connection.GetBuilder().SelectByFilter(typeof(Dummy), new[] {nameof(Dummy.Name)});
             Assert.AreEqual("SELECT Id, Name FROM Dummy WHERE Name = @Name", sql1);
 
-            var sql2 = _connection.GetBuilder().SelectByFilter(typeof(Dummy), new[] { nameof(Dummy.Id), nameof(Dummy.Name) });
+            var sql2 = _connection.GetBuilder()
+                .SelectByFilter(typeof(Dummy), new[] {nameof(Dummy.Id), nameof(Dummy.Name)});
             Assert.AreEqual("SELECT Id, Name FROM Dummy WHERE Id = @Id AND Name = @Name", sql2);
         }
 

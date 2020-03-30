@@ -7,8 +7,6 @@ namespace FluiTec.AppFx.Data.DataServices
     /// <summary>	Interface for a data service. </summary>
     public interface IDataService : IDisposable
     {
-        ILogger<IDataService> Logger { get; }
-
         /// <summary>Gets the logger factory.</summary>
         /// <value>The logger factory.</value>
         ILoggerFactory LoggerFactory { get; }
