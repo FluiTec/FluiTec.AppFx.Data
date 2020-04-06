@@ -22,24 +22,9 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <ProjectReference Include="..\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="FluiTec.AppFx.Options" Version="1.1.34"></PackageReference>
-  </ItemGroup>
-
+  
   <ItemGroup>
-    <PackageReference Include="FluentMigrator" Version="3.2.1" />
-    <PackageReference Include="FluentMigrator.Runner" Version="3.2.1" />
-    <PackageReference Include="FluentMigrator.Runner.Core" Version="3.2.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj" />
-    <ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
+    <ProjectReference Include="..\FluiTec.AppFx.Data.Dapper\FluiTec.AppFx.Data.Dapper.csproj" />
   </ItemGroup>
 
 </Project>

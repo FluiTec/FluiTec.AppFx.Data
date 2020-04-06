@@ -1,7 +1,6 @@
 ﻿using System;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Repositories;
-using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.UnitsOfWork
 {

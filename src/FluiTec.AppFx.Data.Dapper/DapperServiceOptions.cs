@@ -1,35 +1,35 @@
 ﻿using System;
+using FluiTec.AppFx.Options.Attributes;
 
 namespace FluiTec.AppFx.Data.Dapper
 {
-    public class DapperServiceOptions : IDapperServiceOptions
+    /// <summary>   A dapper service options. </summary>
+    [ConfigurationKey("Dapper")]
+    public abstract class DapperServiceOptions : IDapperServiceOptions
     {
         /// <summary>   Constructor. </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     Thrown when one or more required arguments are
-        ///     null.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        ///     Thrown when one or more arguments have
-        ///     unsupported or illegal values.
-        /// </exception>
-        /// <param name="connectionString">     The connection string. </param>
-        /// <param name="connectionFactory">    The connection factory. </param>
-        public DapperServiceOptions(string connectionString, IConnectionFactory connectionFactory)
+        protected DapperServiceOptions()
         {
-            ConnectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+        }
+
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
+        /// <exception cref="ArgumentException">    Thrown when one or more arguments have unsupported or
+        ///                                         illegal values. </exception>
+        /// <param name="connectionString"> The connection string. </param>
+        protected DapperServiceOptions(string connectionString)
+        {
             if (string.IsNullOrWhiteSpace(connectionString))
-                throw new ArgumentException($"{nameof(connectionString)} must neither be null or empty.",
+                throw new ArgumentException($"{nameof(connectionString)} must neither be null or empty!",
                     nameof(connectionString));
             ConnectionString = connectionString;
         }
 
         /// <summary>   Gets the connection factory. </summary>
         /// <value> The connection factory. </value>
-        public IConnectionFactory ConnectionFactory { get; }
+        public abstract IConnectionFactory ConnectionFactory { get; }
 
         /// <summary>   Gets the connection string. </summary>
         /// <value> The connection string. </value>
-        public string ConnectionString { get; }
+        public string ConnectionString { get; set; }
     }
 }

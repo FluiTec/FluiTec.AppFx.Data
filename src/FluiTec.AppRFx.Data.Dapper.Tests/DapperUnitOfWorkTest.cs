@@ -24,20 +24,125 @@ namespace FluiTec.AppRFx.Data.Dapper.Tests
         [TestMethod]
         public void DoesNotThrowOnMissingLogger()
         {
+            var transactionMock = new Mock<IDbTransaction>();
             var connectionMock = new Mock<IDbConnection>();
             var connectionFactoryMock = new Mock<IConnectionFactory>();
             var serviceOptionsMock = new Mock<DapperServiceOptions>("test", connectionFactoryMock.Object);
             var dataServiceMock = new Mock<DapperDataService>(
                 serviceOptionsMock.Object
-                        ,new Mock<ILogger<IDataService>>().Object
-                        ,new Mock<ILoggerFactory>().Object);
+                ,new Mock<ILogger<IDataService>>().Object
+                ,new Mock<ILoggerFactory>().Object);
+
+            connectionMock
+                .Setup(connection => connection.BeginTransaction())
+                .Returns(() => transactionMock.Object);
 
             connectionFactoryMock
                 .Setup(factory => factory.CreateConnection("test"))
                 .Returns(() => connectionMock.Object);
 
-            var service = new DapperUnitOfWork(dataServiceMock.Object, new Mock<ILogger<IUnitOfWork>>().Object);
+            var service = new DapperUnitOfWork(dataServiceMock.Object, null);
             Assert.IsNull(service.Logger);
+        }
+
+        [TestMethod]
+        public void CanCommit()
+        {
+            var transactionMock = new Mock<IDbTransaction>();
+            var connectionMock = new Mock<IDbConnection>();
+            var connectionFactoryMock = new Mock<IConnectionFactory>();
+            var serviceOptionsMock = new Mock<DapperServiceOptions>("test", connectionFactoryMock.Object);
+            var dataServiceMock = new Mock<DapperDataService>(
+                serviceOptionsMock.Object
+                ,new Mock<ILogger<IDataService>>().Object
+                ,new Mock<ILoggerFactory>().Object);
+
+            connectionMock
+                .Setup(connection => connection.BeginTransaction())
+                .Returns(() => transactionMock.Object);
+
+            connectionFactoryMock
+                .Setup(factory => factory.CreateConnection("test"))
+                .Returns(() => connectionMock.Object);
+
+            using var service = new DapperUnitOfWork(dataServiceMock.Object, null);
+            service.Commit();
+        }
+
+        [TestMethod]
+        public void CanRollback()
+        {
+            var transactionMock = new Mock<IDbTransaction>();
+            var connectionMock = new Mock<IDbConnection>();
+            var connectionFactoryMock = new Mock<IConnectionFactory>();
+            var serviceOptionsMock = new Mock<DapperServiceOptions>("test", connectionFactoryMock.Object);
+            var dataServiceMock = new Mock<DapperDataService>(
+                serviceOptionsMock.Object
+                ,new Mock<ILogger<IDataService>>().Object
+                ,new Mock<ILoggerFactory>().Object);
+
+            connectionMock
+                .Setup(connection => connection.BeginTransaction())
+                .Returns(() => transactionMock.Object);
+
+            connectionFactoryMock
+                .Setup(factory => factory.CreateConnection("test"))
+                .Returns(() => connectionMock.Object);
+
+            using var service = new DapperUnitOfWork(dataServiceMock.Object, null);
+            service.Rollback();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void WontCommitDisposed()
+        {
+            var transactionMock = new Mock<IDbTransaction>();
+            var connectionMock = new Mock<IDbConnection>();
+            var connectionFactoryMock = new Mock<IConnectionFactory>();
+            var serviceOptionsMock = new Mock<DapperServiceOptions>("test", connectionFactoryMock.Object);
+            var dataServiceMock = new Mock<DapperDataService>(
+                serviceOptionsMock.Object
+                ,new Mock<ILogger<IDataService>>().Object
+                ,new Mock<ILoggerFactory>().Object);
+
+            connectionMock
+                .Setup(connection => connection.BeginTransaction())
+                .Returns(() => transactionMock.Object);
+
+            connectionFactoryMock
+                .Setup(factory => factory.CreateConnection("test"))
+                .Returns(() => connectionMock.Object);
+
+            using var service = new DapperUnitOfWork(dataServiceMock.Object, null);
+            service.Dispose();
+            service.Commit();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void WontRollbackDisposed()
+        {
+            var transactionMock = new Mock<IDbTransaction>();
+            var connectionMock = new Mock<IDbConnection>();
+            var connectionFactoryMock = new Mock<IConnectionFactory>();
+            var serviceOptionsMock = new Mock<DapperServiceOptions>("test", connectionFactoryMock.Object);
+            var dataServiceMock = new Mock<DapperDataService>(
+                serviceOptionsMock.Object
+                ,new Mock<ILogger<IDataService>>().Object
+                ,new Mock<ILoggerFactory>().Object);
+
+            connectionMock
+                .Setup(connection => connection.BeginTransaction())
+                .Returns(() => transactionMock.Object);
+
+            connectionFactoryMock
+                .Setup(factory => factory.CreateConnection("test"))
+                .Returns(() => connectionMock.Object);
+
+            using var service = new DapperUnitOfWork(dataServiceMock.Object, null);
+            service.Dispose();
+            service.Rollback();
         }
     }
 }
