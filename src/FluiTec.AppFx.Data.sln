@@ -31,6 +31,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Sql.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Dapper.Mssql", "FluiTec.AppFx.Data.Dapper.Mssql\FluiTec.AppFx.Data.Dapper.Mssql.csproj", "{0F0E8497-9C7F-4898-B69B-F160DAA86416}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{06518704-6D4C-44E1-88E9-6172EFCF52AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "module.fluitec.appfx.options", "module.fluitec.appfx.options", "{8E844F93-5EF5-4381-B926-F8412FD5BD76}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Options", "..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj", "{28AA5FD5-7462-42A7-A0DC-52E31544B1AA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Options.Tests", "..\fluitec.appfx.options\src\tests\FluiTec.AppFx.Options.Tests\FluiTec.AppFx.Options.Tests.csproj", "{E597F042-ACF5-41AD-A266-9B5CB4AC884D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +73,14 @@ Global
 		{0F0E8497-9C7F-4898-B69B-F160DAA86416}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F0E8497-9C7F-4898-B69B-F160DAA86416}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F0E8497-9C7F-4898-B69B-F160DAA86416}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28AA5FD5-7462-42A7-A0DC-52E31544B1AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28AA5FD5-7462-42A7-A0DC-52E31544B1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28AA5FD5-7462-42A7-A0DC-52E31544B1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28AA5FD5-7462-42A7-A0DC-52E31544B1AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E597F042-ACF5-41AD-A266-9B5CB4AC884D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E597F042-ACF5-41AD-A266-9B5CB4AC884D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E597F042-ACF5-41AD-A266-9B5CB4AC884D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E597F042-ACF5-41AD-A266-9B5CB4AC884D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +89,9 @@ Global
 		{D5860DF3-12AA-4C5A-B328-7E7CE79B58E9} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
 		{DF6C8B69-F9C0-47B7-82FA-0BF1F45C539E} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
 		{B7F20419-78EC-4433-A6BD-2B38F1C9F7B3} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
+		{8E844F93-5EF5-4381-B926-F8412FD5BD76} = {06518704-6D4C-44E1-88E9-6172EFCF52AB}
+		{28AA5FD5-7462-42A7-A0DC-52E31544B1AA} = {8E844F93-5EF5-4381-B926-F8412FD5BD76}
+		{E597F042-ACF5-41AD-A266-9B5CB4AC884D} = {8E844F93-5EF5-4381-B926-F8412FD5BD76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {132CEE37-A97D-40BB-90D5-CEEE78D7BB25}
