@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data", "FluiT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Dapper", "FluiTec.AppFx.Data.Dapper\FluiTec.AppFx.Data.Dapper.csproj", "{C5680CDE-6E33-4C64-9365-E325FD744827}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppRFx.Data.Dapper.Tests", "FluiTec.AppRFx.Data.Dapper.Tests\FluiTec.AppRFx.Data.Dapper.Tests.csproj", "{DF6C8B69-F9C0-47B7-82FA-0BF1F45C539E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Dapper.Tests", "FluiTec.AppRFx.Data.Dapper.Tests\FluiTec.AppFx.Data.Dapper.Tests.csproj", "{DF6C8B69-F9C0-47B7-82FA-0BF1F45C539E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Sql.Tests", "tests\FluiTec.AppFx.Data.Sql.Tests\FluiTec.AppFx.Data.Sql.Tests.csproj", "{B7F20419-78EC-4433-A6BD-2B38F1C9F7B3}"
 EndProject
@@ -45,7 +45,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Dapper.P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Dapper.SqLite", "FluiTec.AppFx.Data.Dapper.SqLite\FluiTec.AppFx.Data.Dapper.SqLite.csproj", "{7EA397CA-E4E6-4C68-97F5-7B474EC7A7F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.LiteDb", "FluiTec.AppFx.Data.LiteDb\FluiTec.AppFx.Data.LiteDb.csproj", "{3AF80051-A9A3-4DAA-B478-79BFC4350385}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.LiteDb", "FluiTec.AppFx.Data.LiteDb\FluiTec.AppFx.Data.LiteDb.csproj", "{3AF80051-A9A3-4DAA-B478-79BFC4350385}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Dapper.Mssql.Tests", "FluiTec.AppFx.Data.Dapper.Mssql.Tests\FluiTec.AppFx.Data.Dapper.Mssql.Tests.csproj", "{2F579EE4-3DCD-4660-91CF-ED52128EF1BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Dapper.Mysql.Tests", "FluiTec.AppFx.Data.Dapper.Mysql.Tests\FluiTec.AppFx.Data.Dapper.Mysql.Tests.csproj", "{6C680873-9D2F-4AC7-90EE-16348D1D4C8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Dapper.Pgsql.Tests", "FluiTec.AppFx.Data.Dapper.Pgsql.Tests\FluiTec.AppFx.Data.Dapper.Pgsql.Tests.csproj", "{5A85D312-BDA0-4BF1-B591-4AFFB286DEF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Dapper.Sqlite.Tests", "FluiTec.AppFx.Data.Dapper.Sqlite.Tests\FluiTec.AppFx.Data.Dapper.Sqlite.Tests.csproj", "{3FDF4A73-4091-40D1-B228-2A4EAD50A12B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.LiteDb.Tests", "FluiTec.AppFx.Data.LiteDb.Tests\FluiTec.AppFx.Data.LiteDb.Tests.csproj", "{6F666D0C-BFEE-4569-8D39-90DAEBB7D9AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +115,26 @@ Global
 		{3AF80051-A9A3-4DAA-B478-79BFC4350385}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AF80051-A9A3-4DAA-B478-79BFC4350385}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AF80051-A9A3-4DAA-B478-79BFC4350385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F579EE4-3DCD-4660-91CF-ED52128EF1BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F579EE4-3DCD-4660-91CF-ED52128EF1BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F579EE4-3DCD-4660-91CF-ED52128EF1BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F579EE4-3DCD-4660-91CF-ED52128EF1BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C680873-9D2F-4AC7-90EE-16348D1D4C8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C680873-9D2F-4AC7-90EE-16348D1D4C8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C680873-9D2F-4AC7-90EE-16348D1D4C8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C680873-9D2F-4AC7-90EE-16348D1D4C8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A85D312-BDA0-4BF1-B591-4AFFB286DEF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A85D312-BDA0-4BF1-B591-4AFFB286DEF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A85D312-BDA0-4BF1-B591-4AFFB286DEF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A85D312-BDA0-4BF1-B591-4AFFB286DEF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FDF4A73-4091-40D1-B228-2A4EAD50A12B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FDF4A73-4091-40D1-B228-2A4EAD50A12B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FDF4A73-4091-40D1-B228-2A4EAD50A12B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FDF4A73-4091-40D1-B228-2A4EAD50A12B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F666D0C-BFEE-4569-8D39-90DAEBB7D9AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F666D0C-BFEE-4569-8D39-90DAEBB7D9AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F666D0C-BFEE-4569-8D39-90DAEBB7D9AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F666D0C-BFEE-4569-8D39-90DAEBB7D9AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +146,11 @@ Global
 		{8E844F93-5EF5-4381-B926-F8412FD5BD76} = {06518704-6D4C-44E1-88E9-6172EFCF52AB}
 		{28AA5FD5-7462-42A7-A0DC-52E31544B1AA} = {8E844F93-5EF5-4381-B926-F8412FD5BD76}
 		{E597F042-ACF5-41AD-A266-9B5CB4AC884D} = {8E844F93-5EF5-4381-B926-F8412FD5BD76}
+		{2F579EE4-3DCD-4660-91CF-ED52128EF1BA} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
+		{6C680873-9D2F-4AC7-90EE-16348D1D4C8C} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
+		{5A85D312-BDA0-4BF1-B591-4AFFB286DEF6} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
+		{3FDF4A73-4091-40D1-B228-2A4EAD50A12B} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
+		{6F666D0C-BFEE-4569-8D39-90DAEBB7D9AE} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {132CEE37-A97D-40BB-90D5-CEEE78D7BB25}
