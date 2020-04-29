@@ -9,6 +9,18 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
     /// <summary>   A service for accessing dapper data information. </summary>
     public abstract class DapperDataService : DataService
     {
+        #region Properties
+
+        /// <summary>	Gets or sets the connection string. </summary>
+        /// <value>	The connection string. </value>
+        public string ConnectionString { get; protected set; }
+
+        /// <summary>	Gets or sets the connection factory. </summary>
+        /// <value>	The connection factory. </value>
+        public IConnectionFactory ConnectionFactory { get; protected set; }
+
+        #endregion
+
         #region Constructors
 
         /// <summary>   Constructor. </summary>
@@ -40,18 +52,6 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
         {
             // nothing to do here
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>	Gets or sets the connection string. </summary>
-        /// <value>	The connection string. </value>
-        public string ConnectionString { get; protected set; }
-
-        /// <summary>	Gets or sets the connection factory. </summary>
-        /// <value>	The connection factory. </value>
-        public IConnectionFactory ConnectionFactory { get; protected set; }
 
         #endregion
 

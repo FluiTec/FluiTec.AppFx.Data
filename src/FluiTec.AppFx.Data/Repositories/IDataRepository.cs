@@ -14,8 +14,8 @@ namespace FluiTec.AppFx.Data.Repositories
         /// </returns>
         IEnumerable<TEntity> GetAll();
 
-        /// <summary>Gets the count.</summary>
-        /// <returns>An int.</returns>
+        /// <summary>   Counts the number of records. </summary>
+        /// <returns>   An int defining the total number of records. </returns>
         int Count();
     }
 }
