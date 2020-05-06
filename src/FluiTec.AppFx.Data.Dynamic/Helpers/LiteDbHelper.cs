@@ -2,6 +2,7 @@
 using FluiTec.AppFx.Data.LiteDb;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Dynamic.Helpers
 {
@@ -16,10 +17,11 @@ namespace FluiTec.AppFx.Data.Dynamic.Helpers
         /// <param name="services">             The services. </param>
         /// <param name="configurationManager"> Manager for configuration. </param>
         /// <param name="provider">             The provider. </param>
+        /// <param name="loggerFactory">        The logger factory. </param>
         /// <returns>   A TDataService. </returns>
-        internal static TDataService ProvideService<TDataService>(IServiceCollection services, ConfigurationManager configurationManager, DynamicDataProvider<TDataService> provider)
+        internal static TDataService ProvideService<TDataService>(IServiceCollection services, ConfigurationManager configurationManager, DynamicDataProvider<TDataService> provider, ILoggerFactory loggerFactory)
         {
-            if (_options != null) return provider.ProvideUsingLiteDb(_options);
+            if (_options != null) return provider.ProvideUsingLiteDb(_options, loggerFactory);
 
             _options = services.Configure<LiteDbServiceOptions>(configurationManager);
             if (configurationManager is ValidatingConfigurationManager validatingConfigurationManager)
@@ -27,7 +29,7 @@ namespace FluiTec.AppFx.Data.Dynamic.Helpers
                 validatingConfigurationManager.ConfigureValidator(new DapperServiceOptionsValidator());
             }
 
-            return provider.ProvideUsingLiteDb(_options);
+            return provider.ProvideUsingLiteDb(_options, loggerFactory);
         }
     }
 }

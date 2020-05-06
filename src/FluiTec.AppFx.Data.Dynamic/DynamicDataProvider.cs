@@ -8,6 +8,7 @@ using FluiTec.AppFx.Data.Dynamic.Helpers;
 using FluiTec.AppFx.Data.LiteDb;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Dynamic
 {
@@ -30,49 +31,49 @@ namespace FluiTec.AppFx.Data.Dynamic
         /// <summary>   Configure data service. </summary>
         /// <param name="services">             The services. </param>
         /// <param name="configurationManager"> Manager for configuration. </param>
+        /// <param name="loggerFactory">        The logger factory. </param>
         /// <returns>   A TDataService. </returns>
-        public virtual TDataService ConfigureDataService(IServiceCollection services, ConfigurationManager configurationManager)
+        public virtual TDataService ProvideDataService(IServiceCollection services, ConfigurationManager configurationManager, ILoggerFactory loggerFactory)
         {
-            switch (Options.Provider)
+            return Options.Provider switch
             {
-                case DataProvider.Mssql:
-                    return MssqlHelper.ProvideService(services, configurationManager, this);
-                case DataProvider.Mysql:
-                    return MysqlHelper.ProvideService(services, configurationManager, this);
-                case DataProvider.Pgsql:
-                    return PgsqlHelper.ProvideService(services, configurationManager, this);
-                case DataProvider.Sqlite:
-                    return SqliteHelper.ProvideService(services, configurationManager, this);
-                case DataProvider.LiteDb:
-                    return LiteDbHelper.ProvideService(services, configurationManager, this);
-                default:
-                    throw new NotImplementedException($"Provider {Options.Provider} was not implemented!");
-            }
+                DataProvider.Mssql => MssqlHelper.ProvideService(services, configurationManager, this, loggerFactory),
+                DataProvider.Mysql => MysqlHelper.ProvideService(services, configurationManager, this, loggerFactory),
+                DataProvider.Pgsql => PgsqlHelper.ProvideService(services, configurationManager, this, loggerFactory),
+                DataProvider.Sqlite => SqliteHelper.ProvideService(services, configurationManager, this, loggerFactory),
+                DataProvider.LiteDb => LiteDbHelper.ProvideService(services, configurationManager, this, loggerFactory),
+                _ => throw new NotImplementedException($"Provider {Options.Provider} was not implemented!")
+            };
         }
-
+        
         /// <summary>   Provide using mssql. </summary>
-        /// <param name="options">  Options for controlling the operation. </param>
+        /// <param name="options">          Options for controlling the operation. </param>
+        /// <param name="loggerFactory">    The logger factory. </param>
         /// <returns>   A TDataService. </returns>
-        protected internal abstract TDataService ProvideUsingMssql(MssqlDapperServiceOptions options);
+        protected internal abstract TDataService ProvideUsingMssql(MssqlDapperServiceOptions options, ILoggerFactory loggerFactory);
 
         /// <summary>   Provide using mysql. </summary>
-        /// <param name="options">  Options for controlling the operation. </param>
+        /// <param name="options">          Options for controlling the operation. </param>
+        /// <param name="loggerFactory">    The logger factory. </param>
         /// <returns>   A TDataService. </returns>
-        protected internal abstract TDataService ProvideUsingMysql(MysqlDapperServiceOptions options);
+        protected internal abstract TDataService ProvideUsingMysql(MysqlDapperServiceOptions options, ILoggerFactory loggerFactory);
 
         /// <summary>   Provide using pgsql. </summary>
-        /// <param name="options">  Options for controlling the operation. </param>
+        /// <param name="options">          Options for controlling the operation. </param>
+        /// <param name="loggerFactory">    The logger factory. </param>
         /// <returns>   A TDataService. </returns>
-        protected internal abstract TDataService ProvideUsingPgsql(PgsqlDapperServiceOptions options);
+        protected internal abstract TDataService ProvideUsingPgsql(PgsqlDapperServiceOptions options, ILoggerFactory loggerFactory);
 
         /// <summary>   Provide using sqlite. </summary>
-        /// <param name="options">  Options for controlling the operation. </param>
+        /// <param name="options">          Options for controlling the operation. </param>
+        /// <param name="loggerFactory">    The logger factory. </param>
         /// <returns>   A TDataService. </returns>
-        protected internal abstract TDataService ProvideUsingSqlite(SqliteDapperServiceOptions options);
+        protected internal abstract TDataService ProvideUsingSqlite(SqliteDapperServiceOptions options, ILoggerFactory loggerFactory);
 
         /// <summary>   Provide using lite database. </summary>
-        /// <param name="options">  Options for controlling the operation. </param>
+        /// <param name="options">          Options for controlling the operation. </param>
+        /// <param name="loggerFactory">    The logger factory. </param>
         /// <returns>   A TDataService. </returns>
-        protected internal abstract TDataService ProvideUsingLiteDb(LiteDbServiceOptions options);
+        protected internal abstract TDataService ProvideUsingLiteDb(LiteDbServiceOptions options, ILoggerFactory loggerFactory);
     }
 }

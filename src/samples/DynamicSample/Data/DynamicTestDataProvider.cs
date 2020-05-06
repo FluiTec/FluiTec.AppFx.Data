@@ -6,6 +6,7 @@ using FluiTec.AppFx.Data.Dapper.SqLite;
 using FluiTec.AppFx.Data.Dynamic;
 using FluiTec.AppFx.Data.Dynamic.Configuration;
 using FluiTec.AppFx.Data.LiteDb;
+using Microsoft.Extensions.Logging;
 
 namespace DynamicSample.Data
 {
@@ -15,27 +16,27 @@ namespace DynamicSample.Data
         {
         }
 
-        protected override ITestDataService ProvideUsingMssql(MssqlDapperServiceOptions options)
+        protected override ITestDataService ProvideUsingMssql(MssqlDapperServiceOptions options, ILoggerFactory loggerFactory)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override ITestDataService ProvideUsingMysql(MysqlDapperServiceOptions options)
+        protected override ITestDataService ProvideUsingMysql(MysqlDapperServiceOptions options, ILoggerFactory loggerFactory)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override ITestDataService ProvideUsingPgsql(PgsqlDapperServiceOptions options)
+        protected override ITestDataService ProvideUsingPgsql(PgsqlDapperServiceOptions options, ILoggerFactory loggerFactory)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override ITestDataService ProvideUsingSqlite(SqliteDapperServiceOptions options)
+        protected override ITestDataService ProvideUsingSqlite(SqliteDapperServiceOptions options, ILoggerFactory loggerFactory)
         {
             throw new System.NotImplementedException();
         }
 
-        protected override ITestDataService ProvideUsingLiteDb(LiteDbServiceOptions options)
+        protected override ITestDataService ProvideUsingLiteDb(LiteDbServiceOptions options, ILoggerFactory loggerFactory)
         {
             throw new System.NotImplementedException();
         }

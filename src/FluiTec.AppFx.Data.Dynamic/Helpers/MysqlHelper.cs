@@ -2,6 +2,7 @@
 using FluiTec.AppFx.Data.Dapper.Mysql;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Dynamic.Helpers
 {
@@ -17,9 +18,9 @@ namespace FluiTec.AppFx.Data.Dynamic.Helpers
         /// <param name="configurationManager"> Manager for configuration. </param>
         /// <param name="provider">             The provider. </param>
         /// <returns>   A TDataService. </returns>
-        internal static TDataService ProvideService<TDataService>(IServiceCollection services, ConfigurationManager configurationManager, DynamicDataProvider<TDataService> provider)
+        internal static TDataService ProvideService<TDataService>(IServiceCollection services, ConfigurationManager configurationManager, DynamicDataProvider<TDataService> provider, ILoggerFactory loggerFactory)
         {
-            if (_options != null) return provider.ProvideUsingMysql(_options);
+            if (_options != null) return provider.ProvideUsingMysql(_options, loggerFactory);
 
             _options = services.Configure<MysqlDapperServiceOptions>(configurationManager);
             if (configurationManager is ValidatingConfigurationManager validatingConfigurationManager)
@@ -27,7 +28,7 @@ namespace FluiTec.AppFx.Data.Dynamic.Helpers
                 validatingConfigurationManager.ConfigureValidator(new DapperServiceOptionsValidator());
             }
 
-            return provider.ProvideUsingMysql(_options);
+            return provider.ProvideUsingMysql(_options, loggerFactory);
         }
     }
 }

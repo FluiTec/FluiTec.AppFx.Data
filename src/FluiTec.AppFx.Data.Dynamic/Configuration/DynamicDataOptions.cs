@@ -4,7 +4,7 @@
     /// <remarks>
     /// You'll probably want to use the 'ConfigurationKey'-Attribute on derived classes
     /// </remarks>
-    public abstract class DynamicDataOptions
+    public class DynamicDataOptions
     {
         /// <summary>   Gets or sets the provider. </summary>
         /// <value> The provider. </value>
