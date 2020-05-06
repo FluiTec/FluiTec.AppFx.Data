@@ -17,7 +17,8 @@ namespace FluiTec.AppFx.Data.Dapper.Pgsql.Tests
         [TestMethod]
         public void CanCreateConnection()
         {
-            const string sampleConnectionString = "Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;";
+            const string sampleConnectionString =
+                "Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;";
             var factory = new PgsqlConnectionFactory();
             factory.CreateConnection(sampleConnectionString);
         }

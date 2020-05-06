@@ -14,14 +14,20 @@ namespace FluiTec.AppFx.Data.DataServices
         /// <summary>	Gets the name. </summary>
         /// <value>	The name. </value>
         string Name { get; }
+    }
 
-        /// <summary>	Begins unit of work. </summary>
-        /// <returns>	An IUnitOfWork. </returns>
-        IUnitOfWork BeginUnitOfWork();
+    /// <summary>   Interface for data service. </summary>
+    /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
+    public interface IDataService<out TUnitOfWork> : IDataService
+        where TUnitOfWork : IUnitOfWork
+    {
+        /// <summary>   Begins unit of work. </summary>
+        /// <returns>   A TUnitOfWork. </returns>
+        TUnitOfWork BeginUnitOfWork();
 
-        /// <summary>Begins unit of work.</summary>
+        /// <summary>   Begins unit of work. </summary>
         /// <param name="other">    The other. </param>
-        /// <returns>An IUnitOfWork.</returns>
-        IUnitOfWork BeginUnitOfWork(IUnitOfWork other);
+        /// <returns>   A TUnitOfWork. </returns>
+        TUnitOfWork BeginUnitOfWork(IUnitOfWork other);
     }
 }

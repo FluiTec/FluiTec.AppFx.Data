@@ -18,18 +18,10 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <summary>   Specialized constructor for use only by derived class. </summary>
         /// <param name="unitOfWork">   The unit of work. </param>
         /// <param name="logger">       The logger. </param>
-        protected LiteDbKeyTableDataRepository(LiteDbUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+        protected LiteDbKeyTableDataRepository(LiteDbUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(
+            unitOfWork, logger)
         {
         }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>	Gets bson key. </summary>
-        /// <param name="key">	The key. </param>
-        /// <returns>	The bson key. </returns>
-        protected abstract BsonValue GetBsonKey(TKey key);
 
         #endregion
 
@@ -42,6 +34,15 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         {
             return Collection.FindById(GetBsonKey(id));
         }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>	Gets bson key. </summary>
+        /// <param name="key">	The key. </param>
+        /// <returns>	The bson key. </returns>
+        protected abstract BsonValue GetBsonKey(TKey key);
 
         #endregion
     }

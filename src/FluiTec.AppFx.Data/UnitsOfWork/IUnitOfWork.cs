@@ -10,7 +10,7 @@ namespace FluiTec.AppFx.Data.UnitsOfWork
         /// <summary>Gets the data service.</summary>
         /// <value>The data service.</value>
         IDataService DataService { get; }
-        
+
         /// <summary>	Commits this unit of work. </summary>
         void Commit();
 

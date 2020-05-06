@@ -17,7 +17,8 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.Tests
         [TestMethod]
         public void CanCreateConnection()
         {
-            const string sampleConnectionString = "Server=myServerAddress; Database=myDataBase; Trusted_Connection=True;";
+            const string sampleConnectionString =
+                "Server=myServerAddress; Database=myDataBase; Trusted_Connection=True;";
             var factory = new MssqlConnectionFactory();
             factory.CreateConnection(sampleConnectionString);
         }

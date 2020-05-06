@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.LiteDb.UnitsOfWork
 {
+    /// <summary>   A lite database unit of work. </summary>
     public class LiteDbUnitOfWork : UnitOfWork
     {
         #region Fields
@@ -14,46 +15,6 @@ namespace FluiTec.AppFx.Data.LiteDb.UnitsOfWork
         private readonly bool _ownsConnection = true;
 
         #endregion
-
-        #region Constructors
-
-        /// <summary>   Constructor. </summary>
-        /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-        ///                                             null. </exception>
-        /// <param name="dataService">  The data service. </param>
-        /// <param name="logger">       The logger. </param>
-        public LiteDbUnitOfWork(LiteDbDataService dataService, ILogger<IUnitOfWork> logger) 
-            : base(dataService, logger)
-        {
-            LiteDbDataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
-            Transaction = LiteDbDataService.Database.BeginTrans();
-        }
-
-        /// <summary>   Constructor. </summary>
-        /// <param name="dataService">      The data service. </param>
-        /// <param name="parentUnitOfWork"> The parent unit of work. </param>
-        /// <param name="logger">           The logger. </param>
-        public LiteDbUnitOfWork(LiteDbDataService dataService, LiteDbUnitOfWork parentUnitOfWork, ILogger<IUnitOfWork> logger) 
-            : base(dataService, logger)
-        {
-            _ownsConnection = false;
-            LiteDbDataService = dataService;;
-            Transaction = parentUnitOfWork.Transaction;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>	Gets the lite database data service. </summary>
-        /// <value>	The lite database data service. </value>
-        public LiteDbDataService LiteDbDataService { get; }
-
-        /// <summary>	Gets or sets the transaction. </summary>
-        /// <value>	The transaction. </value>
-        public LiteTransaction Transaction { get; private set; }
-
-        #endregion Properties
 
         #region IDisposable
 
@@ -72,6 +33,46 @@ namespace FluiTec.AppFx.Data.LiteDb.UnitsOfWork
         }
 
         #endregion
+
+        #region Constructors
+
+        /// <summary>   Constructor. </summary>
+        /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are null. </exception>
+        /// <param name="dataService">  The data service. </param>
+        /// <param name="logger">       The logger. </param>
+        public LiteDbUnitOfWork(ILiteDbDataService dataService, ILogger<IUnitOfWork> logger)
+            : base(dataService, logger)
+        {
+            LiteDbDataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
+            Transaction = dataService.Database.BeginTrans();
+        }
+
+        /// <summary>   Constructor. </summary>
+        /// <param name="dataService">      The data service. </param>
+        /// <param name="parentUnitOfWork"> The parent unit of work. </param>
+        /// <param name="logger">           The logger. </param>
+        public LiteDbUnitOfWork(ILiteDbDataService dataService, LiteDbUnitOfWork parentUnitOfWork,
+            ILogger<IUnitOfWork> logger)
+            : base(dataService, logger)
+        {
+            _ownsConnection = false;
+            LiteDbDataService = dataService;
+            Transaction = parentUnitOfWork.Transaction;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>   Gets or sets the data service. </summary>
+        /// <value> The data service. </value>
+        public ILiteDbDataService LiteDbDataService { get; }
+
+        /// <summary>	Gets or sets the transaction. </summary>
+        /// <value>	The transaction. </value>
+        public LiteTransaction Transaction { get; private set; }
+
+        #endregion Properties
 
         #region IUnitOfWork
 

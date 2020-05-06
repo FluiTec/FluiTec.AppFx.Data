@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using FluiTec.AppFx.Data.Dapper.DataServices;
-using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 
@@ -14,6 +13,24 @@ namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork
 
         /// <summary>True to owns connection.</summary>
         private readonly bool _ownsConnection = true;
+
+        #endregion
+
+        #region IDisposable
+
+        /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting
+        ///     unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">
+        ///     true to release both managed and unmanaged resources; false to
+        ///     release only unmanaged resources.
+        /// </param>
+        protected override void Dispose(bool disposing)
+        {
+            if (Transaction != null)
+                Rollback();
+        }
 
         #endregion
 
@@ -34,7 +51,7 @@ namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork
         /// <summary>   Constructor. </summary>
         /// <param name="dataService">  The data service. </param>
         /// <param name="logger">       The logger. </param>
-        public DapperUnitOfWork(DapperDataService dataService, ILogger<IUnitOfWork> logger)
+        public DapperUnitOfWork(DapperDataService<DapperUnitOfWork> dataService, ILogger<IUnitOfWork> logger)
             : base(dataService, logger)
         {
             // create and open connection
@@ -53,7 +70,7 @@ namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork
         /// <param name="parentUnitOfWork"> The parent unit of work. </param>
         /// <param name="dataService">      The data service. </param>
         /// <param name="logger">           The logger. </param>
-        public DapperUnitOfWork(DapperUnitOfWork parentUnitOfWork, IDataService dataService,
+        public DapperUnitOfWork(DapperUnitOfWork parentUnitOfWork, DapperDataService<DapperUnitOfWork> dataService,
             ILogger<IUnitOfWork> logger)
             : base(dataService, logger)
         {
@@ -112,24 +129,6 @@ namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork
             Connection.Close();
             Connection.Dispose();
             Connection = null;
-        }
-
-        #endregion
-
-        #region IDisposable
-
-        /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting
-        ///     unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">
-        ///     true to release both managed and unmanaged resources; false to
-        ///     release only unmanaged resources.
-        /// </param>
-        protected override void Dispose(bool disposing)
-        {
-            if (Transaction != null)
-                Rollback();
         }
 
         #endregion

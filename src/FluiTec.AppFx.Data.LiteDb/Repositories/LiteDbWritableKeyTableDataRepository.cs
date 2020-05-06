@@ -10,7 +10,8 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
     /// <summary>   A lite database writable key table data repository. </summary>
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <typeparam name="TKey">     Type of the key. </typeparam>
-    public abstract class LiteDbWritableKeyTableDataRepository<TEntity, TKey> : LiteDbKeyTableDataRepository<TEntity, TKey>,
+    public abstract class LiteDbWritableKeyTableDataRepository<TEntity, TKey> :
+        LiteDbKeyTableDataRepository<TEntity, TKey>,
         IWritableKeyTableDataRepository<TEntity, TKey>
         where TEntity : class, IKeyEntity<TKey>, new()
     {
@@ -19,7 +20,8 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <summary>   Specialized constructor for use only by derived class. </summary>
         /// <param name="unitOfWork">   The unit of work. </param>
         /// <param name="logger">       The logger. </param>
-        protected LiteDbWritableKeyTableDataRepository(LiteDbUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+        protected LiteDbWritableKeyTableDataRepository(LiteDbUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(
+            unitOfWork, logger)
         {
         }
 

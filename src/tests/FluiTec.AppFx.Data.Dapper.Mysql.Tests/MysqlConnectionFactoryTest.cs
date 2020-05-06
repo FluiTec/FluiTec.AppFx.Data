@@ -17,7 +17,8 @@ namespace FluiTec.AppFx.Data.Dapper.Mysql.Tests
         [TestMethod]
         public void CanCreateConnection()
         {
-            const string sampleConnectionString = "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;";
+            const string sampleConnectionString =
+                "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;";
             var factory = new MysqlConnectionFactory();
             factory.CreateConnection(sampleConnectionString);
         }

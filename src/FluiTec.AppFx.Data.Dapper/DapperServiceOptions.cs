@@ -13,8 +13,10 @@ namespace FluiTec.AppFx.Data.Dapper
         }
 
         /// <summary>   Specialized constructor for use only by derived class. </summary>
-        /// <exception cref="ArgumentException">    Thrown when one or more arguments have unsupported or
-        ///                                         illegal values. </exception>
+        /// <exception cref="ArgumentException">
+        ///     Thrown when one or more arguments have unsupported or
+        ///     illegal values.
+        /// </exception>
         /// <param name="connectionString"> The connection string. </param>
         protected DapperServiceOptions(string connectionString)
         {

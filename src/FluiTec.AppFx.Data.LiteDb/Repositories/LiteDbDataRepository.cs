@@ -11,14 +11,14 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
 {
     /// <summary>   A lite database data repository. </summary>
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    public abstract class LiteDbDataRepository<TEntity>  : IDataRepository<TEntity>
+    public abstract class LiteDbDataRepository<TEntity> : IDataRepository<TEntity>
         where TEntity : class, IEntity, new()
     {
         #region Constructors
 
         protected LiteDbDataRepository(LiteDbUnitOfWork unitOfWork, ILogger<IRepository> logger)
         {
-            UnitOfWork = unitOfWork as LiteDbUnitOfWork;
+            UnitOfWork = unitOfWork;
             if (UnitOfWork == null)
                 throw new ArgumentException(
                     $"{nameof(unitOfWork)} was either null or does not implement {nameof(LiteDbUnitOfWork)}!");
@@ -39,6 +39,17 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
 
         #endregion
 
+        #region Methods
+
+        /// <summary>	Gets table name. </summary>
+        /// <returns>	The table name. </returns>
+        protected string GetTableName(Type t)
+        {
+            return UnitOfWork.LiteDbDataService.NameService.Name(t);
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>   Gets the name of the table. </summary>
@@ -52,17 +63,6 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <summary>	Gets the collection. </summary>
         /// <value>	The collection. </value>
         public LiteCollection<TEntity> Collection { get; }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>	Gets table name. </summary>
-        /// <returns>	The table name. </returns>
-        protected string GetTableName(Type t)
-        {
-            return UnitOfWork.LiteDbDataService.NameService.Name(t);
-        }
 
         #endregion
 
