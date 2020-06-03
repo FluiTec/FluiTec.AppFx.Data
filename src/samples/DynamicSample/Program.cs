@@ -15,6 +15,7 @@ namespace DynamicSample
     {
         static void Main(string[] args)
         {
+            // Starting here: general config that is normally handled by ASP.NET
             var configValues = new List<KeyValuePair<string, string>>(new[]
             {
                 new KeyValuePair<string, string>("DynamicDataOptions:Provider", "LiteDb"),
@@ -30,30 +31,20 @@ namespace DynamicSample
             var manager = new ConsoleReportingConfigurationManager(config);
             var services = new ServiceCollection();
 
-            services.ConfigureDynamicDataProvider(manager);
-
-            services.AddScoped(new Func<IServiceProvider, ITestDataService>(provider =>
+            // Starting here: actual config required to use dynamic data
+            services.ConfigureDynamicDataProvider(manager, new Func<IServiceProvider,ITestDataService>(provider =>
             {
                 var dynamicOptions = provider.GetRequiredService<DynamicDataOptions>();
-                switch (dynamicOptions.Provider)
+                return dynamicOptions.Provider switch
                 {
-                    case DataProvider.Mssql:
-                        throw new NotImplementedException();
-                    case DataProvider.Mysql:
-                        throw new NotImplementedException();
-                    case DataProvider.Pgsql:
-                        throw new NotImplementedException();
-                    case DataProvider.Sqlite:
-                        throw new NotImplementedException();
-                    case DataProvider.LiteDb:
-                        return new LiteDbTestDataService(provider.GetRequiredService<LiteDbServiceOptions>(), provider.GetService<ILoggerFactory>());
-                    default:
-                        throw new NotImplementedException();
-                }
+                    DataProvider.LiteDb => new LiteDbTestDataService(
+                        provider.GetRequiredService<LiteDbServiceOptions>(), provider.GetService<ILoggerFactory>()),
+                    // DataProvider.Mssql => expr,
+                    _ => throw new NotImplementedException()
+                };
             }));
 
             var serviceProvider = services.BuildServiceProvider();
-
             var service = serviceProvider.GetRequiredService<ITestDataService>();
         }
     }
