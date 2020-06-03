@@ -15,7 +15,6 @@ namespace DynamicSample
     {
         static void Main(string[] args)
         {
-            // Starting here: general config that is normally handled by ASP.NET
             var configValues = new List<KeyValuePair<string, string>>(new[]
             {
                 new KeyValuePair<string, string>("DynamicDataOptions:Provider", "LiteDb"),
@@ -31,18 +30,19 @@ namespace DynamicSample
             var manager = new ConsoleReportingConfigurationManager(config);
             var services = new ServiceCollection();
 
-            // Starting here: actual config required to use dynamic data
-            services.ConfigureDynamicDataProvider(manager, new Func<IServiceProvider,ITestDataService>(provider =>
-            {
-                var dynamicOptions = provider.GetRequiredService<DynamicDataOptions>();
-                return dynamicOptions.Provider switch
-                {
-                    DataProvider.LiteDb => new LiteDbTestDataService(
-                        provider.GetRequiredService<LiteDbServiceOptions>(), provider.GetService<ILoggerFactory>()),
-                    // DataProvider.Mssql => expr,
-                    _ => throw new NotImplementedException()
-                };
-            }));
+            services.ConfigureDynamicDataProvider(manager,
+                new Func<DynamicDataOptions, IServiceProvider, ITestDataService>(
+                    (options, provider) =>
+                    {
+                        return options.Provider switch
+                        {
+                            DataProvider.LiteDb => new LiteDbTestDataService(provider.GetRequiredService<LiteDbServiceOptions>(), provider.GetService<ILoggerFactory>()),
+                            // DataProvider.Mssql => expr,
+                            _ => throw new NotImplementedException()
+                        };
+                    }
+                )
+            );
 
             var serviceProvider = services.BuildServiceProvider();
             var service = serviceProvider.GetRequiredService<ITestDataService>();

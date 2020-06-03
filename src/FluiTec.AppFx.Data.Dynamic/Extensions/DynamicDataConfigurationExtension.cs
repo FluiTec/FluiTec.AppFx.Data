@@ -39,11 +39,27 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configurationManager"> Manager for configuration. </param>
         /// <param name="dataServiceProvider">  The data service provider. </param>
         /// <returns>   An IServiceCollection. </returns>
-        public static IServiceCollection ConfigureDynamicDataProvider<TDataService>(this IServiceCollection services, ConfigurationManager configurationManager, Func<IServiceProvider, TDataService> dataServiceProvider)
+        private static IServiceCollection ConfigureDynamicDataProvider<TDataService>(this IServiceCollection services, ConfigurationManager configurationManager, Func<IServiceProvider, TDataService> dataServiceProvider)
             where TDataService : class, IDataService
         {
             services.AddScoped(dataServiceProvider);
             return ConfigureDynamicDataProvider(services, configurationManager);
+        }
+
+        /// <summary>   Configure dynamic data provider. </summary>
+        /// <typeparam name="TDataService"> Type of the data service. </typeparam>
+        /// <param name="services">             The services. </param>
+        /// <param name="configurationManager"> Manager for configuration. </param>
+        /// <param name="dataServiceProvider">  The data service provider. </param>
+        /// <returns>   An IServiceCollection. </returns>
+        public static IServiceCollection ConfigureDynamicDataProvider<TDataService>(this IServiceCollection services, ConfigurationManager configurationManager, Func<DynamicDataOptions, IServiceProvider, TDataService> dataServiceProvider)
+            where TDataService : class, IDataService
+        {
+            return ConfigureDynamicDataProvider(services, configurationManager, provider =>
+            {
+                var dynamicOptions = provider.GetRequiredService<DynamicDataOptions>();
+                return dataServiceProvider(dynamicOptions, provider);
+            });
         }
     }
 }
