@@ -1,6 +1,9 @@
-﻿namespace FluiTec.AppFx.Data.Dapper.Mssql
+﻿using FluiTec.AppFx.Options.Attributes;
+
+namespace FluiTec.AppFx.Data.Dapper.Mssql
 {
     /// <summary>   A mssql dapper service options. </summary>
+    [ConfigurationKey("Dapper.Mssql")]
     public class MssqlDapperServiceOptions : DapperServiceOptions
     {
         /// <summary>   Default constructor. </summary>

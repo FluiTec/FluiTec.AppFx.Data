@@ -20,7 +20,7 @@ namespace DynamicSample
                 new KeyValuePair<string, string>("DynamicDataOptions:Provider", "LiteDb"),
                 new KeyValuePair<string, string>("LiteDb:DbFileName", "test.ldb"), 
                 new KeyValuePair<string, string>("LiteDb:ApplicationFolder", "C:\\dev\\GitLab"), 
-                new KeyValuePair<string, string>("LiteDb:UseSingletonConnection", "true") 
+                new KeyValuePair<string, string>("LiteDb:UseSingletonConnection", "true")
             });
 
             var config = new ConfigurationBuilder()
@@ -46,6 +46,7 @@ namespace DynamicSample
 
             var serviceProvider = services.BuildServiceProvider();
             var service = serviceProvider.GetRequiredService<ITestDataService>();
+            Console.WriteLine($"{service.Name}");
         }
     }
 }

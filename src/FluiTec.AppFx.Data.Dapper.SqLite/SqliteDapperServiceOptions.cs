@@ -1,6 +1,9 @@
-﻿namespace FluiTec.AppFx.Data.Dapper.SqLite
+﻿using FluiTec.AppFx.Options.Attributes;
+
+namespace FluiTec.AppFx.Data.Dapper.SqLite
 {
     /// <summary>   A sqlite dapper service options. </summary>
+    [ConfigurationKey("Dapper.Sqlite")]
     public class SqliteDapperServiceOptions : DapperServiceOptions
     {
         /// <summary>   Default constructor. </summary>
