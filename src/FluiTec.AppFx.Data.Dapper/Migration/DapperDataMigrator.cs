@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Exceptions;
+using FluentMigrator.Runner.Initialization;
 using FluentMigrator.Runner.VersionTableInfo;
 using FluiTec.AppFx.Data.Migration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,8 +27,9 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
             if (scanAssemblies == null)
                 throw new ArgumentNullException();
 
-            var sp = new ServiceCollection()
+            var services = new ServiceCollection()
                 .AddFluentMigratorCore()
+                .Configure<RunnerOptions>(opt => opt.Profile = "Development")
                 .ConfigureRunner(rb => rb
                     // Set the connection string
                     .WithGlobalConnectionString(connectionString)
@@ -37,18 +39,18 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
                     .ScanIn(scanAssemblies.ToArray()).For.Migrations())
                 .ConfigureRunner(configureSqlProvider)
                 // Enable logging to console in the FluentMigrator way
-                .AddLogging(lb => lb.AddFluentMigratorConsole())
-                // Build the service provider
-                .BuildServiceProvider(false);
+                .AddLogging(lb => lb.AddFluentMigratorConsole());
+
+            var sp = services.BuildServiceProvider(false);
 
             _runner = sp.GetRequiredService<IMigrationRunner>();
-            
+
             try
             {
                 var migrations = _runner.MigrationLoader
                     .LoadMigrations()
                     .OrderByDescending(m => m.Value.Version);
-           
+                
                 MaximumVersion = migrations.First().Value.Version;
 
                 var loader = sp.GetRequiredService<IVersionLoader>();

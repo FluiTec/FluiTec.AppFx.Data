@@ -7,6 +7,7 @@ using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Dynamic.Configuration;
 using FluiTec.AppFx.Data.LiteDb;
 using FluiTec.AppFx.Options.Managers;
+using Org.BouncyCastle.Asn1.IsisMtt.X509;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -58,7 +59,14 @@ namespace Microsoft.Extensions.DependencyInjection
             return ConfigureDynamicDataProvider(services, configurationManager, provider =>
             {
                 var dynamicOptions = provider.GetRequiredService<DynamicDataOptions>();
-                return dataServiceProvider(dynamicOptions, provider);
+                var service = dataServiceProvider(dynamicOptions, provider);
+
+                if (dynamicOptions.AutoMigrate && service.SupportsMigration)
+                {
+                    service.GetMigrator().Migrate();
+                }
+
+                return service;
             });
         }
     }

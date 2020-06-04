@@ -20,6 +20,7 @@ namespace DynamicSample
             var configValues = new List<KeyValuePair<string, string>>(new[]
             {
                 new KeyValuePair<string, string>("DynamicDataOptions:Provider", "Mssql"),
+                new KeyValuePair<string, string>("DynamicDataOptions:AutoMigrate", "true"),
                 new KeyValuePair<string, string>("LiteDb:DbFileName", "test.ldb"), 
                 new KeyValuePair<string, string>("LiteDb:ApplicationFolder", "C:\\dev\\GitLab"), 
                 new KeyValuePair<string, string>("LiteDb:UseSingletonConnection", "true"),
@@ -50,9 +51,6 @@ namespace DynamicSample
             var service = serviceProvider.GetRequiredService<ITestDataService>();
 
             Console.WriteLine($"{service.Name}");
-            if (!service.SupportsMigration) return;
-            var migrator = service.GetMigrator();
-            migrator.Migrate();
         }
     }
 }
