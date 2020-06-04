@@ -23,6 +23,9 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
         /// <param name="configureSqlProvider"> The configure SQL provider. </param>
         public DapperDataMigrator(string connectionString, IEnumerable<Assembly> scanAssemblies, IVersionTableMetaData metaData, Action<IMigrationRunnerBuilder> configureSqlProvider)
         {
+            if (scanAssemblies == null)
+                throw new ArgumentNullException();
+
             var sp = new ServiceCollection()
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
@@ -39,8 +42,7 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
                 .BuildServiceProvider(false);
 
             _runner = sp.GetRequiredService<IMigrationRunner>();
-            var loader = sp.GetRequiredService<IVersionLoader>();
-
+            
             try
             {
                 var migrations = _runner.MigrationLoader
@@ -48,6 +50,9 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
                     .OrderByDescending(m => m.Value.Version);
            
                 MaximumVersion = migrations.First().Value.Version;
+
+                var loader = sp.GetRequiredService<IVersionLoader>();
+                CurrentVersion = loader.VersionInfo.Latest();
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (MissingMigrationsException)
@@ -55,8 +60,6 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
                 MaximumVersion = 0;
             }
 #pragma warning restore CA1031 // Do not catch general exception types
-
-            CurrentVersion = loader.VersionInfo.Latest();
         }
 
         /// <summary>   Gets the current version. </summary>
