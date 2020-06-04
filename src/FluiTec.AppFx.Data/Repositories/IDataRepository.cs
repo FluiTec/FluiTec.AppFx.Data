@@ -12,6 +12,7 @@ namespace FluiTec.AppFx.Data.Repositories
         /// <returns>
         ///     An enumerator that allows foreach to be used to process all items in this collection.
         /// </returns>
+        // ReSharper disable once UnusedMemberInSuper.Global
         IEnumerable<TEntity> GetAll();
 
         /// <summary>   Counts the number of records. </summary>

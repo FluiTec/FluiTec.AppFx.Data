@@ -1,10 +1,11 @@
-﻿using FluiTec.AppFx.Data.Entities;
+﻿using DynamicSample.Data.Schema;
+using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.EntityNameServices;
 
 namespace DynamicSample.Data.Entities
 {
     /// <summary>   A dummy entity. </summary>
-    [EntityName("Dummy")]
+    [EntityName(SchemaGlobals.DummyTable)]
     public class DummyEntity : IKeyEntity<int>
     {
         /// <summary>   Gets or sets the name. </summary>

@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
+using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using LiteDB;
 using Microsoft.Extensions.Logging;
@@ -169,6 +170,18 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
             options?.DbFileName, loggerFactory, nameService, options?.ApplicationFolder)
         {
         }
+
+        #endregion
+
+        #region Migration
+
+        /// <summary>   Gets a value indicating whether the supports migration. </summary>
+        /// <value> True if supports migration, false if not. </value>
+        public override bool SupportsMigration => false;
+
+        /// <summary>   Gets the migrator. </summary>
+        /// <returns>   The migrator. </returns>
+        public override IDataMigrator GetMigrator() => null;
 
         #endregion
     }

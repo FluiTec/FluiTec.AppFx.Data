@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DynamicSample.Data.Entities;
+﻿using DynamicSample.Data.Entities;
 using DynamicSample.Data.Repositories;
 using FluiTec.AppFx.Data.LiteDb.Repositories;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;

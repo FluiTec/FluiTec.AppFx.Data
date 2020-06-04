@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Data.UnitsOfWork;
+﻿using FluiTec.AppFx.Data.Migration;
+using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.DataServices
@@ -27,6 +28,14 @@ namespace FluiTec.AppFx.Data.DataServices
         /// <summary>Gets the name.</summary>
         /// <value>The name.</value>
         public abstract string Name { get; }
+
+        /// <summary>   Gets a value indicating whether the supports migration. </summary>
+        /// <value> True if supports migration, false if not. </value>
+        public abstract bool SupportsMigration { get; }
+
+        /// <summary>   Gets the migrator. </summary>
+        /// <returns>   The migrator. </returns>
+        public abstract IDataMigrator GetMigrator();
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()

@@ -21,6 +21,10 @@ namespace LiteDbSample.Data
         /// <value> The name. </value>
         public override string Name => "TestDbService";
 
+        /// <summary>   Gets a value indicating whether the supports migration. </summary>
+        /// <value> True if supports migration, false if not. </value>
+        public override bool SupportsMigration => true;
+
         public override TestUnitOfWork BeginUnitOfWork()
         {
             return new TestUnitOfWork(this, LoggerFactory?.CreateLogger<IUnitOfWork>());

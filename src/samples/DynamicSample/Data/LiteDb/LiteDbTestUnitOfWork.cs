@@ -10,10 +10,12 @@ namespace DynamicSample.Data.LiteDb
     {
         public LiteDbTestUnitOfWork(ILiteDbDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService, logger)
         {
+            RegisterRepositories();
         }
 
         public LiteDbTestUnitOfWork(ILiteDbDataService dataService, LiteDbUnitOfWork parentUnitOfWork, ILogger<IUnitOfWork> logger) : base(dataService, parentUnitOfWork, logger)
         {
+            RegisterRepositories();
         }
 
         private void RegisterRepositories()

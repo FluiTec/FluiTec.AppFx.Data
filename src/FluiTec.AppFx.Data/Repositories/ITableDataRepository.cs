@@ -10,6 +10,7 @@ namespace FluiTec.AppFx.Data.Repositories
     {
         /// <summary>	Gets the name of the table. </summary>
         /// <value>	The name of the table. </value>
+        // ReSharper disable once UnusedMemberInSuper.Global
         string TableName { get; }
     }
 }

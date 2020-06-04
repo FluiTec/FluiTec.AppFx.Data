@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using FluiTec.AppFx.Data.Dapper.DataServices;
+using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 
@@ -51,7 +52,7 @@ namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork
         /// <summary>   Constructor. </summary>
         /// <param name="dataService">  The data service. </param>
         /// <param name="logger">       The logger. </param>
-        public DapperUnitOfWork(DapperDataService<DapperUnitOfWork> dataService, ILogger<IUnitOfWork> logger)
+        public DapperUnitOfWork(IDapperDataService dataService, ILogger<IUnitOfWork> logger)
             : base(dataService, logger)
         {
             // create and open connection
@@ -70,7 +71,7 @@ namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork
         /// <param name="parentUnitOfWork"> The parent unit of work. </param>
         /// <param name="dataService">      The data service. </param>
         /// <param name="logger">           The logger. </param>
-        public DapperUnitOfWork(DapperUnitOfWork parentUnitOfWork, DapperDataService<DapperUnitOfWork> dataService,
+        public DapperUnitOfWork(DapperUnitOfWork parentUnitOfWork, IDataService dataService,
             ILogger<IUnitOfWork> logger)
             : base(dataService, logger)
         {

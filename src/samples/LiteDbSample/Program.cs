@@ -11,7 +11,7 @@ namespace LiteDbSample
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
             var options = new LiteDbServiceOptions
             {
@@ -22,7 +22,7 @@ namespace LiteDbSample
 
             using var service = new TestDbService(options, null);
             using var uow = service.BeginUnitOfWork();
-            var existing = uow.DummyRepository.GetAll();
+            var unused = uow.DummyRepository.GetAll();
             uow.DummyRepository.Add(new DummyEntity {Name = "Test"});
             uow.Commit();
         }

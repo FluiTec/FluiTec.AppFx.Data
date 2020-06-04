@@ -16,9 +16,15 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
     {
         #region Constructors
 
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
+        /// <exception cref="ArgumentException">    Thrown when one or more arguments have unsupported or
+        ///                                         illegal values. </exception>
+        /// <param name="unitOfWork">   The unit of work. </param>
+        /// <param name="logger">       The logger. </param>
         protected LiteDbDataRepository(LiteDbUnitOfWork unitOfWork, ILogger<IRepository> logger)
         {
-            UnitOfWork = unitOfWork;
+            UnitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            Logger = logger; // we accept null here
             if (UnitOfWork == null)
                 throw new ArgumentException(
                     $"{nameof(unitOfWork)} was either null or does not implement {nameof(LiteDbUnitOfWork)}!");
@@ -63,6 +69,10 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <summary>	Gets the collection. </summary>
         /// <value>	The collection. </value>
         public LiteCollection<TEntity> Collection { get; }
+
+        /// <summary>   Gets the logger. </summary>
+        /// <value> The logger. </value>
+        public ILogger<IRepository> Logger { get; }
 
         #endregion
 
