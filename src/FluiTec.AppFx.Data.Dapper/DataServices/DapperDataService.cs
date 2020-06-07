@@ -65,6 +65,9 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
         ///     An enumerator that allows foreach to be used to process the migration assemblies in this
         ///     collection.
         /// </returns>
+        /// <remarks>
+        /// Returns the assembly containing the implementing dataservice by default.
+        /// </remarks>
         protected virtual IEnumerable<Assembly> GetMigrationAssemblies()
         {
             return new[] {GetType().Assembly};
