@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System;
+using Dapper;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
@@ -41,6 +42,9 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         /// <returns>	A TEntity. </returns>
         public override TEntity Add(TEntity entity)
         {
+            if (entity is ITimeStampedKeyEntity stampedEntity)
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+
             SetInsertKey(entity);
 
             var builder = UnitOfWork.Connection.GetBuilder();

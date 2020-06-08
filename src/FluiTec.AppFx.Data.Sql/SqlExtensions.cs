@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
+using FluiTec.AppFx.Data.Entities;
 
 // ReSharper disable UnusedMember.Global
 
@@ -118,6 +119,22 @@ namespace FluiTec.AppFx.Data.Sql
 
             var builder = connection.GetBuilder();
             var sql = builder.Update(type);
+            OnSqlGenerated(sql);
+
+            var parameters = new DynamicParameters();
+            foreach (var p in builder.ParameterList(type))
+                parameters.Add(p.Value, p.Key.GetValue(entity));
+
+            return connection.Execute(sql, parameters, transaction, commandTimeout) > 0;
+        }
+
+        public static bool Update<TEntity>(this IDbConnection connection, TEntity entity, long originalTimeStamp,
+            IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            var type = typeof(TEntity);
+
+            var builder = connection.GetBuilder();
+            var sql = builder.Update(type, originalTimeStamp, nameof(ITimeStampedKeyEntity.TimeStamp));
             OnSqlGenerated(sql);
 
             var parameters = new DynamicParameters();

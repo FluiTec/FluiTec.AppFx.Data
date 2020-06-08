@@ -210,6 +210,15 @@ namespace FluiTec.AppFx.Data.Sql
             return sql;
         }
 
+        public string Update(Type type, long timestamp, string timestampFieldname)
+        {
+            // generate statement
+            var sql = Adapter.GetUpdateStatement(type, timestamp, timestampFieldname);
+
+            // return statement
+            return sql;
+        }
+
         /// <summary>	Deletes the given type. </summary>
         /// <param name="type">	The type. </param>
         /// <returns>	A string. </returns>

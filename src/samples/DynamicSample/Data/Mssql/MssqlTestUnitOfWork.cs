@@ -22,8 +22,10 @@ namespace DynamicSample.Data.Mssql
         private void RegisterRepositories()
         {
             RepositoryProviders.Add(typeof(IDummyRepository), (uow, log) => new MssqlDummyRepository((MssqlTestUnitOfWork)uow, log));
+            RepositoryProviders.Add(typeof(IDummy2Repository), (uow, log) => new MssqlDummy2Repository((MssqlTestUnitOfWork)uow, log));
         }
 
         public IDummyRepository DummyRepository => GetRepository<IDummyRepository>();
+        public IDummy2Repository Dummy2Repository => GetRepository<IDummy2Repository>();
     }
 }

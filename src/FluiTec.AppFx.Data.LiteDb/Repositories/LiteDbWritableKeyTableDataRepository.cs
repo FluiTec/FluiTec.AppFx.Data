@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
@@ -43,6 +45,9 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <returns>   A TEntity. </returns>
         public TEntity Add(TEntity entity)
         {
+            if (entity is ITimeStampedKeyEntity stampedEntity)
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+
             entity.Id = GetKey(Collection.Insert(entity));
             return entity;
         }
@@ -51,7 +56,13 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
         public void AddRange(IEnumerable<TEntity> entities)
         {
-            foreach (var entity in entities)
+            var keyEntities = entities as TEntity[] ?? entities.ToArray();
+
+            foreach(var entity in keyEntities)
+                if (entity is ITimeStampedKeyEntity stampedEntity)
+                    stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+
+            foreach (var entity in keyEntities)
                 Collection.Insert(entity);
         }
 
@@ -60,7 +71,20 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <returns>   A TEntity. </returns>
         public TEntity Update(TEntity entity)
         {
-            Collection.Update(GetBsonKey(entity.Id), entity);
+            if (entity is ITimeStampedKeyEntity stampedEntity)
+            {
+                var inCollection = Collection.FindById(GetBsonKey(entity.Id));
+                if (((ITimeStampedKeyEntity) inCollection).TimeStamp == stampedEntity.TimeStamp)
+                {
+                    stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                    Collection.Update(GetBsonKey(entity.Id), entity);
+                }
+            }
+            else
+            {
+                Collection.Update(GetBsonKey(entity.Id), entity);
+            }
+            
             return entity;
         }
 

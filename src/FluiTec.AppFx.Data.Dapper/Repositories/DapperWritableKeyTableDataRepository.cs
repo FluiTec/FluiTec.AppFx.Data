@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
@@ -63,6 +65,9 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         /// <returns>   A TEntity. </returns>
         public virtual TEntity Add(TEntity entity)
         {
+            if (entity is ITimeStampedKeyEntity stampedEntity)
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+
             var lkey = UnitOfWork.Connection.InsertAuto(entity, UnitOfWork.Transaction);
             entity.Id = GetKey(lkey);
             return entity;
@@ -72,7 +77,13 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
         public virtual void AddRange(IEnumerable<TEntity> entities)
         {
-            UnitOfWork.Connection.InsertAutoMultiple(entities, UnitOfWork.Transaction);
+            var keyEntities = entities as TEntity[] ?? entities.ToArray();
+
+            foreach(var entity in keyEntities)
+                if (entity is ITimeStampedKeyEntity stampedEntity)
+                    stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+
+            UnitOfWork.Connection.InsertAutoMultiple(keyEntities, UnitOfWork.Transaction);
         }
 
         /// <summary>   Updates the given entity. </summary>
@@ -80,7 +91,17 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         /// <returns>   A TEntity. </returns>
         public virtual TEntity Update(TEntity entity)
         {
-            UnitOfWork.Connection.Update(entity, UnitOfWork.Transaction);
+            if (entity is ITimeStampedKeyEntity stampedEntity)
+            {
+                var originalTimeStamp = stampedEntity.TimeStamp;
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                UnitOfWork.Connection.Update(entity, originalTimeStamp, UnitOfWork.Transaction);
+            }
+            else
+            {
+                UnitOfWork.Connection.Update(entity, UnitOfWork.Transaction);
+            }
+                
             return entity;
         }
 

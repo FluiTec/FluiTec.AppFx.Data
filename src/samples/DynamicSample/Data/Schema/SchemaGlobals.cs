@@ -8,5 +8,8 @@
 
         /// <summary>   The dummy table. </summary>
         public const string DummyTable = "Dummy";
+
+        /// <summary>   The second dummy table. </summary>
+        public const string DummyTable2 = "Dummy2";
     }
 }

@@ -139,6 +139,21 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
                 $"WHERE {RenderPropertyName(key)} = {RenderParameterProperty(key)}";
         }
 
+        /// <summary>   Gets update statement. </summary>
+        /// <param name="type">                 The type. </param>
+        /// <param name="timestamp">            The timestamp. </param>
+        /// <param name="timestampFieldname">   The timestamp fieldname. </param>
+        /// <returns>   The update statement. </returns>
+        public virtual string GetUpdateStatement(Type type, long timestamp, string timestampFieldname)
+        {
+            var key = SqlCache.TypeKeyPropertiesCache(type).Single();
+            var setClauses = RenderSetStatements(type).ToString();
+            return
+                $"UPDATE {RenderTableName(type)} " +
+                $"SET {setClauses} " +
+                $"WHERE {RenderPropertyName(key)} = {RenderParameterProperty(key)} AND {RenderPropertyName(timestampFieldname)} = {timestamp}";
+        }
+
         /// <summary>	Gets delete statememt. </summary>
         /// <param name="type">	The type. </param>
         /// <returns>	The delete statememt. </returns>

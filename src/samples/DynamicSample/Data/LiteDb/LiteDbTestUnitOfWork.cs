@@ -21,8 +21,10 @@ namespace DynamicSample.Data.LiteDb
         private void RegisterRepositories()
         {
             RepositoryProviders.Add(typeof(IDummyRepository), (uow, log) => new LiteDbDummyRepository((LiteDbUnitOfWork)uow, log));
+            RepositoryProviders.Add(typeof(IDummy2Repository), (uow, log) => new LiteDbDummy2Repository((LiteDbUnitOfWork)uow, log));
         }
 
         public IDummyRepository DummyRepository => GetRepository<IDummyRepository>();
+        public IDummy2Repository Dummy2Repository => GetRepository<IDummy2Repository>();
     }
 }

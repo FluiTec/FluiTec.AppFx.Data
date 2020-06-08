@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DynamicSample.Data;
+using DynamicSample.Data.Entities;
 using DynamicSample.Data.LiteDb;
 using DynamicSample.Data.Mssql;
 using FluiTec.AppFx.Data.Dapper.Mssql;
@@ -31,6 +32,44 @@ namespace DynamicSample
                 .AddInMemoryCollection(configValues)
                 .Build();
 
+            TestDynamicSql(config);
+
+            TestTimeStamp(config);
+        }
+
+        private static void TestDynamicSql(IConfigurationRoot config)
+        {
+            Console.WriteLine($"METHOD: {nameof(TestDynamicSql)}");
+            var manager = new ConsoleReportingConfigurationManager(config);
+            var services = new ServiceCollection();
+
+            services.ConfigureDynamicDataProvider(manager,
+                new Func<DynamicDataOptions, IServiceProvider, ITestDataService>((options, provider) =>
+                    {
+                        return options.Provider switch
+                        {
+                            DataProvider.LiteDb => new LiteDbTestDataService(provider.GetRequiredService<LiteDbServiceOptions>(), provider.GetService<ILoggerFactory>()),
+                            DataProvider.Mssql => new MssqlTestDataService(provider.GetRequiredService<MssqlDapperServiceOptions>(), provider.GetService<ILoggerFactory>()),
+                            _ => throw new NotImplementedException()
+                        };
+                    }
+                )
+            );
+
+            var serviceProvider = services.BuildServiceProvider();
+            var service = serviceProvider.GetRequiredService<ITestDataService>();
+            using (var uow = service.BeginUnitOfWork())
+            {
+                uow.DummyRepository.Add(new DummyEntity {Name = "Testname"});
+                uow.Commit();
+            }
+
+            Console.WriteLine($"{service.Name}");
+        }
+
+        private static void TestTimeStamp(IConfigurationRoot config)
+        {
+            Console.WriteLine($"METHOD: {nameof(TestTimeStamp)}");
             var manager = new ConsoleReportingConfigurationManager(config);
             var services = new ServiceCollection();
 
@@ -50,7 +89,22 @@ namespace DynamicSample
             var serviceProvider = services.BuildServiceProvider();
             var service = serviceProvider.GetRequiredService<ITestDataService>();
 
-            Console.WriteLine($"{service.Name}");
+            using (var uow = service.BeginUnitOfWork())
+            {
+                uow.Dummy2Repository.Add(new DummyEntity2 {Name = "Testname"});
+                uow.Commit();
+            }
+
+            using (var uow = service.BeginUnitOfWork())
+            {
+                var entities = uow.Dummy2Repository.GetAll();
+                foreach (var entity in entities)
+                {
+                    entity.Name = "Test2";
+                    uow.Dummy2Repository.Update(entity);
+                }
+                uow.Commit();
+            }
         }
     }
 }

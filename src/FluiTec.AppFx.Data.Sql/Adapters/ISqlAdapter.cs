@@ -37,6 +37,13 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <returns>	The update statement. </returns>
         string GetUpdateStatement(Type type);
 
+        /// <summary>   Gets update statement. </summary>
+        /// <param name="type">                 The type. </param>
+        /// <param name="timestamp">            The timestamp. </param>
+        /// <param name="timestampFieldname">   The timestamp fieldname. </param>
+        /// <returns>   The update statement. </returns>
+        string GetUpdateStatement(Type type, long timestamp, string timestampFieldname);
+
         /// <summary>	Gets delete statement. </summary>
         /// <param name="type">	The type. </param>
         /// <returns>	The delete statement. </returns>
