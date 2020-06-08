@@ -15,6 +15,14 @@ namespace FluiTec.AppFx.Data.EntityNameServices
             Name = name;
         }
 
+        /// <summary>   Constructor. </summary>
+        /// <param name="schema">   The schema. </param>
+        /// <param name="name">     The name of the entity. </param>
+        public EntityNameAttribute(string schema, string name)
+        {
+            Name = $"{schema}.{name}";
+        }
+
         #endregion
 
         #region Properties

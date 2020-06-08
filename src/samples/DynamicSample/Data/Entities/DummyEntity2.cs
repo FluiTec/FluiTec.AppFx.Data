@@ -5,7 +5,7 @@ using FluiTec.AppFx.Data.EntityNameServices;
 namespace DynamicSample.Data.Entities
 {
     /// <summary>   A dummy entity 2. </summary>
-    [EntityName(SchemaGlobals.Schema + "." + SchemaGlobals.DummyTable2)]
+    [EntityName(SchemaGlobals.Schema, SchemaGlobals.DummyTable2)]
     public class DummyEntity2 : IKeyEntity<int>, ITimeStampedKeyEntity
     {
         /// <summary>   Gets or sets the identifier. </summary>
