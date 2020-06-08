@@ -60,7 +60,5 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         public override IDataMigrator GetMigrator() => null;
 
         #endregion
-
-        
     }
 }
