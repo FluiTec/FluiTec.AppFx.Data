@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentMigrator.Runner.VersionTableInfo;
+using FluiTec.AppFx.Data.Dapper.Extensions;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Migration;
@@ -22,6 +23,8 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
         /// <param name="loggerFactory">        The logger factory. </param>
         protected BaseDapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(loggerFactory)
         {
+            DapperExtensions.InstallDateTimeOffsetMapper();
+
             if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
             ConnectionString = dapperServiceOptions.ConnectionString;
             ConnectionFactory = dapperServiceOptions.ConnectionFactory;
