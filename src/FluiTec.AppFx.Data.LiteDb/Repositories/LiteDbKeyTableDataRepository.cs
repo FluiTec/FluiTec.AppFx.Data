@@ -30,7 +30,7 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <summary>   Gets an entity using the given identifier. </summary>
         /// <param name="id">   The Identifier to use. </param>
         /// <returns>   A TEntity. </returns>
-        public TEntity Get(TKey id)
+        public virtual TEntity Get(TKey id)
         {
             return Collection.FindById(GetBsonKey(id));
         }

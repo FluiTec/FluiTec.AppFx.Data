@@ -82,14 +82,14 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <returns>
         ///     An enumerator that allows foreach to be used to process all items in this collection.
         /// </returns>
-        public IEnumerable<TEntity> GetAll()
+        public virtual IEnumerable<TEntity> GetAll()
         {
             return Collection.FindAll();
         }
 
         /// <summary>   Counts the number of records. </summary>
         /// <returns>   An int defining the total number of records. </returns>
-        public int Count()
+        public virtual int Count()
         {
             return Collection.Count();
         }

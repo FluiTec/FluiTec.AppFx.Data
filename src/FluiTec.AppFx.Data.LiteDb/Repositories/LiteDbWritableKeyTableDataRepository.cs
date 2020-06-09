@@ -43,7 +43,7 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <summary>   Adds entity. </summary>
         /// <param name="entity">   The entity to add. </param>
         /// <returns>   A TEntity. </returns>
-        public TEntity Add(TEntity entity)
+        public virtual TEntity Add(TEntity entity)
         {
             if (entity is ITimeStampedKeyEntity stampedEntity)
                 stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
@@ -54,7 +54,7 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
 
         /// <summary>   Adds a range of entities. </summary>
         /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
-        public void AddRange(IEnumerable<TEntity> entities)
+        public virtual void AddRange(IEnumerable<TEntity> entities)
         {
             var keyEntities = entities as TEntity[] ?? entities.ToArray();
 
@@ -69,7 +69,7 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <summary>   Updates the given entity. </summary>
         /// <param name="entity">   The entity to add. </param>
         /// <returns>   A TEntity. </returns>
-        public TEntity Update(TEntity entity)
+        public virtual TEntity Update(TEntity entity)
         {
             if (entity is ITimeStampedKeyEntity stampedEntity)
             {
@@ -90,14 +90,14 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
 
         /// <summary>   Deletes the given ID. </summary>
         /// <param name="id">   The Identifier to delete. </param>
-        public void Delete(TKey id)
+        public virtual void Delete(TKey id)
         {
             Collection.Delete(GetBsonKey(id));
         }
 
         /// <summary>   Deletes the given entity. </summary>
         /// <param name="entity">   The entity to add. </param>
-        public void Delete(TEntity entity)
+        public virtual void Delete(TEntity entity)
         {
             Collection.Delete(GetBsonKey(entity.Id));
         }
