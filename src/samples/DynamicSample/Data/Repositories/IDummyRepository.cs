@@ -5,6 +5,5 @@ namespace DynamicSample.Data.Repositories
 {
     public interface IDummyRepository : IWritableKeyTableDataRepository<DummyEntity, int>
     {
-        
     }
 }

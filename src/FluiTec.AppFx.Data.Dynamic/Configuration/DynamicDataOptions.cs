@@ -2,7 +2,7 @@
 {
     /// <summary>   A dynamic data options. </summary>
     /// <remarks>
-    /// You'll probably want to use the 'ConfigurationKey'-Attribute on derived classes
+    ///     You'll probably want to use the 'ConfigurationKey'-Attribute on derived classes
     /// </remarks>
     public class DynamicDataOptions
     {

@@ -9,23 +9,27 @@ namespace DynamicSample.Data.Mssql
 {
     public class MssqlTestUnitOfWork : DapperUnitOfWork, ITestUnitOfWork
     {
-        public MssqlTestUnitOfWork(IDapperDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService, logger)
+        public MssqlTestUnitOfWork(IDapperDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService,
+            logger)
         {
             RegisterRepositories();
         }
 
-        public MssqlTestUnitOfWork(DapperUnitOfWork parentUnitOfWork, IDataService dataService, ILogger<IUnitOfWork> logger) : base(parentUnitOfWork, dataService, logger)
+        public MssqlTestUnitOfWork(DapperUnitOfWork parentUnitOfWork, IDataService dataService,
+            ILogger<IUnitOfWork> logger) : base(parentUnitOfWork, dataService, logger)
         {
             RegisterRepositories();
-        }
-
-        private void RegisterRepositories()
-        {
-            RepositoryProviders.Add(typeof(IDummyRepository), (uow, log) => new MssqlDummyRepository((MssqlTestUnitOfWork)uow, log));
-            RepositoryProviders.Add(typeof(IDummy2Repository), (uow, log) => new MssqlDummy2Repository((MssqlTestUnitOfWork)uow, log));
         }
 
         public IDummyRepository DummyRepository => GetRepository<IDummyRepository>();
         public IDummy2Repository Dummy2Repository => GetRepository<IDummy2Repository>();
+
+        private void RegisterRepositories()
+        {
+            RepositoryProviders.Add(typeof(IDummyRepository),
+                (uow, log) => new MssqlDummyRepository((MssqlTestUnitOfWork) uow, log));
+            RepositoryProviders.Add(typeof(IDummy2Repository),
+                (uow, log) => new MssqlDummy2Repository((MssqlTestUnitOfWork) uow, log));
+        }
     }
 }

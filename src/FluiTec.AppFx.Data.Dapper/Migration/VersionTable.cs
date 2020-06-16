@@ -19,7 +19,7 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
         public bool OwnsSchema => true;
 
         /// <summary>	Name of the schema. </summary>
-        public string SchemaName {get; }
+        public string SchemaName { get; }
 
         /// <summary>	Name of the table. </summary>
         public string TableName => "Migrations";

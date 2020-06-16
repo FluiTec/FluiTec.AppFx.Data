@@ -11,17 +11,20 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
 {
     /// <summary>   A service for accessing base dapper data information. </summary>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
-    public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWork>, IDapperDataService 
+    public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWork>, IDapperDataService
         where TUnitOfWork : DapperUnitOfWork, IUnitOfWork
     {
         #region Constructors
 
         /// <summary>   Specialized constructor for use only by derived class. </summary>
-        /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-        ///                                             null. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown when one or more required arguments are
+        ///     null.
+        /// </exception>
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
-        protected BaseDapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(loggerFactory)
+        protected BaseDapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) :
+            base(loggerFactory)
         {
             DapperExtensions.InstallDateTimeOffsetMapper();
 

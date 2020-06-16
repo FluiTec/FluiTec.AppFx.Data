@@ -24,7 +24,7 @@ namespace FluiTec.AppFx.Data.Dapper.Tests.Migration
             const int minute = 10;
             const string author = "sample";
 
-            var version = 
+            var version =
                 100000000L * year +
                 1000000L * month +
                 10000L * day +

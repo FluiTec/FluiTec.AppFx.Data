@@ -8,7 +8,7 @@ namespace FluiTec.AppFx.Data.Dapper.Extensions
     public static class DapperExtensions
     {
         /// <summary>   The date time offset mapper installed. </summary>
-        private static int _dateTimeOffsetMapperInstalled = 0;
+        private static int _dateTimeOffsetMapperInstalled;
 
         /// <summary>   Installs the date time offset mapper. </summary>
         public static void InstallDateTimeOffsetMapper()

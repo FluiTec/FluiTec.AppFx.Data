@@ -7,7 +7,6 @@ using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Dynamic.Configuration;
 using FluiTec.AppFx.Data.LiteDb;
 using FluiTec.AppFx.Options.Managers;
-using Org.BouncyCastle.Asn1.IsisMtt.X509;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -19,7 +18,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">             The services. </param>
         /// <param name="configurationManager"> Manager for configuration. </param>
         /// <returns>   An IServiceCollection. </returns>
-        private static IServiceCollection ConfigureDynamicDataProvider(this IServiceCollection services, ConfigurationManager configurationManager)
+        private static IServiceCollection ConfigureDynamicDataProvider(this IServiceCollection services,
+            ConfigurationManager configurationManager)
         {
             // provider-selection is required
             services.Configure<DynamicDataOptions>(configurationManager, true);
@@ -40,7 +40,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configurationManager"> Manager for configuration. </param>
         /// <param name="dataServiceProvider">  The data service provider. </param>
         /// <returns>   An IServiceCollection. </returns>
-        private static IServiceCollection ConfigureDynamicDataProvider<TDataService>(this IServiceCollection services, ConfigurationManager configurationManager, Func<IServiceProvider, TDataService> dataServiceProvider)
+        private static IServiceCollection ConfigureDynamicDataProvider<TDataService>(this IServiceCollection services,
+            ConfigurationManager configurationManager, Func<IServiceProvider, TDataService> dataServiceProvider)
             where TDataService : class, IDataService
         {
             services.AddScoped(dataServiceProvider);
@@ -53,7 +54,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configurationManager"> Manager for configuration. </param>
         /// <param name="dataServiceProvider">  The data service provider. </param>
         /// <returns>   An IServiceCollection. </returns>
-        public static IServiceCollection ConfigureDynamicDataProvider<TDataService>(this IServiceCollection services, ConfigurationManager configurationManager, Func<DynamicDataOptions, IServiceProvider, TDataService> dataServiceProvider)
+        public static IServiceCollection ConfigureDynamicDataProvider<TDataService>(this IServiceCollection services,
+            ConfigurationManager configurationManager,
+            Func<DynamicDataOptions, IServiceProvider, TDataService> dataServiceProvider)
             where TDataService : class, IDataService
         {
             return ConfigureDynamicDataProvider(services, configurationManager, provider =>
@@ -61,10 +64,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var dynamicOptions = provider.GetRequiredService<DynamicDataOptions>();
                 var service = dataServiceProvider(dynamicOptions, provider);
 
-                if (dynamicOptions.AutoMigrate && service.SupportsMigration)
-                {
-                    service.GetMigrator().Migrate();
-                }
+                if (dynamicOptions.AutoMigrate && service.SupportsMigration) service.GetMigrator().Migrate();
 
                 return service;
             });

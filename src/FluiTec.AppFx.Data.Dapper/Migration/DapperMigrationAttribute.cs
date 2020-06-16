@@ -1,7 +1,9 @@
-﻿namespace FluiTec.AppFx.Data.Dapper.Migration
+﻿using FluentMigrator;
+
+namespace FluiTec.AppFx.Data.Dapper.Migration
 {
     /// <summary>   Attribute for dapper migration. </summary>
-    public class DapperMigrationAttribute : FluentMigrator.MigrationAttribute
+    public class DapperMigrationAttribute : MigrationAttribute
     {
         /// <summary>   Constructor. </summary>
         /// <param name="year">     The year. </param>

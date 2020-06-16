@@ -8,8 +8,10 @@ namespace FluiTec.AppFx.Data.Dapper.Extensions
     public class DateTimeOffsetTypeHandler : SqlMapper.TypeHandler<DateTimeOffset>
     {
         /// <summary>   Assign the value of a parameter before a command executes. </summary>
-        /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-        ///                                                 invalid. </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown when the requested operation is
+        ///     invalid.
+        /// </exception>
         /// <param name="parameter">    The parameter to configure. </param>
         /// <param name="value">        Parameter value. </param>
         public override void SetValue(IDbDataParameter parameter, DateTimeOffset value)
@@ -26,13 +28,16 @@ namespace FluiTec.AppFx.Data.Dapper.Extensions
                     parameter.Value = value;
                     break;
                 default:
-                    throw new InvalidOperationException("DateTimeOffset must be assigned to a DbType.DateTime SQL field.");
+                    throw new InvalidOperationException(
+                        "DateTimeOffset must be assigned to a DbType.DateTime SQL field.");
             }
         }
 
         /// <summary>   Parse a database value back to a typed value. </summary>
-        /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-        ///                                                 invalid. </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown when the requested operation is
+        ///     invalid.
+        /// </exception>
         /// <param name="value">    The value from the database. </param>
         /// <returns>   The typed value. </returns>
         public override DateTimeOffset Parse(object value)

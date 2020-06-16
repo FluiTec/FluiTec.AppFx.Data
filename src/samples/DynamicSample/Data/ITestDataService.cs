@@ -4,6 +4,5 @@ namespace DynamicSample.Data
 {
     public interface ITestDataService : IDataService<ITestUnitOfWork>
     {
-        
     }
 }

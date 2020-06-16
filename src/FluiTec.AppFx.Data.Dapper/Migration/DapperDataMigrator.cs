@@ -22,7 +22,8 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
         /// <param name="scanAssemblies">       The scan assemblies. </param>
         /// <param name="metaData">             Information describing the meta. </param>
         /// <param name="configureSqlProvider"> The configure SQL provider. </param>
-        public DapperDataMigrator(string connectionString, IEnumerable<Assembly> scanAssemblies, IVersionTableMetaData metaData, Action<IMigrationRunnerBuilder> configureSqlProvider)
+        public DapperDataMigrator(string connectionString, IEnumerable<Assembly> scanAssemblies,
+            IVersionTableMetaData metaData, Action<IMigrationRunnerBuilder> configureSqlProvider)
         {
             if (scanAssemblies == null)
                 throw new ArgumentNullException();
@@ -50,7 +51,7 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
                 var migrations = _runner.MigrationLoader
                     .LoadMigrations()
                     .OrderByDescending(m => m.Value.Version);
-                
+
                 MaximumVersion = migrations.First().Value.Version;
 
                 var loader = sp.GetRequiredService<IVersionLoader>();
@@ -74,7 +75,7 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
 
         /// <summary>   Migrates this. </summary>
         /// <remarks>
-        /// Migrates the database to the latest version.
+        ///     Migrates the database to the latest version.
         /// </remarks>
         public void Migrate()
         {
@@ -83,22 +84,20 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
         }
 
         /// <summary>   Migrates this. </summary>
-        /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-        ///                                                 invalid. </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown when the requested operation is
+        ///     invalid.
+        /// </exception>
         /// <param name="version">  The version. </param>
         public void Migrate(long version)
         {
             if (version > MaximumVersion)
-                throw new InvalidOperationException($"Invalid version for migration. Maximum version found: {MaximumVersion}, Current version: {CurrentVersion}");
+                throw new InvalidOperationException(
+                    $"Invalid version for migration. Maximum version found: {MaximumVersion}, Current version: {CurrentVersion}");
 
             if (version > CurrentVersion)
-            {
                 _runner.MigrateUp(version);
-            }
-            else if (version < CurrentVersion)
-            {
-                _runner.MigrateDown(version);
-            }
+            else if (version < CurrentVersion) _runner.MigrateDown(version);
         }
     }
 }

@@ -18,7 +18,9 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         /// <param name="dbFilePath">               Full pathname of the database file. </param>
         /// <param name="loggerFactory">            The logger factory. </param>
         /// <param name="applicationFolder">        (Optional) Pathname of the application folder. </param>
-        protected LiteDbDataService(bool? useSingletonConnection, string dbFilePath, ILoggerFactory loggerFactory, string applicationFolder = null) : base(useSingletonConnection, dbFilePath, loggerFactory, applicationFolder)
+        protected LiteDbDataService(bool? useSingletonConnection, string dbFilePath, ILoggerFactory loggerFactory,
+            string applicationFolder = null) : base(useSingletonConnection, dbFilePath, loggerFactory,
+            applicationFolder)
         {
         }
 
@@ -28,14 +30,17 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         /// <param name="loggerFactory">            The logger factory. </param>
         /// <param name="nameService">              The name service. </param>
         /// <param name="applicationFolder">        (Optional) Pathname of the application folder. </param>
-        protected LiteDbDataService(bool? useSingletonConnection, string dbFilePath, ILoggerFactory loggerFactory, IEntityNameService nameService, string applicationFolder = null) : base(useSingletonConnection, dbFilePath, loggerFactory, nameService, applicationFolder)
+        protected LiteDbDataService(bool? useSingletonConnection, string dbFilePath, ILoggerFactory loggerFactory,
+            IEntityNameService nameService, string applicationFolder = null) : base(useSingletonConnection, dbFilePath,
+            loggerFactory, nameService, applicationFolder)
         {
         }
 
         /// <summary>   Specialized constructor for use only by derived class.</summary>
         /// <param name="options">          Options for controlling the operation. </param>
         /// <param name="loggerFactory">    The logger factory. </param>
-        protected LiteDbDataService(LiteDbServiceOptions options, ILoggerFactory loggerFactory) : base(options, loggerFactory)
+        protected LiteDbDataService(LiteDbServiceOptions options, ILoggerFactory loggerFactory) : base(options,
+            loggerFactory)
         {
         }
 
@@ -43,7 +48,8 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         /// <param name="options">          Options for controlling the operation. </param>
         /// <param name="loggerFactory">    The logger factory. </param>
         /// <param name="nameService">      The name service. </param>
-        protected LiteDbDataService(LiteDbServiceOptions options, ILoggerFactory loggerFactory, IEntityNameService nameService) : base(options, loggerFactory, nameService)
+        protected LiteDbDataService(LiteDbServiceOptions options, ILoggerFactory loggerFactory,
+            IEntityNameService nameService) : base(options, loggerFactory, nameService)
         {
         }
 
@@ -57,7 +63,10 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
 
         /// <summary>   Gets the migrator. </summary>
         /// <returns>   The migrator. </returns>
-        public override IDataMigrator GetMigrator() => null;
+        public override IDataMigrator GetMigrator()
+        {
+            return null;
+        }
 
         #endregion
     }

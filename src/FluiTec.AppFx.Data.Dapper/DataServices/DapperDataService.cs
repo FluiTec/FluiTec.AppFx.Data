@@ -40,8 +40,10 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
         public override bool SupportsMigration => MetaData != null;
 
         /// <summary>   Configure SQL type. </summary>
-        /// <exception cref="ArgumentOutOfRangeException">  Thrown when one or more arguments are outside
-        ///                                                 the required range. </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Thrown when one or more arguments are outside
+        ///     the required range.
+        /// </exception>
         /// <returns>   An Action&lt;IMigrationRunnerBuilder&gt; </returns>
         protected virtual Action<IMigrationRunnerBuilder> ConfigureSqlType()
         {
@@ -66,7 +68,7 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
         ///     collection.
         /// </returns>
         /// <remarks>
-        /// Returns the assembly containing the implementing dataservice by default.
+        ///     Returns the assembly containing the implementing dataservice by default.
         /// </remarks>
         protected virtual IEnumerable<Assembly> GetMigrationAssemblies()
         {

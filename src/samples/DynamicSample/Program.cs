@@ -22,10 +22,11 @@ namespace DynamicSample
             {
                 new KeyValuePair<string, string>("DynamicDataOptions:Provider", "Mssql"),
                 new KeyValuePair<string, string>("DynamicDataOptions:AutoMigrate", "true"),
-                new KeyValuePair<string, string>("LiteDb:DbFileName", "test.ldb"), 
-                new KeyValuePair<string, string>("LiteDb:ApplicationFolder", "C:\\dev\\GitLab"), 
+                new KeyValuePair<string, string>("LiteDb:DbFileName", "test.ldb"),
+                new KeyValuePair<string, string>("LiteDb:ApplicationFolder", "C:\\dev\\GitLab"),
                 new KeyValuePair<string, string>("LiteDb:UseSingletonConnection", "true"),
-                new KeyValuePair<string, string>("Dapper.Mssql:ConnectionString", "Data Source=DB1;Initial Catalog=Wtschnell;Integrated Security=False;User ID=appfx;Password=appfx;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"), 
+                new KeyValuePair<string, string>("Dapper.Mssql:ConnectionString",
+                    "Data Source=DB1;Initial Catalog=Wtschnell;Integrated Security=False;User ID=appfx;Password=appfx;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"),
             });
 
             var config = new ConfigurationBuilder()
@@ -48,8 +49,12 @@ namespace DynamicSample
                     {
                         return options.Provider switch
                         {
-                            DataProvider.LiteDb => new LiteDbTestDataService(provider.GetRequiredService<LiteDbServiceOptions>(), provider.GetService<ILoggerFactory>()),
-                            DataProvider.Mssql => new MssqlTestDataService(provider.GetRequiredService<MssqlDapperServiceOptions>(), provider.GetService<ILoggerFactory>()),
+                            DataProvider.LiteDb => new LiteDbTestDataService(
+                                provider.GetRequiredService<LiteDbServiceOptions>(),
+                                provider.GetService<ILoggerFactory>()),
+                            DataProvider.Mssql => new MssqlTestDataService(
+                                provider.GetRequiredService<MssqlDapperServiceOptions>(),
+                                provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };
                     }
@@ -78,8 +83,12 @@ namespace DynamicSample
                     {
                         return options.Provider switch
                         {
-                            DataProvider.LiteDb => new LiteDbTestDataService(provider.GetRequiredService<LiteDbServiceOptions>(), provider.GetService<ILoggerFactory>()),
-                            DataProvider.Mssql => new MssqlTestDataService(provider.GetRequiredService<MssqlDapperServiceOptions>(), provider.GetService<ILoggerFactory>()),
+                            DataProvider.LiteDb => new LiteDbTestDataService(
+                                provider.GetRequiredService<LiteDbServiceOptions>(),
+                                provider.GetService<ILoggerFactory>()),
+                            DataProvider.Mssql => new MssqlTestDataService(
+                                provider.GetRequiredService<MssqlDapperServiceOptions>(),
+                                provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };
                     }
@@ -103,6 +112,7 @@ namespace DynamicSample
                     entity.Name = "Test2";
                     uow.Dummy2Repository.Update(entity);
                 }
+
                 uow.Commit();
             }
         }

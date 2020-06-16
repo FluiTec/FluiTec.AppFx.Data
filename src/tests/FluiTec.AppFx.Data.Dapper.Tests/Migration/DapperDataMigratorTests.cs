@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Reflection.Metadata;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.VersionTableInfo;
 using FluiTec.AppFx.Data.Dapper.Migration;
@@ -17,7 +16,7 @@ namespace FluiTec.AppFx.Data.Dapper.Tests.Migration
         public void TestThrowsOnMissingScanAssemblies()
         {
             var versionMock = new Mock<IVersionTableMetaData>();
-            var migrator = new DapperDataMigrator(string.Empty, null, versionMock.Object, builder => {});
+            var migrator = new DapperDataMigrator(string.Empty, null, versionMock.Object, builder => { });
         }
 
         [TestMethod]

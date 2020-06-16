@@ -17,8 +17,10 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         #region Constructors
 
         /// <summary>   Specialized constructor for use only by derived class. </summary>
-        /// <exception cref="ArgumentException">    Thrown when one or more arguments have unsupported or
-        ///                                         illegal values. </exception>
+        /// <exception cref="ArgumentException">
+        ///     Thrown when one or more arguments have unsupported or
+        ///     illegal values.
+        /// </exception>
         /// <param name="unitOfWork">   The unit of work. </param>
         /// <param name="logger">       The logger. </param>
         protected LiteDbDataRepository(LiteDbUnitOfWork unitOfWork, ILogger<IRepository> logger)

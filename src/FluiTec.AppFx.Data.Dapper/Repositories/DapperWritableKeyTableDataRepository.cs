@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
@@ -79,7 +78,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         {
             var keyEntities = entities as TEntity[] ?? entities.ToArray();
 
-            foreach(var entity in keyEntities)
+            foreach (var entity in keyEntities)
                 if (entity is ITimeStampedKeyEntity stampedEntity)
                     stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
 
@@ -101,7 +100,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
             {
                 UnitOfWork.Connection.Update(entity, UnitOfWork.Transaction);
             }
-                
+
             return entity;
         }
 
