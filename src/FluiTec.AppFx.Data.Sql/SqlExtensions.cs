@@ -128,7 +128,15 @@ namespace FluiTec.AppFx.Data.Sql
             return connection.Execute(sql, parameters, transaction, commandTimeout) > 0;
         }
 
-        public static bool Update<TEntity>(this IDbConnection connection, TEntity entity, long originalTimeStamp,
+        /// <summary>   An IDbConnection extension method that updates this object. </summary>
+        /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+        /// <param name="connection">           The connection to act on. </param>
+        /// <param name="entity">               The entity. </param>
+        /// <param name="originalTimeStamp">    The original time stamp. </param>
+        /// <param name="transaction">          (Optional) The transaction. </param>
+        /// <param name="commandTimeout">       (Optional) The command timeout. </param>
+        /// <returns>   True if it succeeds, false if it fails. </returns>
+        public static bool Update<TEntity>(this IDbConnection connection, TEntity entity, DateTimeOffset originalTimeStamp,
             IDbTransaction transaction = null, int? commandTimeout = null)
         {
             var type = typeof(TEntity);
@@ -139,7 +147,12 @@ namespace FluiTec.AppFx.Data.Sql
 
             var parameters = new DynamicParameters();
             foreach (var p in builder.ParameterList(type))
-                parameters.Add(p.Value, p.Key.GetValue(entity));
+            {
+                if (p.Value == "@TimeStamp")
+                    parameters.Add(p.Value, p.Key.GetValue(entity), DbType.DateTimeOffset);
+                else
+                    parameters.Add(p.Value, p.Key.GetValue(entity));
+            }
 
             return connection.Execute(sql, parameters, transaction, commandTimeout) > 0;
         }

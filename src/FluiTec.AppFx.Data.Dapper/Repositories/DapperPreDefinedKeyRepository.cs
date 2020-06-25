@@ -43,7 +43,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         public override TEntity Add(TEntity entity)
         {
             if (entity is ITimeStampedKeyEntity stampedEntity)
-                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
             SetInsertKey(entity);
 

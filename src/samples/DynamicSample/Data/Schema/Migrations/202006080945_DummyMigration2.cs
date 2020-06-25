@@ -16,7 +16,7 @@ namespace DynamicSample.Data.Schema.Migrations
                 .InSchema(SchemaGlobals.Schema)
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn("Name").AsString().Nullable()
-                .WithColumn("TimeStamp").AsInt64().NotNullable();
+                .WithColumn("TimeStamp").AsDateTimeOffset().NotNullable();
         }
 
         /// <summary>   Collects the DOWN migration expressions. </summary>

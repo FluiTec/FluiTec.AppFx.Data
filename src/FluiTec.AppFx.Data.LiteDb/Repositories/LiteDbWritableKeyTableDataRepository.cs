@@ -46,7 +46,7 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         public virtual TEntity Add(TEntity entity)
         {
             if (entity is ITimeStampedKeyEntity stampedEntity)
-                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
             entity.Id = GetKey(Collection.Insert(entity));
             return entity;
@@ -60,7 +60,7 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
 
             foreach (var entity in keyEntities)
                 if (entity is ITimeStampedKeyEntity stampedEntity)
-                    stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                    stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
             foreach (var entity in keyEntities)
                 Collection.Insert(entity);
@@ -76,7 +76,7 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
                 var inCollection = Collection.FindById(GetBsonKey(entity.Id));
                 if (((ITimeStampedKeyEntity) inCollection).TimeStamp == stampedEntity.TimeStamp)
                 {
-                    stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                    stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
                     Collection.Update(GetBsonKey(entity.Id), entity);
                 }
             }

@@ -1,4 +1,5 @@
-﻿using DynamicSample.Data.Schema;
+﻿using System;
+using DynamicSample.Data.Schema;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.EntityNameServices;
 
@@ -18,6 +19,6 @@ namespace DynamicSample.Data.Entities
 
         /// <summary>   Gets or sets the timestamp. </summary>
         /// <value> The timestamp. </value>
-        public long TimeStamp { get; set; }
+        public DateTimeOffset TimeStamp { get; set; }
     }
 }

@@ -72,7 +72,7 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
         /// </remarks>
         protected virtual IEnumerable<Assembly> GetMigrationAssemblies()
         {
-            return new[] {GetType().BaseType?.Assembly};
+            return new[] {GetType().BaseType?.Assembly, GetType().Assembly};
         }
 
         /// <summary>   Gets the migrator. </summary>

@@ -65,7 +65,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         public virtual TEntity Add(TEntity entity)
         {
             if (entity is ITimeStampedKeyEntity stampedEntity)
-                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
             var lkey = UnitOfWork.Connection.InsertAuto(entity, UnitOfWork.Transaction);
             entity.Id = GetKey(lkey);
@@ -80,7 +80,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
 
             foreach (var entity in keyEntities)
                 if (entity is ITimeStampedKeyEntity stampedEntity)
-                    stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                    stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
             UnitOfWork.Connection.InsertAutoMultiple(keyEntities, UnitOfWork.Transaction);
         }
@@ -93,7 +93,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
             if (entity is ITimeStampedKeyEntity stampedEntity)
             {
                 var originalTimeStamp = stampedEntity.TimeStamp;
-                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
                 UnitOfWork.Connection.Update(entity, originalTimeStamp, UnitOfWork.Transaction);
             }
             else

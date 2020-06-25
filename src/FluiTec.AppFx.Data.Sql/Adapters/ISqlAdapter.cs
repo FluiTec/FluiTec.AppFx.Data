@@ -42,7 +42,7 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <param name="timestamp">            The timestamp. </param>
         /// <param name="timestampFieldname">   The timestamp fieldname. </param>
         /// <returns>   The update statement. </returns>
-        string GetUpdateStatement(Type type, long timestamp, string timestampFieldname);
+        string GetUpdateStatement(Type type, DateTimeOffset timestamp, string timestampFieldname);
 
         /// <summary>	Gets delete statement. </summary>
         /// <param name="type">	The type. </param>

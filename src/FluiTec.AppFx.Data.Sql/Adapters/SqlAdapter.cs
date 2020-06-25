@@ -144,14 +144,15 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <param name="timestamp">            The timestamp. </param>
         /// <param name="timestampFieldname">   The timestamp fieldname. </param>
         /// <returns>   The update statement. </returns>
-        public virtual string GetUpdateStatement(Type type, long timestamp, string timestampFieldname)
+        public virtual string GetUpdateStatement(Type type, DateTimeOffset timestamp, string timestampFieldname)
         {
             var key = SqlCache.TypeKeyPropertiesCache(type).Single();
+            var stamp = SqlCache.TypePropertiesChache(type).Single(p => p.Name == "TimeStamp");
             var setClauses = RenderSetStatements(type).ToString();
             return
                 $"UPDATE {RenderTableName(type)} " +
                 $"SET {setClauses} " +
-                $"WHERE {RenderPropertyName(key)} = {RenderParameterProperty(key)} AND {RenderPropertyName(timestampFieldname)} = {timestamp}";
+                $"WHERE {RenderPropertyName(key)} = {RenderParameterProperty(key)} AND {RenderPropertyName(timestampFieldname)} = {RenderParameterProperty(stamp)}";
         }
 
         /// <summary>	Gets delete statememt. </summary>

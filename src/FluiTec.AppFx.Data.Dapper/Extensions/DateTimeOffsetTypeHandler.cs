@@ -24,6 +24,8 @@ namespace FluiTec.AppFx.Data.Dapper.Extensions
                 case DbType.AnsiString: // Seems to be some MySQL type mapping here
                     parameter.Value = value.UtcDateTime;
                     break;
+                case DbType.Object: // Seems like MSSQL reports DateTimeOffset AS Object
+                case DbType.String: // Seems like MSSQL reports DateTimeOffset AS String
                 case DbType.DateTimeOffset:
                     parameter.Value = value;
                     break;
