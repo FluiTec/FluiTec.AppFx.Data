@@ -138,15 +138,18 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
 
             if (string.IsNullOrWhiteSpace(dbFilePath)) throw new ArgumentNullException(nameof(dbFilePath));
 
+            var fullDbFilePath = applicationFolder != null ? Path.Combine(applicationFolder, dbFilePath) : dbFilePath;
+
             if (!Path.IsPathRooted(dbFilePath) && !dbFilePath.StartsWith("."))
                 if (string.IsNullOrWhiteSpace(applicationFolder))
                     throw new ArgumentException(
                         $"Giving non-rooted {nameof(dbFilePath)} requires giving an {nameof(applicationFolder)}.");
+            
             _useSingletonConnection = useSingletonConnection ?? false;
 
             Database = _useSingletonConnection
-                ? LiteDbDatabaseSingleton.GetDatabase(dbFilePath)
-                : new LiteDatabase(dbFilePath);
+                ? LiteDbDatabaseSingleton.GetDatabase(fullDbFilePath)
+                : new LiteDatabase(fullDbFilePath);
         }
 
         /// <summary>   Specialised constructor for use only by derived class. </summary>
