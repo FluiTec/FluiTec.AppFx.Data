@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FluiTec.AppFx.Data.Sql.Attributes;
 
 namespace FluiTec.AppFx.Data.Sql
 {
@@ -29,7 +30,15 @@ namespace FluiTec.AppFx.Data.Sql
             if (TypeProperties.TryGetValue(type.TypeHandle, out var propertyInfos))
                 return propertyInfos;
 
-            var properties = type.GetProperties();
+            var allProperties = type.GetProperties();
+
+            var properties = new List<PropertyInfo>();
+            foreach (var property in allProperties)
+            {
+                if (!property.GetCustomAttributes(typeof(SqlIgnoreAttribute)).Any())
+                    properties.Add(property);
+            }
+
             TypeProperties[type.TypeHandle] = properties.ToList();
             return properties;
         }
