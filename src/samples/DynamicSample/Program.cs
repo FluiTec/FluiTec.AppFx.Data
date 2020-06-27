@@ -26,7 +26,7 @@ namespace DynamicSample
                 new KeyValuePair<string, string>("LiteDb:ApplicationFolder", "C:\\dev\\GitLab"),
                 new KeyValuePair<string, string>("LiteDb:UseSingletonConnection", "true"),
                 new KeyValuePair<string, string>("Dapper.Mssql:ConnectionString",
-                    "Data Source=DB1;Initial Catalog=Wtschnell;Integrated Security=False;User ID=appfx;Password=appfx;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"),
+                    "Data Source=DB1;Initial Catalog=Wtschnell;Integrated Security=False;User ID=appfx;Password=appfx;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")
             });
 
             var config = new ConfigurationBuilder()

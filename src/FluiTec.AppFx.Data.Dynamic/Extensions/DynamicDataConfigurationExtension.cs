@@ -64,7 +64,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var dynamicOptions = provider.GetRequiredService<DynamicDataOptions>();
                 var service = dataServiceProvider(dynamicOptions, provider);
 
-                if (dynamicOptions.AutoMigrate && service.SupportsMigration) 
+                if (dynamicOptions.AutoMigrate && service.SupportsMigration)
                     service.GetMigrator().Migrate();
 
                 return service;

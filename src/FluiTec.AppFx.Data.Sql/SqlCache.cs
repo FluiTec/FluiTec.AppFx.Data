@@ -34,10 +34,8 @@ namespace FluiTec.AppFx.Data.Sql
 
             var properties = new List<PropertyInfo>();
             foreach (var property in allProperties)
-            {
                 if (!property.GetCustomAttributes(typeof(SqlIgnoreAttribute)).Any())
                     properties.Add(property);
-            }
 
             TypeProperties[type.TypeHandle] = properties.ToList();
             return properties;

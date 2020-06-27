@@ -144,7 +144,7 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
                 if (string.IsNullOrWhiteSpace(applicationFolder))
                     throw new ArgumentException(
                         $"Giving non-rooted {nameof(dbFilePath)} requires giving an {nameof(applicationFolder)}.");
-            
+
             _useSingletonConnection = useSingletonConnection ?? false;
 
             Database = _useSingletonConnection
