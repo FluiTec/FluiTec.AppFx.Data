@@ -12,14 +12,17 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
     {
         /// <summary>	The entity name mapper. </summary>
         protected readonly IEntityNameService EntityNameService;
-
-
+        
         /// <summary>	Specialised constructor for use only by derived class. </summary>
         /// <param name="entityNameService">	The entity name service. </param>
         protected SqlAdapter(IEntityNameService entityNameService)
         {
             EntityNameService = entityNameService ?? throw new ArgumentNullException(nameof(entityNameService));
         }
+
+        /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
+        /// <value> True if supports date time offset, false if not. </value>
+        public abstract bool SupportsDateTimeOffset { get; }
 
         #region Parameters
 

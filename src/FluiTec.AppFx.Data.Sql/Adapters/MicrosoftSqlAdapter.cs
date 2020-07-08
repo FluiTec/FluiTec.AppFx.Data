@@ -42,14 +42,24 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
             return $";SELECT SCOPE_IDENTITY() {RenderPropertyName(propertyInfo)}";
         }
 
+        /// <summary>   Renders the property name described by propertyInfo. </summary>
+        /// <param name="propertyInfo"> Information describing the property. </param>
+        /// <returns>   A string. </returns>
         public override string RenderPropertyName(PropertyInfo propertyInfo)
         {
             return RenderPropertyName(propertyInfo.Name);
         }
 
+        /// <summary>   Renders the property name described by propertyName. </summary>
+        /// <param name="propertyName"> Name of the property. </param>
+        /// <returns>   A string. </returns>
         public override string RenderPropertyName(string propertyName)
         {
             return $"[{propertyName}]";
         }
+
+        /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
+        /// <value> True if supports date time offset, false if not. </value>
+        public override bool SupportsDateTimeOffset => true;
     }
 }

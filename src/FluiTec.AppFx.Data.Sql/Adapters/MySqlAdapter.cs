@@ -22,6 +22,10 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
                 : tableName.Replace('.', '_');
         }
 
+        /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
+        /// <value> True if supports date time offset, false if not. </value>
+        public override bool SupportsDateTimeOffset => false;
+
         /// <summary>	Gets automatic key statement. </summary>
         /// <param name="propertyInfo">	Information describing the property. </param>
         /// <returns>	The automatic key statement. </returns>

@@ -4,7 +4,11 @@ using DynamicSample.Data;
 using DynamicSample.Data.Entities;
 using DynamicSample.Data.LiteDb;
 using DynamicSample.Data.Mssql;
+using DynamicSample.Data.Mysql;
+using DynamicSample.Data.Pgsql;
 using FluiTec.AppFx.Data.Dapper.Mssql;
+using FluiTec.AppFx.Data.Dapper.Mysql;
+using FluiTec.AppFx.Data.Dapper.Pgsql;
 using FluiTec.AppFx.Data.Dynamic.Configuration;
 using FluiTec.AppFx.Data.LiteDb;
 using FluiTec.AppFx.Options.Managers;
@@ -26,7 +30,11 @@ namespace DynamicSample
                 new KeyValuePair<string, string>("LiteDb:ApplicationFolder", "C:\\dev\\GitLab"),
                 new KeyValuePair<string, string>("LiteDb:UseSingletonConnection", "true"),
                 new KeyValuePair<string, string>("Dapper.Mssql:ConnectionString",
-                    "Data Source=DB1;Initial Catalog=Wtschnell;Integrated Security=False;User ID=appfx;Password=appfx;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")
+                    "Data Source=dev1.wtschnell.local;Initial Catalog=wtschnell;Integrated Security=False;User ID=appfx;Password=0pTSyNY8iwxC20J7;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"),
+                new KeyValuePair<string, string>("Dapper.Pgsql:ConnectionString",
+                    "User ID=appfx;Password=0pTSyNY8iwxC20J7;Host=dev1.wtschnell.local;Port=5432;Database=wtschnell;Pooling=true;"),
+                new KeyValuePair<string, string>("Dapper.Mysql:ConnectionString", 
+                    "Server=dev1.wtschnell.local;Database=wtschnell;Uid=appfx;Pwd=0pTSyNY8iwxC20J7;")
             });
 
             var config = new ConfigurationBuilder()
@@ -54,6 +62,12 @@ namespace DynamicSample
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mssql => new MssqlTestDataService(
                                 provider.GetRequiredService<MssqlDapperServiceOptions>(),
+                                provider.GetService<ILoggerFactory>()),
+                            DataProvider.Pgsql => new PgsqlTestDataService(
+                                provider.GetRequiredService<PgsqlDapperServiceOptions>(),
+                                provider.GetService<ILoggerFactory>()),
+                            DataProvider.Mysql => new MysqlTestDataService(
+                                provider.GetRequiredService<MysqlDapperServiceOptions>(),
                                 provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };
@@ -88,6 +102,12 @@ namespace DynamicSample
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mssql => new MssqlTestDataService(
                                 provider.GetRequiredService<MssqlDapperServiceOptions>(),
+                                provider.GetService<ILoggerFactory>()),
+                            DataProvider.Pgsql => new PgsqlTestDataService(
+                                provider.GetRequiredService<PgsqlDapperServiceOptions>(),
+                                provider.GetService<ILoggerFactory>()),
+                            DataProvider.Mysql => new MysqlTestDataService(
+                                provider.GetRequiredService<MysqlDapperServiceOptions>(),
                                 provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };

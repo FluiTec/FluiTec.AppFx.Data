@@ -17,6 +17,13 @@ namespace DynamicSample.Data.Schema.Migrations
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn("Name").AsString().Nullable()
                 .WithColumn("TimeStamp").AsDateTimeOffset().NotNullable();
+
+            IfDatabase("mysql")
+                .Create
+                .Table($"{SchemaGlobals.Schema}_{SchemaGlobals.DummyTable2}")
+                .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn("Name").AsString().Nullable()
+                .WithColumn("TimeStamp").AsDateTime().NotNullable();
         }
 
         /// <summary>   Collects the DOWN migration expressions. </summary>
@@ -24,8 +31,12 @@ namespace DynamicSample.Data.Schema.Migrations
         {
             IfDatabase("sqlserver", "postgres")
                 .Delete
-                .Table(SchemaGlobals.DummyTable)
+                .Table(SchemaGlobals.DummyTable2)
                 .InSchema(SchemaGlobals.Schema);
+
+            IfDatabase("mysql")
+                .Delete
+                .Table($"{SchemaGlobals.Schema}_{SchemaGlobals.DummyTable2}");
         }
     }
 }

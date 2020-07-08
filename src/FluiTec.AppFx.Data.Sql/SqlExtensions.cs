@@ -149,9 +149,20 @@ namespace FluiTec.AppFx.Data.Sql
             var parameters = new DynamicParameters();
             foreach (var p in builder.ParameterList(type))
                 if (p.Value == "@TimeStamp")
-                    parameters.Add(p.Value, p.Key.GetValue(entity), DbType.DateTimeOffset);
+                {
+                    if (!builder.Adapter.SupportsDateTimeOffset)
+                    {
+                        parameters.Add(p.Value, ((DateTimeOffset) p.Key.GetValue(entity)).UtcDateTime, DbType.DateTime);
+                    }
+                    else
+                    {
+                        parameters.Add(p.Value, p.Key.GetValue(entity), DbType.DateTimeOffset);
+                    }
+                }
                 else
+                {
                     parameters.Add(p.Value, p.Key.GetValue(entity));
+                }
 
             return connection.Execute(sql, parameters, transaction, commandTimeout) > 0;
         }

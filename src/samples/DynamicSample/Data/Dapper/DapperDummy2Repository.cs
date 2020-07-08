@@ -5,11 +5,11 @@ using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace DynamicSample.Data.Mssql
+namespace DynamicSample.Data.Dapper
 {
-    public class MssqlDummy2Repository : DapperWritableKeyTableDataRepository<DummyEntity2, int>, IDummy2Repository
+    public class DapperDummy2Repository : DapperWritableKeyTableDataRepository<DummyEntity2, int>, IDummy2Repository
     {
-        public MssqlDummy2Repository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
+        public DapperDummy2Repository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
             logger)
         {
         }

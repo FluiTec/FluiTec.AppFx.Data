@@ -16,6 +16,12 @@ namespace DynamicSample.Data.Schema.Migrations
                 .InSchema(SchemaGlobals.Schema)
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn("Name").AsString().Nullable();
+
+            IfDatabase("mysql")
+                .Create
+                .Table($"{SchemaGlobals.Schema}_{SchemaGlobals.DummyTable}")
+                .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn("Name").AsString().Nullable();
         }
 
         /// <summary>   Collects the DOWN migration expressions. </summary>
@@ -25,6 +31,10 @@ namespace DynamicSample.Data.Schema.Migrations
                 .Delete
                 .Table(SchemaGlobals.DummyTable)
                 .InSchema(SchemaGlobals.Schema);
+
+            IfDatabase("mysql")
+                .Delete
+                .Table($"{SchemaGlobals.Schema}_{SchemaGlobals.DummyTable}");
         }
     }
 }

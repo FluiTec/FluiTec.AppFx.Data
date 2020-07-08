@@ -87,5 +87,9 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <param name="propertyName"> Name of the property. </param>
         /// <returns>A string.</returns>
         string RenderPropertyName(string propertyName);
+
+        /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
+        /// <value> True if supports date time offset, false if not. </value>
+        bool SupportsDateTimeOffset { get; }
     }
 }

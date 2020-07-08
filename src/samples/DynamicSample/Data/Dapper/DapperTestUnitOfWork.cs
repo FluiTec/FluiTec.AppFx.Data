@@ -5,17 +5,17 @@ using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 
-namespace DynamicSample.Data.Mssql
+namespace DynamicSample.Data.Dapper
 {
-    public class MssqlTestUnitOfWork : DapperUnitOfWork, ITestUnitOfWork
+    public class DapperTestUnitOfWork : DapperUnitOfWork, ITestUnitOfWork
     {
-        public MssqlTestUnitOfWork(IDapperDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService,
+        public DapperTestUnitOfWork(IDapperDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService,
             logger)
         {
             RegisterRepositories();
         }
 
-        public MssqlTestUnitOfWork(DapperUnitOfWork parentUnitOfWork, IDataService dataService,
+        public DapperTestUnitOfWork(DapperUnitOfWork parentUnitOfWork, IDataService dataService,
             ILogger<IUnitOfWork> logger) : base(parentUnitOfWork, dataService, logger)
         {
             RegisterRepositories();
@@ -27,9 +27,9 @@ namespace DynamicSample.Data.Mssql
         private void RegisterRepositories()
         {
             RepositoryProviders.Add(typeof(IDummyRepository),
-                (uow, log) => new MssqlDummyRepository((MssqlTestUnitOfWork) uow, log));
+                (uow, log) => new DapperDummyRepository((DapperTestUnitOfWork) uow, log));
             RepositoryProviders.Add(typeof(IDummy2Repository),
-                (uow, log) => new MssqlDummy2Repository((MssqlTestUnitOfWork) uow, log));
+                (uow, log) => new DapperDummy2Repository((DapperTestUnitOfWork) uow, log));
         }
     }
 }

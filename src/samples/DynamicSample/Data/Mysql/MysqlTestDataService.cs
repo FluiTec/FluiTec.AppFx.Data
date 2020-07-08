@@ -9,15 +9,15 @@ using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 
-namespace DynamicSample.Data.Mssql
+namespace DynamicSample.Data.Mysql
 {
-    /// <summary>   A service for accessing mssql test data information. </summary>
-    public class MssqlTestDataService : DapperDataService<DapperTestUnitOfWork>, ITestDataService
+    /// <summary>   A service for accessing mysql test data information. </summary>
+    public class MysqlTestDataService : DapperDataService<DapperTestUnitOfWork>, ITestDataService
     {
         /// <summary>   Constructor. </summary>
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
-        public MssqlTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(
+        public MysqlTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(
             dapperServiceOptions, loggerFactory)
         {
         }
@@ -28,11 +28,11 @@ namespace DynamicSample.Data.Mssql
 
         /// <summary>   Gets the type of the SQL. </summary>
         /// <value> The type of the SQL. </value>
-        public override SqlType SqlType => SqlType.Mssql;
+        public override SqlType SqlType => SqlType.Mysql;
 
         /// <summary>   Gets the name. </summary>
         /// <value> The name. </value>
-        public override string Name => nameof(MssqlTestDataService);
+        public override string Name => nameof(MysqlTestDataService);
 
         /// <summary>   Begins unit of work. </summary>
         /// <returns>   A TUnitOfWork. </returns>
