@@ -6,9 +6,14 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
     [VersionTableMetaData]
     public class VersionTable : IVersionTableMetaData
     {
-        /// <summary>   Default constructor. </summary>
-        public VersionTable(string schema)
+        private readonly bool _supportsSchema;
+
+        /// <summary>   Default constructor.</summary>
+        /// <param name="schema">           The schema. </param>
+        /// <param name="supportsSchema">   (Optional) True to supports schema. </param>
+        public VersionTable(string schema, bool supportsSchema = true)
         {
+            _supportsSchema = supportsSchema;
             SchemaName = schema;
         }
 
@@ -22,7 +27,7 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
         public string SchemaName { get; }
 
         /// <summary>	Name of the table. </summary>
-        public string TableName => "Migrations";
+        public string TableName => _supportsSchema ? "Migrations" : $"{SchemaName}_Migrations";
 
         /// <summary>	Name of the unique index. </summary>
         public string UniqueIndexName => "UC_Version";

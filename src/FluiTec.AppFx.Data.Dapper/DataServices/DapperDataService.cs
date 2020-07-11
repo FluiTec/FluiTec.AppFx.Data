@@ -33,7 +33,7 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
 
         /// <summary>   Gets information describing the meta. </summary>
         /// <value> Information describing the meta. </value>
-        public override IVersionTableMetaData MetaData => _metaData ?? (_metaData = new VersionTable(Schema));
+        public override IVersionTableMetaData MetaData => _metaData ?? (_metaData = new VersionTable(Schema, SupportsSchema()));
 
         /// <summary>   Gets a value indicating whether the supports migration. </summary>
         /// <value> True if supports migration, false if not. </value>
@@ -59,6 +59,19 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
                     return rb => rb.AddSQLite();
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        /// <summary>   Determines if we can supports schema.</summary>
+        /// <returns>   True if it succeeds, false if it fails.</returns>
+        protected virtual bool SupportsSchema()
+        {
+            switch (SqlType)
+            {
+                case SqlType.Mysql:
+                    return false;
+                default:
+                    return true;
             }
         }
 
