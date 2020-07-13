@@ -10,7 +10,7 @@ namespace DynamicSample.Data.Schema.Migrations
         /// <summary>   Collect the UP migration expressions. </summary>
         public override void Up()
         {
-            IfDatabase("sqlserver", "postgres")
+            IfDatabase(MigrationDatabaseName.Mssql, MigrationDatabaseName.Pgsql)
                 .Create
                 .Table(SchemaGlobals.DummyTable2)
                 .InSchema(SchemaGlobals.Schema)
@@ -18,7 +18,7 @@ namespace DynamicSample.Data.Schema.Migrations
                 .WithColumn("Name").AsString().Nullable()
                 .WithColumn("TimeStamp").AsDateTimeOffset().NotNullable();
 
-            IfDatabase("mysql")
+            IfDatabase(MigrationDatabaseName.Mysql)
                 .Create
                 .Table($"{SchemaGlobals.Schema}_{SchemaGlobals.DummyTable2}")
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
@@ -29,12 +29,12 @@ namespace DynamicSample.Data.Schema.Migrations
         /// <summary>   Collects the DOWN migration expressions. </summary>
         public override void Down()
         {
-            IfDatabase("sqlserver", "postgres")
+            IfDatabase(MigrationDatabaseName.Mssql, MigrationDatabaseName.Pgsql)
                 .Delete
                 .Table(SchemaGlobals.DummyTable2)
                 .InSchema(SchemaGlobals.Schema);
 
-            IfDatabase("mysql")
+            IfDatabase(MigrationDatabaseName.Mysql)
                 .Delete
                 .Table($"{SchemaGlobals.Schema}_{SchemaGlobals.DummyTable2}");
         }
