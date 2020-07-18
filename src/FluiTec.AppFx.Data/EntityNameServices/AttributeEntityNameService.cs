@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 
@@ -14,7 +14,7 @@ namespace FluiTec.AppFx.Data.EntityNameServices
     {
         /// <summary>	Gets or sets a list of names of the entities. </summary>
         /// <value>	A list of names of the entities. </value>
-        private static readonly Dictionary<Type, string> EntityNames = new Dictionary<Type, string>();
+        private static readonly ConcurrentDictionary<Type, string> EntityNames = new ConcurrentDictionary<Type, string>();
 
         /// <summary>Names the specified type.</summary>
         /// <param name="type">The type.</param>
@@ -26,7 +26,7 @@ namespace FluiTec.AppFx.Data.EntityNameServices
 
             if (EntityNames.ContainsKey(type)) return EntityNames[type];
 
-            EntityNames.Add(type,
+            EntityNames.TryAdd(type,
                 type.GetTypeInfo().GetCustomAttributes(typeof(EntityNameAttribute)).SingleOrDefault() is
                     EntityNameAttribute attribute
                     ? attribute.Name
