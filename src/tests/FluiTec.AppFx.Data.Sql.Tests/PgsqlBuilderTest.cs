@@ -67,6 +67,13 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         }
 
         [TestMethod]
+        public void SelectByInFilterTest()
+        {
+            var sql = _connection.GetBuilder().SelectByInFilter(typeof(Dummy), nameof(Dummy.Id), "Ids");
+            Assert.AreEqual("SELECT \"Id\", \"Name\" FROM \"public\".\"Dummy\" WHERE \"Id\" = ANY(@Ids)", sql);
+        }
+
+        [TestMethod]
         public void SelectByFilterMultiTest()
         {
             var sql1 = _connection.GetBuilder().SelectByFilter(typeof(Dummy), new[] {nameof(Dummy.Name)});

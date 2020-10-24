@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using FluiTec.AppFx.Data.Sql.Adapters;
 
@@ -52,6 +53,10 @@ namespace FluiTec.AppFx.Data.Sql
 
         /// <summary>	The select by filter queries. </summary>
         private readonly ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string> _selectByFilterQueries =
+            new ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string>();
+
+        /// <summary>	The select by in filter queries. </summary>
+        private readonly ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string> _selectByInFilterQueries =
             new ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string>();
 
         /// <summary>	The insert automatic key queries. </summary>
@@ -120,6 +125,7 @@ namespace FluiTec.AppFx.Data.Sql
         public string SelectByFilter(Type type, string filterProperty, string[] selectFields = null)
         {
             var sqlKey = GenerateSqlKey(filterProperty, selectFields);
+
             // try to find statement in cache and return it
             if (_selectByFilterQueries.TryGetValue(new KeyValuePair<RuntimeTypeHandle, string>(type.TypeHandle, sqlKey),
                 out var sql)) return sql;
@@ -129,6 +135,31 @@ namespace FluiTec.AppFx.Data.Sql
 
             // add statement to cache
             _selectByFilterQueries.TryAdd(new KeyValuePair<RuntimeTypeHandle, string>(type.TypeHandle, sqlKey), sql);
+
+            // return statement
+            return sql;
+        }
+
+        /// <summary>   Select by in filter.</summary>
+        /// <param name="type">             The type. </param>
+        /// <param name="filterProperty">   The filter property. </param>
+        /// <param name="collectionName">   Name of the collection. </param>
+        /// <param name="selectFields">     (Optional) The select fields. </param>
+        /// <returns>   A string.</returns>
+        public string SelectByInFilter(Type type, string filterProperty, string collectionName,
+            string[] selectFields = null)
+        {
+            var sqlKey = GenerateSqlKey(filterProperty, selectFields);
+
+            // try to find statement in cache and return it
+            if (_selectByInFilterQueries.TryGetValue(new KeyValuePair<RuntimeTypeHandle, string>(type.TypeHandle, sqlKey),
+                out var sql)) return sql;
+
+            // generate statement
+            sql = Adapter.GetByFilterInStatement(type, filterProperty, collectionName, selectFields);
+
+            // add statement to cache
+            _selectByInFilterQueries.TryAdd(new KeyValuePair<RuntimeTypeHandle, string>(type.TypeHandle, sqlKey), sql);
 
             // return statement
             return sql;

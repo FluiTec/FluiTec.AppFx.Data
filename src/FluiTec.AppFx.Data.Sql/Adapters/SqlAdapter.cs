@@ -73,6 +73,24 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
                 $"SELECT {RenderPropertyList(sProps)} FROM {RenderTableName(type)} WHERE {RenderPropertyName(fProp)} = {RenderParameterProperty(fProp)}";
         }
 
+        /// <summary>   Gets by filter in statement.</summary>
+        /// <param name="type">             The type. </param>
+        /// <param name="filterProperty">   The filter property. </param>
+        /// <param name="collectionName">   Name of the collection. </param>
+        /// <param name="selectFields">     The select fields. </param>
+        /// <returns>   The by filter in statement.</returns>
+        public virtual string GetByFilterInStatement(Type type, string filterProperty, string collectionName, string[] selectFields)
+        {
+            var fProp = SqlCache.TypePropertiesChache(type).Single(pi => pi.Name == filterProperty);
+            if (selectFields == null || selectFields.Length < 1)
+                return
+                    $"SELECT {RenderPropertyList(SqlCache.TypePropertiesChache(type).ToArray())} FROM {RenderTableName(type)} WHERE {RenderInFilterByProperty(fProp, collectionName)}";
+
+            var sProps = SqlCache.TypePropertiesChache(type).Where(pi => selectFields.Contains(pi.Name)).ToArray();
+            return
+                $"SELECT {RenderPropertyList(sProps)} FROM {RenderTableName(type)} WHERE {RenderInFilterByProperty(fProp, collectionName)}";
+        }
+
         /// <summary>	Gets by filter statement. </summary>
         /// <param name="type">			   	The type. </param>
         /// <param name="filterProperties">	The filter properties. </param>
@@ -236,6 +254,15 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         public virtual string RenderParameterProperty(PropertyInfo propertyInfo)
         {
             return $"@{propertyInfo.Name}";
+        }
+
+        /// <summary>   Renders the in filter by property described by propertyInfo.</summary>
+        /// <param name="propertyInfo">     Information describing the property. </param>
+        /// <param name="collectionName">   Name of the collection. </param>
+        /// <returns>   A string.</returns>
+        public virtual string RenderInFilterByProperty(PropertyInfo propertyInfo, string collectionName)
+        {
+            return $"{RenderPropertyName(propertyInfo)} IN @{collectionName}";
         }
 
         /// <summary>	Renders the column list described by type. </summary>

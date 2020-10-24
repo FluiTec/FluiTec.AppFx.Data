@@ -71,6 +71,14 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <returns>	The by filter statement. </returns>
         string GetByFilterStatement(Type type, string filterProperty, string[] selectFields);
 
+        /// <summary>   Gets by filter in statement.</summary>
+        /// <param name="type">             The type. </param>
+        /// <param name="filterProperty">   The filter property. </param>
+        /// <param name="collectionName">   Name of the collection. </param>
+        /// <param name="selectFields">     The select fields. </param>
+        /// <returns>   The by filter in statement.</returns>
+        string GetByFilterInStatement(Type type, string filterProperty, string collectionName, string[] selectFields);
+
         /// <summary>	Gets by filter statement. </summary>
         /// <param name="type">			   	The type. </param>
         /// <param name="filterProperties">	The filter properties. </param>

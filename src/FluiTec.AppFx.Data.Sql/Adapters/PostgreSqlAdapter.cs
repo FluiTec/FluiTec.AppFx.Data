@@ -58,6 +58,15 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
             return $"\"{propertyName}\"";
         }
 
+        /// <summary>   Renders the in filter by property described by propertyInfo.</summary>
+        /// <param name="propertyInfo">     Information describing the property. </param>
+        /// <param name="collectionName">   Name of the collection. </param>
+        /// <returns>   A string.</returns>
+        public override string RenderInFilterByProperty(PropertyInfo propertyInfo, string collectionName)
+        {
+            return $"{RenderPropertyName(propertyInfo)} = ANY(@{collectionName})";
+        }
+
         /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
         /// <value> True if supports date time offset, false if not. </value>
         public override bool SupportsDateTimeOffset => true;
