@@ -1,4 +1,5 @@
-﻿using FluentMigrator;
+﻿using System;
+using FluentMigrator;
 
 namespace FluiTec.AppFx.Data.Dapper.Migration
 {
@@ -31,7 +32,7 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
         /// <returns>   The calculated value. </returns>
         private static long CalculateValue(int year, int month, int day, int hour, int minute)
         {
-            return year * 100000000L + month * 1000000L + day * 10000L + hour * 100L + minute;
+            return new DateTime(year, month, day, hour, minute, 0).Ticks;
         }
     }
 }
