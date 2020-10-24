@@ -49,6 +49,12 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <returns>	The delete statement. </returns>
         string GetDeleteStatememt(Type type);
 
+        /// <summary>   Gets delete by statement.</summary>
+        /// <param name="type">             The type. </param>
+        /// <param name="filterProperty">   The filter property. </param>
+        /// <returns>   The delete by statement.</returns>
+        string GetDeleteByStatememt(Type type, string filterProperty);
+
         /// <summary>	Renders the property list described by properties. </summary>
         /// <param name="properties">	The properties. </param>
         /// <returns>	A StringBuilder. </returns>

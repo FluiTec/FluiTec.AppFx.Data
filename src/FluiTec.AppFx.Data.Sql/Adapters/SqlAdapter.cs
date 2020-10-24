@@ -186,6 +186,16 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
                 $"DELETE FROM {RenderTableName(type)} WHERE {RenderPropertyName(key)} = {RenderParameterProperty(key)}";
         }
 
+        /// <summary>   Gets delete by statement.</summary>
+        /// <param name="type">             The type. </param>
+        /// <param name="filterProperty">   The filter property. </param>
+        /// <returns>   The delete by statement.</returns>
+        public virtual string GetDeleteByStatememt(Type type, string filterProperty)
+        {
+            return
+                $"DELETE FROM {RenderTableName(type)} WHERE {RenderPropertyName(filterProperty)} = {RenderParameterPropertyName(filterProperty)}";
+        }
+
         #endregion
 
         #region Rendering
@@ -254,6 +264,14 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         public virtual string RenderParameterProperty(PropertyInfo propertyInfo)
         {
             return $"@{propertyInfo.Name}";
+        }
+
+        /// <summary>   Renders the parameter property name described by propertyName.</summary>
+        /// <param name="propertyName"> Name of the property. </param>
+        /// <returns>   A string.</returns>
+        public virtual string RenderParameterPropertyName(string propertyName)
+        {
+            return $"@{propertyName}";
         }
 
         /// <summary>   Renders the in filter by property described by propertyInfo.</summary>

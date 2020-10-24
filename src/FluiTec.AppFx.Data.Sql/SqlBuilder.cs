@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using FluiTec.AppFx.Data.Sql.Adapters;
@@ -74,6 +75,10 @@ namespace FluiTec.AppFx.Data.Sql
         /// <summary>	The delete queries. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _deleteQueries =
             new ConcurrentDictionary<RuntimeTypeHandle, string>();
+
+        /// <summary>	The delete by filter queries. </summary>
+        private readonly ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string> _deleteByFilterQueries = 
+            new ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string>();
 
         #endregion
 
@@ -273,6 +278,28 @@ namespace FluiTec.AppFx.Data.Sql
             return sql;
         }
 
+        /// <summary>   Deletes the by.</summary>
+        /// <param name="type">             The type. </param>
+        /// <param name="filterProperty">   The filter property. </param>
+        /// <returns>   A string.</returns>
+        public string DeleteBy(Type type, string filterProperty)
+        {
+            var sqlKey = GenerateSqlKey(filterProperty);
+
+            // try to find statement in cache and return it
+            if (_deleteByFilterQueries.TryGetValue(new KeyValuePair<RuntimeTypeHandle, string>(type.TypeHandle, sqlKey),
+                out var sql)) return sql;
+
+            // generate statement
+            sql = Adapter.GetDeleteByStatememt(type, filterProperty);
+
+            // add statement to cache
+            _deleteByFilterQueries.TryAdd(new KeyValuePair<RuntimeTypeHandle, string>(type.TypeHandle, sqlKey), sql);
+
+            // return statement
+            return sql;
+        }
+
         #endregion
 
         #region Misc
@@ -319,6 +346,11 @@ namespace FluiTec.AppFx.Data.Sql
         #endregion
 
         #region Helpers
+
+        /// <summary>   Generates a SQL key.</summary>
+        /// <param name="filterProperty">   The filter property. </param>
+        /// <returns>   The SQL key.</returns>
+        private static string GenerateSqlKey(string filterProperty) => $"{filterProperty.ToLower()}";
 
         /// <summary>	Generates a SQL key. </summary>
         /// <param name="filterProperty">	The filter property. </param>

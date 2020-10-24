@@ -133,5 +133,12 @@ namespace FluiTec.AppFx.Data.Sql.Tests
             var sql = _connection.GetBuilder().Delete(typeof(Dummy));
             Assert.AreEqual($"DELETE FROM {nameof(Dummy)} WHERE Id = @Id", sql);
         }
+
+        [TestMethod]
+        public void TestDeleteBy()
+        {
+            var sql = _connection.GetBuilder().DeleteBy(typeof(Dummy), nameof(Dummy.Name));
+            Assert.AreEqual($"DELETE FROM {nameof(Dummy)} WHERE Name = @Name", sql);
+        }
     }
 }
