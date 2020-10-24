@@ -326,16 +326,8 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <returns>   A StringBuilder.</returns>
         public virtual StringBuilder RenderColumnList(Type type)
         {
-            var sb = new StringBuilder();
             var props = SqlCache.TypePropertiesChache(type).ToArray();
-            for (var i = 0; i < props.Length; i++)
-            {
-                if (i > 0)
-                    sb.Append(", ");
-                sb.Append(RenderParameterProperty(props[i]));
-            }
-
-            return sb;
+            return RenderPropertyList(props);
         }
 
         /// <summary>   Renders the parameter list described by type.</summary>
