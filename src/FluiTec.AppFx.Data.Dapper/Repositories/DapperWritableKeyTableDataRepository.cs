@@ -25,6 +25,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         protected DapperWritableKeyTableDataRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(
             unitOfWork, logger)
         {
+            ExpectIdentityKey = true;
         }
 
         #endregion
@@ -59,6 +60,12 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
 
         #region IWritableKeyTableDataRepository
 
+        /// <summary>   Gets or sets a value indicating whether the expect identity key.</summary>
+        /// <value> True if expect identity key, false if not.</value>
+        public bool ExpectIdentityKey { get; set; }
+
+        private readonly Type[] _supportedIdentityTypes = {typeof(int), typeof(long)};
+
         /// <summary>   Adds entity. </summary>
         /// <param name="entity">   The entity to add. </param>
         /// <returns>   A TEntity. </returns>
@@ -67,8 +74,26 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
             if (entity is ITimeStampedKeyEntity stampedEntity)
                 stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
-            var lkey = UnitOfWork.Connection.InsertAuto(entity, UnitOfWork.Transaction);
-            entity.Id = GetKey(lkey);
+            if (ExpectIdentityKey)
+            {
+                if (_supportedIdentityTypes.Contains(typeof(TKey)))
+                {
+                    var lkey = UnitOfWork.Connection.InsertAuto(entity, UnitOfWork.Transaction);
+                    entity.Id = GetKey(lkey);
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        $"Type \"{typeof(TKey)}\" is not supported for InsertAuto. Use ExpectIdentityKey=false and set a key!");
+                }
+            }
+            else
+            {
+                if ((object)entity.Id == GetDefault(typeof(TKey)))
+                    throw new InvalidOperationException("EntityKey must be set to a non default value.");
+                UnitOfWork.Connection.Insert(entity, UnitOfWork.Transaction);
+            }
+
             return entity;
         }
 
@@ -116,6 +141,14 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         public virtual void Delete(TEntity entity)
         {
             Delete(entity.Id);
+        }
+
+        /// <summary>   Gets a default.</summary>
+        /// <param name="type"> The type. </param>
+        /// <returns>   The default.</returns>
+        private static object GetDefault(Type type)
+        {
+            return type.IsValueType ? Activator.CreateInstance(type) : null;
         }
 
         #endregion

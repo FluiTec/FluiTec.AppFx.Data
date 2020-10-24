@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Dapper;
 using FluiTec.AppFx.Data.Entities;
 
@@ -51,6 +52,24 @@ namespace FluiTec.AppFx.Data.Sql
             parameters.Add(builder.KeyParameter(type), id);
             return connection.Query<TEntity>(sql, parameters, transaction, commandTimeout: commandTimeout)
                 .SingleOrDefault();
+        }
+
+        /// <summary>   An IDbConnection extension method that inserts.</summary>
+        /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+        /// <param name="connection">       The connection to act on. </param>
+        /// <param name="entity">           The entity. </param>
+        /// <param name="transaction">      (Optional) The transaction. </param>
+        /// <param name="commandTimeout">   (Optional) The command timeout. </param>
+        public static void Insert<TEntity>(this IDbConnection connection, TEntity entity,
+            IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            var type = typeof(TEntity);
+
+            var builder = connection.GetBuilder();
+            var sql = builder.Insert(type);
+            OnSqlGenerated(sql);
+
+            connection.Execute(sql, entity, transaction, commandTimeout);
         }
 
         /// <summary>	An IDbConnection extension method that inserts. </summary>

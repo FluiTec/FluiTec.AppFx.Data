@@ -25,6 +25,7 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         protected LiteDbWritableKeyTableDataRepository(LiteDbUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(
             unitOfWork, logger)
         {
+            ExpectIdentityKey = true;
         }
 
         #endregion
@@ -39,6 +40,10 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         #endregion
 
         #region IWritableKeyTableDataRepository
+
+        /// <summary>   Gets or sets a value indicating whether the expect identity key.</summary>
+        /// <value> True if expect identity key, false if not.</value>
+        public bool ExpectIdentityKey { get; set; }
 
         /// <summary>   Adds entity. </summary>
         /// <param name="entity">   The entity to add. </param>

@@ -118,6 +118,18 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
                 $"SELECT {RenderPropertyList(sProps)} FROM {RenderTableName(type)} WHERE {filterSql}";
         }
 
+        /// <summary>   Gets insert statement.</summary>
+        /// <param name="type"> The type. </param>
+        /// <returns>   The insert statement.</returns>
+        public virtual string GetInsertStatement(Type type)
+        {
+            var columnList = RenderColumnList(type).ToString();
+            var parameterList = RenderParameterList(type).ToString();
+
+            return
+                $"INSERT INTO {RenderTableName(type)} ({columnList}) VALUES ({parameterList})";
+        }
+
         /// <summary>	Gets insert automatic key statement. </summary>
         /// <param name="type">	The type. </param>
         /// <returns>	The insert automatic key statement. </returns>
@@ -304,6 +316,40 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
                 if (i > 0)
                     sb.Append(", ");
                 sb.Append(RenderParameterProperty(propertiesWithoutKey[i]));
+            }
+
+            return sb;
+        }
+
+        /// <summary>   Renders the column list described by type.</summary>
+        /// <param name="type"> The type. </param>
+        /// <returns>   A StringBuilder.</returns>
+        public virtual StringBuilder RenderColumnList(Type type)
+        {
+            var sb = new StringBuilder();
+            var props = SqlCache.TypePropertiesChache(type).ToArray();
+            for (var i = 0; i < props.Length; i++)
+            {
+                if (i > 0)
+                    sb.Append(", ");
+                sb.Append(RenderParameterProperty(props[i]));
+            }
+
+            return sb;
+        }
+
+        /// <summary>   Renders the parameter list described by type.</summary>
+        /// <param name="type"> The type. </param>
+        /// <returns>   A StringBuilder.</returns>
+        public virtual StringBuilder RenderParameterList(Type type)
+        {
+            var sb = new StringBuilder();
+            var props = SqlCache.TypePropertiesChache(type).ToArray();
+            for (var i = 0; i < props.Length; i++)
+            {
+                if (i > 0)
+                    sb.Append(", ");
+                sb.Append(RenderParameterProperty(props[i]));
             }
 
             return sb;

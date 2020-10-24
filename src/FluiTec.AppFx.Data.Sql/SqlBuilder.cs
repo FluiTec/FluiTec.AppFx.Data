@@ -60,6 +60,10 @@ namespace FluiTec.AppFx.Data.Sql
         private readonly ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string> _selectByInFilterQueries =
             new ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string>();
 
+        /// <summary>	The insert queries. </summary>
+        private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _insertQueries =
+            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+
         /// <summary>	The insert automatic key queries. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _insertAutoKeyQueries =
             new ConcurrentDictionary<RuntimeTypeHandle, string>();
@@ -187,6 +191,24 @@ namespace FluiTec.AppFx.Data.Sql
 
             // add statement to cache
             _selectByFilterQueries.TryAdd(new KeyValuePair<RuntimeTypeHandle, string>(type.TypeHandle, sqlKey), sql);
+
+            // return statement
+            return sql;
+        }
+
+        /// <summary>   Inserts the given type.</summary>
+        /// <param name="type"> The type. </param>
+        /// <returns>   A string.</returns>
+        public string Insert(Type type)
+        {
+            // try to find statement in cache and return it
+            if (_insertQueries.TryGetValue(type.TypeHandle, out var sql)) return sql;
+
+            // generate statement
+            sql = Adapter.GetInsertStatement(type);
+
+            // add statement to cache
+            _insertQueries.TryAdd(type.TypeHandle, sql);
 
             // return statement
             return sql;

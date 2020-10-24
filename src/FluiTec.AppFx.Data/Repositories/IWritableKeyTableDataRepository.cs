@@ -10,6 +10,11 @@ namespace FluiTec.AppFx.Data.Repositories
     public interface IWritableKeyTableDataRepository<TEntity, in TKey> : IKeyTableDataRepository<TEntity, TKey>
         where TEntity : class, IKeyEntity<TKey>, new()
     {
+
+        /// <summary>   Gets or sets a value indicating whether the expect identity key.</summary>
+        /// <value> True if expect identity key, false if not.</value>
+        bool ExpectIdentityKey { get; set; }
+
         /// <summary>	Adds entity. </summary>
         /// <param name="entity">	The entity to add. </param>
         /// <returns>	A TEntity. </returns>

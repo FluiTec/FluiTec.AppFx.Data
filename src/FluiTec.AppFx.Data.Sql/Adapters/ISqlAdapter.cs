@@ -22,6 +22,11 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <returns>	The key parameter. </returns>
         string GetKeyParameter(Type type);
 
+        /// <summary>   Gets insert statement.</summary>
+        /// <param name="type"> The type. </param>
+        /// <returns>   The insert statement.</returns>
+        string GetInsertStatement(Type type);
+
         /// <summary>	Gets insert automatic key statement. </summary>
         /// <param name="type">	The type. </param>
         /// <returns>	The insert automatic key statement. </returns>
