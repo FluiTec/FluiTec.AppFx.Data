@@ -31,4 +31,4 @@ unittest:
 integrationtest:
     stage: integrationtest
     script:
-        - "dotnet test --no-restore --filter FullyQualifiedName~$projectName&FullyQualifiedName~$integrationPostfix
+        - "dotnet test --no-restore --filter FullyQualifiedName~$projectName&FullyQualifiedName~$integrationPostfix"
