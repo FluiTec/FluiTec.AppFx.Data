@@ -26,9 +26,9 @@ build:
 unittest:
     stage: unittest
     script:
-        - "dotnet test --no-restore --filter FullyQualifiedName~$projectName&FullyQualifiedName~$testPostfix"
+        - 'dotnet test --no-restore --filter FullyQualifiedName~"$projectName"&FullyQualifiedName~"$testPostfix"'
 
 integrationtest:
     stage: integrationtest
     script:
-        - "dotnet test --no-restore --filter FullyQualifiedName~$projectName&FullyQualifiedName~$integrationPostfix"
+        - 'dotnet test --no-restore --filter FullyQualifiedName~"$projectName"&FullyQualifiedName~"$integrationPostfix"'
