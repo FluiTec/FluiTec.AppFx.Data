@@ -8,8 +8,8 @@ stages:
 variables:
     srcDir: "src"
     projectName: "FluiTec.AppFx.Data"
-    testPostfix: ".Tests"
-    integrationPostfix: ".IntegrationTests"
+    testfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~-Tests"
+    integrationfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~-IntegrationTests"
     GIT_SUBMODULE_STRATEGY: recursive
     
 before_script:
@@ -26,9 +26,9 @@ build:
 unittest:
     stage: unittest
     script:
-        - dotnet test --no-restore --filter FullyQualifiedName~$projectName&FullyQualifiedName~$testPostfix
+        - dotnet test --no-restore --filter $testfilter
 
 integrationtest:
     stage: integrationtest
     script:
-        - dotnet test --no-restore --filter FullyQualifiedName~$projectName&FullyQualifiedName~$integrationPostfix
+        - dotnet test --no-restore --filter $integrationfilter
