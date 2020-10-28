@@ -14,6 +14,8 @@ variables:
     testfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests"
     integrationfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.IntegrationTests"
     GIT_SUBMODULE_STRATEGY: recursive
+    # DB-Configuration for IntegrationTests
+    "DynamicDataOptions:Provider": Mssql
     # PGSQL-Service
     POSTGRES_DB: appfxdata
     POSTGRES_USER: appfx
@@ -39,5 +41,5 @@ unittest:
 integrationtest:
     stage: integrationtest
     script:
-        - echo "$POSTGRES_DB"
+        - echo "$DynamicDataOptions:Provider"
         - dotnet test --no-restore --verbosity minimal --filter $integrationfilter
