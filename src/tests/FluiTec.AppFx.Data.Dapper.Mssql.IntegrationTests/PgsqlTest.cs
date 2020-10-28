@@ -3,6 +3,7 @@ using FluentMigrator.Runner;
 using FluiTec.AppFx.Data.Dapper.Migration;
 using FluiTec.AppFx.Data.Dapper.Pgsql;
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
+using FluiTec.AppFx.Data.TestLibrary.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
@@ -14,7 +15,7 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
     {
         private readonly PgsqlDapperServiceOptions _options;
 
-        private bool _isDbAvailable => _options != null;
+        private bool IsDbAvailable => _options != null;
 
         /// <summary>   Default constructor.</summary>
         public PgsqlTests()
@@ -25,14 +26,13 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
             {
                 _options = new PgsqlDapperServiceOptions
                     {ConnectionString = $"User ID={usr};Host=postgres;Database={db};Pooling=true;"};
-                Console.WriteLine($"DB AVAILABLE!, Conn: {_options.ConnectionString}");
             }
         }
 
         /// <summary>   Assert database available.</summary>
         private void AssertDbAvailable()
         {
-            Assert.IsTrue(_isDbAvailable, "POSTGRES-DB NOT AVAILABLE!");
+            Assert.IsTrue(IsDbAvailable, "POSTGRES-DB NOT AVAILABLE!");
         }
 
         /// <summary>   (Unit Test Method) can check apply migrations.</summary>
@@ -54,9 +54,23 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
             AssertDbAvailable();
 
             var service = new PgsqlTestDataService(_options, null);
-            var migrator = new DapperDataMigrator(_options.ConnectionString, null, service.MetaData,
-                builder => builder.AddPostgres());
-            migrator.Migrate();
+            using (var uow = service.BeginUnitOfWork())
+            {
+            }
+        }
+
+        /// <summary>   (Unit Test Method) can create entity.</summary>
+        [TestMethod]
+        public void CanCreateEntity()
+        {
+            AssertDbAvailable();
+
+            var service = new PgsqlTestDataService(_options, null);
+            using (var uow = service.BeginUnitOfWork())
+            {
+                var entity = uow.DummyRepository.Add(new DummyEntity {Name = "Test"});
+                Assert.IsTrue(entity.Id > -1);
+            }
         }
     }
 }
