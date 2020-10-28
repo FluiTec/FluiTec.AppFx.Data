@@ -16,7 +16,7 @@ before_script:
     - git submodule sync --recursive
     - git submodule update --init --recursive
     - "cd $srcDir"
-    - "dotnet restore"
+    - "dotnet restore --verbosity minimal"
 
 build:
     stage: build
@@ -26,9 +26,9 @@ build:
 unittest:
     stage: unittest
     script:
-        - dotnet test --no-restore --filter $testfilter
+        - dotnet test --no-restore --verbosity minimal --filter $testfilter
 
 integrationtest:
     stage: integrationtest
     script:
-        - dotnet test --no-restore --filter $integrationfilter
+        - dotnet test --no-restore --verbosity minimal --filter $integrationfilter
