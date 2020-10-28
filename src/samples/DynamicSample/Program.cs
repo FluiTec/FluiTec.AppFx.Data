@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using DynamicSample.Data;
 using DynamicSample.Data.Entities;
 using DynamicSample.Data.LiteDb;
