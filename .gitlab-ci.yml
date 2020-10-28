@@ -5,12 +5,20 @@ stages:
     - unittest
     - integrationtest
 
+services:
+    - postgres:latest
+
 variables:
     srcDir: "src"
     projectName: "FluiTec.AppFx.Data"
     testfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests"
     integrationfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.IntegrationTests"
     GIT_SUBMODULE_STRATEGY: recursive
+    # PGSQL-Service
+    POSTGRES_DB: appfxdata
+    POSTGRES_USER: appfx
+    POSTGRES_PASSWORD: ""
+    POSTGRES_HOST_AUTH_METHOD: trust
     
 before_script:
     - git submodule sync --recursive
@@ -31,4 +39,5 @@ unittest:
 integrationtest:
     stage: integrationtest
     script:
+        - echo "$POSTGRES_DB"
         - dotnet test --no-restore --verbosity minimal --filter $integrationfilter
