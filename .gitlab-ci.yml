@@ -8,8 +8,8 @@ stages:
 variables:
     srcDir: "src"
     projectName: "FluiTec.AppFx.Data"
-    testfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~-Tests"
-    integrationfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~-IntegrationTests"
+    testfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests"
+    integrationfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.IntegrationTests"
     GIT_SUBMODULE_STRATEGY: recursive
     
 before_script:
