@@ -25,6 +25,7 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
             {
                 _options = new PgsqlDapperServiceOptions
                     {ConnectionString = $"User ID={usr};Host=postgres;Database={db};Pooling=true;"};
+                Console.WriteLine($"DB AVAILABLE!, Conn: {_options.ConnectionString}");
             }
         }
 
