@@ -11,6 +11,7 @@ using FluiTec.AppFx.Data.Dapper.Mysql;
 using FluiTec.AppFx.Data.Dapper.Pgsql;
 using FluiTec.AppFx.Data.Dynamic.Configuration;
 using FluiTec.AppFx.Data.LiteDb;
+using FluiTec.AppFx.Options.Helpers;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,28 +23,13 @@ namespace DynamicSample
     {
         private static void Main()
         {
-            var dbServerHome = "marble.fritz.box";
-            var dbServerEnterprise = "dev1.wtschnell.local";
-
-            var dbServer = dbServerHome;
-
-            var configValues = new List<KeyValuePair<string, string>>(new[]
-            {
-                new KeyValuePair<string, string>("DynamicDataOptions:Provider", "Mysql"),
-                new KeyValuePair<string, string>("DynamicDataOptions:AutoMigrate", "true"),
-                new KeyValuePair<string, string>("LiteDb:DbFileName", "test.ldb"),
-                new KeyValuePair<string, string>("LiteDb:ApplicationFolder", "C:\\dev\\GitLab"),
-                new KeyValuePair<string, string>("LiteDb:UseSingletonConnection", "true"),
-                new KeyValuePair<string, string>("Dapper.Mssql:ConnectionString",
-                    $"Data Source={dbServer};Initial Catalog=wtschnell;Integrated Security=False;User ID=appfx;Password=0pTSyNY8iwxC20J7;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"),
-                new KeyValuePair<string, string>("Dapper.Pgsql:ConnectionString",
-                    $"User ID=appfx;Password=0pTSyNY8iwxC20J7;Host={dbServer};Port=5432;Database=wtschnell;Pooling=true;"),
-                new KeyValuePair<string, string>("Dapper.Mysql:ConnectionString", 
-                    $"Server={dbServer};Database=wtschnell;Uid=appfx;Pwd=0pTSyNY8iwxC20J7")
-            });
-
+            // load config from json
+            var path = DirectoryHelper.GetApplicationRoot();
+            Console.WriteLine($"BasePath: {path}");
             var config = new ConfigurationBuilder()
-                .AddInMemoryCollection(configValues)
+                .SetBasePath(path)
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile("appsettings.secret.json", false, true)
                 .Build();
 
             TestDynamicSql(config);
