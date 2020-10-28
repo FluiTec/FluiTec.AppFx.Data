@@ -37,6 +37,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.UnitsOfWork
         private void RegisterRepositories()
         {
             RepositoryProviders.Add(typeof(IDummyRepository),
-                (uow, log) => new DapperDummyRepository((DapperTestUnitOfWork)uow, log));
+                (uow, log) => new DapperDummyRepository((DapperTestUnitOfWork) uow, log));
         }
     }
+}
