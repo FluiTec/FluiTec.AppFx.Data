@@ -26,7 +26,7 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
             IVersionTableMetaData metaData, Action<IMigrationRunnerBuilder> configureSqlProvider)
         {
             if (scanAssemblies == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(scanAssemblies));
 
             var services = new ServiceCollection()
                 .AddFluentMigratorCore()

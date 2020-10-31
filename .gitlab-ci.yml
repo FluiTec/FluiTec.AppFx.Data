@@ -5,12 +5,28 @@ stages:
     - unittest
     - integrationtest
 
+services:
+    - postgres:latest #Hostname: postgres
+    - microsoft/mssql-server-linux:latest #Hostname: microsoft-mssql-server-linux
+    - mysql:latest #Hostname: mysql
+
 variables:
     srcDir: "src"
     projectName: "FluiTec.AppFx.Data"
     testfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests"
     integrationfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.IntegrationTests"
     GIT_SUBMODULE_STRATEGY: recursive
+    # PGSQL-Service
+    POSTGRES_DB: appfxdata
+    POSTGRES_USER: appfx
+    POSTGRES_PASSWORD: ""
+    POSTGRES_HOST_AUTH_METHOD: trust
+    # MSSQL-Service
+    ACCEPT_EULA: Y
+    SA_PASSWORD: "[[e(/?5$UcaWF[(X"
+    # MYSQL-Service
+    MYSQL_DATABASE: appfxdata
+    MYSQL_ROOT_PASSWORD: "[[e(/?5$UcaWF[(X"
     
 before_script:
     - git submodule sync --recursive
