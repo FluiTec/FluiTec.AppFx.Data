@@ -28,11 +28,11 @@ namespace FluiTec.AppFx.Data.TestLibrary.Schema.Migrations
         {
             IfDatabase(MigrationDatabaseName.Mssql, MigrationDatabaseName.Pgsql)
                 .Delete
-                .Table(SchemaGlobals.DummyTable, SchemaGlobals.Schema, true);
+                .Table(SchemaGlobals.Schema, SchemaGlobals.DummyTable, true);
 
             IfDatabase(MigrationDatabaseName.Mysql)
                 .Delete
-                .Table(SchemaGlobals.DummyTable, SchemaGlobals.Schema, false);
+                .Table(SchemaGlobals.Schema, SchemaGlobals.DummyTable, false);
         }
     }
 }

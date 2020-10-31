@@ -1,5 +1,4 @@
 ﻿using System;
-using FluentMigrator.Builders;
 using FluentMigrator.Builders.Create;
 using FluentMigrator.Builders.Create.Table;
 using FluentMigrator.Builders.Delete;
@@ -17,7 +16,7 @@ namespace FluiTec.AppFx.Data.Dapper.Extensions
         /// <param name="schemaName">       Name of the schema. </param>
         /// <param name="supportsSchema">   True to supports schema. </param>
         /// <returns>   An ICreateTableWithColumnSyntax.</returns>
-        public static ICreateTableWithColumnSyntax Table(this ICreateExpressionRoot expressionRoot, string tableName, string schemaName, bool supportsSchema)
+        public static ICreateTableWithColumnSyntax Table(this ICreateExpressionRoot expressionRoot, string schemaName, string tableName, bool supportsSchema)
         {
             return supportsSchema ? expressionRoot.Table(tableName).InSchema(schemaName) : expressionRoot.Table($"{schemaName}_{tableName}");
         }
@@ -27,8 +26,8 @@ namespace FluiTec.AppFx.Data.Dapper.Extensions
         /// <param name="tableName">        Name of the table. </param>
         /// <param name="schemaName">       Name of the schema. </param>
         /// <param name="supportsSchema">   True to supports schema. </param>
-        public static void Table(this IDeleteExpressionRoot expressionRoot, string tableName,
-            string schemaName, bool supportsSchema)
+        public static void Table(this IDeleteExpressionRoot expressionRoot,
+            string schemaName, string tableName, bool supportsSchema)
         {
             if (supportsSchema)
                 expressionRoot
