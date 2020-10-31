@@ -34,12 +34,12 @@ before_script:
     - "cd $srcDir"
     - "dotnet restore --verbosity minimal"
 
-.build:
+build:
     stage: build
     script:
         - "dotnet build --no-restore"
         
-.unittest:
+unittest:
     stage: unittest
     script:
         - dotnet test --no-restore --verbosity minimal --filter $testfilter
