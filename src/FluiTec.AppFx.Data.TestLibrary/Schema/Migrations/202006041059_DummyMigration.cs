@@ -18,7 +18,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.Schema.Migrations
 
             IfDatabase(MigrationDatabaseName.Mysql)
                 .Create
-                .Table(SchemaGlobals.Schema, SchemaGlobals.DummyTable, true)
+                .Table(SchemaGlobals.Schema, SchemaGlobals.DummyTable, false)
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn("Name").AsString().Nullable();
         }

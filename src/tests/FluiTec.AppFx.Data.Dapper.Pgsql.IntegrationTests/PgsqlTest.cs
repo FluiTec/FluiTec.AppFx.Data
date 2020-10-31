@@ -2,15 +2,16 @@
 using FluentMigrator.Runner;
 using FluiTec.AppFx.Data.Dapper.DataServices;
 using FluiTec.AppFx.Data.Dapper.Migration;
-using FluiTec.AppFx.Data.Dapper.Mysql;
+using FluiTec.AppFx.Data.TestLibrary;
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
+namespace FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests
 {
+    /// <summary>   (Unit Test Class) a pgsql tests.</summary>
     [TestClass]
     [TestCategory("Integration")]
-    public class MysqlTest : DbTest
+    public class PgsqlTest : DbTest
     {
         /// <summary>   Gets options for controlling the service.</summary>
         /// <value> Options that control the service.</value>
@@ -21,19 +22,19 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
         protected override ITestDataService DataService { get; }
 
         /// <summary>   Default constructor.</summary>
-        public MysqlTest()
+        public PgsqlTest()
         {
-            var db = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
-            var pw = Environment.GetEnvironmentVariable("MYSQL_ROOT_PASSWORD");
+            var db = Environment.GetEnvironmentVariable("POSTGRES_DB");
+            var usr = Environment.GetEnvironmentVariable("POSTGRES_USER");
 
-            if (string.IsNullOrWhiteSpace(db) || string.IsNullOrWhiteSpace(pw)) return;
+            if (string.IsNullOrWhiteSpace(db) || string.IsNullOrWhiteSpace(usr)) return;
 
-            ServiceOptions = new MysqlDapperServiceOptions
+            ServiceOptions = new PgsqlDapperServiceOptions
             {
-                ConnectionString = $"Server=mysql;Database={db};Uid=root;Pwd={pw}"
+                ConnectionString = $"User ID={usr};Host=postgres;Database={db};Pooling=true;"
             };
 
-            DataService = new MysqlTestDataService(ServiceOptions, null);
+            DataService = new PgsqlTestDataService(ServiceOptions, null);
         }
 
         /// <summary>   (Unit Test Method) can check apply migrations.</summary>
@@ -42,8 +43,8 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
         {
             AssertDbAvailable();
 
-            var migrator = new DapperDataMigrator(ServiceOptions.ConnectionString, new[] { DataService.GetType().Assembly }, ((IDapperDataService)DataService).MetaData,
-                builder => builder.AddMySql5());
+            var migrator = new DapperDataMigrator(ServiceOptions.ConnectionString, new [] {DataService.GetType().Assembly}, ((IDapperDataService)DataService).MetaData,
+                builder => builder.AddPostgres());
             migrator.Migrate();
         }
     }

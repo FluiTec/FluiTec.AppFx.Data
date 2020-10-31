@@ -2,6 +2,7 @@
 using FluentMigrator.Runner;
 using FluiTec.AppFx.Data.Dapper.DataServices;
 using FluiTec.AppFx.Data.Dapper.Migration;
+using FluiTec.AppFx.Data.TestLibrary;
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

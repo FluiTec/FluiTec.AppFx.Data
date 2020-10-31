@@ -1,8 +1,9 @@
-﻿using FluiTec.AppFx.Data.TestLibrary.DataServices;
+﻿using FluiTec.AppFx.Data.Dapper;
+using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Data.TestLibrary.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
+namespace FluiTec.AppFx.Data.TestLibrary
 {
     /// <summary>   A database test.</summary>
     public abstract class DbTest
