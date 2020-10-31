@@ -1,11 +1,6 @@
 ﻿using System;
 using System.IO;
-using FluentMigrator.Runner;
-using FluiTec.AppFx.Data.Dapper.DataServices;
-using FluiTec.AppFx.Data.Dapper.Migration;
-using FluiTec.AppFx.Data.Dapper.Mssql;
 using FluiTec.AppFx.Data.TestLibrary;
-using FluiTec.AppFx.Data.TestLibrary.Configuration;
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Options.Helpers;
 using Microsoft.Extensions.Configuration;
@@ -46,40 +41,19 @@ namespace FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests
                         .Build();
 
                     var manager = new Options.Managers.ConfigurationManager(config);
-                    var options = manager.ExtractSettings<MysqlAdminOption>();
                     var mysqlOptions = manager.ExtractSettings<MysqlDapperServiceOptions>();
 
-                    if (string.IsNullOrWhiteSpace(options.AdminConnectionString) ||
-                        string.IsNullOrWhiteSpace(options.IntegrationDb) ||
-                        string.IsNullOrWhiteSpace(options.IntegrationUser) ||
-                        string.IsNullOrWhiteSpace(options.IntegrationPassword)) return;
-                    if (string.IsNullOrWhiteSpace(mysqlOptions.ConnectionString)) return;
-
-                    MysqlAdminHelper.CreateDababase(options.AdminConnectionString, options.IntegrationDb);
-                    MysqlAdminHelper.CreateUserAndLogin(options.AdminConnectionString, options.IntegrationDb, options.IntegrationUser, options.IntegrationPassword);
-
-                    ServiceOptions = new MssqlDapperServiceOptions
+                    ServiceOptions = new MysqlDapperServiceOptions
                     {
                         ConnectionString = mysqlOptions.ConnectionString
                     };
-                    DataService = new MssqlTestDataService(ServiceOptions, null);
+                    DataService = new MysqlTestDataService(ServiceOptions, null);
                 }
                 catch (Exception)
                 {
                     // ignore
                 }
             }
-        }
-
-        /// <summary>   (Unit Test Method) can check apply migrations.</summary>
-        [TestInitialize]
-        public override void CanCheckApplyMigrations()
-        {
-            AssertDbAvailable();
-
-            var migrator = new DapperDataMigrator(ServiceOptions.ConnectionString, new[] { DataService.GetType().Assembly }, ((IDapperDataService)DataService).MetaData,
-                builder => builder.AddMySql5());
-            migrator.Migrate();
         }
     }
 }

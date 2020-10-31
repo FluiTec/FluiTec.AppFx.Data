@@ -38,7 +38,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
         }
 
         #endregion
-
+        
         #region Methods
 
         /// <summary>   Initializes the options and data service.</summary>
@@ -53,12 +53,6 @@ namespace FluiTec.AppFx.Data.TestLibrary
         #endregion
 
         #region TestMethods
-
-        /// <summary>   Can check apply migrations.</summary>
-        /// <remarks>   You need to add [TestInitialize] when inheriting!</remarks>
-        [TestMethod]
-        [TestInitialize]
-        public abstract void CanCheckApplyMigrations();
 
         /// <summary>   (Unit Test Method) can create unit of work.</summary>
         [TestMethod]
