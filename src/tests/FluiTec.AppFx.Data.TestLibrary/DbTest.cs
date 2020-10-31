@@ -26,6 +26,9 @@ namespace FluiTec.AppFx.Data.TestLibrary
             Assert.IsTrue(IsDbAvailable, "DB NOT AVAILABLE!");
         }
 
+        /// <summary>   Can check apply migrations.</summary>
+        public abstract void CanCheckApplyMigrations();
+
         /// <summary>   (Unit Test Method) can create unit of work.</summary>
         [TestMethod]
         public void CanCreateUnitOfWork()

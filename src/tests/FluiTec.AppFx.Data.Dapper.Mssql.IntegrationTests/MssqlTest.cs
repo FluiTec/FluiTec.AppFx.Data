@@ -37,7 +37,7 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
 
         /// <summary>   (Unit Test Method) can check apply migrations.</summary>
         [TestInitialize]
-        public void CanCheckApplyMigrations()
+        public override void CanCheckApplyMigrations()
         {
             AssertDbAvailable();
 
