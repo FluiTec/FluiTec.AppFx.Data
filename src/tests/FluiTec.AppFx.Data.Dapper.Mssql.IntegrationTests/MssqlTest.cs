@@ -7,8 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
 {
-    //[TestClass]
-    //[TestCategory("Integration")]
+    [TestClass]
+    [TestCategory("Integration")]
     public class MssqlTest : DbTest
     {
         /// <summary>   Gets options for controlling the service.</summary>
@@ -22,11 +22,20 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
         /// <summary>   Default constructor.</summary>
         public MssqlTest()
         {
-            throw new NotImplementedException();
+            var pw = Environment.GetEnvironmentVariable("SA_PASSWORD");
+
+            if (string.IsNullOrWhiteSpace(pw)) return;
+
+            ServiceOptions = new MssqlDapperServiceOptions
+            {
+                ConnectionString = $"Data Source=microsoft-mssql-server-linux;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={pw};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+            };
+
+            DataService = new MssqlTestDataService(ServiceOptions, null);
         }
 
         /// <summary>   (Unit Test Method) can check apply migrations.</summary>
-        //[TestInitialize]
+        [TestInitialize]
         public void CanCheckApplyMigrations()
         {
             AssertDbAvailable();
