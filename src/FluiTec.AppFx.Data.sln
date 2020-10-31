@@ -67,11 +67,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "Integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests", "tests\FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests\FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests.csproj", "{E783085C-6A0A-400F-802D-8D3E8155AE2A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.TestLibrary", "FluiTec.AppFx.Data.TestLibrary\FluiTec.AppFx.Data.TestLibrary.csproj", "{C7416E7A-1537-4E89-92AD-5F58A3F09A76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests", "tests\FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests\FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests.csproj", "{36103A35-54A8-4A97-B5A5-DBBD576EFA97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests", "tests\FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests\FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests.csproj", "{36103A35-54A8-4A97-B5A5-DBBD576EFA97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests", "tests\FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests\FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests.csproj", "{04A5445D-EAE7-408C-9C04-12890450DE9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests", "tests\FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests\FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests.csproj", "{04A5445D-EAE7-408C-9C04-12890450DE9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.TestLibrary", "tests\FluiTec.AppFx.Data.TestLibrary\FluiTec.AppFx.Data.TestLibrary.csproj", "{95091E97-6089-4BC1-92C1-28704517C115}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -163,10 +163,6 @@ Global
 		{E783085C-6A0A-400F-802D-8D3E8155AE2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E783085C-6A0A-400F-802D-8D3E8155AE2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E783085C-6A0A-400F-802D-8D3E8155AE2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7416E7A-1537-4E89-92AD-5F58A3F09A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7416E7A-1537-4E89-92AD-5F58A3F09A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7416E7A-1537-4E89-92AD-5F58A3F09A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7416E7A-1537-4E89-92AD-5F58A3F09A76}.Release|Any CPU.Build.0 = Release|Any CPU
 		{36103A35-54A8-4A97-B5A5-DBBD576EFA97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{36103A35-54A8-4A97-B5A5-DBBD576EFA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36103A35-54A8-4A97-B5A5-DBBD576EFA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -175,6 +171,10 @@ Global
 		{04A5445D-EAE7-408C-9C04-12890450DE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04A5445D-EAE7-408C-9C04-12890450DE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04A5445D-EAE7-408C-9C04-12890450DE9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95091E97-6089-4BC1-92C1-28704517C115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95091E97-6089-4BC1-92C1-28704517C115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95091E97-6089-4BC1-92C1-28704517C115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95091E97-6089-4BC1-92C1-28704517C115}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -195,9 +195,9 @@ Global
 		{C48D1A07-8AC0-4FEB-81F7-F619E2695D92} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
 		{17BC261F-A065-4C48-B33C-2F7D4A6CFC59} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
 		{E783085C-6A0A-400F-802D-8D3E8155AE2A} = {17BC261F-A065-4C48-B33C-2F7D4A6CFC59}
-		{C7416E7A-1537-4E89-92AD-5F58A3F09A76} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
 		{36103A35-54A8-4A97-B5A5-DBBD576EFA97} = {17BC261F-A065-4C48-B33C-2F7D4A6CFC59}
 		{04A5445D-EAE7-408C-9C04-12890450DE9B} = {17BC261F-A065-4C48-B33C-2F7D4A6CFC59}
+		{95091E97-6089-4BC1-92C1-28704517C115} = {262E075C-FE74-4B7C-B3C4-EBA94287E60B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {132CEE37-A97D-40BB-90D5-CEEE78D7BB25}
