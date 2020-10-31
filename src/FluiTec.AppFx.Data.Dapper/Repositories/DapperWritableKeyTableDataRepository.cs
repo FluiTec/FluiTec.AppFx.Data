@@ -89,7 +89,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
             }
             else
             {
-                if ((object)entity.Id == GetDefault(typeof(TKey)))
+                if (entity.Id.Equals(GetDefault(typeof(TKey))))
                     throw new InvalidOperationException("EntityKey must be set to a non default value.");
                 UnitOfWork.Connection.Insert(entity, UnitOfWork.Transaction);
             }
