@@ -6,9 +6,9 @@ stages:
     - integrationtest
 
 services:
-    - postgres:latest #Hostname: postgres
-    - microsoft/mssql-server-linux:latest #Hostname: microsoft-mssql-server-linux
-    - mysql:latest #Hostname: mysql
+    - postgres:latest                       #Hostname: postgres
+    - microsoft/mssql-server-linux:latest   #Hostname: microsoft-mssql-server-linux
+    - mysql:latest                          #Hostname: mysql
 
 variables:
     srcDir: "src"
@@ -31,13 +31,13 @@ variables:
 before_script:
     - git submodule sync --recursive
     - git submodule update --init --recursive
-    - "cd $srcDir"
-    - "dotnet restore --verbosity minimal"
+    - cd $srcDir
+    - dotnet restore --verbosity minimal
 
 build:
     stage: build
     script:
-        - "dotnet build --no-restore"
+        - dotnet build --no-restore
         
 unittest:
     stage: unittest
