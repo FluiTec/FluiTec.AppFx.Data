@@ -12,16 +12,8 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
     [TestCategory("Integration")]
     public class MssqlTest : DbTest
     {
-        /// <summary>   Gets options for controlling the service.</summary>
-        /// <value> Options that control the service.</value>
-        protected sealed override IDapperServiceOptions ServiceOptions { get; }
-
-        /// <summary>   Gets the data service.</summary>
-        /// <value> The data service.</value>
-        protected override ITestDataService DataService { get; }
-
-        /// <summary>   Default constructor.</summary>
-        public MssqlTest()
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
         {
             var pw = Environment.GetEnvironmentVariable("SA_PASSWORD");
 

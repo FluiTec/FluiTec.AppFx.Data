@@ -8,20 +8,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests
 {
+    /// <summary>   (Unit Test Class) a mysql test.</summary>
     [TestClass]
     [TestCategory("Integration")]
     public class MysqlTest : DbTest
     {
-        /// <summary>   Gets options for controlling the service.</summary>
-        /// <value> Options that control the service.</value>
-        protected sealed override IDapperServiceOptions ServiceOptions { get; }
-
-        /// <summary>   Gets the data service.</summary>
-        /// <value> The data service.</value>
-        protected override ITestDataService DataService { get; }
-
-        /// <summary>   Default constructor.</summary>
-        public MysqlTest()
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
         {
             var db = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
             var pw = Environment.GetEnvironmentVariable("MYSQL_ROOT_PASSWORD");

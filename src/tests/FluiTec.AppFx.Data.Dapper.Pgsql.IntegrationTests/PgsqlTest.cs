@@ -13,16 +13,8 @@ namespace FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests
     [TestCategory("Integration")]
     public class PgsqlTest : DbTest
     {
-        /// <summary>   Gets options for controlling the service.</summary>
-        /// <value> Options that control the service.</value>
-        protected sealed override IDapperServiceOptions ServiceOptions { get; }
-
-        /// <summary>   Gets the data service.</summary>
-        /// <value> The data service.</value>
-        protected override ITestDataService DataService { get; }
-
-        /// <summary>   Default constructor.</summary>
-        public PgsqlTest()
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
         {
             var db = Environment.GetEnvironmentVariable("POSTGRES_DB");
             var usr = Environment.GetEnvironmentVariable("POSTGRES_USER");

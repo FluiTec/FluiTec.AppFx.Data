@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Data.Dapper;
+﻿using System;
+using FluiTec.AppFx.Data.Dapper;
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Data.TestLibrary.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,17 +9,41 @@ namespace FluiTec.AppFx.Data.TestLibrary
     /// <summary>   A database test.</summary>
     public abstract class DbTest
     {
+        #region Fields
+
         /// <summary>   Gets a value indicating whether the database is available.</summary>
         /// <value> True if the database is available, false if not.</value>
         protected bool IsDbAvailable => ServiceOptions != null;
 
-        /// <summary>   Gets options for controlling the service.</summary>
-        /// <value> Options that control the service.</value>
-        protected abstract IDapperServiceOptions ServiceOptions { get; }
+        #endregion
 
-        /// <summary>   Gets the data service.</summary>
+        #region Properties
+
+        /// <summary>   Gets or sets options for controlling the service.</summary>
+        /// <value> Options that control the service.</value>
+        protected IDapperServiceOptions ServiceOptions { get; set; }
+
+        /// <summary>   Gets or sets the data service.</summary>
         /// <value> The data service.</value>
-        protected abstract ITestDataService DataService { get; }
+        protected ITestDataService DataService { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>   Specialized default constructor for use only by derived class.</summary>
+        protected DbTest()
+        {
+            // ReSharper disable once VirtualMemberCallInConstructor
+            InitOptionsAndDataService();
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>   Initializes the options and data service.</summary>
+        protected abstract void InitOptionsAndDataService();
 
         /// <summary>   Assert database available.</summary>
         protected void AssertDbAvailable()
@@ -26,7 +51,14 @@ namespace FluiTec.AppFx.Data.TestLibrary
             Assert.IsTrue(IsDbAvailable, "DB NOT AVAILABLE!");
         }
 
+        #endregion
+
+        #region TestMethods
+
         /// <summary>   Can check apply migrations.</summary>
+        /// <remarks>   You need to add [TestInitialize] when inheriting!</remarks>
+        [TestMethod]
+        [TestInitialize]
         public abstract void CanCheckApplyMigrations();
 
         /// <summary>   (Unit Test Method) can create unit of work.</summary>
@@ -94,5 +126,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
 
             Assert.IsNull(dbEntity);
         }
+
+        #endregion
     }
 }
