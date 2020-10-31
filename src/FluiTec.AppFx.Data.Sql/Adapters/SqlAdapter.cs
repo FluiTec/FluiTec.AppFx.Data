@@ -228,6 +228,24 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
             return sb;
         }
 
+        /// <summary>   Renders the property list described by properties.</summary>
+        /// <param name="tableType">    Type of the table. </param>
+        /// <param name="properties">   The properties. </param>
+        /// <returns>   A StringBuilder.</returns>
+        public virtual StringBuilder RenderPropertyList(Type tableType, PropertyInfo[] properties)
+        {
+            RenderTableName("");
+            var sb = new StringBuilder();
+            for (var i = 0; i < properties.Length; i++)
+            {
+                if (i > 0)
+                    sb.Append(", ");
+                sb.Append($"{RenderTableName(tableType)}.{RenderPropertyName(properties[i])}");
+            }
+
+            return sb;
+        }
+
         /// <summary>	Renders the table name described by tableName. </summary>
         /// <param name="tableName">	Name of the table. </param>
         /// <returns>	A string. </returns>

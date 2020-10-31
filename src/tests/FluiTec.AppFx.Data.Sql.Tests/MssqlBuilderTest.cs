@@ -60,6 +60,14 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         }
 
         [TestMethod]
+        public void TestRenderPropertyListWithTable()
+        {
+            var properties = typeof(Dummy).GetProperties();
+            var renderedList = _connection.GetBuilder().Adapter.RenderPropertyList(typeof(Dummy), properties);
+            Assert.AreEqual("[dbo].[Dummy].[Id], [dbo].[Dummy].[Name]", renderedList.ToString());
+        }
+
+        [TestMethod]
         public void SelectByFilterTest()
         {
             var sql = _connection.GetBuilder().SelectByFilter(typeof(Dummy), nameof(Dummy.Name));
