@@ -1,4 +1,5 @@
 ﻿using FluentMigrator;
+using FluiTec.AppFx.Data.Dapper.Extensions;
 using FluiTec.AppFx.Data.Dapper.Migration;
 
 namespace DynamicSample.Data.Schema.Migrations
@@ -12,14 +13,13 @@ namespace DynamicSample.Data.Schema.Migrations
         {
             IfDatabase(MigrationDatabaseName.Mssql, MigrationDatabaseName.Pgsql)
                 .Create
-                .Table(SchemaGlobals.DummyTable)
-                .InSchema(SchemaGlobals.Schema)
+                .Table(SchemaGlobals.Schema, SchemaGlobals.DummyTable, true)
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn("Name").AsString().Nullable();
 
             IfDatabase(MigrationDatabaseName.Mysql)
                 .Create
-                .Table($"{SchemaGlobals.Schema}_{SchemaGlobals.DummyTable}")
+                .Table(SchemaGlobals.Schema, SchemaGlobals.DummyTable, true)
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn("Name").AsString().Nullable();
         }
@@ -29,12 +29,11 @@ namespace DynamicSample.Data.Schema.Migrations
         {
             IfDatabase(MigrationDatabaseName.Mssql, MigrationDatabaseName.Pgsql)
                 .Delete
-                .Table(SchemaGlobals.DummyTable)
-                .InSchema(SchemaGlobals.Schema);
+                .Table(SchemaGlobals.Schema, SchemaGlobals.DummyTable, true);
 
             IfDatabase(MigrationDatabaseName.Mysql)
                 .Delete
-                .Table($"{SchemaGlobals.Schema}_{SchemaGlobals.DummyTable}");
+                .Table(SchemaGlobals.Schema, SchemaGlobals.DummyTable, true);
         }
     }
 }
