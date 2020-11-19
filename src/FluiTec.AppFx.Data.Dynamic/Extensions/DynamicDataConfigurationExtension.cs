@@ -4,6 +4,7 @@ using FluiTec.AppFx.Data.Dapper.Mysql;
 using FluiTec.AppFx.Data.Dapper.Pgsql;
 using FluiTec.AppFx.Data.Dapper.SqLite;
 using FluiTec.AppFx.Data.DataServices;
+using FluiTec.AppFx.Data.Dynamic;
 using FluiTec.AppFx.Data.Dynamic.Configuration;
 using FluiTec.AppFx.Data.LiteDb;
 using FluiTec.AppFx.Options.Managers;
@@ -66,6 +67,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 if (dynamicOptions.AutoMigrate && service.SupportsMigration)
                     service.GetMigrator().Migrate();
+                else if (service.SupportsMigration && !dynamicOptions.AutoMigrate)
+                {
+                    var migrator = service.GetMigrator();
+                    if (migrator.CurrentVersion != migrator.MaximumVersion)
+                        throw new DataMigrationException(migrator.CurrentVersion, migrator.MaximumVersion, service.GetType());
+                }
 
                 return service;
             });
