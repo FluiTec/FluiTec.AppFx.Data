@@ -27,7 +27,9 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
         protected BaseDapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) :
             base(loggerFactory)
         {
-            DapperExtensions.InstallDateTimeOffsetMapper();
+            // ReSharper disable once VirtualMemberCallInConstructor
+            if (SqlType == SqlType.Mysql)
+                DapperExtensions.InstallDateTimeOffsetMapper();
 
             if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
             ConnectionString = dapperServiceOptions.ConnectionString;

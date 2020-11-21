@@ -25,6 +25,8 @@ namespace FluiTec.AppFx.Data.Dapper.Extensions
                     parameter.Value = value.UtcDateTime;
                     break;
                 case DbType.Object:
+                    parameter.Value = value.UtcDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    break;
                 case DbType.String:
                 case DbType.DateTimeOffset:
                     parameter.Value = value;
@@ -47,7 +49,7 @@ namespace FluiTec.AppFx.Data.Dapper.Extensions
             switch (value)
             {
                 case DateTime time:
-                    return new DateTimeOffset(DateTime.SpecifyKind(time, DateTimeKind.Utc), TimeSpan.Zero);
+                    return new DateTimeOffset(time.Add(TimeZoneInfo.Local.BaseUtcOffset), TimeZoneInfo.Local.BaseUtcOffset);
                 case DateTimeOffset dto:
                     return dto;
                 default:
