@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Data.Dapper;
+﻿using System.Linq;
+using FluiTec.AppFx.Data.Dapper;
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Data.TestLibrary.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -118,6 +119,66 @@ namespace FluiTec.AppFx.Data.TestLibrary
             var dbEntity = uow.DummyRepository.Get(entity.Id);
 
             Assert.IsNull(dbEntity);
+        }
+
+        /// <summary>   (Unit Test Method) can get all.</summary>
+        [TestMethod]
+        public void CanGetAll()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var entity1 = uow.DummyRepository.Add(new DummyEntity { Name = "Test1" });
+            var entity2 = uow.DummyRepository.Add(new DummyEntity { Name = "Test2" });
+
+            var dbCount = uow.DummyRepository.GetAll().Count();
+
+            Assert.AreEqual(2, dbCount);
+        }
+
+        /// <summary>   (Unit Test Method) can get all asynchronous.</summary>
+        [TestMethod]
+        public void CanGetAllAsync()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var entity1 = uow.DummyRepository.Add(new DummyEntity { Name = "Test1" });
+            var entity2 = uow.DummyRepository.Add(new DummyEntity { Name = "Test2" });
+
+            var dbCount = uow.DummyRepository.GetAllAsync().Result.Count();
+
+            Assert.AreEqual(2, dbCount);
+        }
+
+        /// <summary>   (Unit Test Method) can count.</summary>
+        [TestMethod]
+        public void CanCount()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var entity1 = uow.DummyRepository.Add(new DummyEntity { Name = "Test1" });
+            var entity2 = uow.DummyRepository.Add(new DummyEntity { Name = "Test2" });
+
+            var dbCount = uow.DummyRepository.Count();
+
+            Assert.AreEqual(2, dbCount);
+        }
+
+        /// <summary>   (Unit Test Method) can count asynchronous.</summary>
+        [TestMethod]
+        public void CanCountAsync()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var entity1 = uow.DummyRepository.Add(new DummyEntity { Name = "Test1" });
+            var entity2 = uow.DummyRepository.Add(new DummyEntity { Name = "Test2" });
+
+            var dbCount = uow.DummyRepository.CountAsync().Result;
+
+            Assert.AreEqual(2, dbCount);
         }
 
         #endregion

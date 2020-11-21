@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Dapper;
 using FluiTec.AppFx.Data.Entities;
 
@@ -30,6 +30,20 @@ namespace FluiTec.AppFx.Data.Sql
             var sql = connection.GetBuilder().SelectAll(typeof(TEntity));
             OnSqlGenerated(sql);
             return connection.Query<TEntity>(sql, null, transaction, commandTimeout: commandTimeout);
+        }
+
+        /// <summary>   An IDbConnection extension method that gets all asynchronous.</summary>
+        /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+        /// <param name="connection">       The connection to act on. </param>
+        /// <param name="transaction">      (Optional) The transaction. </param>
+        /// <param name="commandTimeout">   (Optional) The command timeout. </param>
+        /// <returns>   all async&lt; t entity&gt;</returns>
+        public static Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(this IDbConnection connection,
+            IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            var sql = connection.GetBuilder().SelectAll(typeof(TEntity));
+            OnSqlGenerated(sql);
+            return connection.QueryAsync<TEntity>(sql, null, transaction, commandTimeout);
         }
 
         /// <summary>	An IDbConnection extension method that gets. </summary>

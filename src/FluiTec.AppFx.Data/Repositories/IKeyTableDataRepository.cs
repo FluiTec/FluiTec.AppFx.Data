@@ -6,7 +6,7 @@ namespace FluiTec.AppFx.Data.Repositories
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <typeparam name="TKey">The type of the key.</typeparam>
     /// <seealso cref="FluiTec.AppFx.Data.Repositories.ITableDataRepository{TEntity}" />
-    public interface IKeyTableDataRepository<out TEntity, in TKey> : ITableDataRepository<TEntity>
+    public interface IKeyTableDataRepository<TEntity, in TKey> : ITableDataRepository<TEntity>
         where TEntity : class, IKeyEntity<TKey>, new()
     {
         /// <summary>	Gets an entity using the given identifier. </summary>
