@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
@@ -88,12 +89,29 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
             return UnitOfWork.Connection.GetAll<TEntity>(UnitOfWork.Transaction);
         }
 
+        /// <summary>   Gets all asynchronous.</summary>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process all items in this collection.
+        /// </returns>
+        public virtual Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return UnitOfWork.Connection.GetAllAsync<TEntity>(UnitOfWork.Transaction);
+        }
+
         /// <summary>   Gets the count. </summary>
         /// <returns>   An int. </returns>
         public virtual int Count()
         {
             var command = $"SELECT COUNT(*) FROM {TableName}";
             return UnitOfWork.Connection.ExecuteScalar<int>(command, null, UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Count asynchronous.</summary>
+        /// <returns>   The count.</returns>
+        public virtual Task<int> CountAsync()
+        {
+            var command = $"SELECT COUNT(*) FROM {TableName}";
+            return UnitOfWork.Connection.ExecuteScalarAsync<int>(command, null, UnitOfWork.Transaction);
         }
 
         #endregion

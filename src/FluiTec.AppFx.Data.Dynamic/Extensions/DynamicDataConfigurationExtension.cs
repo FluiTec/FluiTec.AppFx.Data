@@ -66,12 +66,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 var service = dataServiceProvider(dynamicOptions, provider);
 
                 if (dynamicOptions.AutoMigrate && service.SupportsMigration)
+                {
                     service.GetMigrator().Migrate();
+                }
                 else if (service.SupportsMigration && !dynamicOptions.AutoMigrate)
                 {
                     var migrator = service.GetMigrator();
                     if (migrator.CurrentVersion != migrator.MaximumVersion)
-                        throw new DataMigrationException(migrator.CurrentVersion, migrator.MaximumVersion, service.GetType());
+                        throw new DataMigrationException(migrator.CurrentVersion, migrator.MaximumVersion,
+                            service.GetType());
                 }
 
                 return service;

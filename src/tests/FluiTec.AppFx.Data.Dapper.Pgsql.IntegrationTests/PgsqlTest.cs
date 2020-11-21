@@ -3,6 +3,7 @@ using System.IO;
 using FluiTec.AppFx.Data.TestLibrary;
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Options.Helpers;
+using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -40,7 +41,7 @@ namespace FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests
                         .AddJsonFile("appsettings.integration.secret.json", true, true)
                         .Build();
 
-                    var manager = new Options.Managers.ConfigurationManager(config);
+                    var manager = new ConfigurationManager(config);
                     var pgsqlOptions = manager.ExtractSettings<PgsqlDapperServiceOptions>();
 
                     ServiceOptions = new PgsqlDapperServiceOptions

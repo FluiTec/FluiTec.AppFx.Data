@@ -6,6 +6,5 @@ namespace FluiTec.AppFx.Data.TestLibrary.Configuration
     [ConfigurationKey("Mysql")]
     public class MysqlAdminOption : DbAdminOptions
     {
-
     }
 }

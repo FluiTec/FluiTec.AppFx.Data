@@ -13,6 +13,10 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         {
         }
 
+        /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
+        /// <value> True if supports date time offset, false if not. </value>
+        public override bool SupportsDateTimeOffset => true;
+
         /// <summary>	Gets automatic key statement. </summary>
         /// <param name="propertyInfo">	Information describing the property. </param>
         /// <returns>	The automatic key statement. </returns>
@@ -66,9 +70,5 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         {
             return $"{RenderPropertyName(propertyInfo)} = ANY(@{collectionName})";
         }
-
-        /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
-        /// <value> True if supports date time offset, false if not. </value>
-        public override bool SupportsDateTimeOffset => true;
     }
 }

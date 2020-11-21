@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
@@ -97,6 +98,41 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
             return entity;
         }
 
+        /// <summary>   Adds entity.</summary>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown when the requested operation is
+        ///     invalid.
+        /// </exception>
+        /// <param name="entity">   The entity to add. </param>
+        /// <returns>   A TEntity.</returns>
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
+        {
+            if (entity is ITimeStampedKeyEntity stampedEntity)
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
+
+            if (ExpectIdentityKey)
+            {
+                if (_supportedIdentityTypes.Contains(typeof(TKey)))
+                {
+                    var lkey = await UnitOfWork.Connection.InsertAutoAsync(entity, UnitOfWork.Transaction);
+                    entity.Id = GetKey(lkey);
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        $"Type \"{typeof(TKey)}\" is not supported for InsertAuto. Use ExpectIdentityKey=false and set a key!");
+                }
+            }
+            else
+            {
+                if (entity.Id.Equals(GetDefault(typeof(TKey))))
+                    throw new InvalidOperationException("EntityKey must be set to a non default value.");
+                await UnitOfWork.Connection.InsertAsync(entity, UnitOfWork.Transaction);
+            }
+
+            return entity;
+        }
+
         /// <summary>   Adds a range of entities. </summary>
         /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
         public virtual void AddRange(IEnumerable<TEntity> entities)
@@ -107,7 +143,51 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
                 if (entity is ITimeStampedKeyEntity stampedEntity)
                     stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
-            UnitOfWork.Connection.InsertAutoMultiple(keyEntities, UnitOfWork.Transaction);
+            if (ExpectIdentityKey)
+            {
+                if (_supportedIdentityTypes.Contains(typeof(TKey)))
+                    UnitOfWork.Connection.InsertAutoMultiple(keyEntities, UnitOfWork.Transaction);
+                else
+                    throw new InvalidOperationException(
+                        $"Type \"{typeof(TKey)}\" is not supported for InsertAuto. Use ExpectIdentityKey=false and set a key!");
+            }
+            else
+            {
+                if (keyEntities.Any(e => e.Id.Equals(GetDefault(typeof(TKey)))))
+                    throw new InvalidOperationException("EntityKey must be set to a non default value.");
+                UnitOfWork.Connection.InsertMultiple(keyEntities, UnitOfWork.Transaction);
+            }
+        }
+
+        /// <summary>   Adds a range asynchronous.</summary>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown when the requested operation is
+        ///     invalid.
+        /// </exception>
+        /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
+        /// <returns>   An asynchronous result.</returns>
+        public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities)
+        {
+            var keyEntities = entities as TEntity[] ?? entities.ToArray();
+
+            foreach (var entity in keyEntities)
+                if (entity is ITimeStampedKeyEntity stampedEntity)
+                    stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
+
+            if (ExpectIdentityKey)
+            {
+                if (_supportedIdentityTypes.Contains(typeof(TKey)))
+                    await UnitOfWork.Connection.InsertAutoMultipleAsync(keyEntities, UnitOfWork.Transaction);
+                else
+                    throw new InvalidOperationException(
+                        $"Type \"{typeof(TKey)}\" is not supported for InsertAuto. Use ExpectIdentityKey=false and set a key!");
+            }
+            else
+            {
+                if (keyEntities.Any(e => e.Id.Equals(GetDefault(typeof(TKey)))))
+                    throw new InvalidOperationException("EntityKey must be set to a non default value.");
+                await UnitOfWork.Connection.InsertMultipleAsync(keyEntities, UnitOfWork.Transaction);
+            }
         }
 
         /// <summary>   Updates the given entity. </summary>
@@ -119,28 +199,65 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
             {
                 var originalTimeStamp = stampedEntity.TimeStamp;
                 stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
-                UnitOfWork.Connection.Update(entity, originalTimeStamp, UnitOfWork.Transaction);
-            }
-            else
-            {
-                UnitOfWork.Connection.Update(entity, UnitOfWork.Transaction);
+
+                if (UnitOfWork.Connection.Update(entity, originalTimeStamp, UnitOfWork.Transaction))
+                    return entity;
+                throw new UpdateException(entity);
             }
 
-            return entity;
+            if (UnitOfWork.Connection.Update(entity, UnitOfWork.Transaction))
+                return entity;
+            throw new UpdateException(entity);
+        }
+
+        /// <summary>   Updates the asynchronous described by entity.</summary>
+        /// <param name="entity">   The entity to add. </param>
+        /// <returns>   The update.</returns>
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity)
+        {
+            if (entity is ITimeStampedKeyEntity stampedEntity)
+            {
+                var originalTimeStamp = stampedEntity.TimeStamp;
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
+
+                if (await UnitOfWork.Connection.UpdateAsync(entity, originalTimeStamp, UnitOfWork.Transaction))
+                    return entity;
+                throw new UpdateException(entity);
+            }
+
+            if (await UnitOfWork.Connection.UpdateAsync(entity, UnitOfWork.Transaction))
+                return entity;
+            throw new UpdateException(entity);
         }
 
         /// <summary>   Deletes the given ID. </summary>
         /// <param name="id">   The Identifier to delete. </param>
-        public virtual void Delete(TKey id)
+        public virtual bool Delete(TKey id)
         {
-            UnitOfWork.Connection.Delete<TEntity>(id, UnitOfWork.Transaction);
+            return UnitOfWork.Connection.Delete<TEntity>(id, UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Deletes the asynchronous described by ID.</summary>
+        /// <param name="id">   The Identifier to delete. </param>
+        /// <returns>   An asynchronous result.</returns>
+        public virtual Task<bool> DeleteAsync(TKey id)
+        {
+            return UnitOfWork.Connection.DeleteAsync<TEntity>(id, UnitOfWork.Transaction);
         }
 
         /// <summary>   Deletes the given entity. </summary>
         /// <param name="entity">   The entity to add. </param>
-        public virtual void Delete(TEntity entity)
+        public virtual bool Delete(TEntity entity)
         {
-            Delete(entity.Id);
+            return Delete(entity.Id);
+        }
+
+        /// <summary>   Deletes the asynchronous described by ID.</summary>
+        /// <param name="entity">   The entity to add. </param>
+        /// <returns>   The delete.</returns>
+        public virtual Task<bool> DeleteAsync(TEntity entity)
+        {
+            return DeleteAsync(entity.Id);
         }
 
         /// <summary>   Gets a default.</summary>

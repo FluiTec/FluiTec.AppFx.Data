@@ -12,7 +12,7 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
     {
         /// <summary>	The entity name mapper. </summary>
         protected readonly IEntityNameService EntityNameService;
-        
+
         /// <summary>	Specialised constructor for use only by derived class. </summary>
         /// <param name="entityNameService">	The entity name service. </param>
         protected SqlAdapter(IEntityNameService entityNameService)
@@ -79,7 +79,8 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <param name="collectionName">   Name of the collection. </param>
         /// <param name="selectFields">     The select fields. </param>
         /// <returns>   The by filter in statement.</returns>
-        public virtual string GetByFilterInStatement(Type type, string filterProperty, string collectionName, string[] selectFields)
+        public virtual string GetByFilterInStatement(Type type, string filterProperty, string collectionName,
+            string[] selectFields)
         {
             var fProp = SqlCache.TypePropertiesChache(type).Single(pi => pi.Name == filterProperty);
             if (selectFields == null || selectFields.Length < 1)
@@ -141,6 +142,17 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
 
             return
                 $"INSERT INTO {RenderTableName(type)} ({columnList}) VALUES ({parameterList}){GetAutoKeyStatement(key)}";
+        }
+
+        /// <summary>   Gets insert multiple statement.</summary>
+        /// <param name="type"> The type. </param>
+        /// <returns>   The insert multiple statement.</returns>
+        public string GetInsertMultipleStatement(Type type)
+        {
+            var columnList = RenderAutoKeyColumnList(type).ToString();
+            var parameterList = RenderAutoKeyParameterList(type).ToString();
+
+            return $"INSERT INTO {RenderTableName(type)} ({columnList}) VALUES ({parameterList})";
         }
 
         /// <summary>	Gets insert automatic key multiple statement. </summary>

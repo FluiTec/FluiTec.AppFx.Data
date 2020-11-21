@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
@@ -89,11 +90,25 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
             return Collection.FindAll();
         }
 
+        /// <summary>   Gets all asynchronous.</summary>
+        /// <returns>An enumerator that allows foreach to be used to process all items in this collection.</returns>
+        public virtual Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return Task.FromResult(GetAll());
+        }
+
         /// <summary>   Counts the number of records. </summary>
         /// <returns>   An int defining the total number of records. </returns>
         public virtual int Count()
         {
             return Collection.Count();
+        }
+
+        /// <summary>   Count asynchronous.</summary>
+        /// <returns>   The count.</returns>
+        public Task<int> CountAsync()
+        {
+            return Task.FromResult(Count());
         }
 
         #endregion

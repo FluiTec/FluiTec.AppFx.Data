@@ -3,6 +3,7 @@ using System.IO;
 using FluiTec.AppFx.Data.TestLibrary;
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Options.Helpers;
+using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -39,7 +40,7 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
                         .AddJsonFile("appsettings.integration.secret.json", true, true)
                         .Build();
 
-                    var manager = new Options.Managers.ConfigurationManager(config);
+                    var manager = new ConfigurationManager(config);
                     var mssqlOptions = manager.ExtractSettings<MssqlDapperServiceOptions>();
 
                     ServiceOptions = new MssqlDapperServiceOptions
@@ -48,7 +49,7 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
                     };
                     DataService = new MssqlTestDataService(ServiceOptions, null);
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     // ignore
                 }

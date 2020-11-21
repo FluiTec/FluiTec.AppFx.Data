@@ -6,6 +6,7 @@ using FluiTec.AppFx.Data.Dapper.Migration;
 using FluiTec.AppFx.Data.TestLibrary.Configuration;
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Options.Helpers;
+using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -46,7 +47,7 @@ namespace FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests
                         .AddJsonFile("appsettings.integration.secret.json", true, true)
                         .Build();
 
-                    var manager = new Options.Managers.ConfigurationManager(config);
+                    var manager = new ConfigurationManager(config);
                     var options = manager.ExtractSettings<PgsqlAdminOptions>();
                     var pgsqlOptions = manager.ExtractSettings<PgsqlDapperServiceOptions>();
 
@@ -57,7 +58,8 @@ namespace FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests
                     if (string.IsNullOrWhiteSpace(pgsqlOptions.ConnectionString)) return;
 
                     PgsqlAdminHelper.CreateDababase(options.AdminConnectionString, options.IntegrationDb);
-                    PgsqlAdminHelper.CreateUserAndLogin(options.AdminConnectionString, options.IntegrationDb, options.IntegrationUser, options.IntegrationPassword);
+                    PgsqlAdminHelper.CreateUserAndLogin(options.AdminConnectionString, options.IntegrationDb,
+                        options.IntegrationUser, options.IntegrationPassword);
 
                     serviceOptions = new PgsqlDapperServiceOptions
                     {
@@ -74,7 +76,7 @@ namespace FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests
             if (serviceOptions == null || dataService == null) return;
 
             var migrator = new DapperDataMigrator(serviceOptions.ConnectionString,
-                new[] {dataService.GetType().Assembly}, ((IDapperDataService)dataService).MetaData,
+                new[] {dataService.GetType().Assembly}, ((IDapperDataService) dataService).MetaData,
                 builder => builder.AddPostgres());
             migrator.Migrate();
         }
