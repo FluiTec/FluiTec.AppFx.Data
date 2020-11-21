@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluiTec.AppFx.Data.Dapper;
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Data.TestLibrary.Entities;
@@ -75,6 +76,53 @@ namespace FluiTec.AppFx.Data.TestLibrary
             Assert.IsTrue(entity.Id > -1);
         }
 
+        /// <summary>   (Unit Test Method) can create entity asynchronous.</summary>
+        [TestMethod]
+        public void CanCreateEntityAsync()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var entity = uow.DummyRepository.AddAsync(new DummyEntity { Name = "Test" }).Result;
+            Assert.IsTrue(entity.Id > -1);
+        }
+
+        /// <summary>   (Unit Test Method) can create multiple.</summary>
+        [TestMethod]
+        public void CanCreateMultiple()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            uow.DummyRepository.AddRange(new []
+            {
+                new DummyEntity {Name = "Test1"},
+                new DummyEntity {Name = "Test2"}
+            });
+
+            var entities = uow.DummyRepository.GetAll();
+            foreach(var entity in entities)
+                Assert.IsTrue(entity.Id > -1);
+        }
+
+        /// <summary>   (Unit Test Method) can create multiple asynchronous.</summary>
+        [TestMethod]
+        public void CanCreateMultipleAsync()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            uow.DummyRepository.AddRangeAsync(new[]
+            {
+                new DummyEntity {Name = "Test1"},
+                new DummyEntity {Name = "Test2"}
+            }).Wait();
+
+            var entities = uow.DummyRepository.GetAllAsync().Result;
+            foreach (var entity in entities)
+                Assert.IsTrue(entity.Id > -1);
+        }
+
         /// <summary>   (Unit Test Method) can read entity.</summary>
         [TestMethod]
         public void CanReadEntity()
@@ -117,6 +165,50 @@ namespace FluiTec.AppFx.Data.TestLibrary
             Assert.AreEqual(entity.Name, dbEntity.Name);
         }
 
+        /// <summary>   (Unit Test Method) can throw update exception.</summary>
+        [TestMethod]
+        [ExpectedException(typeof(UpdateException))]
+        public void CanThrowUpdateException()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            uow.DummyRepository.Update(new DummyEntity {Id = 100, Name = "Test"});
+        }
+
+        /// <summary>   (Unit Test Method) can throw update exception asynchronous.</summary>
+        [TestMethod]
+        public void CanThrowUpdateExceptionAsync()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            try
+            {
+                var unused = uow.DummyRepository.UpdateAsync(new DummyEntity { Id = 100, Name = "Test" }).Result;
+            }
+            catch (AggregateException e)
+            {
+                Assert.AreEqual(typeof(UpdateException), e.InnerExceptions.Single().GetType());
+            }
+        }
+
+        /// <summary>   (Unit Test Method) can update entity asynchronous.</summary>
+        [TestMethod]
+        public void CanUpdateEntityAsync()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var entity = uow.DummyRepository.AddAsync(new DummyEntity { Name = "Test" }).Result;
+            entity.Name = "Test2";
+
+            uow.DummyRepository.UpdateAsync(entity).Wait();
+
+            var dbEntity = uow.DummyRepository.GetAsync(entity.Id).Result;
+            Assert.AreEqual(entity.Name, dbEntity.Name);
+        }
+
         /// <summary>   (Unit Test Method) can delete entity.</summary>
         [TestMethod]
         public void CanDeleteEntity()
@@ -127,9 +219,60 @@ namespace FluiTec.AppFx.Data.TestLibrary
             var entity = uow.DummyRepository.Add(new DummyEntity { Name = "Test" });
             entity.Name = "Test2";
 
-            uow.DummyRepository.Delete(entity);
+            Assert.IsTrue(uow.DummyRepository.Delete(entity));
 
             var dbEntity = uow.DummyRepository.Get(entity.Id);
+
+            Assert.IsNull(dbEntity);
+        }
+
+        /// <summary>   (Unit Test Method) can delete entity asynchronous.</summary>
+        [TestMethod]
+        public void CanDeleteEntityAsync()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var entity = uow.DummyRepository.AddAsync(new DummyEntity { Name = "Test" }).Result;
+            entity.Name = "Test2";
+
+            Assert.IsTrue(uow.DummyRepository.DeleteAsync(entity).Result);
+
+            var dbEntity = uow.DummyRepository.GetAsync(entity.Id).Result;
+
+            Assert.IsNull(dbEntity);
+        }
+
+        /// <summary>   (Unit Test Method) can delete entity by identifier.</summary>
+        [TestMethod]
+        public void CanDeleteEntityById()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var entity = uow.DummyRepository.Add(new DummyEntity { Name = "Test" });
+            entity.Name = "Test2";
+
+            Assert.IsTrue(uow.DummyRepository.Delete(entity.Id));
+
+            var dbEntity = uow.DummyRepository.Get(entity.Id);
+
+            Assert.IsNull(dbEntity);
+        }
+
+        /// <summary>   (Unit Test Method) can delete entity by identifier asynchronous.</summary>
+        [TestMethod]
+        public void CanDeleteEntityByIdAsync()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var entity = uow.DummyRepository.AddAsync(new DummyEntity { Name = "Test" }).Result;
+            entity.Name = "Test2";
+
+            Assert.IsTrue(uow.DummyRepository.DeleteAsync(entity.Id).Result);
+
+            var dbEntity = uow.DummyRepository.GetAsync(entity.Id).Result;
 
             Assert.IsNull(dbEntity);
         }

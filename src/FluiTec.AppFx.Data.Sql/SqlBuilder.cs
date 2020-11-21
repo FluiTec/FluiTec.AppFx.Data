@@ -68,6 +68,10 @@ namespace FluiTec.AppFx.Data.Sql
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _insertAutoKeyQueries =
             new ConcurrentDictionary<RuntimeTypeHandle, string>();
 
+        /// <summary>	The insert multiple queries. </summary>
+        private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _insertMultipleQueries =
+            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+
         /// <summary>	The insert automatic multiple queries. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _insertAutoMultipleQueries =
             new ConcurrentDictionary<RuntimeTypeHandle, string>();
@@ -227,6 +231,24 @@ namespace FluiTec.AppFx.Data.Sql
 
             // add statement to cache
             _insertAutoKeyQueries.TryAdd(type.TypeHandle, sql);
+
+            // return statement
+            return sql;
+        }
+
+        /// <summary>   Inserts a multiple described by type.</summary>
+        /// <param name="type"> The type. </param>
+        /// <returns>   A string.</returns>
+        public string InsertMultiple(Type type)
+        {
+            // try to find statement in cache and return it
+            if (_insertMultipleQueries.TryGetValue(type.TypeHandle, out var sql)) return sql;
+
+            // generate statement
+            sql = Adapter.GetInsertMultipleStatement(type);
+
+            // add statement to cache
+            _insertMultipleQueries.TryAdd(type.TypeHandle, sql);
 
             // return statement
             return sql;

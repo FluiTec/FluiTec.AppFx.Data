@@ -32,11 +32,16 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <returns>	The insert automatic key statement. </returns>
         string GetInsertAutoKeyStatement(Type type);
 
+        /// <summary>   Gets insert multiple statement.</summary>
+        /// <param name="type"> The type. </param>
+        /// <returns>   The insert multiple statement.</returns>
+        string GetInsertMultipleStatement(Type type);
+
         /// <summary>	Gets insert automatic key multiple statement. </summary>
         /// <param name="type">	The type. </param>
         /// <returns>	The insert automatic key multiple statement. </returns>
         string GetInsertAutoKeyMultipleStatement(Type type);
-
+        
         /// <summary>	Gets update statement. </summary>
         /// <param name="type">	The type. </param>
         /// <returns>	The update statement. </returns>

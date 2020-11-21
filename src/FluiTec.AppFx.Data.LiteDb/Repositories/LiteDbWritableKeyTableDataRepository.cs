@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
@@ -57,6 +58,18 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
             return entity;
         }
 
+        /// <summary>   Adds entity.</summary>
+        /// <param name="entity">   The entity to add. </param>
+        /// <returns>   A TEntity.</returns>
+        public virtual Task<TEntity> AddAsync(TEntity entity)
+        {
+            if (entity is ITimeStampedKeyEntity stampedEntity)
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
+
+            entity.Id = GetKey(Collection.Insert(entity));
+            return Task.FromResult(entity);
+        }
+
         /// <summary>   Adds a range of entities. </summary>
         /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
         public virtual void AddRange(IEnumerable<TEntity> entities)
@@ -69,6 +82,15 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
 
             foreach (var entity in keyEntities)
                 Collection.Insert(entity);
+        }
+
+        /// <summary>   Adds a range asynchronous.</summary>
+        /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
+        /// <returns>   An asynchronous result.</returns>
+        public virtual Task AddRangeAsync(IEnumerable<TEntity> entities)
+        {
+            AddRange(entities);
+            return Task.CompletedTask;
         }
 
         /// <summary>   Updates the given entity. </summary>
@@ -93,18 +115,42 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
             return entity;
         }
 
+        /// <summary>   Updates the asynchronous described by entity.</summary>
+        /// <param name="entity">   The entity to add. </param>
+        /// <returns>   The update.</returns>
+        public Task<TEntity> UpdateAsync(TEntity entity)
+        {
+            return Task.FromResult(Update(entity));
+        }
+
         /// <summary>   Deletes the given ID. </summary>
         /// <param name="id">   The Identifier to delete. </param>
-        public virtual void Delete(TKey id)
+        public virtual bool Delete(TKey id)
         {
-            Collection.Delete(GetBsonKey(id));
+            return Collection.Delete(GetBsonKey(id));
+        }
+
+        /// <summary>   Deletes the asynchronous described by ID.</summary>
+        /// <param name="id">   The Identifier to delete. </param>
+        /// <returns>   The delete.</returns>
+        public virtual Task<bool> DeleteAsync(TKey id)
+        {
+            return Task.FromResult(Delete(id));
         }
 
         /// <summary>   Deletes the given entity. </summary>
         /// <param name="entity">   The entity to add. </param>
-        public virtual void Delete(TEntity entity)
+        public virtual bool Delete(TEntity entity)
         {
-            Collection.Delete(GetBsonKey(entity.Id));
+            return Collection.Delete(GetBsonKey(entity.Id));
+        }
+
+        /// <summary>   Deletes the asynchronous described by ID.</summary>
+        /// <param name="entity">   The entity to add. </param>
+        /// <returns>   The delete.</returns>
+        public virtual Task<bool> DeleteAsync(TEntity entity)
+        {
+            return Task.FromResult(Delete(entity));
         }
 
         #endregion

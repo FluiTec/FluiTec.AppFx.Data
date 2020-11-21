@@ -143,6 +143,17 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
                 $"INSERT INTO {RenderTableName(type)} ({columnList}) VALUES ({parameterList}){GetAutoKeyStatement(key)}";
         }
 
+        /// <summary>   Gets insert multiple statement.</summary>
+        /// <param name="type"> The type. </param>
+        /// <returns>   The insert multiple statement.</returns>
+        public string GetInsertMultipleStatement(Type type)
+        {
+            var columnList = RenderAutoKeyColumnList(type).ToString();
+            var parameterList = RenderAutoKeyParameterList(type).ToString();
+
+            return $"INSERT INTO {RenderTableName(type)} ({columnList}) VALUES ({parameterList})";
+        }
+
         /// <summary>	Gets insert automatic key multiple statement. </summary>
         /// <param name="type">	The type. </param>
         /// <returns>	The insert automatic key multiple statement. </returns>
