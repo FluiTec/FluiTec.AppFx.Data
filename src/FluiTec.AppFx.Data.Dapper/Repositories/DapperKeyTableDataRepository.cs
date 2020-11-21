@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
+﻿using System.Threading.Tasks;
+using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Data.Sql;
@@ -27,6 +28,14 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         public virtual TEntity Get(TKey id)
         {
             return UnitOfWork.Connection.Get<TEntity>(id, UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Gets an entity asynchronous.</summary>
+        /// <param name="id">   The Identifier to use. </param>
+        /// <returns>	A TEntity. </returns>
+        public Task<TEntity> GetAsync(TKey id)
+        {
+            return UnitOfWork.Connection.GetAsync<TEntity>(id, UnitOfWork.Transaction);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Data.Entities;
+﻿using System.Threading.Tasks;
+using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
 using LiteDB;
@@ -33,6 +34,14 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         public virtual TEntity Get(TKey id)
         {
             return Collection.FindById(GetBsonKey(id));
+        }
+
+        /// <summary>   Gets an entity asynchronous.</summary>
+        /// <param name="id">   The Identifier to use. </param>
+        /// <returns>   A TEntity.</returns>
+        public virtual Task<TEntity> GetAsync(TKey id)
+        {
+            return Task.FromResult(Get(id));
         }
 
         #endregion

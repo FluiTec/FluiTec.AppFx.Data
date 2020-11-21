@@ -64,8 +64,29 @@ namespace FluiTec.AppFx.Data.Sql
 
             var parameters = new DynamicParameters();
             parameters.Add(builder.KeyParameter(type), id);
-            return connection.Query<TEntity>(sql, parameters, transaction, commandTimeout: commandTimeout)
-                .SingleOrDefault();
+            return connection.QuerySingle<TEntity>(sql, parameters, transaction, commandTimeout: commandTimeout);
+        }
+
+        /// <summary>   An IDbConnection extension method that gets an asynchronous.</summary>
+        /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+        /// <param name="connection">       The connection to act on. </param>
+        /// <param name="id">               The identifier. </param>
+        /// <param name="transaction">      (Optional) The transaction. </param>
+        /// <param name="commandTimeout">   (Optional) The command timeout. </param>
+        /// <returns>   The async&lt; t entity&gt;</returns>
+        public static Task<TEntity> GetAsync<TEntity>(this IDbConnection connection, dynamic id,
+            IDbTransaction transaction = null,
+            int? commandTimeout = null) where TEntity : class
+        {
+            var type = typeof(TEntity);
+
+            var builder = connection.GetBuilder();
+            var sql = builder.SelectByKey(type);
+            OnSqlGenerated(sql);
+
+            var parameters = new DynamicParameters();
+            parameters.Add(builder.KeyParameter(type), id);
+            return connection.QuerySingleAsync<TEntity>(sql, parameters, transaction, commandTimeout: commandTimeout);
         }
 
         /// <summary>   An IDbConnection extension method that inserts.</summary>

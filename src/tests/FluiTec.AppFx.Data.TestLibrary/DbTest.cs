@@ -88,6 +88,19 @@ namespace FluiTec.AppFx.Data.TestLibrary
             Assert.AreEqual(entity.Name, dbEntity.Name);
         }
 
+        /// <summary>   (Unit Test Method) can read entity asynchronous.</summary>
+        [TestMethod]
+        public void CanReadEntityAsync()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var entity = uow.DummyRepository.Add(new DummyEntity { Name = "Test" });
+            var dbEntity = uow.DummyRepository.GetAsync(entity.Id).Result;
+
+            Assert.AreEqual(entity.Name, dbEntity.Name);
+        }
+
         /// <summary>   (Unit Test Method) can update entity.</summary>
         [TestMethod]
         public void CanUpdateEntity()

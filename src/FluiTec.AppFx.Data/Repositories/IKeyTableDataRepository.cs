@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Data.Entities;
+﻿using System.Threading.Tasks;
+using FluiTec.AppFx.Data.Entities;
 
 namespace FluiTec.AppFx.Data.Repositories
 {
@@ -13,5 +14,10 @@ namespace FluiTec.AppFx.Data.Repositories
         /// <param name="id">	The Identifier to use. </param>
         /// <returns>	A TEntity. </returns>
         TEntity Get(TKey id);
+
+        /// <summary>   Gets an entity asynchronous.</summary>
+        /// <param name="id">   The Identifier to use. </param>
+        /// <returns>	A TEntity. </returns>
+        Task<TEntity> GetAsync(TKey id);
     }
 }
