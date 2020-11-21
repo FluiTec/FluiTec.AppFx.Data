@@ -45,6 +45,10 @@ namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork
         /// <value> The transaction. </value>
         public IDbTransaction Transaction { get; private set; }
 
+        /// <summary>   Gets or sets the dapper data service.</summary>
+        /// <value> The dapper data service.</value>
+        public IDapperDataService DapperDataService { get; private set; }
+
         #endregion
 
         #region Constructors
@@ -55,6 +59,8 @@ namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork
         public DapperUnitOfWork(IDapperDataService dataService, ILogger<IUnitOfWork> logger)
             : base(dataService, logger)
         {
+            DapperDataService = dataService;
+
             // create and open connection
             Connection = dataService.ConnectionFactory.CreateConnection(dataService.ConnectionString);
             Connection.Open();
@@ -75,6 +81,8 @@ namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork
             ILogger<IUnitOfWork> logger)
             : base(dataService, logger)
         {
+            DapperDataService = dataService as IDapperDataService;
+
             if (parentUnitOfWork == null) throw new ArgumentNullException(nameof(parentUnitOfWork));
             _ownsConnection = false;
             Connection = parentUnitOfWork.Connection;

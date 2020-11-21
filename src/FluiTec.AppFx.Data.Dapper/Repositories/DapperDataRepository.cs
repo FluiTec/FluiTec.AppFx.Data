@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -12,7 +13,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
 {
     /// <summary>   A dapper data repository. </summary>
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>
+    public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, IRepositoryCommandCache
         where TEntity : class, IEntity, new()
     {
         #region Constructors
@@ -78,6 +79,19 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
 
         #endregion
 
+        #region IRepositoryCommandCache
+
+        /// <summary>   Gets from cache.</summary>
+        /// <param name="commandFunc">  The command function. </param>
+        /// <param name="memberName">   Name of the member. </param>
+        /// <returns>   The data that was read from the cache.</returns>
+        public string GetFromCache(Func<string> commandFunc, [CallerMemberName] string memberName = null)
+        {
+            return UnitOfWork.DapperDataService.GetFromCache(GetType(), memberName, commandFunc);
+        }
+
+        #endregion
+
         #region IDataRepository
 
         /// <summary>   Gets all entities in this collection. </summary>
@@ -102,7 +116,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         /// <returns>   An int. </returns>
         public virtual int Count()
         {
-            var command = $"SELECT COUNT(*) FROM {TableName}";
+            var command = GetFromCache(() => $"SELECT COUNT(*) FROM {TableName}");
             return UnitOfWork.Connection.ExecuteScalar<int>(command, null, UnitOfWork.Transaction);
         }
 
@@ -110,7 +124,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         /// <returns>   The count.</returns>
         public virtual Task<int> CountAsync()
         {
-            var command = $"SELECT COUNT(*) FROM {TableName}";
+            var command = GetFromCache(() => $"SELECT COUNT(*) FROM {TableName}");
             return UnitOfWork.Connection.ExecuteScalarAsync<int>(command, null, UnitOfWork.Transaction);
         }
 

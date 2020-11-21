@@ -5,7 +5,7 @@ using FluiTec.AppFx.Data.Migration;
 namespace FluiTec.AppFx.Data.Dapper.DataServices
 {
     /// <summary>   Interface for dapper data service. </summary>
-    public interface IDapperDataService : IDataService
+    public interface IDapperDataService : IDataService, ICommandCache
     {
         /// <summary>   Gets the connection factory. </summary>
         /// <value> The connection factory. </value>

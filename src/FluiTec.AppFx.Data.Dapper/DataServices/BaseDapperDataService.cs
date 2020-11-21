@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using FluentMigrator.Runner.VersionTableInfo;
 using FluiTec.AppFx.Data.Dapper.Extensions;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -31,6 +32,7 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
             if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
             ConnectionString = dapperServiceOptions.ConnectionString;
             ConnectionFactory = dapperServiceOptions.ConnectionFactory;
+            CommandCache = new ConcurrentDictionary<string, string>();
         }
 
         #endregion
@@ -52,6 +54,27 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
 
         #endregion
 
+        #region ICommandCache
+
+        /// <summary>   Gets from cache.</summary>
+        /// <param name="repositoryType">   Type of the repository. </param>
+        /// <param name="memberName">       Name of the member. </param>
+        /// <param name="commandFunc">      The command function. </param>
+        /// <returns>   The data that was read from the cache.</returns>
+        public string GetFromCache(Type repositoryType, string memberName, Func<string> commandFunc)
+        {
+            var key = $"{repositoryType.FullName}.{memberName}";
+
+            if (CommandCache.TryGetValue(key, out var result))
+                return result;
+
+            var cmd = commandFunc();
+            CommandCache.TryAdd(key, cmd);
+            return cmd;
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>   Gets the connection factory. </summary>
@@ -61,6 +84,10 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
         /// <summary>   Gets the connection string. </summary>
         /// <value> The connection string. </value>
         public string ConnectionString { get; }
+
+        /// <summary>   Gets the command cache.</summary>
+        /// <value> The command cache.</value>
+        protected ConcurrentDictionary<string, string> CommandCache { get; }
 
         /// <summary>   Gets information describing the meta. </summary>
         /// <value> Information describing the meta. </value>
