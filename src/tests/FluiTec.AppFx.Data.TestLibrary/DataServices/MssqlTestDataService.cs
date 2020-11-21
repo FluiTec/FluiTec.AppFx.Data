@@ -10,7 +10,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServices
         /// <summary>   Constructor.</summary>
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
-        public MssqlTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(dapperServiceOptions, loggerFactory)
+        public MssqlTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(
+            dapperServiceOptions, loggerFactory)
         {
         }
 

@@ -25,7 +25,7 @@ namespace FluiTec.AppFx.Data.Dapper.Tests.Migration
             const int minute = 10;
             const string author = "sample";
 
-            var version =new DateTime(year, month, day, hour, minute, 0).Ticks;
+            var version = new DateTime(year, month, day, hour, minute, 0).Ticks;
 
             var attribute = new DapperMigrationAttribute(year, month, day, hour, minute, author);
             Assert.AreEqual(version, attribute.Version);

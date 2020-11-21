@@ -7,6 +7,10 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
     /// <summary>	Interface for SQL adapter. </summary>
     public interface ISqlAdapter
     {
+        /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
+        /// <value> True if supports date time offset, false if not. </value>
+        bool SupportsDateTimeOffset { get; }
+
         /// <summary>	Select all statement. </summary>
         /// <param name="type">	The type. </param>
         /// <returns>	A string. </returns>
@@ -41,7 +45,7 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <param name="type">	The type. </param>
         /// <returns>	The insert automatic key multiple statement. </returns>
         string GetInsertAutoKeyMultipleStatement(Type type);
-        
+
         /// <summary>	Gets update statement. </summary>
         /// <param name="type">	The type. </param>
         /// <returns>	The update statement. </returns>
@@ -117,9 +121,5 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <param name="propertyName"> Name of the property. </param>
         /// <returns>A string.</returns>
         string RenderPropertyName(string propertyName);
-
-        /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
-        /// <value> True if supports date time offset, false if not. </value>
-        bool SupportsDateTimeOffset { get; }
     }
 }

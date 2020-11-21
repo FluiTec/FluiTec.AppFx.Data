@@ -11,7 +11,6 @@ namespace FluiTec.AppFx.Data.Repositories
     public interface IWritableKeyTableDataRepository<TEntity, in TKey> : IKeyTableDataRepository<TEntity, TKey>
         where TEntity : class, IKeyEntity<TKey>, new()
     {
-
         /// <summary>   Gets or sets a value indicating whether the expect identity key.</summary>
         /// <value> True if expect identity key, false if not.</value>
         bool ExpectIdentityKey { get; set; }
@@ -47,7 +46,7 @@ namespace FluiTec.AppFx.Data.Repositories
         /// <param name="entity">   The entity to add. </param>
         /// <returns>   The update.</returns>
         Task<TEntity> UpdateAsync(TEntity entity);
-        
+
         /// <summary>   Deletes the given ID.</summary>
         /// <param name="id">   The Identifier to delete. </param>
         /// <returns>   True if it succeeds, false if it fails.</returns>

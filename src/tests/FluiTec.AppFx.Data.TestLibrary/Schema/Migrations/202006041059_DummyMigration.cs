@@ -1,5 +1,5 @@
-﻿using FluiTec.AppFx.Data.Dapper.Migration;
-using FluiTec.AppFx.Data.Dapper.Extensions;
+﻿using FluiTec.AppFx.Data.Dapper.Extensions;
+using FluiTec.AppFx.Data.Dapper.Migration;
 
 namespace FluiTec.AppFx.Data.TestLibrary.Schema.Migrations
 {

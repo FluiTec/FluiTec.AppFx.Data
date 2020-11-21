@@ -1,5 +1,4 @@
 ﻿using FluiTec.AppFx.Options.Attributes;
-using Npgsql.TypeHandlers;
 
 namespace FluiTec.AppFx.Data.TestLibrary.Configuration
 {
@@ -7,6 +6,5 @@ namespace FluiTec.AppFx.Data.TestLibrary.Configuration
     [ConfigurationKey("Mssql")]
     public class MssqlAdminOption : DbAdminOptions
     {
-        
     }
 }

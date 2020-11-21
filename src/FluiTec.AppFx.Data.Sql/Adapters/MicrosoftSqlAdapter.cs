@@ -13,6 +13,10 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         {
         }
 
+        /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
+        /// <value> True if supports date time offset, false if not. </value>
+        public override bool SupportsDateTimeOffset => true;
+
         /// <summary>	Renders the table name described by tableName. </summary>
         /// <param name="tableName">	Name of the table. </param>
         /// <returns>	A string. </returns>
@@ -57,9 +61,5 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         {
             return $"[{propertyName}]";
         }
-
-        /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
-        /// <value> True if supports date time offset, false if not. </value>
-        public override bool SupportsDateTimeOffset => true;
     }
 }

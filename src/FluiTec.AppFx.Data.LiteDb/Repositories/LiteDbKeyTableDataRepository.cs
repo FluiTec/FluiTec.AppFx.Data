@@ -26,6 +26,15 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
 
         #endregion
 
+        #region Methods
+
+        /// <summary>	Gets bson key. </summary>
+        /// <param name="key">	The key. </param>
+        /// <returns>	The bson key. </returns>
+        protected abstract BsonValue GetBsonKey(TKey key);
+
+        #endregion
+
         #region IKeyTableDataRepository
 
         /// <summary>   Gets an entity using the given identifier. </summary>
@@ -43,15 +52,6 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         {
             return Task.FromResult(Get(id));
         }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>	Gets bson key. </summary>
-        /// <param name="key">	The key. </param>
-        /// <returns>	The bson key. </returns>
-        protected abstract BsonValue GetBsonKey(TKey key);
 
         #endregion
     }

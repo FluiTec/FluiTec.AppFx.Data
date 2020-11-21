@@ -64,7 +64,7 @@ namespace FluiTec.AppFx.Data.Sql
 
             var parameters = new DynamicParameters();
             parameters.Add(builder.KeyParameter(type), id);
-            return connection.QuerySingleOrDefault<TEntity>(sql, parameters, transaction, commandTimeout: commandTimeout);
+            return connection.QuerySingleOrDefault<TEntity>(sql, parameters, transaction, commandTimeout);
         }
 
         /// <summary>   An IDbConnection extension method that gets an asynchronous.</summary>
@@ -86,7 +86,7 @@ namespace FluiTec.AppFx.Data.Sql
 
             var parameters = new DynamicParameters();
             parameters.Add(builder.KeyParameter(type), id);
-            return connection.QuerySingleOrDefaultAsync<TEntity>(sql, parameters, transaction, commandTimeout: commandTimeout);
+            return connection.QuerySingleOrDefaultAsync<TEntity>(sql, parameters, transaction, commandTimeout);
         }
 
         /// <summary>   An IDbConnection extension method that inserts.</summary>
@@ -178,7 +178,7 @@ namespace FluiTec.AppFx.Data.Sql
             var result = (await multi.ReadAsync()).FirstOrDefault();
             if (result?.Id == null) return 0;
 
-            var id = (int)result.Id;
+            var id = (int) result.Id;
 
             var keyProperty = SqlCache.TypeKeyPropertiesCache(type).Single();
             keyProperty.SetValue(entity, id);
@@ -343,13 +343,9 @@ namespace FluiTec.AppFx.Data.Sql
                 if (p.Value == "@TimeStamp")
                 {
                     if (!builder.Adapter.SupportsDateTimeOffset)
-                    {
                         parameters.Add(p.Value, ((DateTimeOffset) p.Key.GetValue(entity)).UtcDateTime, DbType.DateTime);
-                    }
                     else
-                    {
                         parameters.Add(p.Value, p.Key.GetValue(entity), DbType.DateTimeOffset);
-                    }
                 }
                 else
                 {
@@ -382,13 +378,9 @@ namespace FluiTec.AppFx.Data.Sql
                 if (p.Value == "@TimeStamp")
                 {
                     if (!builder.Adapter.SupportsDateTimeOffset)
-                    {
-                        parameters.Add(p.Value, ((DateTimeOffset)p.Key.GetValue(entity)).UtcDateTime, DbType.DateTime);
-                    }
+                        parameters.Add(p.Value, ((DateTimeOffset) p.Key.GetValue(entity)).UtcDateTime, DbType.DateTime);
                     else
-                    {
                         parameters.Add(p.Value, p.Key.GetValue(entity), DbType.DateTimeOffset);
-                    }
                 }
                 else
                 {

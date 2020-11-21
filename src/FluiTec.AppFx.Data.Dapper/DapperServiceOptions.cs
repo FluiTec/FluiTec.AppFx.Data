@@ -32,7 +32,7 @@ namespace FluiTec.AppFx.Data.Dapper
 
         /// <summary>   Gets the connection string. </summary>
         /// <value> The connection string. </value>
-		[ConfigurationSecret]
+        [ConfigurationSecret]
         public string ConnectionString { get; set; }
     }
 }

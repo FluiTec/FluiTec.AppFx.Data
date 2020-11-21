@@ -18,7 +18,9 @@ namespace FluiTec.AppFx.Data.Dapper.Mysql
                     var createDbSql = $"DROP DATABASE IF EXISTS {dbName};\r\n" +
                                       $"CREATE DATABASE {dbName};";
                     using (var createDbCmd = new MySqlCommand(createDbSql, connection))
+                    {
                         createDbCmd.ExecuteNonQuery();
+                    }
                 }
                 finally
                 {
@@ -42,7 +44,9 @@ namespace FluiTec.AppFx.Data.Dapper.Mysql
                     connection.Open();
                     var createUserSql = $"GRANT ALL ON `{dbName}`.* TO '{userName}'@'%' IDENTIFIED BY '{password}';";
                     using (var createUserCmd = new MySqlCommand(createUserSql, connection))
+                    {
                         createUserCmd.ExecuteNonQuery();
+                    }
                 }
                 finally
                 {

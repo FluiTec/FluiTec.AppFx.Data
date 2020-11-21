@@ -33,7 +33,8 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
 
         /// <summary>   Gets information describing the meta. </summary>
         /// <value> Information describing the meta. </value>
-        public override IVersionTableMetaData MetaData => _metaData ?? (_metaData = new VersionTable(Schema, SupportsSchema()));
+        public override IVersionTableMetaData MetaData =>
+            _metaData ?? (_metaData = new VersionTable(Schema, SupportsSchema()));
 
         /// <summary>   Gets a value indicating whether the supports migration. </summary>
         /// <value> True if supports migration, false if not. </value>

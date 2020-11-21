@@ -18,7 +18,9 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql
                     var createDbSql = $"DROP DATABASE IF EXISTS {dbName};\r\n" +
                                       $"CREATE DATABASE {dbName};";
                     using (var createDbCmd = new SqlCommand(createDbSql, connection))
+                    {
                         createDbCmd.ExecuteNonQuery();
+                    }
                 }
                 finally
                 {
@@ -32,14 +34,15 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql
         /// <param name="dbName">                   Name of the database. </param>
         /// <param name="userName">                 Name of the user. </param>
         /// <param name="password">                 The password. </param>
-        public static void CreateUserAndLogin(string adminConnectionString, string dbName, string userName, string password)
+        public static void CreateUserAndLogin(string adminConnectionString, string dbName, string userName,
+            string password)
         {
             using (var connection = new SqlConnection(adminConnectionString))
             {
                 try
                 {
                     connection.Open();
-                    var createUserSql = $"USE master;\r\n" +
+                    var createUserSql = "USE master;\r\n" +
                                         $"IF NOT EXISTS (SELECT loginname from master.dbo.syslogins where name = '{userName}' and dbname = 'master')\r\n" +
                                         "BEGIN\r\n" +
                                         $"  CREATE LOGIN [{userName}] WITH PASSWORD=N'{password}'\r\n" +

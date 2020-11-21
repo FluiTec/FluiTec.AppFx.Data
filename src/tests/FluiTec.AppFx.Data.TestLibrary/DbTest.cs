@@ -10,6 +10,17 @@ namespace FluiTec.AppFx.Data.TestLibrary
     /// <summary>   A database test.</summary>
     public abstract class DbTest
     {
+        #region Constructors
+
+        /// <summary>   Specialized default constructor for use only by derived class.</summary>
+        protected DbTest()
+        {
+            // ReSharper disable once VirtualMemberCallInConstructor
+            InitOptionsAndDataService();
+        }
+
+        #endregion
+
         #region Fields
 
         /// <summary>   Gets a value indicating whether the database is available.</summary>
@@ -30,17 +41,6 @@ namespace FluiTec.AppFx.Data.TestLibrary
 
         #endregion
 
-        #region Constructors
-
-        /// <summary>   Specialized default constructor for use only by derived class.</summary>
-        protected DbTest()
-        {
-            // ReSharper disable once VirtualMemberCallInConstructor
-            InitOptionsAndDataService();
-        }
-
-        #endregion
-        
         #region Methods
 
         /// <summary>   Initializes the options and data service.</summary>
@@ -72,7 +72,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.DummyRepository.Add(new DummyEntity { Name = "Test" });
+            var entity = uow.DummyRepository.Add(new DummyEntity {Name = "Test"});
             Assert.IsTrue(entity.Id > -1);
         }
 
@@ -83,7 +83,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.DummyRepository.AddAsync(new DummyEntity { Name = "Test" }).Result;
+            var entity = uow.DummyRepository.AddAsync(new DummyEntity {Name = "Test"}).Result;
             Assert.IsTrue(entity.Id > -1);
         }
 
@@ -94,14 +94,14 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            uow.DummyRepository.AddRange(new []
+            uow.DummyRepository.AddRange(new[]
             {
                 new DummyEntity {Name = "Test1"},
                 new DummyEntity {Name = "Test2"}
             });
 
             var entities = uow.DummyRepository.GetAll();
-            foreach(var entity in entities)
+            foreach (var entity in entities)
                 Assert.IsTrue(entity.Id > -1);
         }
 
@@ -130,7 +130,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.DummyRepository.Add(new DummyEntity { Name = "Test" });
+            var entity = uow.DummyRepository.Add(new DummyEntity {Name = "Test"});
             var dbEntity = uow.DummyRepository.Get(entity.Id);
 
             Assert.AreEqual(entity.Name, dbEntity.Name);
@@ -143,7 +143,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.DummyRepository.Add(new DummyEntity { Name = "Test" });
+            var entity = uow.DummyRepository.Add(new DummyEntity {Name = "Test"});
             var dbEntity = uow.DummyRepository.GetAsync(entity.Id).Result;
 
             Assert.AreEqual(entity.Name, dbEntity.Name);
@@ -156,7 +156,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.DummyRepository.Add(new DummyEntity { Name = "Test" });
+            var entity = uow.DummyRepository.Add(new DummyEntity {Name = "Test"});
             entity.Name = "Test2";
 
             uow.DummyRepository.Update(entity);
@@ -185,7 +185,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
             using var uow = DataService.BeginUnitOfWork();
             try
             {
-                var unused = uow.DummyRepository.UpdateAsync(new DummyEntity { Id = 100, Name = "Test" }).Result;
+                var unused = uow.DummyRepository.UpdateAsync(new DummyEntity {Id = 100, Name = "Test"}).Result;
             }
             catch (AggregateException e)
             {
@@ -200,7 +200,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.DummyRepository.AddAsync(new DummyEntity { Name = "Test" }).Result;
+            var entity = uow.DummyRepository.AddAsync(new DummyEntity {Name = "Test"}).Result;
             entity.Name = "Test2";
 
             uow.DummyRepository.UpdateAsync(entity).Wait();
@@ -216,7 +216,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.DummyRepository.Add(new DummyEntity { Name = "Test" });
+            var entity = uow.DummyRepository.Add(new DummyEntity {Name = "Test"});
             entity.Name = "Test2";
 
             Assert.IsTrue(uow.DummyRepository.Delete(entity));
@@ -233,7 +233,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.DummyRepository.AddAsync(new DummyEntity { Name = "Test" }).Result;
+            var entity = uow.DummyRepository.AddAsync(new DummyEntity {Name = "Test"}).Result;
             entity.Name = "Test2";
 
             Assert.IsTrue(uow.DummyRepository.DeleteAsync(entity).Result);
@@ -250,7 +250,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.DummyRepository.Add(new DummyEntity { Name = "Test" });
+            var entity = uow.DummyRepository.Add(new DummyEntity {Name = "Test"});
             entity.Name = "Test2";
 
             Assert.IsTrue(uow.DummyRepository.Delete(entity.Id));
@@ -267,7 +267,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.DummyRepository.AddAsync(new DummyEntity { Name = "Test" }).Result;
+            var entity = uow.DummyRepository.AddAsync(new DummyEntity {Name = "Test"}).Result;
             entity.Name = "Test2";
 
             Assert.IsTrue(uow.DummyRepository.DeleteAsync(entity.Id).Result);
@@ -284,8 +284,8 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity1 = uow.DummyRepository.Add(new DummyEntity { Name = "Test1" });
-            var entity2 = uow.DummyRepository.Add(new DummyEntity { Name = "Test2" });
+            var entity1 = uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
+            var entity2 = uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
 
             var dbCount = uow.DummyRepository.GetAll().Count();
 
@@ -299,8 +299,8 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity1 = uow.DummyRepository.Add(new DummyEntity { Name = "Test1" });
-            var entity2 = uow.DummyRepository.Add(new DummyEntity { Name = "Test2" });
+            var entity1 = uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
+            var entity2 = uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
 
             var dbCount = uow.DummyRepository.GetAllAsync().Result.Count();
 
@@ -314,8 +314,8 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity1 = uow.DummyRepository.Add(new DummyEntity { Name = "Test1" });
-            var entity2 = uow.DummyRepository.Add(new DummyEntity { Name = "Test2" });
+            var entity1 = uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
+            var entity2 = uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
 
             var dbCount = uow.DummyRepository.Count();
 
@@ -329,8 +329,8 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity1 = uow.DummyRepository.Add(new DummyEntity { Name = "Test1" });
-            var entity2 = uow.DummyRepository.Add(new DummyEntity { Name = "Test2" });
+            var entity1 = uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
+            var entity2 = uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
 
             var dbCount = uow.DummyRepository.CountAsync().Result;
 

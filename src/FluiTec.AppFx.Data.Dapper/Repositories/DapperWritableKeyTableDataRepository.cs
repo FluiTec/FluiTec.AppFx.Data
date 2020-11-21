@@ -99,8 +99,10 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         }
 
         /// <summary>   Adds entity.</summary>
-        /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-        ///                                                 invalid. </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown when the requested operation is
+        ///     invalid.
+        /// </exception>
         /// <param name="entity">   The entity to add. </param>
         /// <returns>   A TEntity.</returns>
         public virtual async Task<TEntity> AddAsync(TEntity entity)
@@ -138,24 +140,16 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
             var keyEntities = entities as TEntity[] ?? entities.ToArray();
 
             foreach (var entity in keyEntities)
-            {
                 if (entity is ITimeStampedKeyEntity stampedEntity)
-                {
                     stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
-                }
-            }
 
             if (ExpectIdentityKey)
             {
                 if (_supportedIdentityTypes.Contains(typeof(TKey)))
-                {
                     UnitOfWork.Connection.InsertAutoMultiple(keyEntities, UnitOfWork.Transaction);
-                }
                 else
-                {
                     throw new InvalidOperationException(
                         $"Type \"{typeof(TKey)}\" is not supported for InsertAuto. Use ExpectIdentityKey=false and set a key!");
-                }
             }
             else
             {
@@ -166,8 +160,10 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         }
 
         /// <summary>   Adds a range asynchronous.</summary>
-        /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-        ///                                                 invalid. </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown when the requested operation is
+        ///     invalid.
+        /// </exception>
         /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
         /// <returns>   An asynchronous result.</returns>
         public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities)
@@ -175,24 +171,16 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
             var keyEntities = entities as TEntity[] ?? entities.ToArray();
 
             foreach (var entity in keyEntities)
-            {
                 if (entity is ITimeStampedKeyEntity stampedEntity)
-                {
                     stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
-                }
-            }
 
             if (ExpectIdentityKey)
             {
                 if (_supportedIdentityTypes.Contains(typeof(TKey)))
-                {
                     await UnitOfWork.Connection.InsertAutoMultipleAsync(keyEntities, UnitOfWork.Transaction);
-                }
                 else
-                {
                     throw new InvalidOperationException(
                         $"Type \"{typeof(TKey)}\" is not supported for InsertAuto. Use ExpectIdentityKey=false and set a key!");
-                }
             }
             else
             {
