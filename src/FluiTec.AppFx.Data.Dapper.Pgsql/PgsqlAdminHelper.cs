@@ -23,9 +23,6 @@ namespace FluiTec.AppFx.Data.Dapper.Pgsql
                         createDbCmd.ExecuteNonQuery();
                     }
                 }
-                catch (Exception e)
-                {
-                }
                 finally
                 {
                     connection.Close();
@@ -60,9 +57,6 @@ namespace FluiTec.AppFx.Data.Dapper.Pgsql
                     {
                         createUserCmd.ExecuteNonQuery();
                     }
-                }
-                catch (Exception e)
-                {
                 }
                 finally
                 {
