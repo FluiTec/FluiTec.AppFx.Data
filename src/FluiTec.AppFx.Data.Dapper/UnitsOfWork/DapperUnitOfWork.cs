@@ -45,9 +45,9 @@ namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork
         /// <value> The transaction. </value>
         public IDbTransaction Transaction { get; private set; }
 
-        /// <summary>   Gets or sets the dapper data service.</summary>
+        /// <summary>   Gets the dapper data service.</summary>
         /// <value> The dapper data service.</value>
-        public IDapperDataService DapperDataService { get; private set; }
+        public IDapperDataService DapperDataService { get; }
 
         #endregion
 

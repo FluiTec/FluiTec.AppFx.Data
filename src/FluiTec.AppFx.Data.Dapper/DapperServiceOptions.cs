@@ -7,11 +7,6 @@ namespace FluiTec.AppFx.Data.Dapper
     [ConfigurationKey("Dapper")]
     public abstract class DapperServiceOptions : IDapperServiceOptions
     {
-        /// <summary>   Constructor. </summary>
-        protected DapperServiceOptions()
-        {
-        }
-
         /// <summary>   Specialized constructor for use only by derived class. </summary>
         /// <exception cref="ArgumentException">
         ///     Thrown when one or more arguments have unsupported or

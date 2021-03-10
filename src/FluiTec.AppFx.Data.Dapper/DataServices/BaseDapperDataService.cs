@@ -39,23 +39,6 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
 
         #endregion
 
-        #region IDisposable
-
-        /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting
-        ///     unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">
-        ///     True to release both managed and unmanaged resources; false to
-        ///     release only unmanaged resources.
-        /// </param>
-        protected override void Dispose(bool disposing)
-        {
-            // nothing to do here
-        }
-
-        #endregion
-
         #region ICommandCache
 
         /// <summary>   Gets from cache.</summary>
@@ -73,6 +56,23 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
             var cmd = commandFunc();
             CommandCache.TryAdd(key, cmd);
             return cmd;
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting
+        ///     unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">
+        ///     True to release both managed and unmanaged resources; false to
+        ///     release only unmanaged resources.
+        /// </param>
+        protected override void Dispose(bool disposing)
+        {
+            // nothing to do here
         }
 
         #endregion

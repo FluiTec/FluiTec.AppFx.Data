@@ -37,6 +37,19 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
 
         #endregion
 
+        #region IRepositoryCommandCache
+
+        /// <summary>   Gets from cache.</summary>
+        /// <param name="commandFunc">  The command function. </param>
+        /// <param name="memberName">   Name of the member. </param>
+        /// <returns>   The data that was read from the cache.</returns>
+        public string GetFromCache(Func<string> commandFunc, [CallerMemberName] string memberName = null)
+        {
+            return UnitOfWork.DapperDataService.GetFromCache(GetType(), memberName, commandFunc);
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>   Gets the unit of work. </summary>
@@ -75,19 +88,6 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         protected string GetTableName(Type t)
         {
             return SqlBuilder.Adapter.RenderTableName(t);
-        }
-
-        #endregion
-
-        #region IRepositoryCommandCache
-
-        /// <summary>   Gets from cache.</summary>
-        /// <param name="commandFunc">  The command function. </param>
-        /// <param name="memberName">   Name of the member. </param>
-        /// <returns>   The data that was read from the cache.</returns>
-        public string GetFromCache(Func<string> commandFunc, [CallerMemberName] string memberName = null)
-        {
-            return UnitOfWork.DapperDataService.GetFromCache(GetType(), memberName, commandFunc);
         }
 
         #endregion

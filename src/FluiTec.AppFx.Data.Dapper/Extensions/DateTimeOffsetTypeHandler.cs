@@ -49,7 +49,8 @@ namespace FluiTec.AppFx.Data.Dapper.Extensions
             switch (value)
             {
                 case DateTime time:
-                    return new DateTimeOffset(time.Add(TimeZoneInfo.Local.BaseUtcOffset), TimeZoneInfo.Local.BaseUtcOffset);
+                    return new DateTimeOffset(time.Add(TimeZoneInfo.Local.BaseUtcOffset),
+                        TimeZoneInfo.Local.BaseUtcOffset);
                 case DateTimeOffset dto:
                     return dto;
                 default:
