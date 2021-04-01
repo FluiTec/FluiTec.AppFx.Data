@@ -20,7 +20,9 @@ namespace DynamicSample
 {
     internal class Program
     {
-        private static void Main()
+        /// <summary>   Main entry-point for this application. </summary>
+        /// <param name="args"> A variable-length parameters list containing arguments. </param>
+        private static void Main(params string[] args)
         {
             // load config from json
             var path = DirectoryHelper.GetApplicationRoot();

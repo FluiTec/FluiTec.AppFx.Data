@@ -85,6 +85,11 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <returns>	A string. </returns>
         string RenderParameterProperty(PropertyInfo propertyInfo);
 
+        /// <summary>   Renders the parameter property described by propertyInfo. </summary>
+        /// <param name="propertyName"> Name of the property. </param>
+        /// <returns>   A string. </returns>
+        string RenderParameterProperty(string propertyName);
+
         /// <summary>	Renders the table name described by type. </summary>
         /// <param name="type">	The type. </param>
         /// <returns>	A string. </returns>
