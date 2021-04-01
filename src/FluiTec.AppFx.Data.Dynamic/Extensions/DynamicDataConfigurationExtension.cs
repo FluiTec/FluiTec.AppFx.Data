@@ -45,6 +45,7 @@ namespace Microsoft.Extensions.DependencyInjection
             ConfigurationManager configurationManager, Func<IServiceProvider, TDataService> dataServiceProvider)
             where TDataService : class, IDataService
         {
+            services.AddTransient<IDataService>(dataServiceProvider);
             services.AddSingleton(dataServiceProvider);
             return ConfigureDynamicDataProvider(services, configurationManager);
         }
