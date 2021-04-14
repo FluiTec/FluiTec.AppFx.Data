@@ -343,9 +343,15 @@ namespace FluiTec.AppFx.Data.Sql
                 if (p.Value == "@TimeStamp")
                 {
                     if (!builder.Adapter.SupportsDateTimeOffset)
+                    {
                         parameters.Add(p.Value, ((DateTimeOffset) p.Key.GetValue(entity)).UtcDateTime, DbType.DateTime);
+                        parameters.Add("@OriginalTimeStamp", originalTimeStamp.UtcDateTime, DbType.DateTime);
+                    }
                     else
+                    {
                         parameters.Add(p.Value, p.Key.GetValue(entity), DbType.DateTimeOffset);
+                        parameters.Add("@OriginalTimeStamp", originalTimeStamp, DbType.DateTimeOffset);
+                    }
                 }
                 else
                 {

@@ -197,7 +197,7 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
             return
                 $"UPDATE {RenderTableName(type)} " +
                 $"SET {setClauses} " +
-                $"WHERE {RenderPropertyName(key)} = {RenderParameterProperty(key)} AND {RenderPropertyName(timestampFieldname)} = {RenderParameterProperty(stamp)}";
+                $"WHERE {RenderPropertyName(key)} = {RenderParameterProperty(key)} AND {RenderPropertyName(timestampFieldname)} = {RenderParameterProperty("OriginalTimeStamp")}";
         }
 
         /// <summary>	Gets delete statememt. </summary>
@@ -305,7 +305,12 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <returns>	A string. </returns>
         public virtual string RenderParameterProperty(PropertyInfo propertyInfo)
         {
-            return $"@{propertyInfo.Name}";
+            return RenderParameterProperty(propertyInfo.Name);
+        }
+
+        public virtual string RenderParameterProperty(string propertyName)
+        {
+            return $"@{propertyName}";
         }
 
         /// <summary>   Renders the parameter property name described by propertyName.</summary>
