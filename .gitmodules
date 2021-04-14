@@ -1,6 +1,3 @@
 [submodule "fluitec.appfx.options"]
 	path = fluitec.appfx.options
 	url = ../../fluitec/fluitec.appfx.options.git
-[submodule "fluitec.appfx.console"]
-	path = fluitec.appfx.console
-	url = ../../fluitec/fluitec.appfx.console.git
