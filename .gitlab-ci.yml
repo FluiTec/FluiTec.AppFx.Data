@@ -5,10 +5,14 @@ stages:
     - unittest
     - integrationtest
 
+# alias = hostname
 services:
-    - postgres:latest                       #Hostname: postgres
-    - mcr.microsoft.com/mssql/server:latest   #Hostname: microsoft-mssql-server-linux
-    - mysql:latest                          #Hostname: mysql
+    - name: postgres:latest
+      alias: postgres
+    - name: mcr.microsoft.com/mssql/server:latest
+      alias: mssql
+    - name: mysql:latest
+      alias: mysql
 
 variables:
     srcDir: "src"
