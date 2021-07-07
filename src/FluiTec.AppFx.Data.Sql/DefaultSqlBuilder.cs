@@ -28,7 +28,7 @@ namespace FluiTec.AppFx.Data.Sql
         static DefaultSqlBuilder()
         {
             BuilderDictionary = new ConcurrentDictionary<string, SqlBuilder>();
-            BuilderDictionary.TryAdd("System.Data.SqlClient.SqlConnection",
+            BuilderDictionary.TryAdd("Microsoft.Data.SqlClient.SqlConnection",
                 new SqlBuilder(new MicrosoftSqlAdapter(new AttributeEntityNameService())));
             BuilderDictionary.TryAdd("Npgsql.NpgsqlConnection",
                 new SqlBuilder(new PostgreSqlAdapter(new AttributeEntityNameService())));
