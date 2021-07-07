@@ -23,7 +23,7 @@ namespace FluiTec.AppFx.Data.Dapper.Tests
         /// <returns>   The default.</returns>
         private static object GetDefault(Type type)
         {
-            Console.WriteLine(type.IsValueType);
+            System.Console.WriteLine(type.IsValueType);
             return type.IsValueType ? Activator.CreateInstance(type) : null;
         }
 

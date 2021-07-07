@@ -32,9 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentMigrator" Version="3.2.9" />
-    <PackageReference Include="FluentMigrator.Runner" Version="3.2.9" />
-    <PackageReference Include="FluentMigrator.Runner.Core" Version="3.2.9" />
+    <PackageReference Include="FluentMigrator" Version="3.2.17" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.2.17" />
+    <PackageReference Include="FluentMigrator.Runner.Core" Version="3.2.17" />
   </ItemGroup>
 
   <ItemGroup>
