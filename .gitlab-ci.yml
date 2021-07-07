@@ -7,7 +7,7 @@ stages:
 
 services:
     - postgres:latest                       #Hostname: postgres
-    - microsoft/mssql-server-linux:latest   #Hostname: microsoft-mssql-server-linux
+    - mcr.microsoft.com/mssql/server:latest   #Hostname: microsoft-mssql-server-linux
     - mysql:latest                          #Hostname: mysql
 
 variables:
