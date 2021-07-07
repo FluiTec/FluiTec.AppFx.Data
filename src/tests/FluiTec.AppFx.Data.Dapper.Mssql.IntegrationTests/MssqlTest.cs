@@ -23,7 +23,7 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
                 ServiceOptions = new MssqlDapperServiceOptions
                 {
                     ConnectionString =
-                        $"Data Source=microsoft-mssql-server-linux;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={pw};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+                        $"Data Source=mssql;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={pw};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
                 };
 
                 DataService = new MssqlTestDataService(ServiceOptions, null);
