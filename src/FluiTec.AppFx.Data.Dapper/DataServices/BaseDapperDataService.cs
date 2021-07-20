@@ -7,6 +7,7 @@ using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FluiTec.AppFx.Data.Dapper.DataServices
 {
@@ -15,6 +16,9 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
     public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWork>, IDapperDataService
         where TUnitOfWork : DapperUnitOfWork, IUnitOfWork
     {
+        private readonly IConnectionFactory _connectionFactory;
+        private readonly string _connectionString;
+
         #region Constructors
 
         /// <summary>   Specialized constructor for use only by derived class. </summary>
@@ -32,8 +36,24 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
                 DapperExtensions.InstallDateTimeOffsetMapper();
 
             if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
-            ConnectionString = dapperServiceOptions.ConnectionString;
-            ConnectionFactory = dapperServiceOptions.ConnectionFactory;
+            _connectionString = dapperServiceOptions.ConnectionString;
+            _connectionFactory = dapperServiceOptions.ConnectionFactory;
+            CommandCache = new ConcurrentDictionary<string, string>();
+        }
+
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
+        /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
+        /// <param name="loggerFactory">        The logger factory. </param>
+        protected BaseDapperDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
+            ILoggerFactory loggerFactory) :
+            base(loggerFactory)
+        {
+            // ReSharper disable once VirtualMemberCallInConstructor
+            if (SqlType == SqlType.Mysql)
+                DapperExtensions.InstallDateTimeOffsetMapper();
+            if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
+            if (dapperServiceOptions.CurrentValue == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
+            DapperServiceOptions = dapperServiceOptions;
             CommandCache = new ConcurrentDictionary<string, string>();
         }
 
@@ -79,13 +99,17 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
 
         #region Properties
 
+        /// <summary>   Gets options for controlling the dapper service. </summary>
+        /// <value> Options that control the dapper service. </value>
+        protected IOptionsMonitor<IDapperServiceOptions> DapperServiceOptions { get; }
+
         /// <summary>   Gets the connection factory. </summary>
         /// <value> The connection factory. </value>
-        public IConnectionFactory ConnectionFactory { get; }
+        public IConnectionFactory ConnectionFactory => _connectionFactory ?? DapperServiceOptions.CurrentValue.ConnectionFactory;
 
         /// <summary>   Gets the connection string. </summary>
         /// <value> The connection string. </value>
-        public string ConnectionString { get; }
+        public string ConnectionString => _connectionString ?? DapperServiceOptions.CurrentValue.ConnectionString;
 
         /// <summary>   Gets the command cache.</summary>
         /// <value> The command cache.</value>

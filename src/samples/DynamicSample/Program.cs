@@ -15,6 +15,7 @@ using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace DynamicSample
 {
@@ -34,7 +35,6 @@ namespace DynamicSample
                 .Build();
 
             TestDynamicSql(config);
-
             TestTimeStamp(config);
         }
 
@@ -53,13 +53,13 @@ namespace DynamicSample
                                 provider.GetRequiredService<LiteDbServiceOptions>(),
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mssql => new MssqlTestDataService(
-                                provider.GetRequiredService<MssqlDapperServiceOptions>(),
+                                provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Pgsql => new PgsqlTestDataService(
-                                provider.GetRequiredService<PgsqlDapperServiceOptions>(),
+                                provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mysql => new MysqlTestDataService(
-                                provider.GetRequiredService<MysqlDapperServiceOptions>(),
+                                provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };
@@ -93,13 +93,13 @@ namespace DynamicSample
                                 provider.GetRequiredService<LiteDbServiceOptions>(),
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mssql => new MssqlTestDataService(
-                                provider.GetRequiredService<MssqlDapperServiceOptions>(),
+                                provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Pgsql => new PgsqlTestDataService(
-                                provider.GetRequiredService<PgsqlDapperServiceOptions>(),
+                                provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mysql => new MysqlTestDataService(
-                                provider.GetRequiredService<MysqlDapperServiceOptions>(),
+                                provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };

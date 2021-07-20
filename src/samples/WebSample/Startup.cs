@@ -1,4 +1,5 @@
 using System;
+using FluiTec.AppFx.Data.Dapper.DataServices;
 using FluiTec.AppFx.Data.Dapper.Mssql;
 using FluiTec.AppFx.Data.Dapper.Mysql;
 using FluiTec.AppFx.Data.Dapper.Pgsql;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using WebSample.Data;
 using WebSample.Data.LiteDb;
 using WebSample.Data.Mssql;
@@ -49,6 +51,7 @@ namespace WebSample
             var builder = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
                 .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile("appsettings.secret.json", false, true)
                 .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", true);
 
             builder.AddEnvironmentVariables();
@@ -73,13 +76,13 @@ namespace WebSample
                                 provider.GetRequiredService<LiteDbServiceOptions>(),
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mssql => new MssqlTestDataService(
-                                provider.GetRequiredService<MssqlDapperServiceOptions>(),
+                                provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Pgsql => new PgsqlTestDataService(
-                                provider.GetRequiredService<PgsqlDapperServiceOptions>(),
+                                provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mysql => new MysqlTestDataService(
-                                provider.GetRequiredService<MysqlDapperServiceOptions>(),
+                                provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };
@@ -110,7 +113,8 @@ namespace WebSample
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    var dataService = context.RequestServices.GetRequiredService<ITestDataService>() as IDapperDataService;
+                    await context.Response.WriteAsync(dataService?.ConnectionString ?? "no valid connection-string");
                 });
             });
         }

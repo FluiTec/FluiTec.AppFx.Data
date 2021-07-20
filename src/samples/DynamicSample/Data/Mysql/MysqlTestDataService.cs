@@ -8,6 +8,7 @@ using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace DynamicSample.Data.Mysql
 {
@@ -18,6 +19,14 @@ namespace DynamicSample.Data.Mysql
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
         public MysqlTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(
+            dapperServiceOptions, loggerFactory)
+        {
+        }
+
+        /// <summary>   Constructor. </summary>
+        /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
+        /// <param name="loggerFactory">        The logger factory. </param>
+        public MysqlTestDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions, ILoggerFactory loggerFactory) : base(
             dapperServiceOptions, loggerFactory)
         {
         }

@@ -6,6 +6,7 @@ using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using WebSample.Data.Dapper;
 using WebSample.Data.Schema;
 
@@ -18,6 +19,15 @@ namespace WebSample.Data.Pgsql
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
         public PgsqlTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(
+            dapperServiceOptions, loggerFactory)
+        {
+        }
+
+        /// <summary>   Constructor. </summary>
+        /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
+        /// <param name="loggerFactory">        The logger factory. </param>
+        public PgsqlTestDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
+            ILoggerFactory loggerFactory) : base(
             dapperServiceOptions, loggerFactory)
         {
         }

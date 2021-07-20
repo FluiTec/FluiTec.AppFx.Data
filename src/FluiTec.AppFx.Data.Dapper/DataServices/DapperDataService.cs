@@ -8,6 +8,7 @@ using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FluiTec.AppFx.Data.Dapper.DataServices
 {
@@ -27,6 +28,15 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
         {
         }
 
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
+        /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
+        /// <param name="loggerFactory">        The logger factory. </param>
+        protected DapperDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
+            ILoggerFactory loggerFactory)
+            : base(dapperServiceOptions, loggerFactory)
+        {
+        }
+
         #endregion
 
         #region Migration
@@ -34,7 +44,7 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
         /// <summary>   Gets information describing the meta. </summary>
         /// <value> Information describing the meta. </value>
         public override IVersionTableMetaData MetaData =>
-            _metaData ?? (_metaData = new VersionTable(Schema, SupportsSchema()));
+            _metaData ??= new VersionTable(Schema, SupportsSchema());
 
         /// <summary>   Gets a value indicating whether the supports migration. </summary>
         /// <value> True if supports migration, false if not. </value>
