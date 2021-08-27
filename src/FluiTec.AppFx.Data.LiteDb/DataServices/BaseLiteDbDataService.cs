@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using LiteDB;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FluiTec.AppFx.Data.LiteDb.DataServices
 {
@@ -21,65 +22,32 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         /// <value>	True if use singleton connection, false if not. </value>
         private readonly bool _useSingletonConnection;
 
-        #endregion
-
-        #region Methods
-
-        /// <summary>	Gets the filename of the construct application data database file. </summary>
-        /// <exception cref="NotSupportedException">
-        ///     Thrown when the requested operation is not
-        ///     supported.
-        /// </exception>
-        /// <param name="applicationFolder">	Pathname of the application folder. </param>
-        /// <param name="fileName">				Filename of the file. </param>
-        /// <returns>	The filename of the construct application data database file. </returns>
-        protected virtual string ConstructAppDataDbFileName(string applicationFolder, string fileName)
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                var appData = Environment.GetEnvironmentVariable("LocalAppData");
-                return Path.Combine(appData ?? throw new InvalidOperationException(), applicationFolder, fileName);
-            }
-
-            // reason: leave open for os x
-            // ReSharper disable once InvertIf
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                var appData = Environment.GetEnvironmentVariable("user.home");
-                return Path.Combine(appData ?? throw new InvalidOperationException(), applicationFolder, fileName);
-            }
-
-            // TODO: Implement method for os x
-
-            throw new NotSupportedException("Operating-System is not supported.");
-        }
-
-        #endregion
-
-        #region IDisposable
+        /// <summary>
+        /// The database.
+        /// </summary>
+        private LiteDatabase _database;
 
         /// <summary>
-        ///     Releases the unmanaged resources used by the FluiTec.AppFx.Data.Dapper.DapperDataService and
-        ///     optionally releases the managed resources.
+        /// (Immutable) the databases.
         /// </summary>
-        /// <param name="disposing">
-        ///     True to release both managed and unmanaged resources; false to
-        ///     release only unmanaged resources.
-        /// </param>
-        protected override void Dispose(bool disposing)
-        {
-            if (_useSingletonConnection) return;
-            Database?.Dispose();
-            Database = null;
-        }
+        private readonly Dictionary<int, LiteDatabase> _databases = new Dictionary<int, LiteDatabase>();
 
         #endregion
-
+        
         #region Properties
+
+        /// <summary>   Gets options for controlling the service. </summary>
+        /// <value> Options that control the service. </value>
+        protected IOptionsMonitor<LiteDbServiceOptions> ServiceOptions { get; }
 
         /// <summary>	Gets or sets the database. </summary>
         /// <value>	The database. </value>
-        public LiteDatabase Database { get; private set; }
+        public LiteDatabase Database =>
+            ServiceOptions == null
+                ? _database
+                : ServiceOptions.CurrentValue.UseSingletonConnection
+                    ? LiteDbDatabaseSingleton.GetDatabase(ServiceOptions.CurrentValue.FullDbFilePath)
+                    : GetCachedDatabase(ServiceOptions.CurrentValue);
 
         /// <summary>   Gets or sets the name service. </summary>
         /// <value> The name service. </value>
@@ -89,10 +57,10 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
 
         #region Constructors
 
-        /// <summary>   Specialised constructor for use only by derived class. </summary>
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
         /// <remarks>
-        ///     If dbFilePath isnt rooted or doesnt start with a dot - an applicationFolder is required,
-        ///     because the service will save in local-appdata.
+        ///     If dbFilePath isn't rooted or doesn't start with a dot - an applicationFolder is required,
+        ///     because the service will save in local app data.
         /// </remarks>
         /// <exception cref="ArgumentNullException">
         ///     Thrown when one or more required arguments are
@@ -112,10 +80,10 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         {
         }
 
-        /// <summary>   Specialised constructor for use only by derived class. </summary>
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
         /// <remarks>
-        ///     If dbFilePath isnt rooted or doesnt start with a dot - an applicationFolder is required,
-        ///     because the service will save in local-appdata.
+        ///     If dbFilePath isn't rooted or doesn't start with a dot - an applicationFolder is required,
+        ///     because the service will save in local app data.
         /// </remarks>
         /// <exception cref="ArgumentNullException">
         ///     Thrown when one or more required arguments are
@@ -140,19 +108,13 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
 
             var fullDbFilePath = applicationFolder != null ? Path.Combine(applicationFolder, dbFilePath) : dbFilePath;
 
-            if (!Path.IsPathRooted(dbFilePath) && !dbFilePath.StartsWith("."))
-                if (string.IsNullOrWhiteSpace(applicationFolder))
-                    throw new ArgumentException(
-                        $"Giving non-rooted {nameof(dbFilePath)} requires giving an {nameof(applicationFolder)}.");
-
             _useSingletonConnection = useSingletonConnection ?? false;
-
-            Database = _useSingletonConnection
+            _database = _useSingletonConnection
                 ? LiteDbDatabaseSingleton.GetDatabase(fullDbFilePath)
                 : new LiteDatabase(fullDbFilePath);
         }
 
-        /// <summary>   Specialised constructor for use only by derived class. </summary>
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
         /// <param name="options">          Options for controlling the operation. </param>
         /// <param name="loggerFactory">    The logger factory. </param>
         protected BaseLiteDbDataService(LiteDbServiceOptions options, ILoggerFactory loggerFactory) : this(
@@ -161,10 +123,10 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         {
         }
 
-        /// <summary>   Specialised constructor for use only by derived class. </summary>
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
         /// <remarks>
-        ///     If dbFilePath isnt rooted or doesnt start with a dot - an applicationFolder is required,
-        ///     because the service will save in local-appdata.
+        ///     If dbFilePath isn't rooted or doesn't start with a dot - an applicationFolder is required,
+        ///     because the service will save in local app data.
         /// </remarks>
         /// <param name="options">          Options for controlling the operation. </param>
         /// <param name="loggerFactory">    The logger factory. </param>
@@ -173,6 +135,82 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
             IEntityNameService nameService) : this(options?.UseSingletonConnection,
             options?.DbFileName, loggerFactory, nameService, options?.ApplicationFolder)
         {
+        }
+
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
+        /// <param name="options">          Options for controlling the operation. </param>
+        /// <param name="loggerFactory">    The logger factory. </param>
+        protected BaseLiteDbDataService(IOptionsMonitor<LiteDbServiceOptions> options, ILoggerFactory loggerFactory) : this(
+            options?.CurrentValue.UseSingletonConnection,
+            options?.CurrentValue.DbFileName, loggerFactory, options?.CurrentValue.ApplicationFolder)
+        {
+        }
+
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
+        /// <remarks>
+        ///     If dbFilePath isn't rooted or doesn't start with a dot - an applicationFolder is required,
+        ///     because the service will save in local app data.
+        /// </remarks>
+        /// <param name="options">          Options for controlling the operation. </param>
+        /// <param name="loggerFactory">    The logger factory. </param>
+        /// <param name="nameService">      The name service. </param>
+        protected BaseLiteDbDataService(IOptionsMonitor<LiteDbServiceOptions> options, ILoggerFactory loggerFactory,
+            IEntityNameService nameService) : this(options?.CurrentValue.UseSingletonConnection,
+            options?.CurrentValue.DbFileName, loggerFactory, nameService, options?.CurrentValue.ApplicationFolder)
+        {
+            if (options == null) 
+                throw new ArgumentNullException(nameof(options));
+            if (options.CurrentValue == null) 
+                throw new ArgumentException("Missing current value.", nameof(options));
+            if (string.IsNullOrWhiteSpace(options.CurrentValue.DbFileName)) 
+                throw new ArgumentException("Invalid DbFileName.", nameof(options));
+
+            ServiceOptions = options;
+            NameService = nameService ?? throw new ArgumentNullException();
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Gets cached database.
+        /// </summary>
+        ///
+        /// <param name="options">  Options for controlling the operation. </param>
+        ///
+        /// <returns>
+        /// The cached database.
+        /// </returns>
+        private LiteDatabase GetCachedDatabase(LiteDbServiceOptions options)
+        {
+            var key = options.FullDbFilePath.GetHashCode();
+
+            if (_databases.ContainsKey(key))
+                return _databases[key];
+
+            var db = new LiteDatabase(options.FullDbFilePath);
+            _databases.Add(key, db);
+            return db;
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        /// <summary>
+        ///     Releases the unmanaged resources used by the FluiTec.AppFx.Data.Dapper.DapperDataService and
+        ///     optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        ///     True to release both managed and unmanaged resources; false to
+        ///     release only unmanaged resources.
+        /// </param>
+        protected override void Dispose(bool disposing)
+        {
+            if (_useSingletonConnection) return;
+            _database?.Dispose();
+            _database = null;
         }
 
         #endregion

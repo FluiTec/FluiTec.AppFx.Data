@@ -6,6 +6,7 @@ using FluiTec.AppFx.Data.LiteDb.DataServices;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace DynamicSample.Data.LiteDb
 {
@@ -29,6 +30,16 @@ namespace DynamicSample.Data.LiteDb
         }
 
         public LiteDbTestDataService(LiteDbServiceOptions options, ILoggerFactory loggerFactory,
+            IEntityNameService nameService) : base(options, loggerFactory, nameService)
+        {
+        }
+
+        public LiteDbTestDataService(IOptionsMonitor<LiteDbServiceOptions> options, ILoggerFactory loggerFactory)
+            : base(options, loggerFactory)
+        {
+        }
+
+        public LiteDbTestDataService(IOptionsMonitor<LiteDbServiceOptions> options, ILoggerFactory loggerFactory,
             IEntityNameService nameService) : base(options, loggerFactory, nameService)
         {
         }

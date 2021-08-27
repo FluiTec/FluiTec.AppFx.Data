@@ -3,6 +3,7 @@ using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FluiTec.AppFx.Data.LiteDb.DataServices
 {
@@ -49,6 +50,29 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         /// <param name="loggerFactory">    The logger factory. </param>
         /// <param name="nameService">      The name service. </param>
         protected LiteDbDataService(LiteDbServiceOptions options, ILoggerFactory loggerFactory,
+            IEntityNameService nameService) : base(options, loggerFactory, nameService)
+        {
+        }
+
+        /// <summary>
+        /// Specialized constructor for use only by derived class.
+        /// </summary>
+        ///
+        /// <param name="options">          Options for controlling the operation. </param>
+        /// <param name="loggerFactory">    The logger factory. </param>
+        protected LiteDbDataService(IOptionsMonitor<LiteDbServiceOptions> options, ILoggerFactory loggerFactory)
+            : base(options, loggerFactory)
+        {
+        }
+
+        /// <summary>
+        /// Specialized constructor for use only by derived class.
+        /// </summary>
+        ///
+        /// <param name="options">          Options for controlling the operation. </param>
+        /// <param name="loggerFactory">    The logger factory. </param>
+        /// <param name="nameService">      The name service. </param>
+        protected LiteDbDataService(IOptionsMonitor<LiteDbServiceOptions> options, ILoggerFactory loggerFactory,
             IEntityNameService nameService) : base(options, loggerFactory, nameService)
         {
         }

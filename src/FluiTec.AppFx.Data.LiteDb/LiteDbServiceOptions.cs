@@ -9,6 +9,10 @@ namespace FluiTec.AppFx.Data.LiteDb
         /// <value>	The filename of the database file. </value>
         public string DbFileName { get; set; }
 
+        /// <summary>   Gets the full pathname of the full database file. </summary>
+        /// <value> The full pathname of the full database file. </value>
+        public string FullDbFilePath => ApplicationFolder != null ? System.IO.Path.Combine(ApplicationFolder, DbFileName) : DbFileName;
+
         /// <summary>	Gets or sets the pathname of the application folder. </summary>
         /// <value>	The pathname of the application folder. </value>
         public string ApplicationFolder { get; set; }
