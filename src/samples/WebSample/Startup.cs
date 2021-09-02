@@ -68,9 +68,9 @@ namespace WebSample
         private void ConfigureAspNetCore(IServiceCollection services)
         {
             services.ConfigureDynamicDataProvider(ConfigurationManager,
-                new Func<DynamicDataOptions, IServiceProvider, ITestDataService>((options, provider) =>
+                new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
                     {
-                        return options.Provider switch
+                        return options.CurrentValue.Provider switch
                         {
                             DataProvider.LiteDb => new LiteDbTestDataService(
                                 provider.GetRequiredService<LiteDbServiceOptions>(),

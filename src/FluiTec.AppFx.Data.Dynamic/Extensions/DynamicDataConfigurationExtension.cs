@@ -8,6 +8,7 @@ using FluiTec.AppFx.Data.Dynamic;
 using FluiTec.AppFx.Data.Dynamic.Configuration;
 using FluiTec.AppFx.Data.LiteDb;
 using FluiTec.AppFx.Options.Managers;
+using Microsoft.Extensions.Options;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -58,19 +59,19 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>   An IServiceCollection. </returns>
         public static IServiceCollection ConfigureDynamicDataProvider<TDataService>(this IServiceCollection services,
             ConfigurationManager configurationManager,
-            Func<DynamicDataOptions, IServiceProvider, TDataService> dataServiceProvider)
+            Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, TDataService> dataServiceProvider)
             where TDataService : class, IDataService
         {
             return ConfigureDynamicDataProvider(services, configurationManager, provider =>
             {
-                var dynamicOptions = provider.GetRequiredService<DynamicDataOptions>();
+                var dynamicOptions = provider.GetRequiredService<IOptionsMonitor<DynamicDataOptions>>();
                 var service = dataServiceProvider(dynamicOptions, provider);
 
-                if (dynamicOptions.AutoMigrate && service.SupportsMigration)
+                if (dynamicOptions.CurrentValue.AutoMigrate && service.SupportsMigration)
                 {
                     service.GetMigrator().Migrate();
                 }
-                else if (service.SupportsMigration && !dynamicOptions.AutoMigrate)
+                else if (service.SupportsMigration && !dynamicOptions.CurrentValue.AutoMigrate)
                 {
                     var migrator = service.GetMigrator();
                     if (migrator.CurrentVersion != migrator.MaximumVersion)

@@ -29,7 +29,7 @@ namespace LiteDbSample
 
         private static string GetApplicationRoot()
         {
-            var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+            var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             Debug.Assert(exePath != null);
 

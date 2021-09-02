@@ -5,6 +5,7 @@ using DynamicSample.Data.LiteDb;
 using DynamicSample.Data.Mssql;
 using DynamicSample.Data.Mysql;
 using DynamicSample.Data.Pgsql;
+using FluiTec.AppFx.Console.Configuration;
 using FluiTec.AppFx.Data.Dapper.Mssql;
 using FluiTec.AppFx.Data.Dapper.Mysql;
 using FluiTec.AppFx.Data.Dapper.Pgsql;
@@ -45,9 +46,9 @@ namespace DynamicSample
             var services = new ServiceCollection();
 
             services.ConfigureDynamicDataProvider(manager,
-                new Func<DynamicDataOptions, IServiceProvider, ITestDataService>((options, provider) =>
+                new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
                     {
-                        return options.Provider switch
+                        return options.CurrentValue.Provider switch
                         {
                             DataProvider.LiteDb => new LiteDbTestDataService(
                                 provider.GetRequiredService<LiteDbServiceOptions>(),
@@ -85,9 +86,9 @@ namespace DynamicSample
             var services = new ServiceCollection();
 
             services.ConfigureDynamicDataProvider(manager,
-                new Func<DynamicDataOptions, IServiceProvider, ITestDataService>((options, provider) =>
+                new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
                     {
-                        return options.Provider switch
+                        return options.CurrentValue.Provider switch
                         {
                             DataProvider.LiteDb => new LiteDbTestDataService(
                                 provider.GetRequiredService<LiteDbServiceOptions>(),

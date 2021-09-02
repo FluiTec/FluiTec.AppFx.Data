@@ -81,6 +81,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Console", "..
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSample", "samples\WebSample\WebSample.csproj", "{4D92A87C-96E2-4C9F-88C3-3750977AB467}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cli.InteractiveSample", "samples\Cli.InteractiveSample\Cli.InteractiveSample.csproj", "{C8BC1E17-41B6-4949-BF39-F7D355110348}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -191,6 +193,10 @@ Global
 		{4D92A87C-96E2-4C9F-88C3-3750977AB467}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D92A87C-96E2-4C9F-88C3-3750977AB467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D92A87C-96E2-4C9F-88C3-3750977AB467}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8BC1E17-41B6-4949-BF39-F7D355110348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8BC1E17-41B6-4949-BF39-F7D355110348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8BC1E17-41B6-4949-BF39-F7D355110348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8BC1E17-41B6-4949-BF39-F7D355110348}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -217,6 +223,7 @@ Global
 		{C2363B10-359A-43C3-BC90-CA0ACDF2F4F6} = {06518704-6D4C-44E1-88E9-6172EFCF52AB}
 		{D0C3FE96-026D-4531-9089-718110F8E1BE} = {C2363B10-359A-43C3-BC90-CA0ACDF2F4F6}
 		{4D92A87C-96E2-4C9F-88C3-3750977AB467} = {E4953EE3-7460-43DF-A5B9-603145652C93}
+		{C8BC1E17-41B6-4949-BF39-F7D355110348} = {E4953EE3-7460-43DF-A5B9-603145652C93}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {132CEE37-A97D-40BB-90D5-CEEE78D7BB25}

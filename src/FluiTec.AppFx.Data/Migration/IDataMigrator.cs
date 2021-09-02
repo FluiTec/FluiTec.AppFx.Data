@@ -1,4 +1,6 @@
-﻿namespace FluiTec.AppFx.Data.Migration
+﻿using System.Collections.Generic;
+
+namespace FluiTec.AppFx.Data.Migration
 {
     /// <summary>   Interface for data-migrators. </summary>
     public interface IDataMigrator
@@ -12,6 +14,15 @@
         /// <value> The maximum version. </value>
         // ReSharper disable once UnusedMemberInSuper.Global
         long MaximumVersion { get; }
+
+        /// <summary>
+        /// Gets the migrations in this collection.
+        /// </summary>
+        ///
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the migrations in this collection.
+        /// </returns>
+        IEnumerable<MigrationInfo> GetMigrations();
 
         /// <summary>   Migrates this.  </summary>
         void Migrate();

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FluentMigrator.Infrastructure;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Exceptions;
 using FluentMigrator.Runner.Initialization;
 using FluentMigrator.Runner.VersionTableInfo;
 using FluiTec.AppFx.Data.Migration;
 using Microsoft.Extensions.DependencyInjection;
+using MigrationInfo = FluiTec.AppFx.Data.Migration.MigrationInfo;
 
 namespace FluiTec.AppFx.Data.Dapper.Migration
 {
@@ -16,6 +18,13 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
     {
         /// <summary>   The runner. </summary>
         private readonly IMigrationRunner _runner;
+
+        IVersionLoader loader;
+
+        /// <summary>
+        /// The migrations.
+        /// </summary>
+        private IOrderedEnumerable<KeyValuePair<long, IMigrationInfo>> _migrations;
 
         /// <summary>   Constructor. </summary>
         /// <param name="connectionString">     The connection string. </param>
@@ -45,17 +54,17 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
             var sp = services.BuildServiceProvider(false);
 
             _runner = sp.GetRequiredService<IMigrationRunner>();
-
+            
             try
             {
-                var migrations = _runner.MigrationLoader
+                _migrations = _runner.MigrationLoader
                     .LoadMigrations()
                     .OrderByDescending(m => m.Value.Version);
+                
 
-                MaximumVersion = migrations.First().Value.Version;
+                MaximumVersion = _migrations.First().Value.Version;
 
-                var loader = sp.GetRequiredService<IVersionLoader>();
-                CurrentVersion = loader.VersionInfo.Latest();
+                loader = sp.GetRequiredService<IVersionLoader>();
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (MissingMigrationsException)
@@ -67,11 +76,23 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
 
         /// <summary>   Gets the current version. </summary>
         /// <value> The current version. </value>
-        public long CurrentVersion { get; }
+        public long CurrentVersion => loader.VersionInfo.Latest();
 
         /// <summary>   Gets the maximum version. </summary>
         /// <value> The maximum version. </value>
         public long MaximumVersion { get; }
+
+        /// <summary>
+        /// Gets the migrations in this collection.
+        /// </summary>
+        ///
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the migrations in this collection.
+        /// </returns>
+        public IEnumerable<MigrationInfo> GetMigrations()
+        {
+            return _migrations?.Select((pair, i) => new MigrationInfo(pair.Key, pair.Value.GetName().Substring(pair.Value.GetName().IndexOf(':')+2)));
+        }
 
         /// <summary>   Migrates this. </summary>
         /// <remarks>

@@ -309,3 +309,6 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# Other
+appsettings.conf.json
