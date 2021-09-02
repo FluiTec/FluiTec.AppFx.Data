@@ -53,6 +53,12 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         /// <param name="saveEnabledProvider">  The save enabled provider. </param>
         public DataConsoleModule(IConfigurationProvider saveEnabledProvider) : base("Data")
         {
+            DataMigrationSingleton.Instance.VersionMismatch -=
+                DataMigrationSingleton.Instance.DefaultVersionMismatchAction;
+
+            DataMigrationSingleton.Instance.MigrationPossible -=
+                DataMigrationSingleton.Instance.DefaultMigrationPossibleAction;
+
             SaveEnabledProvider = saveEnabledProvider;
         }
 
@@ -74,6 +80,9 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
             RecreateItems();
         }
 
+        /// <summary>
+        /// Recreate items.
+        /// </summary>
         private void RecreateItems()
         {
             Items.Clear();

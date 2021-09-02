@@ -67,17 +67,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 var dynamicOptions = provider.GetRequiredService<IOptionsMonitor<DynamicDataOptions>>();
                 var service = dataServiceProvider(dynamicOptions, provider);
 
-                if (dynamicOptions.CurrentValue.AutoMigrate && service.SupportsMigration)
-                {
-                    service.GetMigrator().Migrate();
-                }
-                else if (service.SupportsMigration && !dynamicOptions.CurrentValue.AutoMigrate)
-                {
-                    var migrator = service.GetMigrator();
-                    if (migrator.CurrentVersion != migrator.MaximumVersion)
-                        throw new DataMigrationException(migrator.CurrentVersion, migrator.MaximumVersion,
-                            service.GetType());
-                }
+                if (!service.SupportsMigration) return service;
+
+                var migrator = service.GetMigrator();
+                if (migrator.CurrentVersion == migrator.MaximumVersion) return service;
+
+                if (dynamicOptions.CurrentValue.AutoMigrate)
+                    DataMigrationSingleton.Instance.OnMigrationPossible(migrator, service);
+                else
+                    DataMigrationSingleton.Instance.OnVersionMismatch(migrator, service);
 
                 return service;
             });
