@@ -26,7 +26,8 @@ namespace Cli.InteractiveSample.Data.Pgsql
         /// <summary>   Constructor. </summary>
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
-        public PgsqlTestDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions, ILoggerFactory loggerFactory) : base(
+        public PgsqlTestDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
+            ILoggerFactory loggerFactory) : base(
             dapperServiceOptions, loggerFactory)
         {
         }

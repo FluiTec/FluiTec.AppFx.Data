@@ -23,14 +23,13 @@ using Microsoft.Extensions.Options;
 namespace Cli.InteractiveSample
 {
     /// <summary>
-    /// A program.
+    ///     A program.
     /// </summary>
     internal class Program
     {
         /// <summary>
-        /// Main entry-point for this application.
+        ///     Main entry-point for this application.
         /// </summary>
-        ///
         /// <param name="args"> An array of command-line argument strings. </param>
         private static void Main(string[] args)
         {
@@ -41,11 +40,10 @@ namespace Cli.InteractiveSample
         }
 
         /// <summary>
-        /// Builds the configuration.
+        ///     Builds the configuration.
         /// </summary>
-        ///
         /// <returns>
-        /// An IConfigurationRoot.
+        ///     An IConfigurationRoot.
         /// </returns>
         private static IConfigurationRoot BuildConfiguration()
         {
@@ -62,13 +60,11 @@ namespace Cli.InteractiveSample
         }
 
         /// <summary>
-        /// Configure services.
+        ///     Configure services.
         /// </summary>
-        ///
         /// <param name="config">   The configuration. </param>
-        ///
         /// <returns>
-        /// An IServiceCollection.
+        ///     An IServiceCollection.
         /// </returns>
         private static IServiceProvider ConfigureServices(IConfigurationRoot config)
         {

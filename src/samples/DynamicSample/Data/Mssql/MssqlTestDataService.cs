@@ -26,7 +26,8 @@ namespace DynamicSample.Data.Mssql
         /// <summary>   Constructor. </summary>
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
-        public MssqlTestDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions, ILoggerFactory loggerFactory) : base(
+        public MssqlTestDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
+            ILoggerFactory loggerFactory) : base(
             dapperServiceOptions, loggerFactory)
         {
         }

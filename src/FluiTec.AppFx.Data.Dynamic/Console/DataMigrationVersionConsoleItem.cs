@@ -64,7 +64,7 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         }
 
         /// <summary>
-        /// Recreate items.
+        ///     Recreate items.
         /// </summary>
         private void RecreateItems()
         {
@@ -77,9 +77,8 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         }
 
         /// <summary>
-        /// Displays this.
+        ///     Displays this.
         /// </summary>
-        ///
         /// <param name="parent">   The parent. </param>
         public override void Display(IConsoleItem parent)
         {

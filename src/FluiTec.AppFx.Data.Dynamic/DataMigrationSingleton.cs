@@ -5,7 +5,7 @@ using FluiTec.AppFx.Data.Migration;
 namespace FluiTec.AppFx.Data.Dynamic
 {
     /// <summary>
-    /// A data migration singleton. This class cannot be inherited.
+    ///     A data migration singleton. This class cannot be inherited.
     /// </summary>
     public sealed class DataMigrationSingleton
     {
@@ -14,55 +14,6 @@ namespace FluiTec.AppFx.Data.Dynamic
         /// <summary>	The lazy initilizer. </summary>
         private static readonly Lazy<DataMigrationSingleton> Lazy =
             new Lazy<DataMigrationSingleton>(() => new DataMigrationSingleton());
-
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        /// Event queue for all listeners interested in VersionMismatch events.
-        /// </summary>
-        public event Action<IDataMigrator, IDataService> VersionMismatch;
-
-        /// <summary>
-        /// Event queue for all listeners interested in MigrationPossible events.
-        /// </summary>
-        public event Action<IDataMigrator, IDataService> MigrationPossible;
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// The instance.
-        /// </summary>
-        ///
-        /// <value>
-        /// The instance.
-        /// </value>
-        public static DataMigrationSingleton Instance => Lazy.Value;
-
-        /// <summary>
-        /// Gets the default version mismatch action.
-        /// </summary>
-        ///
-        /// <value>
-        /// The default version mismatch action.
-        /// </value>
-        public Action<IDataMigrator, IDataService> DefaultVersionMismatchAction 
-            => (migrator, service) 
-                => throw new DataMigrationException(migrator.CurrentVersion, migrator.MaximumVersion, service.GetType());
-
-        /// <summary>
-        /// Gets the default migration possible action.
-        /// </summary>
-        ///
-        /// <value>
-        /// The default migration possible action.
-        /// </value>
-        public Action<IDataMigrator, IDataService> DefaultMigrationPossibleAction
-            => (migrator, service)
-                => migrator.Migrate();
 
         #endregion
 
@@ -79,12 +30,58 @@ namespace FluiTec.AppFx.Data.Dynamic
 
         #endregion
 
+        #region Events
+
+        /// <summary>
+        ///     Event queue for all listeners interested in VersionMismatch events.
+        /// </summary>
+        public event Action<IDataMigrator, IDataService> VersionMismatch;
+
+        /// <summary>
+        ///     Event queue for all listeners interested in MigrationPossible events.
+        /// </summary>
+        public event Action<IDataMigrator, IDataService> MigrationPossible;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     The instance.
+        /// </summary>
+        /// <value>
+        ///     The instance.
+        /// </value>
+        public static DataMigrationSingleton Instance => Lazy.Value;
+
+        /// <summary>
+        ///     Gets the default version mismatch action.
+        /// </summary>
+        /// <value>
+        ///     The default version mismatch action.
+        /// </value>
+        public Action<IDataMigrator, IDataService> DefaultVersionMismatchAction
+            => (migrator, service)
+                => throw new DataMigrationException(migrator.CurrentVersion, migrator.MaximumVersion,
+                    service.GetType());
+
+        /// <summary>
+        ///     Gets the default migration possible action.
+        /// </summary>
+        /// <value>
+        ///     The default migration possible action.
+        /// </value>
+        public Action<IDataMigrator, IDataService> DefaultMigrationPossibleAction
+            => (migrator, service)
+                => migrator.Migrate();
+
+        #endregion
+
         #region EventInvocators
 
         /// <summary>
-        /// Executes the 'version mismatch' action.
+        ///     Executes the 'version mismatch' action.
         /// </summary>
-        ///
         /// <param name="migrator">     The migrator. </param>
         /// <param name="dataService">  The data service. </param>
         public void OnVersionMismatch(IDataMigrator migrator, IDataService dataService)
@@ -93,9 +90,8 @@ namespace FluiTec.AppFx.Data.Dynamic
         }
 
         /// <summary>
-        /// Executes the 'migration possible' action.
+        ///     Executes the 'migration possible' action.
         /// </summary>
-        ///
         /// <param name="migrator">     The migrator. </param>
         /// <param name="dataService">  The data service. </param>
         public void OnMigrationPossible(IDataMigrator migrator, IDataService dataService)

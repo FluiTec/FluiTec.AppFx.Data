@@ -25,7 +25,7 @@ namespace FluiTec.AppFx.Data.Dapper
                     nameof(connectionString));
             ConnectionString = connectionString;
         }
-        
+
         /// <summary>   Gets the connection factory. </summary>
         /// <value> The connection factory. </value>
         public abstract IConnectionFactory ConnectionFactory { get; }

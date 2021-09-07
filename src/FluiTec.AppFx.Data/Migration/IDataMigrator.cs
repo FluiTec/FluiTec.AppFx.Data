@@ -16,11 +16,10 @@ namespace FluiTec.AppFx.Data.Migration
         long MaximumVersion { get; }
 
         /// <summary>
-        /// Gets the migrations in this collection.
+        ///     Gets the migrations in this collection.
         /// </summary>
-        ///
         /// <returns>
-        /// An enumerator that allows foreach to be used to process the migrations in this collection.
+        ///     An enumerator that allows foreach to be used to process the migrations in this collection.
         /// </returns>
         IEnumerable<MigrationInfo> GetMigrations();
 

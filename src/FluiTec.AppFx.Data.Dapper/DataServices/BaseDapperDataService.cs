@@ -19,46 +19,6 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
         private readonly IConnectionFactory _connectionFactory;
         private readonly string _connectionString;
 
-        #region Constructors
-
-        /// <summary>   Specialized constructor for use only by derived class. </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     Thrown when one or more required arguments are
-        ///     null.
-        /// </exception>
-        /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
-        /// <param name="loggerFactory">        The logger factory. </param>
-        protected BaseDapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) :
-            base(loggerFactory)
-        {
-            // ReSharper disable once VirtualMemberCallInConstructor
-            if (SqlType == SqlType.Mysql)
-                DapperExtensions.InstallDateTimeOffsetMapper();
-
-            if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
-            _connectionString = dapperServiceOptions.ConnectionString;
-            _connectionFactory = dapperServiceOptions.ConnectionFactory;
-            CommandCache = new ConcurrentDictionary<string, string>();
-        }
-
-        /// <summary>   Specialized constructor for use only by derived class. </summary>
-        /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
-        /// <param name="loggerFactory">        The logger factory. </param>
-        protected BaseDapperDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
-            ILoggerFactory loggerFactory) :
-            base(loggerFactory)
-        {
-            // ReSharper disable once VirtualMemberCallInConstructor
-            if (SqlType == SqlType.Mysql)
-                DapperExtensions.InstallDateTimeOffsetMapper();
-            if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
-            if (dapperServiceOptions.CurrentValue == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
-            DapperServiceOptions = dapperServiceOptions;
-            CommandCache = new ConcurrentDictionary<string, string>();
-        }
-
-        #endregion
-
         #region ICommandCache
 
         /// <summary>   Gets from cache.</summary>
@@ -97,6 +57,47 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
 
         #endregion
 
+        #region Constructors
+
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown when one or more required arguments are
+        ///     null.
+        /// </exception>
+        /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
+        /// <param name="loggerFactory">        The logger factory. </param>
+        protected BaseDapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) :
+            base(loggerFactory)
+        {
+            // ReSharper disable once VirtualMemberCallInConstructor
+            if (SqlType == SqlType.Mysql)
+                DapperExtensions.InstallDateTimeOffsetMapper();
+
+            if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
+            _connectionString = dapperServiceOptions.ConnectionString;
+            _connectionFactory = dapperServiceOptions.ConnectionFactory;
+            CommandCache = new ConcurrentDictionary<string, string>();
+        }
+
+        /// <summary>   Specialized constructor for use only by derived class. </summary>
+        /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
+        /// <param name="loggerFactory">        The logger factory. </param>
+        protected BaseDapperDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
+            ILoggerFactory loggerFactory) :
+            base(loggerFactory)
+        {
+            // ReSharper disable once VirtualMemberCallInConstructor
+            if (SqlType == SqlType.Mysql)
+                DapperExtensions.InstallDateTimeOffsetMapper();
+            if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
+            if (dapperServiceOptions.CurrentValue == null)
+                throw new ArgumentNullException(nameof(dapperServiceOptions));
+            DapperServiceOptions = dapperServiceOptions;
+            CommandCache = new ConcurrentDictionary<string, string>();
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>   Gets options for controlling the dapper service. </summary>
@@ -105,7 +106,8 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
 
         /// <summary>   Gets the connection factory. </summary>
         /// <value> The connection factory. </value>
-        public IConnectionFactory ConnectionFactory => _connectionFactory ?? DapperServiceOptions.CurrentValue.ConnectionFactory;
+        public IConnectionFactory ConnectionFactory =>
+            _connectionFactory ?? DapperServiceOptions.CurrentValue.ConnectionFactory;
 
         /// <summary>   Gets the connection string. </summary>
         /// <value> The connection string. </value>

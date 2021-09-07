@@ -7,32 +7,13 @@ using Spectre.Console;
 namespace FluiTec.AppFx.Data.Dynamic.Console
 {
     /// <summary>
-    /// A data migration console item.
+    ///     A data migration console item.
     /// </summary>
     public sealed class DataMigrationConsoleItem : DataSelectConsoleItem
     {
         /// <summary>
-        /// Gets the data service.
+        ///     Constructor.
         /// </summary>
-        ///
-        /// <value>
-        /// The data service.
-        /// </value>
-        public IDataService DataService { get; }
-
-        /// <summary>
-        /// Gets the migrator.
-        /// </summary>
-        ///
-        /// <value>
-        /// The migrator.
-        /// </value>
-        public IDataMigrator Migrator { get; }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        ///
         /// <param name="dataService">  The data service. </param>
         /// <param name="module">       The module. </param>
         public DataMigrationConsoleItem(IDataService dataService, DataConsoleModule module) : base("Migration", module)
@@ -46,9 +27,24 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         }
 
         /// <summary>
-        /// Displays this.
+        ///     Gets the data service.
         /// </summary>
-        ///
+        /// <value>
+        ///     The data service.
+        /// </value>
+        public IDataService DataService { get; }
+
+        /// <summary>
+        ///     Gets the migrator.
+        /// </summary>
+        /// <value>
+        ///     The migrator.
+        /// </value>
+        public IDataMigrator Migrator { get; }
+
+        /// <summary>
+        ///     Displays this.
+        /// </summary>
         /// <param name="parent">   The parent. </param>
         public override void Display(IConsoleItem parent)
         {

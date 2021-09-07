@@ -16,6 +16,48 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
     public abstract class BaseLiteDbDataService<TUnitOfWork> : DataService<TUnitOfWork>, ILiteDbDataService
         where TUnitOfWork : LiteDbUnitOfWork, IUnitOfWork
     {
+        #region Methods
+
+        /// <summary>
+        ///     Gets cached database.
+        /// </summary>
+        /// <param name="options">  Options for controlling the operation. </param>
+        /// <returns>
+        ///     The cached database.
+        /// </returns>
+        private LiteDatabase GetCachedDatabase(LiteDbServiceOptions options)
+        {
+            var key = options.FullDbFilePath.GetHashCode();
+
+            if (_databases.ContainsKey(key))
+                return _databases[key];
+
+            var db = new LiteDatabase(options.FullDbFilePath);
+            _databases.Add(key, db);
+            return db;
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        /// <summary>
+        ///     Releases the unmanaged resources used by the FluiTec.AppFx.Data.Dapper.DapperDataService and
+        ///     optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        ///     True to release both managed and unmanaged resources; false to
+        ///     release only unmanaged resources.
+        /// </param>
+        protected override void Dispose(bool disposing)
+        {
+            if (_useSingletonConnection) return;
+            _database?.Dispose();
+            _database = null;
+        }
+
+        #endregion
+
         #region Fields
 
         /// <summary>	Gets a value indicating whether this object use singleton connection. </summary>
@@ -23,17 +65,17 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         private readonly bool _useSingletonConnection;
 
         /// <summary>
-        /// The database.
+        ///     The database.
         /// </summary>
         private LiteDatabase _database;
 
         /// <summary>
-        /// (Immutable) the databases.
+        ///     (Immutable) the databases.
         /// </summary>
         private readonly Dictionary<int, LiteDatabase> _databases = new Dictionary<int, LiteDatabase>();
 
         #endregion
-        
+
         #region Properties
 
         /// <summary>   Gets options for controlling the service. </summary>
@@ -140,9 +182,10 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         /// <summary>   Specialized constructor for use only by derived class. </summary>
         /// <param name="options">          Options for controlling the operation. </param>
         /// <param name="loggerFactory">    The logger factory. </param>
-        protected BaseLiteDbDataService(IOptionsMonitor<LiteDbServiceOptions> options, ILoggerFactory loggerFactory) : this(
-            options?.CurrentValue.UseSingletonConnection,
-            options?.CurrentValue.DbFileName, loggerFactory, options?.CurrentValue.ApplicationFolder)
+        protected BaseLiteDbDataService(IOptionsMonitor<LiteDbServiceOptions> options, ILoggerFactory loggerFactory) :
+            this(
+                options?.CurrentValue.UseSingletonConnection,
+                options?.CurrentValue.DbFileName, loggerFactory, options?.CurrentValue.ApplicationFolder)
         {
         }
 
@@ -158,59 +201,15 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
             IEntityNameService nameService) : this(options?.CurrentValue.UseSingletonConnection,
             options?.CurrentValue.DbFileName, loggerFactory, nameService, options?.CurrentValue.ApplicationFolder)
         {
-            if (options == null) 
+            if (options == null)
                 throw new ArgumentNullException(nameof(options));
-            if (options.CurrentValue == null) 
+            if (options.CurrentValue == null)
                 throw new ArgumentException("Missing current value.", nameof(options));
-            if (string.IsNullOrWhiteSpace(options.CurrentValue.DbFileName)) 
+            if (string.IsNullOrWhiteSpace(options.CurrentValue.DbFileName))
                 throw new ArgumentException("Invalid DbFileName.", nameof(options));
 
             ServiceOptions = options;
             NameService = nameService ?? throw new ArgumentNullException();
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Gets cached database.
-        /// </summary>
-        ///
-        /// <param name="options">  Options for controlling the operation. </param>
-        ///
-        /// <returns>
-        /// The cached database.
-        /// </returns>
-        private LiteDatabase GetCachedDatabase(LiteDbServiceOptions options)
-        {
-            var key = options.FullDbFilePath.GetHashCode();
-
-            if (_databases.ContainsKey(key))
-                return _databases[key];
-
-            var db = new LiteDatabase(options.FullDbFilePath);
-            _databases.Add(key, db);
-            return db;
-        }
-
-        #endregion
-
-        #region IDisposable
-
-        /// <summary>
-        ///     Releases the unmanaged resources used by the FluiTec.AppFx.Data.Dapper.DapperDataService and
-        ///     optionally releases the managed resources.
-        /// </summary>
-        /// <param name="disposing">
-        ///     True to release both managed and unmanaged resources; false to
-        ///     release only unmanaged resources.
-        /// </param>
-        protected override void Dispose(bool disposing)
-        {
-            if (_useSingletonConnection) return;
-            _database?.Dispose();
-            _database = null;
         }
 
         #endregion

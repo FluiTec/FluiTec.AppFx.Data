@@ -55,9 +55,8 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         }
 
         /// <summary>
-        /// Specialized constructor for use only by derived class.
+        ///     Specialized constructor for use only by derived class.
         /// </summary>
-        ///
         /// <param name="options">          Options for controlling the operation. </param>
         /// <param name="loggerFactory">    The logger factory. </param>
         protected LiteDbDataService(IOptionsMonitor<LiteDbServiceOptions> options, ILoggerFactory loggerFactory)
@@ -66,9 +65,8 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         }
 
         /// <summary>
-        /// Specialized constructor for use only by derived class.
+        ///     Specialized constructor for use only by derived class.
         /// </summary>
-        ///
         /// <param name="options">          Options for controlling the operation. </param>
         /// <param name="loggerFactory">    The logger factory. </param>
         /// <param name="nameService">      The name service. </param>

@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Options.Attributes;
+﻿using System.IO;
+using FluiTec.AppFx.Options.Attributes;
 
 namespace FluiTec.AppFx.Data.LiteDb
 {
@@ -11,7 +12,8 @@ namespace FluiTec.AppFx.Data.LiteDb
 
         /// <summary>   Gets the full pathname of the full database file. </summary>
         /// <value> The full pathname of the full database file. </value>
-        public string FullDbFilePath => ApplicationFolder != null ? System.IO.Path.Combine(ApplicationFolder, DbFileName) : DbFileName;
+        public string FullDbFilePath =>
+            ApplicationFolder != null ? Path.Combine(ApplicationFolder, DbFileName) : DbFileName;
 
         /// <summary>	Gets or sets the pathname of the application folder. </summary>
         /// <value>	The pathname of the application folder. </value>

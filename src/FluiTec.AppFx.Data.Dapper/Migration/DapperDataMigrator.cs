@@ -19,12 +19,12 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
         /// <summary>   The runner. </summary>
         private readonly IMigrationRunner _runner;
 
-        IVersionLoader loader;
-
         /// <summary>
-        /// The migrations.
+        ///     The migrations.
         /// </summary>
-        private IOrderedEnumerable<KeyValuePair<long, IMigrationInfo>> _migrations;
+        private readonly IOrderedEnumerable<KeyValuePair<long, IMigrationInfo>> _migrations;
+
+        private readonly IVersionLoader loader;
 
         /// <summary>   Constructor. </summary>
         /// <param name="connectionString">     The connection string. </param>
@@ -54,13 +54,13 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
             var sp = services.BuildServiceProvider(false);
 
             _runner = sp.GetRequiredService<IMigrationRunner>();
-            
+
             try
             {
                 _migrations = _runner.MigrationLoader
                     .LoadMigrations()
                     .OrderByDescending(m => m.Value.Version);
-                
+
 
                 MaximumVersion = _migrations.First().Value.Version;
 
@@ -83,15 +83,15 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
         public long MaximumVersion { get; }
 
         /// <summary>
-        /// Gets the migrations in this collection.
+        ///     Gets the migrations in this collection.
         /// </summary>
-        ///
         /// <returns>
-        /// An enumerator that allows foreach to be used to process the migrations in this collection.
+        ///     An enumerator that allows foreach to be used to process the migrations in this collection.
         /// </returns>
         public IEnumerable<MigrationInfo> GetMigrations()
         {
-            return _migrations?.Select((pair, i) => new MigrationInfo(pair.Key, pair.Value.GetName().Substring(pair.Value.GetName().IndexOf(':')+2)));
+            return _migrations?.Select((pair, i) =>
+                new MigrationInfo(pair.Key, pair.Value.GetName().Substring(pair.Value.GetName().IndexOf(':') + 2)));
         }
 
         /// <summary>   Migrates this. </summary>

@@ -7,14 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 namespace FluiTec.AppFx.Data.Dynamic.Console
 {
     /// <summary>
-    /// A data console extension.
+    ///     A data console extension.
     /// </summary>
     public static class DataConsoleExtension
     {
         /// <summary>
-        /// An IServiceCollection extension method that configure data console module.
+        ///     An IServiceCollection extension method that configure data console module.
         /// </summary>
-        ///
         /// <param name="services"> The services to act on. </param>
         public static void ConfigureDataConsoleModule(this IServiceCollection services)
         {

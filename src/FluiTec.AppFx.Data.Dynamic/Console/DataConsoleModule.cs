@@ -10,16 +10,45 @@ using Microsoft.Extensions.DependencyInjection;
 namespace FluiTec.AppFx.Data.Dynamic.Console
 {
     /// <summary>
-    /// A data console module.
+    ///     A data console module.
     /// </summary>
     public class DataConsoleModule : ModuleConsoleItem
     {
+        /// <summary>
+        ///     Values that represent exit codes.
+        /// </summary>
+        public enum ExitCode
+        {
+            /// <summary>
+            ///     An enum constant representing the success option.
+            /// </summary>
+            Success = 0,
+
+            /// <summary>
+            ///     An enum constant representing the error option.
+            /// </summary>
+            Error = 1
+        }
+
         #region Fields
 
         /// <summary>
         ///     (Immutable) the configuration values.
         /// </summary>
         private IOrderedEnumerable<KeyValuePair<string, string>> _configValues;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        /// <param name="saveEnabledProvider">  The save enabled provider. </param>
+        public DataConsoleModule(IConfigurationProvider saveEnabledProvider) : base("Data")
+        {
+            SaveEnabledProvider = saveEnabledProvider;
+        }
 
         #endregion
 
@@ -34,34 +63,19 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         private IConfigurationRoot ConfigurationRoot { get; set; }
 
         /// <summary>
-        /// Gets or sets the data services.
+        ///     Gets or sets the data services.
         /// </summary>
-        ///
         /// <value>
-        /// The data services.
+        ///     The data services.
         /// </value>
         private List<IDataService> DataServices { get; set; }
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        ///
-        /// <param name="saveEnabledProvider">  The save enabled provider. </param>
-        public DataConsoleModule(IConfigurationProvider saveEnabledProvider) : base("Data")
-        {
-            SaveEnabledProvider = saveEnabledProvider;
-        }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Initializes this.
+        ///     Initializes this.
         /// </summary>
         protected override void Initialize()
         {
@@ -81,18 +95,18 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         }
 
         /// <summary>
-        /// Recreate items.
+        ///     Recreate items.
         /// </summary>
         private void RecreateItems()
         {
             Items.Clear();
-            Items.AddRange(Application.HostServices.GetServices<IDataService>().Select(s => new DataServiceConsoleItem(s, this)));
+            Items.AddRange(Application.HostServices.GetServices<IDataService>()
+                .Select(s => new DataServiceConsoleItem(s, this)));
         }
 
         /// <summary>
-        /// Displays this.
+        ///     Displays this.
         /// </summary>
-        ///
         /// <param name="parent">   The parent. </param>
         public override void Display(IConsoleItem parent)
         {
@@ -101,11 +115,10 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         }
 
         /// <summary>
-        /// Configure command.
+        ///     Configure command.
         /// </summary>
-        ///
         /// <returns>
-        /// A System.CommandLine.Command.
+        ///     A System.CommandLine.Command.
         /// </returns>
         public override Command ConfigureCommand()
         {
@@ -114,20 +127,5 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         }
 
         #endregion
-
-        /// <summary>
-        /// Values that represent exit codes.
-        /// </summary>
-        public enum ExitCode
-        {
-            /// <summary>
-            /// An enum constant representing the success option.
-            /// </summary>
-            Success = 0,
-            /// <summary>
-            /// An enum constant representing the error option.
-            /// </summary>
-            Error = 1
-        }
     }
 }

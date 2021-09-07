@@ -24,22 +24,6 @@ namespace WebSample
 {
     public class Startup
     {
-        #region Properties
-
-        /// <summary>	Gets the configuration. </summary>
-        /// <value>	The configuration. </value>
-        public IConfigurationRoot Configuration { get; }
-
-        /// <summary>   Gets the manager for configuration. </summary>
-        /// <value> The configuration manager. </value>
-        public ConfigurationManager ConfigurationManager { get; }
-
-        /// <summary>Gets the environment.</summary>
-        /// <value>The environment.</value>
-        public IWebHostEnvironment Environment { get; }
-
-        #endregion
-
         #region Constructors
 
         /// <summary>   Constructor. </summary>
@@ -93,6 +77,22 @@ namespace WebSample
 
         #endregion
 
+        #region Properties
+
+        /// <summary>	Gets the configuration. </summary>
+        /// <value>	The configuration. </value>
+        public IConfigurationRoot Configuration { get; }
+
+        /// <summary>   Gets the manager for configuration. </summary>
+        /// <value> The configuration manager. </value>
+        public ConfigurationManager ConfigurationManager { get; }
+
+        /// <summary>Gets the environment.</summary>
+        /// <value>The environment.</value>
+        public IWebHostEnvironment Environment { get; }
+
+        #endregion
+
         #region AspNetCore
 
         public void ConfigureServices(IServiceCollection services)
@@ -102,10 +102,7 @@ namespace WebSample
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseRouting();
 
@@ -113,7 +110,8 @@ namespace WebSample
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    var dataService = context.RequestServices.GetRequiredService<ITestDataService>() as IDapperDataService;
+                    var dataService =
+                        context.RequestServices.GetRequiredService<ITestDataService>() as IDapperDataService;
                     await context.Response.WriteAsync(dataService?.ConnectionString ?? "no valid connection-string");
                 });
             });
