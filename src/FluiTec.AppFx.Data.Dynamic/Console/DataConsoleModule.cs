@@ -53,12 +53,6 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         /// <param name="saveEnabledProvider">  The save enabled provider. </param>
         public DataConsoleModule(IConfigurationProvider saveEnabledProvider) : base("Data")
         {
-            DataMigrationSingleton.Instance.VersionMismatch -=
-                DataMigrationSingleton.Instance.DefaultVersionMismatchAction;
-
-            DataMigrationSingleton.Instance.MigrationPossible -=
-                DataMigrationSingleton.Instance.DefaultMigrationPossibleAction;
-
             SaveEnabledProvider = saveEnabledProvider;
         }
 
@@ -71,6 +65,12 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         /// </summary>
         protected override void Initialize()
         {
+            DataMigrationSingleton.Instance.VersionMismatch -=
+                DataMigrationSingleton.Instance.DefaultVersionMismatchAction;
+
+            DataMigrationSingleton.Instance.MigrationPossible -=
+                DataMigrationSingleton.Instance.DefaultMigrationPossibleAction;
+
             ConfigurationRoot = Application.HostServices.GetRequiredService<IConfigurationRoot>();
 
             var providers = ConfigurationRoot.Providers
