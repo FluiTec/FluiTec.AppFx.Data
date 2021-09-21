@@ -71,7 +71,7 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
 
         /// <summary>	Gets the collection. </summary>
         /// <value>	The collection. </value>
-        public LiteCollection<TEntity> Collection { get; }
+        public ILiteCollection<TEntity> Collection { get; }
 
         /// <summary>   Gets the logger. </summary>
         /// <value> The logger. </value>

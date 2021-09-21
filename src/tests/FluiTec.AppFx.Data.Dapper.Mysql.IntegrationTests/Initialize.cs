@@ -30,7 +30,7 @@ namespace FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests
             {
                 serviceOptions = new MysqlDapperServiceOptions
                 {
-                    ConnectionString = $"Server=mysql;Database={db};Uid=root;Pwd={pw}"
+                    ConnectionString = $"Server=mysql;Database={db};Uid=root;Pwd={pw};SslMode=none"
                 };
 
                 dataService = new MysqlTestDataService(serviceOptions, null);

@@ -1,8 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.CommandLine;
+using System.CommandLine.Invocation;
+using System.CommandLine.Parsing;
 using System.Linq;
+using System.Net.Sockets;
 using FluiTec.AppFx.Console.ConsoleItems;
 using FluiTec.AppFx.Data.DataServices;
+using FluiTec.AppFx.Data.Dynamic.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.EnvironmentVariables;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +33,38 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
             ///     An enum constant representing the error option.
             /// </summary>
             Error = 1
+        }
+
+        /// <summary>
+        /// Values that represent list types.
+        /// </summary>
+        public enum ListType
+        {
+            /// <summary>
+            /// An enum constant representing the services option.
+            /// </summary>
+            Services,
+
+            /// <summary>
+            /// An enum constant representing the migrations option.
+            /// </summary>
+            Migrations
+        }
+
+        /// <summary>
+        /// Values that represent migration options.
+        /// </summary>
+        public enum MigrationOption
+        {
+            /// <summary>
+            /// An enum constant representing the apply option.
+            /// </summary>
+            Apply,
+
+            /// <summary>
+            /// An enum constant representing the rollback option.
+            /// </summary>
+            Rollback
         }
 
         #region Fields
@@ -100,8 +137,8 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         private void RecreateItems()
         {
             Items.Clear();
-            Items.AddRange(Application.HostServices.GetServices<IDataService>()
-                .Select(s => new DataServiceConsoleItem(s, this)));
+            DataServices = Application.HostServices.GetServices<IDataService>().ToList();
+            Items.AddRange(DataServices.Select(s => new DataServiceConsoleItem(s, this)));
         }
 
         /// <summary>
@@ -122,8 +159,119 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         /// </returns>
         public override Command ConfigureCommand()
         {
-            var cmd = new Command("--data", "Configuration of the applications database.");
+            var cmd = new Command("--data", "Configuration of the database.");
+
+            var listCmd = new Command("--list", "Lists all requested entries.")
+            {
+                new Argument<ListType>("listType", "Type of entries to list.")
+            };
+            listCmd.Handler = CommandHandler.Create(new Func<ListType, int>(ProcessList));
+
+            var migrateCommand = new Command("--migrate", "Migrate the database.")
+            {
+                new Argument<string>("service", "Name of the service to migrate."),
+                new Argument<long>("migration", "Version of the migration to use."),
+                new Argument<MigrationOption>("option", "MigrationOption to use.")
+            };
+            migrateCommand.Handler = CommandHandler.Create(new Func<string, long, MigrationOption, int>(ProcessMigrateCommand));
+            
+            cmd.AddCommand(listCmd);
+            cmd.AddCommand(migrateCommand);
             return cmd;
+        }
+
+        /// <summary>
+        /// Process the migrate command.
+        /// </summary>
+        ///
+        /// <exception cref="ArgumentOutOfRangeException">  Thrown when one or more arguments are outside
+        ///                                                 the required range. </exception>
+        ///
+        /// <param name="service">      Name of the service. </param>
+        /// <param name="migration"> The migration version. </param>
+        /// <param name="option">           The option. </param>
+        ///
+        /// <returns>
+        /// An int.
+        /// </returns>
+        private int ProcessMigrateCommand(string service, long migration, MigrationOption option)
+        {
+            var dataService = DataServices.SingleOrDefault(d => d.Name == service);
+            if (dataService == null)
+            {
+                System.Console.WriteLine($"Could not find DataService named '{service}'.");
+                return (int) ExitCode.Error;
+            }
+
+            if (!dataService.SupportsMigration)
+            {
+                System.Console.WriteLine($"Service does not support migration.");
+                return (int) ExitCode.Error;
+            }
+
+            var migrator = dataService.GetMigrator();
+            var currentMigration = migrator.GetMigrations().SingleOrDefault(m => m.Version == migration);
+            if (currentMigration == null)
+            {
+                System.Console.WriteLine($"Could not find Version '{migration}'.");
+                return (int) ExitCode.Error;
+            }
+
+            switch (option)
+            {
+                case MigrationOption.Apply:
+                    migrator.Migrate(currentMigration.Version);
+                    break;
+                case MigrationOption.Rollback:
+                    var migrations = migrator.GetMigrations()
+                        .OrderBy(m => m.Version)
+                        .ToDictionary(m => m.Version, m => m.Name);
+                    var curIndex = migrations.IndexOfKey(currentMigration.Version);
+                    var prevIndex = curIndex - 1;
+                    var prevVersion = prevIndex >= 0 ? migrations.ElementAt(prevIndex).Key : 0;
+                    migrator.Migrate(prevVersion);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(option), option, null);
+            }
+
+            return (int) ExitCode.Success;
+        }
+
+        /// <summary>
+        /// Process the list described by listType.
+        /// </summary>
+        ///
+        /// <exception cref="ArgumentOutOfRangeException">  Thrown when one or more arguments are outside
+        ///                                                 the required range. </exception>
+        ///
+        /// <param name="listType"> Type of the list. </param>
+        ///
+        /// <returns>
+        /// An int.
+        /// </returns>
+        private int ProcessList(ListType listType)
+        {
+            switch (listType)
+            {
+                case ListType.Services:
+                    foreach(var service in DataServices)
+                        System.Console.WriteLine($"- {service.Name}");
+                    break;
+                case ListType.Migrations:
+                    foreach (var service in DataServices)
+                    {
+                        System.Console.WriteLine($"- {service.Name}");
+                        if (!service.SupportsMigration) continue;
+                        var migrator = service.GetMigrator();
+                        foreach(var migration in migrator.GetMigrations().OrderByDescending(m => m.Version))
+                            System.Console.WriteLine($"-- {migration.Version} | {migration.Name}");
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(listType), listType, null);
+            }
+            return (int)ExitCode.Success;
         }
 
         #endregion

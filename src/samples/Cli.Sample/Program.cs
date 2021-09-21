@@ -1,9 +1,9 @@
 ﻿using System;
-using Cli.InteractiveSample.Data;
-using Cli.InteractiveSample.Data.LiteDb;
-using Cli.InteractiveSample.Data.Mssql;
-using Cli.InteractiveSample.Data.Mysql;
-using Cli.InteractiveSample.Data.Pgsql;
+using Cli.Sample.Data;
+using Cli.Sample.Data.LiteDb;
+using Cli.Sample.Data.Mssql;
+using Cli.Sample.Data.Mysql;
+using Cli.Sample.Data.Pgsql;
 using FluiTec.AppFx.Console;
 using FluiTec.AppFx.Console.Configuration;
 using FluiTec.AppFx.Data.Dapper.Mssql;
@@ -20,23 +20,24 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Cli.InteractiveSample
+namespace Cli.Sample
 {
     /// <summary>
-    ///     A program.
+    /// A program.
     /// </summary>
     internal class Program
     {
         /// <summary>
-        ///     Main entry-point for this application.
+        /// Main entry-point for this application.
         /// </summary>
+        ///
         /// <param name="args"> An array of command-line argument strings. </param>
         private static void Main(string[] args)
         {
             var config = BuildConfiguration();
             var serviceProvider = ConfigureServices(config);
 
-            new ConsoleHost(serviceProvider).RunInteractive("Test", args);
+            new ConsoleHost(serviceProvider).Run("Test", args);
         }
 
         /// <summary>
@@ -53,7 +54,6 @@ namespace Cli.InteractiveSample
                 .SetBasePath(path)
                 .AddJsonFile("appsettings.json", false, true)
                 .AddJsonFile("appsettings.secret.json", false, true)
-                .AddSaveableJsonFile("appsettings.conf.json", false, true)
                 .Build();
 
             return config;

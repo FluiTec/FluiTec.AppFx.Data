@@ -1,7 +1,6 @@
 ﻿using System;
 using FluiTec.AppFx.Data.LiteDb.DataServices;
 using FluiTec.AppFx.Data.UnitsOfWork;
-using LiteDB;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.LiteDb.UnitsOfWork
@@ -28,7 +27,7 @@ namespace FluiTec.AppFx.Data.LiteDb.UnitsOfWork
         /// </param>
         protected override void Dispose(bool disposing)
         {
-            if (Transaction != null)
+            if (TransactionCheck != null)
                 Rollback();
         }
 
@@ -44,7 +43,8 @@ namespace FluiTec.AppFx.Data.LiteDb.UnitsOfWork
             : base(dataService, logger)
         {
             LiteDbDataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
-            Transaction = dataService.Database.BeginTrans();
+            dataService.Database.BeginTrans();
+            TransactionCheck = new object();
         }
 
         /// <summary>   Constructor. </summary>
@@ -57,7 +57,7 @@ namespace FluiTec.AppFx.Data.LiteDb.UnitsOfWork
         {
             _ownsConnection = false;
             LiteDbDataService = dataService;
-            Transaction = parentUnitOfWork.Transaction;
+            TransactionCheck = parentUnitOfWork.TransactionCheck;
         }
 
         #endregion
@@ -68,9 +68,14 @@ namespace FluiTec.AppFx.Data.LiteDb.UnitsOfWork
         /// <value> The data service. </value>
         public ILiteDbDataService LiteDbDataService { get; }
 
-        /// <summary>	Gets or sets the transaction. </summary>
-        /// <value>	The transaction. </value>
-        public LiteTransaction Transaction { get; private set; }
+        /// <summary>
+        /// Gets or sets the transaction check.
+        /// </summary>
+        ///
+        /// <value>
+        /// The transaction check.
+        /// </value>
+        internal object TransactionCheck { get; set; }
 
         #endregion Properties
 
@@ -83,14 +88,13 @@ namespace FluiTec.AppFx.Data.LiteDb.UnitsOfWork
         /// </exception>
         public override void Commit()
         {
-            if (Transaction == null)
+            if (TransactionCheck == null)
                 throw new InvalidOperationException(
                     "UnitOfWork can't be committed since it's already finished. (Missing transaction)");
 
             if (!_ownsConnection) return;
-            Transaction.Commit();
-            Transaction.Dispose();
-            Transaction = null;
+            LiteDbDataService.Database.Commit();
+            TransactionCheck = null;
         }
 
         /// <summary>	Rollbacks this object. </summary>
@@ -100,14 +104,13 @@ namespace FluiTec.AppFx.Data.LiteDb.UnitsOfWork
         /// </exception>
         public override void Rollback()
         {
-            if (Transaction == null)
+            if (TransactionCheck == null)
                 throw new InvalidOperationException(
                     "UnitOfWork can't be rolled back since it's already finished. (Missing transaction)");
 
             if (!_ownsConnection) return;
-            Transaction.Rollback();
-            Transaction.Dispose();
-            Transaction = null;
+            LiteDbDataService.Database.Rollback();
+            TransactionCheck = null;
         }
 
         #endregion
