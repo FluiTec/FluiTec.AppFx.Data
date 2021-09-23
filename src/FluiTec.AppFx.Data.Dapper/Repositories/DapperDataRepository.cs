@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Dapper;
@@ -39,13 +40,20 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
 
         #region IRepositoryCommandCache
 
-        /// <summary>   Gets from cache.</summary>
+        /// <summary>
+        /// Gets from cache.
+        /// </summary>
+        ///
         /// <param name="commandFunc">  The command function. </param>
-        /// <param name="memberName">   Name of the member. </param>
-        /// <returns>   The data that was read from the cache.</returns>
-        public string GetFromCache(Func<string> commandFunc, [CallerMemberName] string memberName = null)
+        /// <param name="memberName">   (Optional) Name of the member. </param>
+        /// <param name="parameters">   A variable-length parameters list containing parameters. </param>
+        ///
+        /// <returns>
+        /// The data that was read from the cache.
+        /// </returns>
+        public string GetFromCache(Func<string> commandFunc, [CallerMemberName] string memberName = null, params string[] parameters)
         {
-            return UnitOfWork.DapperDataService.GetFromCache(GetType(), memberName, commandFunc);
+            return UnitOfWork.DapperDataService.GetFromCache(GetType(), !parameters.Any() ? memberName : memberName + string.Join('.', parameters), commandFunc);
         }
 
         #endregion
@@ -124,7 +132,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         /// <returns>   The count.</returns>
         public virtual Task<int> CountAsync()
         {
-            var command = GetFromCache(() => $"SELECT COUNT(*) FROM {TableName}");
+            var command = GetFromCache(() => $"SELECT COUNT(*) FROM {TableName}", nameof(Count));
             return UnitOfWork.Connection.ExecuteScalarAsync<int>(command, null, UnitOfWork.Transaction);
         }
 
