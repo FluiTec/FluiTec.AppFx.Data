@@ -24,7 +24,10 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
         /// </summary>
         private readonly IOrderedEnumerable<KeyValuePair<long, IMigrationInfo>> _migrations;
 
-        private readonly IVersionLoader loader;
+        /// <summary>
+        /// (Immutable) the loader.
+        /// </summary>
+        private readonly IVersionLoader _loader;
 
         /// <summary>   Constructor. </summary>
         /// <param name="connectionString">     The connection string. </param>
@@ -64,7 +67,7 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
 
                 MaximumVersion = _migrations.First().Value.Version;
 
-                loader = sp.GetRequiredService<IVersionLoader>();
+                _loader = sp.GetRequiredService<IVersionLoader>();
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (MissingMigrationsException)
@@ -76,7 +79,7 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
 
         /// <summary>   Gets the current version. </summary>
         /// <value> The current version. </value>
-        public long CurrentVersion => loader.VersionInfo.Latest();
+        public long CurrentVersion => _loader.VersionInfo.Latest();
 
         /// <summary>   Gets the maximum version. </summary>
         /// <value> The maximum version. </value>

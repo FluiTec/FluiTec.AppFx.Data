@@ -12,12 +12,14 @@ namespace DynamicSample.Data.LiteDb
 {
     public class LiteDbTestDataService : LiteDbDataService<LiteDbTestUnitOfWork>, ITestDataService
     {
+        // ReSharper disable once UnusedMember.Global
         public LiteDbTestDataService(bool? useSingletonConnection, string dbFilePath, ILoggerFactory loggerFactory,
             string applicationFolder = null) : base(useSingletonConnection, dbFilePath, loggerFactory,
             applicationFolder)
         {
         }
 
+        // ReSharper disable once UnusedMember.Global
         public LiteDbTestDataService(bool? useSingletonConnection, string dbFilePath, ILoggerFactory loggerFactory,
             IEntityNameService nameService, string applicationFolder = null) : base(useSingletonConnection, dbFilePath,
             loggerFactory, nameService, applicationFolder)
@@ -29,6 +31,7 @@ namespace DynamicSample.Data.LiteDb
         {
         }
 
+        // ReSharper disable once UnusedMember.Global
         public LiteDbTestDataService(LiteDbServiceOptions options, ILoggerFactory loggerFactory,
             IEntityNameService nameService) : base(options, loggerFactory, nameService)
         {
@@ -39,6 +42,7 @@ namespace DynamicSample.Data.LiteDb
         {
         }
 
+        // ReSharper disable once UnusedMember.Global
         public LiteDbTestDataService(IOptionsMonitor<LiteDbServiceOptions> options, ILoggerFactory loggerFactory,
             IEntityNameService nameService) : base(options, loggerFactory, nameService)
         {
@@ -64,10 +68,10 @@ namespace DynamicSample.Data.LiteDb
         public override LiteDbTestUnitOfWork BeginUnitOfWork(IUnitOfWork other)
         {
             if (other == null) throw new ArgumentNullException(nameof(other));
-            if (!(other is LiteDbUnitOfWork))
+            if (other is not LiteDbUnitOfWork work)
                 throw new ArgumentException(
                     $"Incompatible implementation of UnitOfWork. Must be of type {nameof(LiteDbUnitOfWork)}!");
-            return new LiteDbTestUnitOfWork(this, (LiteDbUnitOfWork) other, LoggerFactory?.CreateLogger<IUnitOfWork>());
+            return new LiteDbTestUnitOfWork(this, work, LoggerFactory?.CreateLogger<IUnitOfWork>());
         }
     }
 }

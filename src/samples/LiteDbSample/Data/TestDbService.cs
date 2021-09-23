@@ -33,10 +33,10 @@ namespace LiteDbSample.Data
         public override TestUnitOfWork BeginUnitOfWork(IUnitOfWork other)
         {
             if (other == null) throw new ArgumentNullException(nameof(other));
-            if (!(other is LiteDbUnitOfWork))
+            if (!(other is LiteDbUnitOfWork work))
                 throw new ArgumentException(
                     $"Incompatible implementation of UnitOfWork. Must be of type {nameof(LiteDbUnitOfWork)}!");
-            return new TestUnitOfWork(this, (LiteDbUnitOfWork) other, LoggerFactory?.CreateLogger<IUnitOfWork>());
+            return new TestUnitOfWork(this, work, LoggerFactory?.CreateLogger<IUnitOfWork>());
         }
     }
 }

@@ -61,10 +61,10 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServices
         public override DapperTestUnitOfWork BeginUnitOfWork(IUnitOfWork other)
         {
             if (other == null) throw new ArgumentNullException(nameof(other));
-            if (!(other is DapperUnitOfWork))
+            if (!(other is DapperUnitOfWork work))
                 throw new ArgumentException(
                     $"Incompatible implementation of UnitOfWork. Must be of type {nameof(DapperUnitOfWork)}!");
-            return new DapperTestUnitOfWork((DapperUnitOfWork) other, this, LoggerFactory?.CreateLogger<IUnitOfWork>());
+            return new DapperTestUnitOfWork(work, this, LoggerFactory?.CreateLogger<IUnitOfWork>());
         }
     }
 }

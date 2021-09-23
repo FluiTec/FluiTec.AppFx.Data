@@ -88,6 +88,7 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         /// <summary>   Renders the parameter property described by propertyInfo. </summary>
         /// <param name="propertyName"> Name of the property. </param>
         /// <returns>   A string. </returns>
+        // ReSharper disable once UnusedMemberInSuper.Global
         string RenderParameterProperty(string propertyName);
 
         /// <summary>	Renders the table name described by type. </summary>

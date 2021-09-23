@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
-using System.CommandLine.Parsing;
 using System.Linq;
-using System.Net.Sockets;
 using FluiTec.AppFx.Console.ConsoleItems;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Dynamic.Extensions;
@@ -66,16 +64,7 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
             /// </summary>
             Rollback
         }
-
-        #region Fields
-
-        /// <summary>
-        ///     (Immutable) the configuration values.
-        /// </summary>
-        private IOrderedEnumerable<KeyValuePair<string, string>> _configValues;
-
-        #endregion
-
+        
         #region Constructors
 
         /// <summary>
@@ -107,6 +96,11 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
         /// </value>
         private List<IDataService> DataServices { get; set; }
 
+        /// <summary>
+        ///     (Immutable) the configuration values.
+        /// </summary>
+        public IOrderedEnumerable<KeyValuePair<string, string>> ConfigValues { get; private set; }
+
         #endregion
 
         #region Methods
@@ -127,7 +121,7 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
             var providers = ConfigurationRoot.Providers
                 .Where(p => p.GetType() != typeof(EnvironmentVariablesConfigurationProvider));
 
-            _configValues = new ConfigurationRoot(providers.ToList()).AsEnumerable().OrderBy(v => v.Key);
+            ConfigValues = new ConfigurationRoot(providers.ToList()).AsEnumerable().OrderBy(v => v.Key);
             RecreateItems();
         }
 
@@ -205,7 +199,7 @@ namespace FluiTec.AppFx.Data.Dynamic.Console
 
             if (!dataService.SupportsMigration)
             {
-                System.Console.WriteLine($"Service does not support migration.");
+                System.Console.WriteLine("Service does not support migration.");
                 return (int) ExitCode.Error;
             }
 

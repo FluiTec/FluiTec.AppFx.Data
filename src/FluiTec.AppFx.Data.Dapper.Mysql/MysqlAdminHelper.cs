@@ -10,22 +10,18 @@ namespace FluiTec.AppFx.Data.Dapper.Mysql
         /// <param name="dbName">                   Name of the database. </param>
         public static void CreateDababase(string adminConnectionString, string dbName)
         {
-            using (var connection = new MySqlConnection(adminConnectionString))
+            using var connection = new MySqlConnection(adminConnectionString);
+            try
             {
-                try
-                {
-                    connection.Open();
-                    var createDbSql = $"DROP DATABASE IF EXISTS {dbName};\r\n" +
-                                      $"CREATE DATABASE {dbName};";
-                    using (var createDbCmd = new MySqlCommand(createDbSql, connection))
-                    {
-                        createDbCmd.ExecuteNonQuery();
-                    }
-                }
-                finally
-                {
-                    connection.Close();
-                }
+                connection.Open();
+                var createDbSql = $"DROP DATABASE IF EXISTS {dbName};\r\n" +
+                                  $"CREATE DATABASE {dbName};";
+                using var createDbCmd = new MySqlCommand(createDbSql, connection);
+                createDbCmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                connection.Close();
             }
         }
 
@@ -37,21 +33,17 @@ namespace FluiTec.AppFx.Data.Dapper.Mysql
         public static void CreateUserAndLogin(string adminConnectionString, string dbName, string userName,
             string password)
         {
-            using (var connection = new MySqlConnection(adminConnectionString))
+            using var connection = new MySqlConnection(adminConnectionString);
+            try
             {
-                try
-                {
-                    connection.Open();
-                    var createUserSql = $"GRANT ALL ON `{dbName}`.* TO '{userName}'@'%' IDENTIFIED BY '{password}';";
-                    using (var createUserCmd = new MySqlCommand(createUserSql, connection))
-                    {
-                        createUserCmd.ExecuteNonQuery();
-                    }
-                }
-                finally
-                {
-                    connection.Close();
-                }
+                connection.Open();
+                var createUserSql = $"GRANT ALL ON `{dbName}`.* TO '{userName}'@'%' IDENTIFIED BY '{password}';";
+                using var createUserCmd = new MySqlCommand(createUserSql, connection);
+                createUserCmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                connection.Close();
             }
         }
     }

@@ -192,7 +192,7 @@ namespace FluiTec.AppFx.Data.Sql.Adapters
         public virtual string GetUpdateStatement(Type type, DateTimeOffset timestamp, string timestampFieldname)
         {
             var key = SqlCache.TypeKeyPropertiesCache(type).Single();
-            var stamp = SqlCache.TypePropertiesChache(type).Single(p => p.Name == "TimeStamp");
+            var unused = SqlCache.TypePropertiesChache(type).Single(p => p.Name == "TimeStamp");
             var setClauses = RenderSetStatements(type).ToString();
             return
                 $"UPDATE {RenderTableName(type)} " +

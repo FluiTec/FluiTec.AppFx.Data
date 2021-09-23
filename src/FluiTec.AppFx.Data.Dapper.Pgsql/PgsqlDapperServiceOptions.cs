@@ -14,6 +14,7 @@ namespace FluiTec.AppFx.Data.Dapper.Pgsql
 
         /// <summary>   Constructor. </summary>
         /// <param name="connectionString"> The connection string. </param>
+        // ReSharper disable once UnusedMember.Global
         public PgsqlDapperServiceOptions(string connectionString) : base(connectionString)
         {
             ConnectionFactory = new PgsqlConnectionFactory();

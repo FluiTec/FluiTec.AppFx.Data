@@ -13,6 +13,7 @@ namespace FluiTec.AppFx.Data.Repositories
     {
         /// <summary>   Gets or sets a value indicating whether the expect identity key.</summary>
         /// <value> True if expect identity key, false if not.</value>
+        // ReSharper disable once UnusedMemberInSuper.Global
         bool ExpectIdentityKey { get; set; }
 
         /// <summary>	Adds entity. </summary>

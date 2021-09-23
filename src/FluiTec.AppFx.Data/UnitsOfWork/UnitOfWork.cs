@@ -61,6 +61,7 @@ namespace FluiTec.AppFx.Data.UnitsOfWork
         /// <param name="repositoryProvider">The repository provider.</param>
         /// <exception cref="System.ArgumentNullException">repositoryProvider</exception>
         /// <exception cref="System.InvalidOperationException">A provider for {repoType.Name} was already registerd!</exception>
+        // ReSharper disable once UnusedMember.Global
         protected void RegisterRepositoryProvider<TRepository>(
             Func<IUnitOfWork, ILogger<IRepository>, TRepository> repositoryProvider)
             where TRepository : class, IRepository

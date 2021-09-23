@@ -7,6 +7,7 @@ namespace FluiTec.AppFx.Data.Dapper.SqLite
     public class SqliteDapperServiceOptions : DapperServiceOptions
     {
         /// <summary>   Default constructor. </summary>
+        // ReSharper disable once UnusedMember.Global
         public SqliteDapperServiceOptions()
         {
             ConnectionFactory = new SqliteConnectionFactory();
@@ -14,6 +15,7 @@ namespace FluiTec.AppFx.Data.Dapper.SqLite
 
         /// <summary>   Constructor. </summary>
         /// <param name="connectionString"> The connection string. </param>
+        // ReSharper disable once UnusedMember.Global
         public SqliteDapperServiceOptions(string connectionString) : base(connectionString)
         {
             ConnectionFactory = new SqliteConnectionFactory();

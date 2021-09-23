@@ -8,6 +8,7 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
 {
     /// <summary>   A lite database integer key table data repository. </summary>
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+    // ReSharper disable once UnusedMember.Global
     public abstract class LiteDbIntegerKeyTableDataRepository<TEntity> : LiteDbKeyTableDataRepository<TEntity, int>
         where TEntity : class, IKeyEntity<int>, new()
     {

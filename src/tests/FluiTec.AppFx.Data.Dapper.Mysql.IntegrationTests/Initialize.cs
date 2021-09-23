@@ -40,7 +40,7 @@ namespace FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests
                 try
                 {
                     var path = DirectoryHelper.GetApplicationRoot();
-                    var parent = Directory.GetParent(path).Parent?.Parent?.FullName;
+                    var parent = Directory.GetParent(path)?.Parent?.Parent?.FullName;
                     var config = new ConfigurationBuilder()
                         .SetBasePath(parent)
                         .AddJsonFile("appsettings.integration.json", false, true)

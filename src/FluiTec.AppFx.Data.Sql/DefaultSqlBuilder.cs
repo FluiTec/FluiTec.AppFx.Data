@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Data;
-using System.Diagnostics;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Sql.Adapters;
 
@@ -50,8 +49,7 @@ namespace FluiTec.AppFx.Data.Sql
             {
                 if (GetSqlBuilder != null) return GetSqlBuilder(connection);
                 var connectionTypeName = connection.GetType().FullName;
-                Debug.Assert(connectionTypeName != null);
-                if (BuilderDictionary.TryGetValue(connectionTypeName, out var builder))
+                if (BuilderDictionary.TryGetValue(connectionTypeName ?? throw new InvalidOperationException(), out var builder))
                     return builder;
                 throw new NotImplementedException(
                     $"No default builder for connection for {connectionTypeName} registered!");

@@ -8,5 +8,7 @@
         public const string Pgsql = "postgres";
 
         public const string Mysql = "mysql";
+
+        public const string Sqlite = "sqlite";
     }
 }

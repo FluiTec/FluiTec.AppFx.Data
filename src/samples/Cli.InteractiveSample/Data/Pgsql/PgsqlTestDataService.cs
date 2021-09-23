@@ -18,6 +18,7 @@ namespace Cli.InteractiveSample.Data.Pgsql
         /// <summary>   Constructor. </summary>
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
+        // ReSharper disable once UnusedMember.Global
         public PgsqlTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(
             dapperServiceOptions, loggerFactory)
         {
@@ -80,10 +81,10 @@ namespace Cli.InteractiveSample.Data.Pgsql
         public override DapperTestUnitOfWork BeginUnitOfWork(IUnitOfWork other)
         {
             if (other == null) throw new ArgumentNullException(nameof(other));
-            if (!(other is DapperUnitOfWork))
+            if (other is not DapperUnitOfWork work)
                 throw new ArgumentException(
                     $"Incompatible implementation of UnitOfWork. Must be of type {nameof(DapperUnitOfWork)}!");
-            return new DapperTestUnitOfWork((DapperUnitOfWork) other, this, LoggerFactory?.CreateLogger<IUnitOfWork>());
+            return new DapperTestUnitOfWork(work, this, LoggerFactory?.CreateLogger<IUnitOfWork>());
         }
     }
 }

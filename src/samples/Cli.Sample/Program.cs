@@ -4,11 +4,12 @@ using Cli.Sample.Data.LiteDb;
 using Cli.Sample.Data.Mssql;
 using Cli.Sample.Data.Mysql;
 using Cli.Sample.Data.Pgsql;
+using Cli.Sample.Data.Sqlite;
 using FluiTec.AppFx.Console;
-using FluiTec.AppFx.Console.Configuration;
 using FluiTec.AppFx.Data.Dapper.Mssql;
 using FluiTec.AppFx.Data.Dapper.Mysql;
 using FluiTec.AppFx.Data.Dapper.Pgsql;
+using FluiTec.AppFx.Data.Dapper.SqLite;
 using FluiTec.AppFx.Data.Dynamic.Configuration;
 using FluiTec.AppFx.Data.Dynamic.Console;
 using FluiTec.AppFx.Data.LiteDb;
@@ -88,6 +89,9 @@ namespace Cli.Sample
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mysql => new MysqlTestDataService(
                                 provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
+                                provider.GetService<ILoggerFactory>()),
+                            DataProvider.Sqlite => new SqliteTestDataService(
+                                provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };

@@ -3,6 +3,7 @@
 namespace FluiTec.AppFx.Data.Dapper
 {
     /// <summary>   A dapper service options validator. </summary>
+    // ReSharper disable once UnusedMember.Global
     public class DapperServiceOptionsValidator : AbstractValidator<DapperServiceOptions>
     {
         /// <summary>   Default constructor. </summary>

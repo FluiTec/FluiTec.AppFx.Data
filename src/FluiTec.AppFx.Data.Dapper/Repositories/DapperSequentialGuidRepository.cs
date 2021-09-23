@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Data.Dapper.Repositories
 {
     /// <summary>	A dapper unique identifier repository. </summary>
+    // ReSharper disable once UnusedMember.Global
     public abstract class DapperSequentialGuidRepository<TEntity> : DapperPreDefinedKeyRepository<TEntity, Guid>
         where TEntity : class, IKeyEntity<Guid>, new()
     {

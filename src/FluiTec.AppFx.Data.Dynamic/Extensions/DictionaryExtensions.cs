@@ -18,6 +18,7 @@ namespace FluiTec.AppFx.Data.Dynamic.Extensions
         /// <returns>
         ///     The zero-based index of the found value, or -1 if no match was found.
         /// </returns>
+        // ReSharper disable once UnusedMember.Global
         public static int IndexOfValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TValue value)
         {
             for (var i = 0; i < dictionary.Count; ++i)

@@ -16,7 +16,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.Schema.Migrations
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn("Name").AsString().Nullable();
 
-            IfDatabase(MigrationDatabaseName.Mysql)
+            IfDatabase(MigrationDatabaseName.Mysql, MigrationDatabaseName.Sqlite)
                 .Create
                 .Table(SchemaGlobals.Schema, SchemaGlobals.DummyTable, false)
                 .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
@@ -30,7 +30,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.Schema.Migrations
                 .Delete
                 .Table(SchemaGlobals.Schema, SchemaGlobals.DummyTable, true);
 
-            IfDatabase(MigrationDatabaseName.Mysql)
+            IfDatabase(MigrationDatabaseName.Mysql, MigrationDatabaseName.Sqlite)
                 .Delete
                 .Table(SchemaGlobals.Schema, SchemaGlobals.DummyTable, false);
         }

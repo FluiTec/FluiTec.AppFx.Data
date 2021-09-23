@@ -14,6 +14,7 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql
 
         /// <summary>   Constructor. </summary>
         /// <param name="connectionString"> The connection string. </param>
+        // ReSharper disable once UnusedMember.Global
         public MssqlDapperServiceOptions(string connectionString) : base(connectionString)
         {
             ConnectionFactory = new MssqlConnectionFactory();

@@ -284,8 +284,8 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity1 = uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
-            var entity2 = uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
+            uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
+            uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
 
             var dbCount = uow.DummyRepository.GetAll().Count();
 
@@ -299,8 +299,8 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity1 = uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
-            var entity2 = uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
+            uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
+            uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
 
             var dbCount = uow.DummyRepository.GetAllAsync().Result.Count();
 
@@ -314,8 +314,8 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity1 = uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
-            var entity2 = uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
+            uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
+            uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
 
             var dbCount = uow.DummyRepository.Count();
 
@@ -329,8 +329,8 @@ namespace FluiTec.AppFx.Data.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity1 = uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
-            var entity2 = uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
+            uow.DummyRepository.Add(new DummyEntity {Name = "Test1"});
+            uow.DummyRepository.Add(new DummyEntity {Name = "Test2"});
 
             var dbCount = uow.DummyRepository.CountAsync().Result;
 

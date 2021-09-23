@@ -5,9 +5,11 @@ using DynamicSample.Data.LiteDb;
 using DynamicSample.Data.Mssql;
 using DynamicSample.Data.Mysql;
 using DynamicSample.Data.Pgsql;
+using DynamicSample.Data.Sqlite;
 using FluiTec.AppFx.Data.Dapper.Mssql;
 using FluiTec.AppFx.Data.Dapper.Mysql;
 using FluiTec.AppFx.Data.Dapper.Pgsql;
+using FluiTec.AppFx.Data.Dapper.SqLite;
 using FluiTec.AppFx.Data.Dynamic.Configuration;
 using FluiTec.AppFx.Data.LiteDb;
 using FluiTec.AppFx.Options.Helpers;
@@ -23,6 +25,7 @@ namespace DynamicSample
     {
         /// <summary>   Main entry-point for this application. </summary>
         /// <param name="args"> A variable-length parameters list containing arguments. </param>
+        // ReSharper disable once UnusedParameter.Local
         private static void Main(params string[] args)
         {
             // load config from json
@@ -50,7 +53,7 @@ namespace DynamicSample
                         return options.CurrentValue.Provider switch
                         {
                             DataProvider.LiteDb => new LiteDbTestDataService(
-                                provider.GetRequiredService<LiteDbServiceOptions>(),
+                                provider.GetRequiredService<IOptionsMonitor<LiteDbServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mssql => new MssqlTestDataService(
                                 provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
@@ -60,6 +63,9 @@ namespace DynamicSample
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mysql => new MysqlTestDataService(
                                 provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
+                                provider.GetService<ILoggerFactory>()),
+                            DataProvider.Sqlite => new SqliteTestDataService(
+                                provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };
@@ -100,6 +106,9 @@ namespace DynamicSample
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Mysql => new MysqlTestDataService(
                                 provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
+                                provider.GetService<ILoggerFactory>()),
+                            DataProvider.Sqlite => new SqliteTestDataService(
+                                provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };

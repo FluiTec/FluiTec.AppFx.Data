@@ -9,6 +9,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         /// <param name="commandFunc">  The command function. </param>
         /// <param name="memberName">   Name of the member. </param>
         /// <returns>   The data that was read from the cache.</returns>
+        // ReSharper disable once UnusedMemberInSuper.Global
         string GetFromCache(Func<string> commandFunc, string memberName);
     }
 }

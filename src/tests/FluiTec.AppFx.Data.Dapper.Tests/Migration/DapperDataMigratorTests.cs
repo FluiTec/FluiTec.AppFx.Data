@@ -16,14 +16,14 @@ namespace FluiTec.AppFx.Data.Dapper.Tests.Migration
         public void TestThrowsOnMissingScanAssemblies()
         {
             var versionMock = new Mock<IVersionTableMetaData>();
-            var migrator = new DapperDataMigrator(string.Empty, null, versionMock.Object, builder => { });
+            var unused = new DapperDataMigrator(string.Empty, null, versionMock.Object, builder => { });
         }
 
         [TestMethod]
         public void TestWontThrowOnMissingMigrations()
         {
             var versionMock = new Mock<IVersionTableMetaData>();
-            var migrator = new DapperDataMigrator(string.Empty, new Assembly[0], versionMock.Object,
+            var unused = new DapperDataMigrator(string.Empty, Array.Empty<Assembly>(), versionMock.Object,
                 builder => { builder.AddSQLite(); });
         }
     }
