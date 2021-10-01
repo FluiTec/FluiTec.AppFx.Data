@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FluiTec.AppFx.Data.Dapper.SqLite\FluiTec.AppFx.Data.Dapper.SqLite.csproj" />
+    <ProjectReference Include="..\..\..\FluiTec.AppFx.Data.Dapper.SqLite\FluiTec.AppFx.Data.Dapper.SqLite.csproj" />
   </ItemGroup>
 
 </Project>

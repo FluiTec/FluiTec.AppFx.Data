@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
+    <ProjectReference Include="..\..\..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluiTec.AppFx.Data.TestLibrary\FluiTec.AppFx.Data.TestLibrary.csproj" />
+    <ProjectReference Include="..\..\FluiTec.AppFx.Data.TestLibrary\FluiTec.AppFx.Data.TestLibrary.csproj" />
   </ItemGroup>
 
 </Project>
