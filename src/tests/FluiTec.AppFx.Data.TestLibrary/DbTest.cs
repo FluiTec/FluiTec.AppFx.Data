@@ -47,7 +47,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
         protected abstract void InitOptionsAndDataService();
 
         /// <summary>   Assert database available.</summary>
-        protected void AssertDbAvailable()
+        protected virtual void AssertDbAvailable()
         {
             Assert.IsTrue(IsDbAvailable, "DB NOT AVAILABLE!");
         }
@@ -186,6 +186,10 @@ namespace FluiTec.AppFx.Data.TestLibrary
             try
             {
                 var unused = uow.DummyRepository.UpdateAsync(new DummyEntity {Id = 100, Name = "Test"}).Result;
+            }
+            catch (UpdateException e)
+            {
+                Assert.IsTrue(e.GetType() == typeof(UpdateException));
             }
             catch (AggregateException e)
             {

@@ -127,6 +127,7 @@ namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork
             if (Transaction == null)
                 throw new InvalidOperationException(
                     "UnitOfWork can't be rolled back since it's already finished. (Missing transaction)");
+            
             if (!_ownsConnection) return;
 
             // clear transaction

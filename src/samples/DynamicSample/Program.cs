@@ -4,6 +4,7 @@ using DynamicSample.Data.Entities;
 using DynamicSample.Data.LiteDb;
 using DynamicSample.Data.Mssql;
 using DynamicSample.Data.Mysql;
+using DynamicSample.Data.NMemory;
 using DynamicSample.Data.Pgsql;
 using DynamicSample.Data.Sqlite;
 using FluiTec.AppFx.Data.Dapper.Mssql;
@@ -67,6 +68,8 @@ namespace DynamicSample
                             DataProvider.Sqlite => new SqliteTestDataService(
                                 provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
                                 provider.GetService<ILoggerFactory>()),
+                            DataProvider.NMemory => new NMemoryTestDataService(
+                                provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };
                     }
@@ -109,6 +112,8 @@ namespace DynamicSample
                                 provider.GetService<ILoggerFactory>()),
                             DataProvider.Sqlite => new SqliteTestDataService(
                                 provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
+                                provider.GetService<ILoggerFactory>()),
+                            DataProvider.NMemory => new NMemoryTestDataService(
                                 provider.GetService<ILoggerFactory>()),
                             _ => throw new NotImplementedException()
                         };

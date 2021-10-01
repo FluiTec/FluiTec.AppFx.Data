@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\FluiTec.AppFx.Data.Dynamic\FluiTec.AppFx.Data.Dynamic.csproj" />
+    <ProjectReference Include="..\..\FluiTec.AppFx.Data.NMemory\FluiTec.AppFx.Data.NMemory.csproj" />
   </ItemGroup>
 
 </Project>

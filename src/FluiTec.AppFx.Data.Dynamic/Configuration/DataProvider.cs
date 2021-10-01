@@ -16,6 +16,9 @@
         Sqlite,
 
         /// <summary>   An enum constant representing the lite Database option. </summary>
-        LiteDb
+        LiteDb,
+
+        /// <summary>   An enum constant representing the nmemory Database option. </summary>
+        NMemory
     }
 }
