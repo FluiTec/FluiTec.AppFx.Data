@@ -93,7 +93,7 @@ namespace FluiTec.AppFx.Data.Dapper.Migration
         /// </returns>
         public IEnumerable<MigrationInfo> GetMigrations()
         {
-            return _migrations?.Select((pair, i) =>
+            return _migrations?.Select((pair, _) =>
                 new MigrationInfo(pair.Key, pair.Value.GetName().Substring(pair.Value.GetName().IndexOf(':') + 2)));
         }
 

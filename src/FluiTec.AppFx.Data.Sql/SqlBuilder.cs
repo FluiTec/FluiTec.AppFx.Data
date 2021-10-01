@@ -35,57 +35,57 @@ namespace FluiTec.AppFx.Data.Sql
 
         /// <summary>	Options for controlling the key. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _keyParameters =
-            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+            new();
 
         /// <summary>	List of parameters. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, List<KeyValuePair<PropertyInfo, string>>>
             _parameterList =
-                new ConcurrentDictionary<RuntimeTypeHandle, List<KeyValuePair<PropertyInfo, string>>>();
+                new();
 
         /// <summary>	The select all queries. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _selectAllQueries =
-            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+            new();
 
         /// <summary>	The select by key queries. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _selectByKeyQueries =
-            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+            new();
 
         /// <summary>	The select by filter queries. </summary>
         private readonly ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string> _selectByFilterQueries =
-            new ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string>();
+            new();
 
         /// <summary>	The select by in filter queries. </summary>
         private readonly ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string> _selectByInFilterQueries
             =
-            new ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string>();
+            new();
 
         /// <summary>	The insert queries. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _insertQueries =
-            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+            new();
 
         /// <summary>	The insert automatic key queries. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _insertAutoKeyQueries =
-            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+            new();
 
         /// <summary>	The insert multiple queries. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _insertMultipleQueries =
-            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+            new();
 
         /// <summary>	The insert automatic multiple queries. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _insertAutoMultipleQueries =
-            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+            new();
 
         /// <summary>	The update queries. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _updateQueries =
-            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+            new();
 
         /// <summary>	The delete queries. </summary>
         private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _deleteQueries =
-            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+            new();
 
         /// <summary>	The delete by filter queries. </summary>
         private readonly ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string> _deleteByFilterQueries =
-            new ConcurrentDictionary<KeyValuePair<RuntimeTypeHandle, string>, string>();
+            new();
 
         #endregion
 

@@ -14,7 +14,7 @@ namespace FluiTec.AppFx.Data.LiteDb
     {
         /// <summary>	The lazy initilizer. </summary>
         private static readonly Lazy<LiteDbDatabaseSingleton> Lazy =
-            new Lazy<LiteDbDatabaseSingleton>(() => new LiteDbDatabaseSingleton());
+            new(() => new LiteDbDatabaseSingleton());
 
         /// <summary>	Dictionary of databases. </summary>
         private readonly ConcurrentDictionary<string, LiteDatabase> _databaseDictionary;

@@ -15,7 +15,7 @@ namespace FluiTec.AppFx.Data.EntityNameServices
         /// <summary>	Gets or sets a list of names of the entities. </summary>
         /// <value>	A list of names of the entities. </value>
         private static readonly ConcurrentDictionary<Type, string> EntityNames =
-            new ConcurrentDictionary<Type, string>();
+            new();
 
         /// <summary>Names the specified type.</summary>
         /// <param name="type">The type.</param>

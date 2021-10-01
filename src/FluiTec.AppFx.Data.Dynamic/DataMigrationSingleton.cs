@@ -13,7 +13,7 @@ namespace FluiTec.AppFx.Data.Dynamic
 
         /// <summary>	The lazy initilizer. </summary>
         private static readonly Lazy<DataMigrationSingleton> Lazy =
-            new Lazy<DataMigrationSingleton>(() => new DataMigrationSingleton());
+            new(() => new DataMigrationSingleton());
 
         #endregion
 
@@ -72,7 +72,7 @@ namespace FluiTec.AppFx.Data.Dynamic
         ///     The default migration possible action.
         /// </value>
         public Action<IDataMigrator, IDataService> DefaultMigrationPossibleAction
-            => (migrator, service)
+            => (migrator, _)
                 => migrator.Migrate();
 
         #endregion

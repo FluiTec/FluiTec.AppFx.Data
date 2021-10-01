@@ -135,7 +135,6 @@ namespace FluiTec.AppFx.Data.NMemory.Repositories
 
             if (entity is ITimeStampedKeyEntity stampedEntity)
             {
-                var originalTimeStamp = stampedEntity.TimeStamp;
                 stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
                 Table.Update((TEntity)stampedEntity);

@@ -72,7 +72,7 @@ namespace FluiTec.AppFx.Data.LiteDb.DataServices
         /// <summary>
         ///     (Immutable) the databases.
         /// </summary>
-        private readonly Dictionary<int, LiteDatabase> _databases = new Dictionary<int, LiteDatabase>();
+        private readonly Dictionary<int, LiteDatabase> _databases = new();
 
         #endregion
 

@@ -15,7 +15,7 @@ namespace FluiTec.AppFx.Data.Sql
         public delegate SqlBuilder GetSqlBuilderDelegate(IDbConnection connection);
 
         /// <summary>	The padlock. </summary>
-        private static readonly object Padlock = new object();
+        private static readonly object Padlock = new();
 
         /// <summary>	Dictionary of builders. </summary>
         private static readonly ConcurrentDictionary<string, SqlBuilder> BuilderDictionary;

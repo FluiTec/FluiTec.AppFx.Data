@@ -17,6 +17,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         /// <returns>
         /// The data that was read from the cache.
         /// </returns>
+        // ReSharper disable once UnusedMemberInSuper.Global
         string GetFromCache(Func<string> commandFunc, [CallerMemberName] string memberName = null,
             params string[] parameters);
     }

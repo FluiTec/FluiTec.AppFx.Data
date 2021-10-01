@@ -12,15 +12,15 @@ namespace FluiTec.AppFx.Data.Sql
     {
         /// <summary>	The type properties. </summary>
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, IList<PropertyInfo>> TypeProperties =
-            new ConcurrentDictionary<RuntimeTypeHandle, IList<PropertyInfo>>();
+            new();
 
         /// <summary>	The type key properties. </summary>
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, IList<PropertyInfo>> TypeKeyProperties =
-            new ConcurrentDictionary<RuntimeTypeHandle, IList<PropertyInfo>>();
+            new();
 
         /// <summary>	The entity name cache. </summary>
         public static ConcurrentDictionary<RuntimeTypeHandle, string> EntityNameCache =
-            new ConcurrentDictionary<RuntimeTypeHandle, string>();
+            new();
 
         /// <summary>	Type properties chache. </summary>
         /// <param name="type">	The type. </param>

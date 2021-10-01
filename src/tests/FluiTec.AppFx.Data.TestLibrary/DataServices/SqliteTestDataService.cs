@@ -1,5 +1,4 @@
 ﻿using FluiTec.AppFx.Data.Dapper;
-using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Migration;
 using Microsoft.Extensions.Logging;
 
