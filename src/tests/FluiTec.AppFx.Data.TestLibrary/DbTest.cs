@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
-using FluiTec.AppFx.Data.Dapper;
+using FluiTec.AppFx.Data.TestLibrary.DataServiceProviders;
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Data.TestLibrary.Entities;
+using FluiTec.AppFx.Data.TestLibrary.UnitsOfWork;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.TestLibrary
@@ -10,46 +11,45 @@ namespace FluiTec.AppFx.Data.TestLibrary
     /// <summary>   A database test.</summary>
     public abstract class DbTest
     {
+        #region Properties
+
+        /// <summary>
+        /// Gets the provider.
+        /// </summary>
+        ///
+        /// <value>
+        /// The provider.
+        /// </value>
+        public DataServiceProvider<ITestDataService, ITestUnitOfWork> Provider { get; }
+
+        /// <summary>
+        /// Gets the data service.
+        /// </summary>
+        ///
+        /// <value>
+        /// The data service.
+        /// </value>
+        public ITestDataService DataService { get; }
+
+        #endregion
+
         #region Constructors
 
         /// <summary>   Specialized default constructor for use only by derived class.</summary>
-        protected DbTest()
+        protected DbTest(DataServiceProvider<ITestDataService, ITestUnitOfWork> provider)
         {
-            // ReSharper disable once VirtualMemberCallInConstructor
-            InitOptionsAndDataService();
+            Provider = provider;
+            DataService = Provider.ProvideDataService();
         }
-
-        #endregion
-
-        #region Fields
-
-        /// <summary>   Gets a value indicating whether the database is available.</summary>
-        /// <value> True if the database is available, false if not.</value>
-        protected bool IsDbAvailable => ServiceOptions != null;
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>   Gets or sets options for controlling the service.</summary>
-        /// <value> Options that control the service.</value>
-        protected IDapperServiceOptions ServiceOptions { get; set; }
-
-        /// <summary>   Gets or sets the data service.</summary>
-        /// <value> The data service.</value>
-        protected ITestDataService DataService { get; set; }
 
         #endregion
 
         #region Methods
 
-        /// <summary>   Initializes the options and data service.</summary>
-        protected abstract void InitOptionsAndDataService();
-
         /// <summary>   Assert database available.</summary>
         protected virtual void AssertDbAvailable()
         {
-            Assert.IsTrue(IsDbAvailable, "DB NOT AVAILABLE!");
+            Assert.IsTrue(Provider.IsDbAvailable, "DB NOT AVAILABLE!");
         }
 
         #endregion
