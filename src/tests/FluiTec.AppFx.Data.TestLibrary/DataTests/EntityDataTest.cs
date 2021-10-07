@@ -99,7 +99,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanCreateEntity()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
             Assert.IsTrue(HasValidKey(entity));
         }
@@ -110,7 +111,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanCreateEntityAsync()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             var entity = uow.GetWritableRepository<TEntity, TKey>().AddAsync(CreateEntity()).Result;
             Assert.IsTrue(HasValidKey(entity));
         }
@@ -121,7 +123,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanCreateMultiple()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             uow.GetWritableRepository<TEntity, TKey>().AddRange(CreateEntities());
 
             var entities = uow.GetRepository<TEntity, TKey>().GetAll();
@@ -135,7 +138,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanCreateMultipleAsync()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             uow.GetWritableRepository<TEntity, TKey>().AddRangeAsync(CreateEntities()).Wait();
 
             var entities = uow.GetRepository<TEntity, TKey>().GetAllAsync().Result;
@@ -153,7 +157,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanReadEntity()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
             var dbEntity = uow.GetWritableRepository<TEntity, TKey>().Get(entity.Id);
 
@@ -166,7 +171,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanReadEntityAsync()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
             var dbEntity = uow.GetWritableRepository<TEntity, TKey>().GetAsync(entity.Id).Result;
 
@@ -179,8 +185,9 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanGetAll()
         {
+            using var uow = BeginUnitOfWork();
+
             var entities = CreateEntities().ToList();
-            using var uow = DataService.BeginUnitOfWork();
             uow.GetWritableRepository<TEntity, TKey>().AddRange(entities);
 
             var dbCount = uow.GetRepository<TEntity, TKey>().GetAll().Count();
@@ -194,8 +201,9 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanGetAllAsync()
         {
+            using var uow = BeginUnitOfWork();
+
             var entities = CreateEntities().ToList();
-            using var uow = DataService.BeginUnitOfWork();
             uow.GetWritableRepository<TEntity, TKey>().AddRange(entities);
 
             var dbCount = uow.GetRepository<TEntity, TKey>().GetAllAsync().Result.Count();
@@ -209,8 +217,9 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanCount()
         {
+            using var uow = BeginUnitOfWork();
+
             var entities = CreateEntities().ToList();
-            using var uow = DataService.BeginUnitOfWork();
             uow.GetWritableRepository<TEntity, TKey>().AddRange(entities);
 
             var dbCount = uow.GetRepository<TEntity, TKey>().Count();
@@ -224,8 +233,9 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanCountAsync()
         {
+            using var uow = BeginUnitOfWork();
+
             var entities = CreateEntities().ToList();
-            using var uow = DataService.BeginUnitOfWork();
             uow.GetWritableRepository<TEntity, TKey>().AddRange(entities);
 
             var dbCount = uow.GetRepository<TEntity, TKey>().CountAsync().Result;
@@ -243,7 +253,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanUpdateEntity()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
             ChangeEntity(entity);
 
@@ -259,7 +270,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanUpdateEntityAsync()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             var entity = uow.GetWritableRepository<TEntity, TKey>().AddAsync(CreateEntity()).Result;
             ChangeEntity(entity);
 
@@ -276,7 +288,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [ExpectedException(typeof(UpdateException))]
         public virtual void CanThrowUpdateException()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             uow.GetWritableRepository<TEntity, TKey>().Update(CreateNonUpdateableEntity());
         }
 
@@ -286,7 +299,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanThrowUpdateExceptionAsync()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             try
             {
                 var unused = uow.GetWritableRepository<TEntity, TKey>().UpdateAsync(CreateNonUpdateableEntity()).Result;
@@ -311,7 +325,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanDeleteEntity()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
 
             Assert.IsTrue(uow.GetWritableRepository<TEntity, TKey>().Delete(entity));
@@ -327,7 +342,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanDeleteEntityAsync()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             var entity = uow.GetWritableRepository<TEntity, TKey>().AddAsync(CreateEntity()).Result;
             ChangeEntity(entity);
 
@@ -344,7 +360,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanDeleteEntityById()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
             ChangeEntity(entity);
 
@@ -361,7 +378,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         [TestMethod]
         public virtual void CanDeleteEntityByIdAsync()
         {
-            using var uow = DataService.BeginUnitOfWork();
+            using var uow = BeginUnitOfWork();
+
             var entity = uow.GetWritableRepository<TEntity, TKey>().AddAsync(CreateEntity()).Result;
             ChangeEntity(entity);
 

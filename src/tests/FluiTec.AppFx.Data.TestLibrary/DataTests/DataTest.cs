@@ -33,7 +33,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         /// <value>
         /// The data service.
         /// </value>
-        public TDataService DataService { get; }
+        private TDataService DataService { get; }
 
         #endregion
 
@@ -55,6 +55,18 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         #region Methods
 
         /// <summary>
+        /// Begins unit of work.
+        /// </summary>
+        ///
+        /// <returns>
+        /// A TUnitOfWork.
+        /// </returns>
+        protected virtual TUnitOfWork BeginUnitOfWork()
+        {
+            return DataService.BeginUnitOfWork();
+        }
+
+        /// <summary>
         ///     Assert database available.
         /// </summary>
         [TestInitialize]
@@ -62,10 +74,6 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             Assert.IsTrue(DataServiceProvider.IsDbAvailable, "DB NOT AVAILABLE!");
         }
-
-        #endregion
-
-        #region Basic
 
         /// <summary>   (Unit Test Method) can create unit of work.</summary>
         [TestMethod]
