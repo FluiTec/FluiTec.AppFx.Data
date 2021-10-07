@@ -1,19 +1,21 @@
 using FluiTec.AppFx.Data.TestLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Data.Dapper.Sqlite.IntegrationTests
+namespace FluiTec.AppFx.Data.NMemory.IntegrationTests
 {
     /// <summary>
-    /// (Unit Test Class) a sqlite test.
+    /// A memory entity data test.
     /// </summary>
     [TestClass]
-    public class SqliteTest : DbTest
+    [TestCategory("Integration")]
+    public class NMemoryEntityDataTest : TestDataTest
     {
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public SqliteTest() : base(new DbProvider())
+        public NMemoryEntityDataTest() : base(new DbProvider())
         {
+
         }
     }
 }

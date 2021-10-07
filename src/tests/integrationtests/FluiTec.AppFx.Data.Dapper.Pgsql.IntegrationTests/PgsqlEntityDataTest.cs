@@ -3,15 +3,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests
 {
-    /// <summary>   (Unit Test Class) a pgsql tests.</summary>
+    /// <summary>
+    /// (Unit Test Class) a pgsql entity data test.
+    /// </summary>
     [TestClass]
     [TestCategory("Integration")]
-    public class PgsqlTest : DbTest
+    public class PgsqlEntityDataTest : TestDataTest
     {
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public PgsqlTest() : base(new DbProvider())
+        public PgsqlEntityDataTest() : base(new DbProvider())
         {
         }
     }

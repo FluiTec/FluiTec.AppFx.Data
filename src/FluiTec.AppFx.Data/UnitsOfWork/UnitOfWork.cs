@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluiTec.AppFx.Data.DataServices;
+using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
 using Microsoft.Extensions.Logging;
 
@@ -98,6 +100,51 @@ namespace FluiTec.AppFx.Data.UnitsOfWork
                 .Invoke(this, DataService.LoggerFactory?.CreateLogger<TRepository>());
             Repositories.Add(repoType, repo);
             return repo as TRepository;
+        }
+
+        /// <summary>
+        /// Gets the repository.
+        /// </summary>
+        ///
+        /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+        /// <typeparam name="TKey">     Type of the key. </typeparam>
+        ///
+        /// <returns>
+        /// The repository.
+        /// </returns>
+        public IDataRepository<TEntity> GetRepository<TEntity, TKey>() where TEntity : class, IKeyEntity<TKey>, new()
+        {
+            var expectedType = typeof(IDataRepository<TEntity>);
+            var repoTypes = RepositoryProviders.Keys;
+            foreach (var repoType in repoTypes.Where(repoType => expectedType.IsAssignableFrom(repoType)))
+            {
+                if (Repositories.ContainsKey(repoType)) // already created?
+                    return Repositories[repoType] as IDataRepository<TEntity>;
+
+                // create, add to list and return
+                var repo = RepositoryProviders[repoType]
+                    .Invoke(this, DataService.LoggerFactory?.CreateLogger<IDataRepository<TEntity>>());
+                Repositories.Add(repoType, repo);
+                return repo as IDataRepository<TEntity>;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets writable repository.
+        /// </summary>
+        ///
+        /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+        /// <typeparam name="TKey">     Type of the key. </typeparam>
+        ///
+        /// <returns>
+        /// The writable repository.
+        /// </returns>
+        public IWritableKeyTableDataRepository<TEntity, TKey> GetWritableRepository<TEntity, TKey>()
+            where TEntity : class, IKeyEntity<TKey>, new()
+        {
+            return GetRepository<TEntity, TKey>() as IWritableKeyTableDataRepository<TEntity, TKey>;
         }
 
         #endregion

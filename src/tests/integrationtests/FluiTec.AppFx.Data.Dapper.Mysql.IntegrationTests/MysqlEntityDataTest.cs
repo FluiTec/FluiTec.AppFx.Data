@@ -3,17 +3,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests
 {
-    /// <summary>   (Unit Test Class) a mysql test.</summary>
+    /// <summary>
+    /// A mysql entity data test.
+    /// </summary>
     [TestClass]
     [TestCategory("Integration")]
-    public class MysqlTest : DbTest
+    public class MysqlEntityDataTest : TestDataTest
     {
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public MysqlTest() : base(new DbProvider())
+        public MysqlEntityDataTest() : base(new DbProvider())
         {
-
         }
     }
 }
