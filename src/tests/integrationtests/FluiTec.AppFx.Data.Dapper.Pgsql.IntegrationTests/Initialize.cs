@@ -16,8 +16,8 @@ namespace FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests
             var provider = new DbProvider();
             var dataService = provider.ProvideDataService();
             
-            PgsqlAdminHelper.CreateDababase(provider.AdminOptions.AdminConnectionString, provider.AdminOptions.IntegrationDb);
-            PgsqlAdminHelper.CreateUserAndLogin(provider.AdminOptions.AdminConnectionString, provider.AdminOptions.IntegrationDb,
+            PgsqlAdminHelper.CreateDababase(provider.AdminOptions.AdminConnectionString ?? provider.ServiceOptions.ConnectionString, provider.AdminOptions.IntegrationDb);
+            PgsqlAdminHelper.CreateUserAndLogin(provider.AdminOptions.AdminConnectionString ?? provider.ServiceOptions.ConnectionString, provider.AdminOptions.IntegrationDb,
                 provider.AdminOptions.IntegrationUser, provider.AdminOptions.IntegrationPassword);
 
             var migrator = new DapperDataMigrator(provider.ServiceOptions.ConnectionString,
