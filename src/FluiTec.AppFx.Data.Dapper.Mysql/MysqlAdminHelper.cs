@@ -37,7 +37,11 @@ namespace FluiTec.AppFx.Data.Dapper.Mysql
             try
             {
                 connection.Open();
-                var createUserSql = $"CREATE USER {userName}@%' IDENTIFIED BY '{password}';";
+                var createUserSql = 
+                    $"CREATE USER {userName}@% IDENTIFIED BY '{password}';" +
+                    "FLUSH PRIVILEGES;" +
+                    $"GRANT ALL ON {dbName}.* TO {userName}@%;" +
+                    "FLUSH PRIVILEGES;";
                 using var createUserCmd = new MySqlCommand(createUserSql, connection);
                 createUserCmd.ExecuteNonQuery();
             }
