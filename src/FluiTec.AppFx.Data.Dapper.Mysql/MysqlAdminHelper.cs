@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using System;
+using MySql.Data.MySqlClient;
 
 namespace FluiTec.AppFx.Data.Dapper.Mysql
 {
@@ -38,14 +39,14 @@ namespace FluiTec.AppFx.Data.Dapper.Mysql
             {
                 connection.Open();
                 var createUserSql = 
-                    $"DELETE FROM mysql.db WHERE User='{userName}';" +
-                    "FLUSH PRIVILEGES;" +
-                    $"CREATE USER {userName}@'%' IDENTIFIED BY '{password}';" +
-                    "FLUSH PRIVILEGES;" +
-                    $"GRANT ALL ON {dbName}.* TO {userName}@'%';" +
-                    "FLUSH PRIVILEGES;";
+                    $"DELETE FROM mysql.db WHERE User='{userName}';{Environment.NewLine}" +
+                    $"FLUSH PRIVILEGES;{Environment.NewLine}" +
+                    $"CREATE USER IF NOT EXISTS {userName}@'%' IDENTIFIED BY '{password}';{Environment.NewLine}" +
+                    $"FLUSH PRIVILEGES;{Environment.NewLine}" +
+                    $"GRANT ALL PRIVILEGES ON *.* TO {userName}@'%';{Environment.NewLine}" +
+                    $"FLUSH PRIVILEGES;{Environment.NewLine}";
                 using var createUserCmd = new MySqlCommand(createUserSql, connection);
-                createUserCmd.ExecuteNonQuery();
+                var result = createUserCmd.ExecuteNonQuery();
             }
             finally
             {
