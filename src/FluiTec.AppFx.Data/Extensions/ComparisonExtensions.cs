@@ -19,7 +19,7 @@ namespace FluiTec.AppFx.Data.Extensions
         /// </returns>
         public static bool EqualsRemovingPrecision(this DateTimeOffset offset1, DateTimeOffset offset2)
         {
-            return offset1.UtcTicks / 10000000 == offset2.UtcTicks / 10000000;;
+            return offset1.UtcTicks / 100000000 == offset2.UtcTicks / 100000000;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace FluiTec.AppFx.Data.Extensions
         /// </returns>
         public static bool EqualsRemovingPrecision(this DateTimeOffset? offset1, DateTimeOffset? offset2)
         {
-            return offset1?.UtcTicks / 10000000 == offset2?.UtcTicks / 10000000;;
+            return offset1?.UtcTicks / 100000000 == offset2?.UtcTicks / 100000000;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace FluiTec.AppFx.Data.Extensions
         /// </returns>
         public static bool EqualsRemovingPrecision(this DateTimeOffset offset1, DateTimeOffset? offset2)
         {
-            return offset1.UtcTicks / 10000000 == offset2?.UtcTicks / 10000000;;
+            return offset1.UtcTicks / 100000000 == offset2?.UtcTicks / 100000000;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace FluiTec.AppFx.Data.Extensions
         /// </returns>
         public static bool EqualsRemovingPrecision(this DateTimeOffset? offset1, DateTimeOffset offset2)
         {
-            return offset1?.UtcTicks / 10000000 == offset2.UtcTicks / 10000000;;
+            return offset1?.UtcTicks / 100000000 == offset2.UtcTicks / 100000000;
         }
     }
 }
