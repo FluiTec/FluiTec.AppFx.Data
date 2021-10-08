@@ -70,8 +70,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
             var parent = Directory.GetParent(path)?.Parent?.Parent?.Parent?.FullName;
             var config = new ConfigurationBuilder()
                 .SetBasePath(parent)
-                .AddJsonFile("appsettings.integration.json", false, true)
-                .AddJsonFile("appsettings.integration.secret.json", true, true)
+                .AddJsonFile("appsettings.integration.json", false, false)
+                .AddJsonFile("appsettings.integration.secret.json", true, false)
                 .Build();
             ConfigurationManager = new ConfigurationManager(config);
 
