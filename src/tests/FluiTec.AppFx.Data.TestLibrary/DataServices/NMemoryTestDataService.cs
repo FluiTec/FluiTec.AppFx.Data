@@ -105,6 +105,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServices
         protected override Database ConfigureDatabase(Database database)
         {
             database.Tables.Create(e => e.Id, new IdentitySpecification<DummyEntity>(e => e.Id));
+            database.Tables.Create(e => e.Id, new IdentitySpecification<DateTimeDummyEntity>(e => e.Id));
             return database;
         }
     }

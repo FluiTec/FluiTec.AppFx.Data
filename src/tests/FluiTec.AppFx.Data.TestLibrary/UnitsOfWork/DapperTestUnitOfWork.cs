@@ -33,11 +33,22 @@ namespace FluiTec.AppFx.Data.TestLibrary.UnitsOfWork
         /// <value> The dummy repository.</value>
         public IDummyRepository DummyRepository => GetRepository<IDummyRepository>();
 
+        /// <summary>
+        /// Gets the date time dummy repository.
+        /// </summary>
+        ///
+        /// <value>
+        /// The date time dummy repository.
+        /// </value>
+        public IDateTimeDummyRepository DateTimeDummyRepository => GetRepository<IDateTimeDummyRepository>();
+
         /// <summary>   Registers the repositories.</summary>
         private void RegisterRepositories()
         {
             RepositoryProviders.Add(typeof(IDummyRepository),
                 (uow, log) => new DapperDummyRepository((DapperTestUnitOfWork) uow, log));
+            RepositoryProviders.Add(typeof(IDateTimeDummyRepository),
+                (uow, log) => new DapperDateTimeDummyRepository((DapperTestUnitOfWork) uow, log));
         }
     }
 }

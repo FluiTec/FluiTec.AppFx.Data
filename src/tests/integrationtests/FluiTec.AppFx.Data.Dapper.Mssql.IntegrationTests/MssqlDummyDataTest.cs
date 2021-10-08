@@ -8,12 +8,12 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
     /// </summary>
     [TestClass]
     [TestCategory("Integration")]
-    public class MssqlEntityDataTest : TestDataTest
+    public class MssqlDummyDataTest : DummyDataTest
     {
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public MssqlEntityDataTest() : base(new DbProvider())
+        public MssqlDummyDataTest() : base(new DbProvider())
         {
         }
     }

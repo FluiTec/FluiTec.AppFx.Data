@@ -9,13 +9,13 @@ namespace FluiTec.AppFx.Data.TestLibrary.Entities
     [EntityName(SchemaGlobals.Schema, SchemaGlobals.DummyTable)]
     public class DummyEntity : IKeyEntity<int>, IEquatable<DummyEntity>
     {
-        /// <summary>   Gets or sets the name. </summary>
-        /// <value> The name. </value>
-        public string Name { get; set; }
-
         /// <summary>   Gets or sets the identifier. </summary>
         /// <value> The identifier. </value>
         public int Id { get; set; }
+
+        /// <summary>   Gets or sets the name. </summary>
+        /// <value> The name. </value>
+        public string Name { get; set; }
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.

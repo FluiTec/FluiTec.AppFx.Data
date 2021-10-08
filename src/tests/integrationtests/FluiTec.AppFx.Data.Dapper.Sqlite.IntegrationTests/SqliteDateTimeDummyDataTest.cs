@@ -4,16 +4,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Data.Dapper.Sqlite.IntegrationTests
 {
     /// <summary>
-    /// (Unit Test Class) a sqlite entity data test.
+    /// (Unit Test Class) a sqlite date time dummy data test.
     /// </summary>
     [TestClass]
     [TestCategory("Integration")]
-    public class SqliteEntityDataTest : TestDataTest
+    public class SqliteDateTimeDummyDataTest : DateTimeDummyDataTest
     {
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public SqliteEntityDataTest() : base(new DbProvider())
+        public SqliteDateTimeDummyDataTest() : base(new DbProvider())
         {
         }
     }

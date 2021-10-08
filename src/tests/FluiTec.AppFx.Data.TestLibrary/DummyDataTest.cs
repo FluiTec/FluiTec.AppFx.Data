@@ -8,16 +8,16 @@ using FluiTec.AppFx.Data.TestLibrary.UnitsOfWork;
 namespace FluiTec.AppFx.Data.TestLibrary
 {
     /// <summary>
-    /// A test data test.
+    /// A dummy data test.
     /// </summary>
-    public abstract class TestDataTest : EntityDataTest<ITestDataService, ITestUnitOfWork, DummyEntity, int>
+    public abstract class DummyDataTest : EntityDataTest<ITestDataService, ITestUnitOfWork, DummyEntity, int>
     {
         /// <summary>
         /// Specialized constructor for use only by derived class.
         /// </summary>
         ///
         /// <param name="dataServiceProvider">  The data service provider. </param>
-        protected TestDataTest(DataServiceProvider<ITestDataService, ITestUnitOfWork> dataServiceProvider) : base(dataServiceProvider)
+        protected DummyDataTest(DataServiceProvider<ITestDataService, ITestUnitOfWork> dataServiceProvider) : base(dataServiceProvider)
         {
 
         }

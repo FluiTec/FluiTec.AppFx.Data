@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
 using Dapper;
 
 namespace FluiTec.AppFx.Data.Dapper.Extensions
@@ -53,6 +54,10 @@ namespace FluiTec.AppFx.Data.Dapper.Extensions
                         TimeZoneInfo.Local.BaseUtcOffset);
                 case DateTimeOffset dto:
                     return dto;
+                case string timeString:
+                    return timeString.Contains('+') 
+                        ? DateTimeOffset.Parse(timeString) 
+                        : new DateTimeOffset(DateTime.Parse(timeString).Add(TimeZoneInfo.Local.BaseUtcOffset), TimeZoneInfo.Local.BaseUtcOffset);
                 default:
                     throw new InvalidOperationException("Must be DateTime or DateTimeOffset object to be mapped.");
             }
