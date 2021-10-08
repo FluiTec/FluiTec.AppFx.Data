@@ -1,7 +1,7 @@
 ﻿using System;
-using FluiTec.AppFx.Data.Dapper.Extensions;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.EntityNameServices;
+using FluiTec.AppFx.Data.Extensions;
 using FluiTec.AppFx.Data.TestLibrary.Schema;
 
 namespace FluiTec.AppFx.Data.TestLibrary.Entities
