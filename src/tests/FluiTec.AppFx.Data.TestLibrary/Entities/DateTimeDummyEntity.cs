@@ -53,6 +53,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.Entities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
+            System.Console.WriteLine(ChangeDate.UtcTicks);
+            System.Console.WriteLine(other.ChangeDate.UtcTicks);
             return Id == other.Id && Name == other.Name && ChangeDate.EqualsRemovingPrecision(other.ChangeDate);
         }
     }
