@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Dapper;
+using FluiTec.AppFx.Data.Migration;
 
 namespace FluiTec.AppFx.Data.Dapper.Extensions
 {
@@ -22,6 +23,30 @@ namespace FluiTec.AppFx.Data.Dapper.Extensions
 
             // This handles nullable value types automatically e.g. DateTimeOffset?
             SqlMapper.AddTypeHandler(typeof(DateTimeOffset), new DateTimeOffsetTypeHandler());
+        }
+
+        /// <summary>
+        /// Needs date time mapping.
+        /// </summary>
+        ///
+        /// <exception cref="ArgumentOutOfRangeException">  Thrown when one or more arguments are outside
+        ///                                                 the required range. </exception>
+        ///
+        /// <param name="sqlType">  Type of the SQL. </param>
+        ///
+        /// <returns>
+        /// True if it succeeds, false if it fails.
+        /// </returns>
+        public static bool NeedsDateTimeMapping(this SqlType sqlType)
+        {
+            return sqlType switch
+            {
+                SqlType.Mssql => false,
+                SqlType.Mysql => true,
+                SqlType.Pgsql => false,
+                SqlType.Sqlite => true,
+                _ => throw new ArgumentOutOfRangeException(nameof(sqlType), sqlType, null)
+            };
         }
     }
 }

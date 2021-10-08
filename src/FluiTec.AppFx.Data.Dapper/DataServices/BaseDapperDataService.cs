@@ -70,7 +70,7 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices
             base(loggerFactory)
         {
             // ReSharper disable once VirtualMemberCallInConstructor
-            if (SqlType == SqlType.Mysql)
+            if (SqlType.NeedsDateTimeMapping())
                 DapperExtensions.InstallDateTimeOffsetMapper();
 
             if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
