@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
@@ -36,6 +37,29 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         public Task<TEntity> GetAsync(TKey id)
         {
             return UnitOfWork.Connection.GetAsync<TEntity>(id, UnitOfWork.Transaction);
+        }
+
+        /// <summary>
+        /// Map by identifier.
+        /// </summary>
+        ///
+        /// <typeparam name="TPEntity"> Type of the TP entity. </typeparam>
+        /// <typeparam name="TPKey">    Type of the TP key. </typeparam>
+        /// <param name="dictionary">   The dictionary. </param>
+        /// <param name="entity">       The entity. </param>
+        ///
+        /// <returns>
+        /// A TPEntity.
+        /// </returns>
+        private static TPEntity MapById<TPEntity, TPKey>(IDictionary<TPKey, TPEntity> dictionary, TPEntity entity)
+            where TPEntity : class, IKeyEntity<TPKey>, new()
+        {
+            if (dictionary.TryGetValue(entity.Id, out var entry)) return entry;
+
+            entry = entity;
+            dictionary.Add(entity.Id, entity);
+
+            return entry;
         }
     }
 }
