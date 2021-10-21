@@ -98,21 +98,22 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories
         /// <returns>   A TEntity. </returns>
         public virtual TEntity Update(TEntity entity)
         {
+            var success = false;
             if (entity is ITimeStampedKeyEntity stampedEntity)
             {
                 var inCollection = Collection.FindById(GetBsonKey(entity.Id));
                 if (((ITimeStampedKeyEntity) inCollection).TimeStamp == stampedEntity.TimeStamp)
                 {
                     stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
-                    Collection.Update(GetBsonKey(entity.Id), entity);
+                    success = Collection.Update(GetBsonKey(entity.Id), entity);
                 }
             }
             else
             {
-                Collection.Update(GetBsonKey(entity.Id), entity);
+                success = Collection.Update(GetBsonKey(entity.Id), entity);
             }
 
-            return entity;
+            return success ? entity : throw new UpdateException(entity);
         }
 
         /// <summary>   Updates the asynchronous described by entity.</summary>
