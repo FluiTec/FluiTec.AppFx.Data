@@ -51,7 +51,7 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         /// <returns>
         /// A TPEntity.
         /// </returns>
-        private static TPEntity MapById<TPEntity, TPKey>(IDictionary<TPKey, TPEntity> dictionary, TPEntity entity)
+        public static TPEntity MapById<TPEntity, TPKey>(IDictionary<TPKey, TPEntity> dictionary, TPEntity entity)
             where TPEntity : class, IKeyEntity<TPKey>, new()
         {
             if (dictionary.TryGetValue(entity.Id, out var entry)) return entry;
