@@ -85,7 +85,7 @@ namespace WebSample
 
         /// <summary>   Gets the manager for configuration. </summary>
         /// <value> The configuration manager. </value>
-        public ConfigurationManager ConfigurationManager { get; }
+        public FluiTec.AppFx.Options.Managers.ConfigurationManager ConfigurationManager { get; }
 
         /// <summary>Gets the environment.</summary>
         /// <value>The environment.</value>

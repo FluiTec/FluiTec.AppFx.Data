@@ -6,6 +6,7 @@ using FluiTec.AppFx.Data.UnitsOfWork;
 using FluiTec.AppFx.Options.Helpers;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
+using ConfigurationManager = FluiTec.AppFx.Options.Managers.ConfigurationManager;
 
 namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
 {
@@ -46,7 +47,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         /// <value>
         /// The configuration manager.
         /// </value>
-        protected ConfigurationManager ConfigurationManager { get; }
+        protected Options.Managers.ConfigurationManager ConfigurationManager { get; }
 
         /// <summary>
         /// Gets a value indicating whether the database is available.
