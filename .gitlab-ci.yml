@@ -4,6 +4,7 @@ stages:
     - build
     - unittest
     - integrationtest
+    - publish
 
 # alias = hostname
 services:
@@ -52,3 +53,16 @@ integrationtest:
     stage: integrationtest
     script:
         - dotnet test --no-restore --verbosity minimal --filter $integrationfilter
+
+publish-baget:
+    stage: publish
+    only:
+        refs:
+            - master
+    script:
+        - cd ..
+        - NUGET_VERSION=$(cat .version)
+        - cd $srcDir
+        - dotnet nuget add source "$BAGET_URL"
+        - dotnet build -c Release /p:Version="$NUGET_VERSION"
+        - dotnet nuget push -s "$BAGET_URL" -k "$BAGET_KEY" **/*.nupkg --skip-duplicate
