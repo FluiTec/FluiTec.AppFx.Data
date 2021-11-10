@@ -31,7 +31,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
         /// </returns>
         protected override DateTimeDummyEntity CreateEntity()
         {
-            return new DateTimeDummyEntity {Name = "Dummy", ChangeDate = DateTimeOffset.Now};
+            return new DateTimeDummyEntity {Name = "Dummy", ChangeDate = DateTimeOffset.UtcNow};
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
         /// </returns>
         protected override DateTimeDummyEntity CreateNonUpdateableEntity()
         {
-            return new DateTimeDummyEntity {Id = 100, Name = "Dummy", ChangeDate = DateTimeOffset.Now};
+            return new DateTimeDummyEntity {Id = 100, Name = "Dummy", ChangeDate = DateTimeOffset.UtcNow};
         }
 
         /// <summary>
@@ -57,8 +57,8 @@ namespace FluiTec.AppFx.Data.TestLibrary
         {
             return new[]
             {
-                new DateTimeDummyEntity {Name = "Dummy 1", ChangeDate = DateTimeOffset.Now},
-                new DateTimeDummyEntity {Name = "Dummy 2", ChangeDate = DateTimeOffset.Now}
+                new DateTimeDummyEntity {Name = "Dummy 1", ChangeDate = DateTimeOffset.UtcNow},
+                new DateTimeDummyEntity {Name = "Dummy 2", ChangeDate = DateTimeOffset.UtcNow}
             };
         }
 
