@@ -66,3 +66,16 @@ publish-baget:
         - dotnet nuget add source "$BAGET_URL"
         - dotnet build -c Release /p:Version="$NUGET_VERSION"
         - dotnet nuget push -s "$BAGET_URL" -k "$BAGET_KEY" **/*.nupkg --skip-duplicate
+
+publish-nuget:
+    stage: publish
+    only:
+        refs:
+            - master
+    script:
+        - cd ..
+        - NUGET_VERSION=$(cat .version)
+        - cd $srcDir
+        - dotnet nuget add source "$NUGET_URL"
+        - dotnet build -c Release /p:Version="$NUGET_VERSION"
+        - dotnet nuget push -s "$NUGET_URL" -k "$NUGET_KEY" **/*.nupkg --skip-duplicate
