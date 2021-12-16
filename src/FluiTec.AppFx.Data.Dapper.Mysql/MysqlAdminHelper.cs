@@ -46,7 +46,7 @@ namespace FluiTec.AppFx.Data.Dapper.Mysql
                     $"GRANT ALL PRIVILEGES ON *.* TO {userName}@'%';{Environment.NewLine}" +
                     $"FLUSH PRIVILEGES;{Environment.NewLine}";
                 using var createUserCmd = new MySqlCommand(createUserSql, connection);
-                var result = createUserCmd.ExecuteNonQuery();
+                var unused = createUserCmd.ExecuteNonQuery();
             }
             finally
             {

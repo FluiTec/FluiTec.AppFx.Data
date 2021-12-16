@@ -32,6 +32,7 @@ namespace FluiTec.AppFx.Data.Extensions
         /// <returns>
         /// True if equals removing precision, false if not.
         /// </returns>
+        // ReSharper disable once UnusedMember.Global
         public static bool EqualsRemovingPrecision(this DateTimeOffset? offset1, DateTimeOffset? offset2)
         {
             return offset1?.UtcTicks / 100000000 == offset2?.UtcTicks / 100000000;
@@ -47,6 +48,7 @@ namespace FluiTec.AppFx.Data.Extensions
         /// <returns>
         /// True if equals removing precision, false if not.
         /// </returns>
+        // ReSharper disable once UnusedMember.Global
         public static bool EqualsRemovingPrecision(this DateTimeOffset offset1, DateTimeOffset? offset2)
         {
             return offset1.UtcTicks / 100000000 == offset2?.UtcTicks / 100000000;
@@ -62,6 +64,7 @@ namespace FluiTec.AppFx.Data.Extensions
         /// <returns>
         /// True if equals removing precision, false if not.
         /// </returns>
+        // ReSharper disable once UnusedMember.Global
         public static bool EqualsRemovingPrecision(this DateTimeOffset? offset1, DateTimeOffset offset2)
         {
             return offset1?.UtcTicks / 100000000 == offset2.UtcTicks / 100000000;

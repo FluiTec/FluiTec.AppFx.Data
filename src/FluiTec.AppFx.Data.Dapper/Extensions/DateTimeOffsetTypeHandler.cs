@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Globalization;
 using Dapper;
 
 namespace FluiTec.AppFx.Data.Dapper.Extensions

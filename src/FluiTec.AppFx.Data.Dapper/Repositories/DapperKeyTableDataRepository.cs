@@ -43,16 +43,17 @@ namespace FluiTec.AppFx.Data.Dapper.Repositories
         /// Map by identifier.
         /// </summary>
         ///
-        /// <typeparam name="TPEntity"> Type of the TP entity. </typeparam>
-        /// <typeparam name="TPKey">    Type of the TP key. </typeparam>
+        /// <typeparam name="TpEntity"> Type of the TP entity. </typeparam>
+        /// <typeparam name="TpKey">    Type of the TP key. </typeparam>
         /// <param name="dictionary">   The dictionary. </param>
         /// <param name="entity">       The entity. </param>
         ///
         /// <returns>
         /// A TPEntity.
         /// </returns>
-        public static TPEntity MapById<TPEntity, TPKey>(IDictionary<TPKey, TPEntity> dictionary, TPEntity entity)
-            where TPEntity : class, IKeyEntity<TPKey>, new()
+        // ReSharper disable once UnusedMember.Global
+        public static TpEntity MapById<TpEntity, TpKey>(IDictionary<TpKey, TpEntity> dictionary, TpEntity entity)
+            where TpEntity : class, IKeyEntity<TpKey>, new()
         {
             if (dictionary.TryGetValue(entity.Id, out var entry)) return entry;
 
