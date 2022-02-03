@@ -3,6 +3,9 @@
 /// <summary>   Values that represent data providers. </summary>
 public enum DataProvider
 {
+    /// <summary>   An enum constant representing the unconfigured option. </summary>
+    Unconfigured,
+
     /// <summary>   An enum constant representing the mssql option. </summary>
     Mssql,
 

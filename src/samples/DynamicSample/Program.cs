@@ -106,33 +106,58 @@ internal class Program : ValidatingConfigurationManagerProgram
     protected override ServiceCollection ConfigureServices(ServiceCollection services)
     {
         base.ConfigureServices(services);
-        services.ConfigureDynamicDataProvider(Manager,
-            new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
-                {
-                    return options.CurrentValue.Provider switch
-                    {
-                        DataProvider.LiteDb => new LiteDbTestDataService(
-                            provider.GetRequiredService<LiteDbServiceOptions>(),
-                            provider.GetService<ILoggerFactory>()),
-                        DataProvider.Mssql => new MssqlTestDataService(
-                            provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
-                            provider.GetService<ILoggerFactory>()),
-                        DataProvider.Pgsql => new PgsqlTestDataService(
-                            provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
-                            provider.GetService<ILoggerFactory>()),
-                        DataProvider.Mysql => new MysqlTestDataService(
-                            provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
-                            provider.GetService<ILoggerFactory>()),
-                        DataProvider.Sqlite => new SqliteTestDataService(
-                            provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
-                            provider.GetService<ILoggerFactory>()),
-                        DataProvider.NMemory => new NMemoryTestDataService(
-                            provider.GetService<ILoggerFactory>()),
-                        _ => throw new NotImplementedException()
-                    };
-                }
-            )
-        );
+
+        services.ConfigureDynamicDataProvider<ITestDataService, DynamicDataOptions>(Manager, (options, provider) =>
+        {
+            return options.CurrentValue.Provider switch
+            {
+                DataProvider.LiteDb => new LiteDbTestDataService(
+                    provider.GetRequiredService<IOptionsMonitor<LiteDbServiceOptions>>(),
+                    provider.GetService<ILoggerFactory>()),
+                DataProvider.Mssql => new MssqlTestDataService(
+                    provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
+                    provider.GetService<ILoggerFactory>()),
+                DataProvider.Pgsql => new PgsqlTestDataService(
+                    provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
+                    provider.GetService<ILoggerFactory>()),
+                DataProvider.Mysql => new MysqlTestDataService(
+                    provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
+                    provider.GetService<ILoggerFactory>()),
+                DataProvider.Sqlite => new SqliteTestDataService(
+                    provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
+                    provider.GetService<ILoggerFactory>()),
+                _ => throw new NotImplementedException()
+            };
+        });
+
+        //services.ConfigureDynamicDataProvider(Manager,
+        //    new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
+        //        {
+        //            return options.CurrentValue.Provider switch
+        //            {
+        //                DataProvider.LiteDb => new LiteDbTestDataService(
+        //                    provider.GetRequiredService<LiteDbServiceOptions>(),
+        //                    provider.GetService<ILoggerFactory>()),
+        //                DataProvider.Mssql => new MssqlTestDataService(
+        //                    provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
+        //                    provider.GetService<ILoggerFactory>()),
+        //                DataProvider.Pgsql => new PgsqlTestDataService(
+        //                    provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
+        //                    provider.GetService<ILoggerFactory>()),
+        //                DataProvider.Mysql => new MysqlTestDataService(
+        //                    provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
+        //                    provider.GetService<ILoggerFactory>()),
+        //                DataProvider.Sqlite => new SqliteTestDataService(
+        //                    provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
+        //                    provider.GetService<ILoggerFactory>()),
+        //                DataProvider.NMemory => new NMemoryTestDataService(
+        //                    provider.GetService<ILoggerFactory>()),
+        //                _ => throw new NotImplementedException()
+        //            };
+        //        }
+        //    )
+        //);
+
         return services;
     }
 }

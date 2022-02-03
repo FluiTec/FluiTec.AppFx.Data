@@ -42,29 +42,43 @@ public static class DynamicDataConfigurationExtension
     /// <param name="configurationManager"> Manager for configuration. </param>
     /// <param name="dataServiceProvider">  The data service provider. </param>
     /// <returns>   An IServiceCollection. </returns>
-    private static IServiceCollection ConfigureDynamicDataProvider<TDataService>(this IServiceCollection services,
+    private static IServiceCollection ConfigureDynamicDataProvider<TDataService, TDynamicOptions>(this IServiceCollection services,
         ConfigurationManager configurationManager, Func<IServiceProvider, TDataService> dataServiceProvider)
         where TDataService : class, IDataService
+        where TDynamicOptions : class, IDynamicDataOptions, new()
     {
+        services.Configure<TDynamicOptions>(configurationManager, false);
+
         services.AddTransient<IDataService>(dataServiceProvider);
         services.AddSingleton(dataServiceProvider);
         return ConfigureDynamicDataProvider(services, configurationManager);
     }
 
-    /// <summary>   Configure dynamic data provider. </summary>
-    /// <typeparam name="TDataService"> Type of the data service. </typeparam>
+    /// <summary>
+    /// Configure dynamic data provider.
+    /// </summary>
+    ///
+    /// <typeparam name="TDataService">     Type of the data service. </typeparam>
+    /// <typeparam name="TDynamicOptions">  Type of the dynamic options. </typeparam>
     /// <param name="services">             The services. </param>
     /// <param name="configurationManager"> Manager for configuration. </param>
     /// <param name="dataServiceProvider">  The data service provider. </param>
-    /// <returns>   An IServiceCollection. </returns>
-    public static IServiceCollection ConfigureDynamicDataProvider<TDataService>(this IServiceCollection services,
+    ///
+    /// <returns>
+    /// An IServiceCollection.
+    /// </returns>
+    public static IServiceCollection ConfigureDynamicDataProvider<TDataService, TDynamicOptions>(
+        this IServiceCollection services,
         ConfigurationManager configurationManager,
-        Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, TDataService> dataServiceProvider)
+        Func<IOptionsMonitor<IDynamicDataOptions>, IServiceProvider, TDataService> dataServiceProvider)
         where TDataService : class, IDataService
+        where TDynamicOptions : class, IDynamicDataOptions, new()
     {
-        return ConfigureDynamicDataProvider(services, configurationManager, provider =>
+        return ConfigureDynamicDataProvider<TDataService, TDynamicOptions>(services, configurationManager, provider =>
         {
-            var dynamicOptions = provider.GetRequiredService<IOptionsMonitor<DynamicDataOptions>>();
+            IOptionsMonitor<IDynamicDataOptions> try1 = provider.GetService<IOptionsMonitor<TDynamicOptions>>();
+            var dynamicOptions = try1!.CurrentValue?.Provider != DataProvider.Unconfigured ? try1 : provider.GetRequiredService<IOptionsMonitor<DynamicDataOptions>>();
+
             var service = dataServiceProvider(dynamicOptions, provider);
 
             if (!service.SupportsMigration) return service;

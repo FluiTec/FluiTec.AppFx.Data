@@ -52,28 +52,48 @@ public class Startup
     /// <param name="services"> The services. </param>
     private void ConfigureAspNetCore(IServiceCollection services)
     {
-        services.ConfigureDynamicDataProvider(ConfigurationManager,
-            new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
-                {
-                    return options.CurrentValue.Provider switch
-                    {
-                        DataProvider.LiteDb => new LiteDbTestDataService(
-                            provider.GetRequiredService<LiteDbServiceOptions>(),
-                            provider.GetService<ILoggerFactory>()),
-                        DataProvider.Mssql => new MssqlTestDataService(
-                            provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
-                            provider.GetService<ILoggerFactory>()),
-                        DataProvider.Pgsql => new PgsqlTestDataService(
-                            provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
-                            provider.GetService<ILoggerFactory>()),
-                        DataProvider.Mysql => new MysqlTestDataService(
-                            provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
-                            provider.GetService<ILoggerFactory>()),
-                        _ => throw new NotImplementedException()
-                    };
-                }
-            )
-        );
+        services.ConfigureDynamicDataProvider<ITestDataService, SampleDynamicDataOptions>(ConfigurationManager, (options, provider) =>
+        {
+            return options.CurrentValue.Provider switch
+            {
+                DataProvider.LiteDb => new LiteDbTestDataService(
+                    provider.GetRequiredService<IOptionsMonitor<LiteDbServiceOptions>>(),
+                    provider.GetService<ILoggerFactory>()),
+                DataProvider.Mssql => new MssqlTestDataService(
+                    provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
+                    provider.GetService<ILoggerFactory>()),
+                DataProvider.Pgsql => new PgsqlTestDataService(
+                    provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
+                    provider.GetService<ILoggerFactory>()),
+                DataProvider.Mysql => new MysqlTestDataService(
+                    provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
+                    provider.GetService<ILoggerFactory>()),
+                _ => throw new NotImplementedException()
+            };
+        });
+
+        //services.ConfigureDynamicDataProvider(ConfigurationManager,
+        //    new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
+        //        {
+        //            return options.CurrentValue.Provider switch
+        //            {
+        //                DataProvider.LiteDb => new LiteDbTestDataService(
+        //                    provider.GetRequiredService<LiteDbServiceOptions>(),
+        //                    provider.GetService<ILoggerFactory>()),
+        //                DataProvider.Mssql => new MssqlTestDataService(
+        //                    provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
+        //                    provider.GetService<ILoggerFactory>()),
+        //                DataProvider.Pgsql => new PgsqlTestDataService(
+        //                    provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
+        //                    provider.GetService<ILoggerFactory>()),
+        //                DataProvider.Mysql => new MysqlTestDataService(
+        //                    provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
+        //                    provider.GetService<ILoggerFactory>()),
+        //                _ => throw new NotImplementedException()
+        //            };
+        //        }
+        //    )
+        //);
     }
 
     #endregion
