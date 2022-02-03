@@ -2,20 +2,21 @@
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Data.TestLibrary.UnitsOfWork;
 
-namespace FluiTec.AppFx.Data.Dapper.Sqlite.IntegrationTests
+namespace FluiTec.AppFx.Data.Dapper.Sqlite.IntegrationTests;
+
+/// <summary>
+///     A database provider.
+/// </summary>
+internal class DbProvider : SqliteDataServiceProvider<ITestDataService, ITestUnitOfWork>
 {
     /// <summary>
-    /// A database provider.
+    ///     Provide data service.
     /// </summary>
-    internal class DbProvider : SqliteDataServiceProvider<ITestDataService, ITestUnitOfWork>
+    /// <returns>
+    ///     A TDataService.
+    /// </returns>
+    public override ITestDataService ProvideDataService()
     {
-        /// <summary>
-        /// Provide data service.
-        /// </summary>
-        ///
-        /// <returns>
-        /// A TDataService.
-        /// </returns>
-        public override ITestDataService ProvideDataService() => new SqliteTestDataService(ServiceOptions, null);
+        return new SqliteTestDataService(ServiceOptions, null);
     }
 }

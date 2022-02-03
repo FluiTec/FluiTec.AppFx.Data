@@ -9,126 +9,125 @@ using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace FluiTec.AppFx.Data.Dapper.DataServices
+namespace FluiTec.AppFx.Data.Dapper.DataServices;
+
+/// <summary>   A service for accessing base dapper data information. </summary>
+/// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
+public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWork>, IDapperDataService
+    where TUnitOfWork : DapperUnitOfWork, IUnitOfWork
 {
-    /// <summary>   A service for accessing base dapper data information. </summary>
-    /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
-    public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWork>, IDapperDataService
-        where TUnitOfWork : DapperUnitOfWork, IUnitOfWork
+    private readonly IConnectionFactory _connectionFactory;
+    private readonly string _connectionString;
+
+    #region ICommandCache
+
+    /// <summary>   Gets from cache.</summary>
+    /// <param name="repositoryType">   Type of the repository. </param>
+    /// <param name="memberName">       Name of the member. </param>
+    /// <param name="commandFunc">      The command function. </param>
+    /// <returns>   The data that was read from the cache.</returns>
+    public string GetFromCache(Type repositoryType, string memberName, Func<string> commandFunc)
     {
-        private readonly IConnectionFactory _connectionFactory;
-        private readonly string _connectionString;
+        var key = $"{repositoryType.FullName}.{memberName}";
 
-        #region ICommandCache
+        if (CommandCache.TryGetValue(key, out var result))
+            return result;
 
-        /// <summary>   Gets from cache.</summary>
-        /// <param name="repositoryType">   Type of the repository. </param>
-        /// <param name="memberName">       Name of the member. </param>
-        /// <param name="commandFunc">      The command function. </param>
-        /// <returns>   The data that was read from the cache.</returns>
-        public string GetFromCache(Type repositoryType, string memberName, Func<string> commandFunc)
-        {
-            var key = $"{repositoryType.FullName}.{memberName}";
-
-            if (CommandCache.TryGetValue(key, out var result))
-                return result;
-
-            var cmd = commandFunc();
-            CommandCache.TryAdd(key, cmd);
-            return cmd;
-        }
-
-        #endregion
-
-        #region IDisposable
-
-        /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting
-        ///     unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">
-        ///     True to release both managed and unmanaged resources; false to
-        ///     release only unmanaged resources.
-        /// </param>
-        protected override void Dispose(bool disposing)
-        {
-            // nothing to do here
-        }
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>   Specialized constructor for use only by derived class. </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     Thrown when one or more required arguments are
-        ///     null.
-        /// </exception>
-        /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
-        /// <param name="loggerFactory">        The logger factory. </param>
-        protected BaseDapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) :
-            base(loggerFactory)
-        {
-            // ReSharper disable once VirtualMemberCallInConstructor
-            if (SqlType.NeedsDateTimeMapping())
-                DapperExtensions.InstallDateTimeOffsetMapper();
-
-            if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
-            _connectionString = dapperServiceOptions.ConnectionString;
-            _connectionFactory = dapperServiceOptions.ConnectionFactory;
-            CommandCache = new ConcurrentDictionary<string, string>();
-        }
-
-        /// <summary>   Specialized constructor for use only by derived class. </summary>
-        /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
-        /// <param name="loggerFactory">        The logger factory. </param>
-        protected BaseDapperDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
-            ILoggerFactory loggerFactory) :
-            base(loggerFactory)
-        {
-            // ReSharper disable once VirtualMemberCallInConstructor
-            if (SqlType == SqlType.Mysql)
-                DapperExtensions.InstallDateTimeOffsetMapper();
-            if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
-            if (dapperServiceOptions.CurrentValue == null)
-                throw new ArgumentNullException(nameof(dapperServiceOptions));
-            DapperServiceOptions = dapperServiceOptions;
-            CommandCache = new ConcurrentDictionary<string, string>();
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>   Gets options for controlling the dapper service. </summary>
-        /// <value> Options that control the dapper service. </value>
-        protected IOptionsMonitor<IDapperServiceOptions> DapperServiceOptions { get; }
-
-        /// <summary>   Gets the connection factory. </summary>
-        /// <value> The connection factory. </value>
-        public IConnectionFactory ConnectionFactory =>
-            _connectionFactory ?? DapperServiceOptions.CurrentValue.ConnectionFactory;
-
-        /// <summary>   Gets the connection string. </summary>
-        /// <value> The connection string. </value>
-        public string ConnectionString => _connectionString ?? DapperServiceOptions.CurrentValue.ConnectionString;
-
-        /// <summary>   Gets the command cache.</summary>
-        /// <value> The command cache.</value>
-        protected ConcurrentDictionary<string, string> CommandCache { get; }
-
-        /// <summary>   Gets information describing the meta. </summary>
-        /// <value> Information describing the meta. </value>
-        public abstract IVersionTableMetaData MetaData { get; }
-
-        /// <summary>   Gets the schema. </summary>
-        /// <value> The schema. </value>
-        public abstract string Schema { get; }
-
-        /// <summary>   Gets the type of the SQL. </summary>
-        /// <value> The type of the SQL. </value>
-        public abstract SqlType SqlType { get; }
-
-        #endregion
+        var cmd = commandFunc();
+        CommandCache.TryAdd(key, cmd);
+        return cmd;
     }
+
+    #endregion
+
+    #region IDisposable
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing, releasing, or resetting
+    ///     unmanaged resources.
+    /// </summary>
+    /// <param name="disposing">
+    ///     True to release both managed and unmanaged resources; false to
+    ///     release only unmanaged resources.
+    /// </param>
+    protected override void Dispose(bool disposing)
+    {
+        // nothing to do here
+    }
+
+    #endregion
+
+    #region Constructors
+
+    /// <summary>   Specialized constructor for use only by derived class. </summary>
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
+    /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
+    /// <param name="loggerFactory">        The logger factory. </param>
+    protected BaseDapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) :
+        base(loggerFactory)
+    {
+        // ReSharper disable once VirtualMemberCallInConstructor
+        if (SqlType.NeedsDateTimeMapping())
+            DapperExtensions.InstallDateTimeOffsetMapper();
+
+        if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
+        _connectionString = dapperServiceOptions.ConnectionString;
+        _connectionFactory = dapperServiceOptions.ConnectionFactory;
+        CommandCache = new ConcurrentDictionary<string, string>();
+    }
+
+    /// <summary>   Specialized constructor for use only by derived class. </summary>
+    /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
+    /// <param name="loggerFactory">        The logger factory. </param>
+    protected BaseDapperDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
+        ILoggerFactory loggerFactory) :
+        base(loggerFactory)
+    {
+        // ReSharper disable once VirtualMemberCallInConstructor
+        if (SqlType == SqlType.Mysql)
+            DapperExtensions.InstallDateTimeOffsetMapper();
+        if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
+        if (dapperServiceOptions.CurrentValue == null)
+            throw new ArgumentNullException(nameof(dapperServiceOptions));
+        DapperServiceOptions = dapperServiceOptions;
+        CommandCache = new ConcurrentDictionary<string, string>();
+    }
+
+    #endregion
+
+    #region Properties
+
+    /// <summary>   Gets options for controlling the dapper service. </summary>
+    /// <value> Options that control the dapper service. </value>
+    protected IOptionsMonitor<IDapperServiceOptions> DapperServiceOptions { get; }
+
+    /// <summary>   Gets the connection factory. </summary>
+    /// <value> The connection factory. </value>
+    public IConnectionFactory ConnectionFactory =>
+        _connectionFactory ?? DapperServiceOptions.CurrentValue.ConnectionFactory;
+
+    /// <summary>   Gets the connection string. </summary>
+    /// <value> The connection string. </value>
+    public string ConnectionString => _connectionString ?? DapperServiceOptions.CurrentValue.ConnectionString;
+
+    /// <summary>   Gets the command cache.</summary>
+    /// <value> The command cache.</value>
+    protected ConcurrentDictionary<string, string> CommandCache { get; }
+
+    /// <summary>   Gets information describing the meta. </summary>
+    /// <value> Information describing the meta. </value>
+    public abstract IVersionTableMetaData MetaData { get; }
+
+    /// <summary>   Gets the schema. </summary>
+    /// <value> The schema. </value>
+    public abstract string Schema { get; }
+
+    /// <summary>   Gets the type of the SQL. </summary>
+    /// <value> The type of the SQL. </value>
+    public abstract SqlType SqlType { get; }
+
+    #endregion
 }

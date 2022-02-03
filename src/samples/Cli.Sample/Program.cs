@@ -14,95 +14,83 @@ using FluiTec.AppFx.Data.Dynamic.Configuration;
 using FluiTec.AppFx.Data.Dynamic.Console;
 using FluiTec.AppFx.Data.LiteDb;
 using FluiTec.AppFx.Options.Console;
-using FluiTec.AppFx.Options.Helpers;
-using FluiTec.AppFx.Options.Managers;
+using FluiTec.AppFx.Options.Programs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Cli.Sample
+namespace Cli.Sample;
+
+/// <summary>
+///     A program.
+/// </summary>
+internal class Program : ValidatingConfigurationManagerProgram
 {
     /// <summary>
-    /// A program.
+    ///     Main entry-point for this application.
     /// </summary>
-    internal class Program
+    /// <param name="args"> An array of command-line argument strings. </param>
+    private static void Main(string[] args)
     {
-        /// <summary>
-        /// Main entry-point for this application.
-        /// </summary>
-        ///
-        /// <param name="args"> An array of command-line argument strings. </param>
-        private static void Main(string[] args)
-        {
-            var config = BuildConfiguration();
-            var serviceProvider = ConfigureServices(config);
+        var sp = new Program().GetServiceProvider();
+        new ConsoleHost(sp).Run("Test", args);
+    }
 
-            new ConsoleHost(serviceProvider).Run("Test", args);
-        }
+    /// <summary>
+    ///     Configures the given configuration builder.
+    /// </summary>
+    /// <param name="configurationBuilder"> The configuration builder. </param>
+    /// <returns>
+    ///     An IConfigurationBuilder.
+    /// </returns>
+    protected override IConfigurationBuilder Configure(IConfigurationBuilder configurationBuilder)
+    {
+        return configurationBuilder
+            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile("appsettings.secret.json", false, true);
+    }
 
-        /// <summary>
-        ///     Builds the configuration.
-        /// </summary>
-        /// <returns>
-        ///     An IConfigurationRoot.
-        /// </returns>
-        private static IConfigurationRoot BuildConfiguration()
-        {
-            // load config from json
-            var path = DirectoryHelper.GetApplicationRoot();
-            var config = new ConfigurationBuilder()
-                .SetBasePath(path)
-                .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile("appsettings.secret.json", false, true)
-                .Build();
+    /// <summary>
+    ///     Configure services.
+    /// </summary>
+    /// <param name="services"> The services. </param>
+    /// <returns>
+    ///     A ServiceCollection.
+    /// </returns>
+    protected override ServiceCollection ConfigureServices(ServiceCollection services)
+    {
+        base.ConfigureServices(services);
 
-            return config;
-        }
-
-        /// <summary>
-        ///     Configure services.
-        /// </summary>
-        /// <param name="config">   The configuration. </param>
-        /// <returns>
-        ///     An IServiceCollection.
-        /// </returns>
-        private static IServiceProvider ConfigureServices(IConfigurationRoot config)
-        {
-            var manager = new ValidatingConfigurationManager(config);
-            var services = new ServiceCollection();
-
-            services.AddSingleton(config);
-            services.ConfigureDynamicDataProvider(manager,
-                new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
+        services.ConfigureDynamicDataProvider(Manager,
+            new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
+                {
+                    return options.CurrentValue.Provider switch
                     {
-                        return options.CurrentValue.Provider switch
-                        {
-                            DataProvider.LiteDb => new LiteDbTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<LiteDbServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Mssql => new MssqlTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Pgsql => new PgsqlTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Mysql => new MysqlTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Sqlite => new SqliteTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            _ => throw new NotImplementedException()
-                        };
-                    }
-                )
-            );
+                        DataProvider.LiteDb => new LiteDbTestDataService(
+                            provider.GetRequiredService<IOptionsMonitor<LiteDbServiceOptions>>(),
+                            provider.GetService<ILoggerFactory>()),
+                        DataProvider.Mssql => new MssqlTestDataService(
+                            provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
+                            provider.GetService<ILoggerFactory>()),
+                        DataProvider.Pgsql => new PgsqlTestDataService(
+                            provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
+                            provider.GetService<ILoggerFactory>()),
+                        DataProvider.Mysql => new MysqlTestDataService(
+                            provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
+                            provider.GetService<ILoggerFactory>()),
+                        DataProvider.Sqlite => new SqliteTestDataService(
+                            provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
+                            provider.GetService<ILoggerFactory>()),
+                        _ => throw new NotImplementedException()
+                    };
+                }
+            )
+        );
 
-            services.ConfigureOptionsConsoleModule();
-            services.ConfigureDataConsoleModule();
+        services.ConfigureOptionsConsoleModule();
+        services.ConfigureDataConsoleModule();
 
-            return services.BuildServiceProvider();
-        }
+        return services;
     }
 }

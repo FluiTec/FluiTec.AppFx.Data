@@ -5,21 +5,19 @@ using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace DynamicSample.Data.NMemory
+namespace DynamicSample.Data.NMemory;
+
+/// <summary>
+///     A memory dummy repository.
+/// </summary>
+public class NMemoryDummyRepository : NMemoryWritableKeyTableDataRepository<DummyEntity, int>, IDummyRepository
 {
     /// <summary>
-    /// A memory dummy repository.
+    ///     Constructor.
     /// </summary>
-    public class NMemoryDummyRepository : NMemoryWritableKeyTableDataRepository<DummyEntity, int>, IDummyRepository
+    /// <param name="unitOfWork">   The unit of work. </param>
+    /// <param name="logger">       The logger. </param>
+    public NMemoryDummyRepository(NMemoryUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
     {
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        ///
-        /// <param name="unitOfWork">   The unit of work. </param>
-        /// <param name="logger">       The logger. </param>
-        public NMemoryDummyRepository(NMemoryUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
-        {
-        }
     }
 }

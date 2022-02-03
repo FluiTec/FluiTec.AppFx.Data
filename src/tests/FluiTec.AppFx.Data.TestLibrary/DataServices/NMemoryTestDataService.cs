@@ -12,34 +12,54 @@ using NMemory.Tables;
 namespace FluiTec.AppFx.Data.TestLibrary.DataServices
 {
     /// <summary>
-    /// A service for accessing memory test data information.
+    ///     A service for accessing memory test data information.
     /// </summary>
     public class NMemoryTestDataService : NMemoryDataService<NMemoryTestUnitOfWork>, ITestDataService
     {
         /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
-        ///
         /// <param name="loggerFactory">    The logger factory. </param>
         public NMemoryTestDataService(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
         }
 
         /// <summary>
-        /// Gets the name.
+        ///     Gets the name.
         /// </summary>
-        ///
         /// <value>
-        /// The name.
+        ///     The name.
         /// </value>
         public override string Name => nameof(NMemoryTestDataService);
 
         /// <summary>
-        /// Begins unit of work.
+        ///     Begins unit of work.
         /// </summary>
-        ///
+        /// <param name="other">    The other. </param>
         /// <returns>
-        /// An IUnitOfWork.
+        ///     A TUnitOfWork.
+        /// </returns>
+        ITestUnitOfWork IDataService<ITestUnitOfWork>.BeginUnitOfWork(IUnitOfWork other)
+        {
+            return BeginUnitOfWork(other);
+        }
+
+        /// <summary>
+        ///     Begins unit of work.
+        /// </summary>
+        /// <returns>
+        ///     A TUnitOfWork.
+        /// </returns>
+        ITestUnitOfWork IDataService<ITestUnitOfWork>.BeginUnitOfWork()
+        {
+            return BeginUnitOfWork();
+        }
+
+        /// <summary>
+        ///     Begins unit of work.
+        /// </summary>
+        /// <returns>
+        ///     An IUnitOfWork.
         /// </returns>
         public override NMemoryTestUnitOfWork BeginUnitOfWork()
         {
@@ -47,18 +67,19 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServices
         }
 
         /// <summary>
-        /// Begins unit of work.
+        ///     Begins unit of work.
         /// </summary>
-        ///
-        /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-        ///                                             null. </exception>
-        /// <exception cref="ArgumentException">        Thrown when one or more arguments have
-        ///                                             unsupported or illegal values. </exception>
-        ///
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown when one or more required arguments are
+        ///     null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     Thrown when one or more arguments have
+        ///     unsupported or illegal values.
+        /// </exception>
         /// <param name="other">    The other. </param>
-        ///
         /// <returns>
-        /// An IUnitOfWork.
+        ///     An IUnitOfWork.
         /// </returns>
         public override NMemoryTestUnitOfWork BeginUnitOfWork(IUnitOfWork other)
         {
@@ -70,37 +91,11 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServices
         }
 
         /// <summary>
-        /// Begins unit of work.
+        ///     Configure database.
         /// </summary>
-        /// <param name="other">    The other. </param>
-        /// 
-        /// <returns>
-        /// A TUnitOfWork.
-        /// </returns>
-        ITestUnitOfWork IDataService<ITestUnitOfWork>.BeginUnitOfWork(IUnitOfWork other)
-        {
-            return BeginUnitOfWork(other);
-        }
-
-        /// <summary>
-        /// Begins unit of work.
-        /// </summary>
-        /// <returns>
-        /// A TUnitOfWork.
-        /// </returns>
-        ITestUnitOfWork IDataService<ITestUnitOfWork>.BeginUnitOfWork()
-        {
-            return BeginUnitOfWork();
-        }
-
-        /// <summary>
-        /// Configure database.
-        /// </summary>
-        ///
         /// <param name="database"> The database. </param>
-        ///
         /// <returns>
-        /// A Database.
+        ///     A Database.
         /// </returns>
         protected override Database ConfigureDatabase(Database database)
         {

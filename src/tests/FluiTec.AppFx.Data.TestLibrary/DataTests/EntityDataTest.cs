@@ -10,9 +10,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Data.TestLibrary.DataTests
 {
     /// <summary>
-    /// An entity data test.
+    ///     An entity data test.
     /// </summary>
-    ///
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
     /// <typeparam name="TEntity">      Type of the entity. </typeparam>
@@ -25,11 +24,11 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         #region Constructors
 
         /// <summary>
-        /// Specialized constructor for use only by derived class.
+        ///     Specialized constructor for use only by derived class.
         /// </summary>
-        ///
         /// <param name="dataServiceProvider">  The data service provider. </param>
-        protected EntityDataTest(DataServiceProvider<TDataService, TUnitOfWork> dataServiceProvider) : base(dataServiceProvider)
+        protected EntityDataTest(DataServiceProvider<TDataService, TUnitOfWork> dataServiceProvider) : base(
+            dataServiceProvider)
         {
         }
 
@@ -92,7 +91,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         #endregion
 
         #region Tests
-        
+
         #region Create
 
         /// <summary>   (Unit Test Method) can create entity.</summary>

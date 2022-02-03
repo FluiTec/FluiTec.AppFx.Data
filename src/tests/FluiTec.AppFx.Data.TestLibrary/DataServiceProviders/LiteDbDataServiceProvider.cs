@@ -5,9 +5,8 @@ using FluiTec.AppFx.Data.UnitsOfWork;
 namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
 {
     /// <summary>
-    /// A lite database data service provider.
+    ///     A lite database data service provider.
     /// </summary>
-    ///
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
     public abstract class LiteDbDataServiceProvider<TDataService, TUnitOfWork>
@@ -16,11 +15,10 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         where TUnitOfWork : IUnitOfWork
     {
         /// <summary>
-        /// Configure options.
+        ///     Configure options.
         /// </summary>
-        ///
         /// <returns>
-        /// The LiteDbServiceOptions.
+        ///     The LiteDbServiceOptions.
         /// </returns>
         public LiteDbServiceOptions ConfigureOptions()
         {

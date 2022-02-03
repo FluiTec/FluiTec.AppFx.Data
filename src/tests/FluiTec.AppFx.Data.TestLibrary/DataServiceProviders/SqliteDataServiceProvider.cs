@@ -12,11 +12,10 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         where TUnitOfWork : IUnitOfWork
     {
         /// <summary>
-        /// Configure options.
+        ///     Configure options.
         /// </summary>
-        ///
         /// <returns>
-        /// The IDapperServiceOptions.
+        ///     The IDapperServiceOptions.
         /// </returns>
         protected override IDapperServiceOptions ConfigureOptions()
         {
@@ -27,11 +26,10 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         }
 
         /// <summary>
-        /// Configure admin options.
+        ///     Configure admin options.
         /// </summary>
-        ///
         /// <returns>
-        /// The DbAdminOptions.
+        ///     The DbAdminOptions.
         /// </returns>
         protected override DbAdminOptions ConfigureAdminOptions()
         {

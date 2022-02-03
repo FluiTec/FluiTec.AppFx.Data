@@ -8,9 +8,8 @@ using FluiTec.AppFx.Data.UnitsOfWork;
 namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
 {
     /// <summary>
-    /// A mysql data service provider.
+    ///     A mysql data service provider.
     /// </summary>
-    ///
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
     public abstract class MysqlDataServiceProvider<TDataService, TUnitOfWork>
@@ -19,20 +18,18 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         where TUnitOfWork : IUnitOfWork
     {
         /// <summary>
-        /// Gets the name of the variable.
+        ///     Gets the name of the variable.
         /// </summary>
-        ///
         /// <value>
-        /// The name of the variable.
+        ///     The name of the variable.
         /// </value>
         protected override string VariableName => "MYSQL_DATABASE";
 
         /// <summary>
-        /// Configure options.
+        ///     Configure options.
         /// </summary>
-        ///
         /// <returns>
-        /// The IDapperServiceOptions.
+        ///     The IDapperServiceOptions.
         /// </returns>
         protected override IDapperServiceOptions ConfigureOptions()
         {
@@ -48,11 +45,10 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         }
 
         /// <summary>
-        /// Configure admin options.
+        ///     Configure admin options.
         /// </summary>
-        ///
         /// <returns>
-        /// The DbAdminOptions.
+        ///     The DbAdminOptions.
         /// </returns>
         protected override DbAdminOptions ConfigureAdminOptions()
         {

@@ -1,9 +1,8 @@
 ﻿using FluiTec.AppFx.Data.Repositories;
 using WebSample.Data.Entities;
 
-namespace WebSample.Data.Repositories
+namespace WebSample.Data.Repositories;
+
+public interface IDummyRepository : IWritableKeyTableDataRepository<DummyEntity, int>
 {
-    public interface IDummyRepository : IWritableKeyTableDataRepository<DummyEntity, int>
-    {
-    }
 }

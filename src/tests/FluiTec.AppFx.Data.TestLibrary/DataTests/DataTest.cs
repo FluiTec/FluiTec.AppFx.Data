@@ -6,43 +6,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Data.TestLibrary.DataTests
 {
     /// <summary>
-    /// A data test.
+    ///     A data test.
     /// </summary>
-    ///
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
     public abstract class DataTest<TDataService, TUnitOfWork>
-        where TDataService : IDataService<TUnitOfWork> 
+        where TDataService : IDataService<TUnitOfWork>
         where TUnitOfWork : IUnitOfWork
     {
-        #region Properties
-
-        /// <summary>
-        /// Gets the data service provider.
-        /// </summary>
-        ///
-        /// <value>
-        /// The data service provider.
-        /// </value>
-        public DataServiceProvider<TDataService, TUnitOfWork> DataServiceProvider { get; }
-
-        /// <summary>
-        /// Gets the data service.
-        /// </summary>
-        ///
-        /// <value>
-        /// The data service.
-        /// </value>
-        private TDataService DataService { get; }
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
-        /// Specialized constructor for use only by derived class.
+        ///     Specialized constructor for use only by derived class.
         /// </summary>
-        ///
         /// <param name="dataServiceProvider">  The data service provider. </param>
         protected DataTest(DataServiceProvider<TDataService, TUnitOfWork> dataServiceProvider)
         {
@@ -52,14 +28,33 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        ///     Gets the data service provider.
+        /// </summary>
+        /// <value>
+        ///     The data service provider.
+        /// </value>
+        public DataServiceProvider<TDataService, TUnitOfWork> DataServiceProvider { get; }
+
+        /// <summary>
+        ///     Gets the data service.
+        /// </summary>
+        /// <value>
+        ///     The data service.
+        /// </value>
+        private TDataService DataService { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
-        /// Begins unit of work.
+        ///     Begins unit of work.
         /// </summary>
-        ///
         /// <returns>
-        /// A TUnitOfWork.
+        ///     A TUnitOfWork.
         /// </returns>
         protected virtual TUnitOfWork BeginUnitOfWork()
         {

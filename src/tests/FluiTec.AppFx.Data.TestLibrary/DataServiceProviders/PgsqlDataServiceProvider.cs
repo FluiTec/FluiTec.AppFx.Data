@@ -8,9 +8,8 @@ using FluiTec.AppFx.Data.UnitsOfWork;
 namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
 {
     /// <summary>
-    /// A pgsql data service provider.
+    ///     A pgsql data service provider.
     /// </summary>
-    ///
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
     public abstract class PgsqlDataServiceProvider<TDataService, TUnitOfWork>
@@ -19,24 +18,22 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         where TUnitOfWork : IUnitOfWork
     {
         /// <summary>
-        /// Gets the name of the variable.
+        ///     Gets the name of the variable.
         /// </summary>
-        ///
         /// <value>
-        /// The name of the variable.
+        ///     The name of the variable.
         /// </value>
         protected override string VariableName => "POSTGRES_DB";
 
         /// <summary>
-        /// Configure options.
+        ///     Configure options.
         /// </summary>
-        ///
         /// <returns>
-        /// The IDapperServiceOptions.
+        ///     The IDapperServiceOptions.
         /// </returns>
         protected override IDapperServiceOptions ConfigureOptions()
         {
-            if (!EnvironmentConfigured) 
+            if (!EnvironmentConfigured)
                 return ConfigurationManager.ExtractSettings<PgsqlDapperServiceOptions>();
 
             var db = Environment.GetEnvironmentVariable("POSTGRES_DB");
@@ -49,11 +46,10 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         }
 
         /// <summary>
-        /// Configure admin options.
+        ///     Configure admin options.
         /// </summary>
-        ///
         /// <returns>
-        /// The DbAdminOptions.
+        ///     The DbAdminOptions.
         /// </returns>
         protected override DbAdminOptions ConfigureAdminOptions()
         {

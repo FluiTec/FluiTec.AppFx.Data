@@ -6,34 +6,34 @@ using FluiTec.AppFx.Data.UnitsOfWork;
 namespace FluiTec.AppFx.Data.TestLibrary.DataTests
 {
     /// <summary>
-    /// A dependency entity data test.
+    ///     A dependency entity data test.
     /// </summary>
-    ///
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
     /// <typeparam name="TEntity">      Type of the entity. </typeparam>
     /// <typeparam name="TKey">         Type of the key. </typeparam>
-    public abstract class DependencyEntityDataTest<TDataService, TUnitOfWork, TEntity, TKey> : EntityDataTest<TDataService, TUnitOfWork, TEntity, TKey>
+    // ReSharper disable once UnusedMember.Global
+    public abstract class
+        DependencyEntityDataTest<TDataService, TUnitOfWork, TEntity, TKey> : EntityDataTest<TDataService, TUnitOfWork,
+            TEntity, TKey>
         where TDataService : IDataService<TUnitOfWork>
         where TUnitOfWork : IUnitOfWork
         where TEntity : class, IKeyEntity<TKey>, new()
     {
         /// <summary>
-        /// Specialized constructor for use only by derived class.
+        ///     Specialized constructor for use only by derived class.
         /// </summary>
-        ///
         /// <param name="dataServiceProvider">  The data service provider. </param>
-        protected DependencyEntityDataTest(DataServiceProvider<TDataService, TUnitOfWork> dataServiceProvider) : base(dataServiceProvider)
+        protected DependencyEntityDataTest(DataServiceProvider<TDataService, TUnitOfWork> dataServiceProvider) : base(
+            dataServiceProvider)
         {
-
         }
 
         /// <summary>
-        /// Begins unit of work.
+        ///     Begins unit of work.
         /// </summary>
-        ///
         /// <returns>
-        /// A TUnitOfWork.
+        ///     A TUnitOfWork.
         /// </returns>
         protected override TUnitOfWork BeginUnitOfWork()
         {
@@ -43,9 +43,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         }
 
         /// <summary>
-        /// Creates the dependencies.
+        ///     Creates the dependencies.
         /// </summary>
-        ///
         /// <param name="uow">  The uow. </param>
         protected abstract void CreateDependencies(TUnitOfWork uow);
     }

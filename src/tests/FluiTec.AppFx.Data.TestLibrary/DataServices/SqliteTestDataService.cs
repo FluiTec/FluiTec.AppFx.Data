@@ -5,35 +5,33 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Data.TestLibrary.DataServices
 {
     /// <summary>
-    /// A service for accessing sqlite test data information.
+    ///     A service for accessing sqlite test data information.
     /// </summary>
     public class SqliteTestDataService : DapperTestDataService
     {
         /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
-        ///
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
-        public SqliteTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(dapperServiceOptions, loggerFactory)
+        public SqliteTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(
+            dapperServiceOptions, loggerFactory)
         {
         }
 
         /// <summary>
-        /// Gets the name.
+        ///     Gets the name.
         /// </summary>
-        ///
         /// <value>
-        /// The name.
+        ///     The name.
         /// </value>
         public override string Name => nameof(SqliteTestDataService);
 
         /// <summary>
-        /// Gets the type of the SQL.
+        ///     Gets the type of the SQL.
         /// </summary>
-        ///
         /// <value>
-        /// The type of the SQL.
+        ///     The type of the SQL.
         /// </value>
         public override SqlType SqlType => SqlType.Sqlite;
     }

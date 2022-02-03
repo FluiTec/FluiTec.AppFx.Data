@@ -9,25 +9,25 @@ using FluiTec.AppFx.Data.TestLibrary.UnitsOfWork;
 namespace FluiTec.AppFx.Data.TestLibrary
 {
     /// <summary>
-    /// A date time dummy data test.
+    ///     A date time dummy data test.
     /// </summary>
-    public abstract class DateTimeDummyDataTest : EntityDataTest<ITestDataService, ITestUnitOfWork, DateTimeDummyEntity, int>
+    public abstract class
+        DateTimeDummyDataTest : EntityDataTest<ITestDataService, ITestUnitOfWork, DateTimeDummyEntity, int>
     {
         /// <summary>
-        /// Specialized constructor for use only by derived class.
+        ///     Specialized constructor for use only by derived class.
         /// </summary>
-        ///
         /// <param name="dataServiceProvider">  The data service provider. </param>
-        protected DateTimeDummyDataTest(DataServiceProvider<ITestDataService, ITestUnitOfWork> dataServiceProvider) : base(dataServiceProvider)
+        protected DateTimeDummyDataTest(DataServiceProvider<ITestDataService, ITestUnitOfWork> dataServiceProvider) :
+            base(dataServiceProvider)
         {
         }
 
         /// <summary>
-        /// Creates an entity.
+        ///     Creates an entity.
         /// </summary>
-        ///
         /// <returns>
-        /// The new entity.
+        ///     The new entity.
         /// </returns>
         protected override DateTimeDummyEntity CreateEntity()
         {
@@ -35,11 +35,10 @@ namespace FluiTec.AppFx.Data.TestLibrary
         }
 
         /// <summary>
-        /// Creates non updateable entity.
+        ///     Creates non updateable entity.
         /// </summary>
-        ///
         /// <returns>
-        /// The new non updateable entity.
+        ///     The new non updateable entity.
         /// </returns>
         protected override DateTimeDummyEntity CreateNonUpdateableEntity()
         {
@@ -47,11 +46,10 @@ namespace FluiTec.AppFx.Data.TestLibrary
         }
 
         /// <summary>
-        /// Enumerates create entities in this collection.
+        ///     Enumerates create entities in this collection.
         /// </summary>
-        ///
         /// <returns>
-        /// An enumerator that allows foreach to be used to process create entities in this collection.
+        ///     An enumerator that allows foreach to be used to process create entities in this collection.
         /// </returns>
         protected override IEnumerable<DateTimeDummyEntity> CreateEntities()
         {
@@ -63,13 +61,11 @@ namespace FluiTec.AppFx.Data.TestLibrary
         }
 
         /// <summary>
-        /// Query if 'entity' has valid key.
+        ///     Query if 'entity' has valid key.
         /// </summary>
-        ///
         /// <param name="entity">   The entity. </param>
-        ///
         /// <returns>
-        /// True if valid key, false if not.
+        ///     True if valid key, false if not.
         /// </returns>
         protected override bool HasValidKey(DateTimeDummyEntity entity)
         {
@@ -77,14 +73,12 @@ namespace FluiTec.AppFx.Data.TestLibrary
         }
 
         /// <summary>
-        /// Entity equals.
+        ///     Entity equals.
         /// </summary>
-        ///
         /// <param name="code"> The code. </param>
         /// <param name="db">   The database. </param>
-        ///
         /// <returns>
-        /// True if it succeeds, false if it fails.
+        ///     True if it succeeds, false if it fails.
         /// </returns>
         protected override bool EntityEquals(DateTimeDummyEntity code, DateTimeDummyEntity db)
         {
@@ -92,13 +86,11 @@ namespace FluiTec.AppFx.Data.TestLibrary
         }
 
         /// <summary>
-        /// Change entity.
+        ///     Change entity.
         /// </summary>
-        ///
         /// <param name="entity">   The entity. </param>
-        ///
         /// <returns>
-        /// A TEntity.
+        ///     A TEntity.
         /// </returns>
         protected override DateTimeDummyEntity ChangeEntity(DateTimeDummyEntity entity)
         {

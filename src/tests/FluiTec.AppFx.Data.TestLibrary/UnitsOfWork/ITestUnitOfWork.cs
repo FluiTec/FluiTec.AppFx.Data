@@ -8,15 +8,16 @@ namespace FluiTec.AppFx.Data.TestLibrary.UnitsOfWork
     {
         /// <summary>   Gets the dummy repository. </summary>
         /// <value> The dummy repository. </value>
+        // ReSharper disable once UnusedMember.Global
         IDummyRepository DummyRepository { get; }
 
         /// <summary>
-        /// Gets the date time dummy repository.
+        ///     Gets the date time dummy repository.
         /// </summary>
-        ///
         /// <value>
-        /// The date time dummy repository.
+        ///     The date time dummy repository.
         /// </value>
+        // ReSharper disable once UnusedMember.Global
         IDateTimeDummyRepository DateTimeDummyRepository { get; }
     }
 }

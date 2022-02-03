@@ -1,20 +1,19 @@
 ﻿using FluiTec.AppFx.Data.TestLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests
+namespace FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests;
+
+/// <summary>
+///     A mysql entity data test.
+/// </summary>
+[TestClass]
+[TestCategory("Integration")]
+public class MysqlDummyDataTest : DummyDataTest
 {
     /// <summary>
-    /// A mysql entity data test.
+    ///     Default constructor.
     /// </summary>
-    [TestClass]
-    [TestCategory("Integration")]
-    public class MysqlDummyDataTest : DummyDataTest
+    public MysqlDummyDataTest() : base(new DbProvider())
     {
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public MysqlDummyDataTest() : base(new DbProvider())
-        {
-        }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
+﻿using FluiTec.AppFx.Console.Helpers;
 using FluiTec.AppFx.Data.LiteDb;
 using LiteDbSample.Data;
 using LiteDbSample.Data.Entities;
@@ -16,7 +12,7 @@ namespace LiteDbSample
             var options = new LiteDbServiceOptions
             {
                 DbFileName = "test.ldb",
-                ApplicationFolder = GetApplicationRoot(),
+                ApplicationFolder = DirectoryHelper.GetApplicationRoot(),
                 UseSingletonConnection = true
             };
 
@@ -25,26 +21,6 @@ namespace LiteDbSample
             var unused = uow.DummyRepository.GetAll();
             uow.DummyRepository.Add(new DummyEntity {Name = "Test"});
             uow.Commit();
-        }
-
-        private static string GetApplicationRoot()
-        {
-            var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            Debug.Assert(exePath != null);
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                var appPathMatcher = new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*?(?=\\+bin)");
-                var appRoot = appPathMatcher.Match(exePath).Value;
-                return appRoot;
-            }
-            else
-            {
-                var appPathMatcher = new Regex(@"(?<!file)\/+[\S\s]*?(?=\/+bin)");
-                var appRoot = appPathMatcher.Match(exePath).Value;
-                return appRoot;
-            }
         }
     }
 }

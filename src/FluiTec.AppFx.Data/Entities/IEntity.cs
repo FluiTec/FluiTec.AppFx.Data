@@ -1,7 +1,6 @@
-﻿namespace FluiTec.AppFx.Data.Entities
+﻿namespace FluiTec.AppFx.Data.Entities;
+
+/// <summary>	Interface for an entity. </summary>
+public interface IEntity
 {
-    /// <summary>	Interface for an entity. </summary>
-    public interface IEntity
-    {
-    }
 }

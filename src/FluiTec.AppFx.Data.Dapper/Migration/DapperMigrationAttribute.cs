@@ -1,38 +1,37 @@
 ﻿using System;
 using FluentMigrator;
 
-namespace FluiTec.AppFx.Data.Dapper.Migration
+namespace FluiTec.AppFx.Data.Dapper.Migration;
+
+/// <summary>   Attribute for dapper migration. </summary>
+public class DapperMigrationAttribute : MigrationAttribute
 {
-    /// <summary>   Attribute for dapper migration. </summary>
-    public class DapperMigrationAttribute : MigrationAttribute
+    /// <summary>   Constructor. </summary>
+    /// <param name="year">     The year. </param>
+    /// <param name="month">    The month. </param>
+    /// <param name="day">      The day. </param>
+    /// <param name="hour">     The hour. </param>
+    /// <param name="minute">   The minute. </param>
+    /// <param name="author">   The author. </param>
+    public DapperMigrationAttribute(int year, int month, int day, int hour, int minute, string author)
+        : base(CalculateValue(year, month, day, hour, minute))
     {
-        /// <summary>   Constructor. </summary>
-        /// <param name="year">     The year. </param>
-        /// <param name="month">    The month. </param>
-        /// <param name="day">      The day. </param>
-        /// <param name="hour">     The hour. </param>
-        /// <param name="minute">   The minute. </param>
-        /// <param name="author">   The author. </param>
-        public DapperMigrationAttribute(int year, int month, int day, int hour, int minute, string author)
-            : base(CalculateValue(year, month, day, hour, minute))
-        {
-            Author = author;
-        }
+        Author = author;
+    }
 
-        /// <summary>   Gets the author. </summary>
-        /// <value> The author. </value>
-        public string Author { get; }
+    /// <summary>   Gets the author. </summary>
+    /// <value> The author. </value>
+    public string Author { get; }
 
-        /// <summary>   Calculates the value. </summary>
-        /// <param name="year">     The year. </param>
-        /// <param name="month">    The month. </param>
-        /// <param name="day">      The day. </param>
-        /// <param name="hour">     The hour. </param>
-        /// <param name="minute">   The minute. </param>
-        /// <returns>   The calculated value. </returns>
-        private static long CalculateValue(int year, int month, int day, int hour, int minute)
-        {
-            return new DateTime(year, month, day, hour, minute, 0).Ticks;
-        }
+    /// <summary>   Calculates the value. </summary>
+    /// <param name="year">     The year. </param>
+    /// <param name="month">    The month. </param>
+    /// <param name="day">      The day. </param>
+    /// <param name="hour">     The hour. </param>
+    /// <param name="minute">   The minute. </param>
+    /// <returns>   The calculated value. </returns>
+    private static long CalculateValue(int year, int month, int day, int hour, int minute)
+    {
+        return new DateTime(year, month, day, hour, minute, 0).Ticks;
     }
 }

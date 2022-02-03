@@ -1,8 +1,7 @@
 ﻿using FluiTec.AppFx.Data.DataServices;
 
-namespace DynamicSample.Data
+namespace DynamicSample.Data;
+
+public interface ITestDataService : IDataService<ITestUnitOfWork>
 {
-    public interface ITestDataService : IDataService<ITestUnitOfWork>
-    {
-    }
 }

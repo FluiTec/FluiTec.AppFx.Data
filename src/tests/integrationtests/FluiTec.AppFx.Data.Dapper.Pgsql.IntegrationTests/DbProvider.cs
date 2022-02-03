@@ -2,20 +2,21 @@
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Data.TestLibrary.UnitsOfWork;
 
-namespace FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests
+namespace FluiTec.AppFx.Data.Dapper.Pgsql.IntegrationTests;
+
+/// <summary>
+///     A database provider.
+/// </summary>
+internal class DbProvider : PgsqlDataServiceProvider<ITestDataService, ITestUnitOfWork>
 {
     /// <summary>
-    /// A database provider.
+    ///     Provide data service.
     /// </summary>
-    internal class DbProvider : PgsqlDataServiceProvider<ITestDataService, ITestUnitOfWork>
+    /// <returns>
+    ///     A TDataService.
+    /// </returns>
+    public override ITestDataService ProvideDataService()
     {
-        /// <summary>
-        /// Provide data service.
-        /// </summary>
-        ///
-        /// <returns>
-        /// A TDataService.
-        /// </returns>
-        public override ITestDataService ProvideDataService() => new PgsqlTestDataService(ServiceOptions, null);
+        return new PgsqlTestDataService(ServiceOptions, null);
     }
 }

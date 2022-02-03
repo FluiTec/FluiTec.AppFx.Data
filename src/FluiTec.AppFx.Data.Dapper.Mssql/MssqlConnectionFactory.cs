@@ -1,17 +1,16 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
 
-namespace FluiTec.AppFx.Data.Dapper.Mssql
+namespace FluiTec.AppFx.Data.Dapper.Mssql;
+
+/// <summary>	A mssql connection factory. </summary>
+public class MssqlConnectionFactory : IConnectionFactory
 {
-    /// <summary>	A mssql connection factory. </summary>
-    public class MssqlConnectionFactory : IConnectionFactory
+    /// <summary>	Creates a connection. </summary>
+    /// <param name="connectionString">	The connection string. </param>
+    /// <returns>	The new connection. </returns>
+    public IDbConnection CreateConnection(string connectionString)
     {
-        /// <summary>	Creates a connection. </summary>
-        /// <param name="connectionString">	The connection string. </param>
-        /// <returns>	The new connection. </returns>
-        public IDbConnection CreateConnection(string connectionString)
-        {
-            return new SqlConnection(connectionString);
-        }
+        return new SqlConnection(connectionString);
     }
 }

@@ -13,134 +13,126 @@ using FluiTec.AppFx.Data.Dapper.Pgsql;
 using FluiTec.AppFx.Data.Dapper.SqLite;
 using FluiTec.AppFx.Data.Dynamic.Configuration;
 using FluiTec.AppFx.Data.LiteDb;
-using FluiTec.AppFx.Options.Helpers;
-using FluiTec.AppFx.Options.Managers;
+using FluiTec.AppFx.Options.Programs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace DynamicSample
+namespace DynamicSample;
+
+internal class Program : ValidatingConfigurationManagerProgram
 {
-    internal class Program
+    /// <summary>   Main entry-point for this application. </summary>
+    /// <param name="args"> A variable-length parameters list containing arguments. </param>
+    // ReSharper disable once UnusedParameter.Local
+    private static void Main(params string[] args)
     {
-        /// <summary>   Main entry-point for this application. </summary>
-        /// <param name="args"> A variable-length parameters list containing arguments. </param>
-        // ReSharper disable once UnusedParameter.Local
-        private static void Main(params string[] args)
-        {
-            // load config from json
-            var path = DirectoryHelper.GetApplicationRoot();
-            Console.WriteLine($"BasePath: {path}");
-            var config = new ConfigurationBuilder()
-                .SetBasePath(path)
-                .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile("appsettings.secret.json", false, true)
-                .Build();
+        var prog = new Program();
+        var sp = prog.GetServiceProvider();
 
-            TestDynamicSql(config);
-            TestTimeStamp(config);
+        prog.TestDynamicSql(sp);
+        prog.TestTimeStamp(sp);
+    }
+
+    /// <summary>
+    ///     Tests dynamic SQL.
+    /// </summary>
+    /// <param name="serviceProvider">  The service provider. </param>
+    private void TestDynamicSql(IServiceProvider serviceProvider)
+    {
+        Console.WriteLine($"METHOD: {nameof(TestDynamicSql)}");
+
+        var service = serviceProvider.GetRequiredService<ITestDataService>();
+        using (var uow = service.BeginUnitOfWork())
+        {
+            uow.DummyRepository.Add(new DummyEntity {Name = "Testname"});
+            uow.Commit();
         }
 
-        private static void TestDynamicSql(IConfigurationRoot config)
+        Console.WriteLine($"{service.Name}");
+    }
+
+    /// <summary>
+    ///     Tests time stamp.
+    /// </summary>
+    /// <param name="serviceProvider">  The service provider. </param>
+    private void TestTimeStamp(IServiceProvider serviceProvider)
+    {
+        Console.WriteLine($"METHOD: {nameof(TestTimeStamp)}");
+
+        var service = serviceProvider.GetRequiredService<ITestDataService>();
+
+        using (var uow = service.BeginUnitOfWork())
         {
-            Console.WriteLine($"METHOD: {nameof(TestDynamicSql)}");
-            var manager = new ConsoleReportingConfigurationManager(config);
-            var services = new ServiceCollection();
-
-            services.ConfigureDynamicDataProvider(manager,
-                new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
-                    {
-                        return options.CurrentValue.Provider switch
-                        {
-                            DataProvider.LiteDb => new LiteDbTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<LiteDbServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Mssql => new MssqlTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Pgsql => new PgsqlTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Mysql => new MysqlTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Sqlite => new SqliteTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.NMemory => new NMemoryTestDataService(
-                                provider.GetService<ILoggerFactory>()),
-                            _ => throw new NotImplementedException()
-                        };
-                    }
-                )
-            );
-
-            var serviceProvider = services.BuildServiceProvider();
-            var service = serviceProvider.GetRequiredService<ITestDataService>();
-            using (var uow = service.BeginUnitOfWork())
-            {
-                uow.DummyRepository.Add(new DummyEntity {Name = "Testname"});
-                uow.Commit();
-            }
-
-            Console.WriteLine($"{service.Name}");
+            uow.Dummy2Repository.Add(new DummyEntity2 {Name = "Testname"});
+            uow.Commit();
         }
 
-        private static void TestTimeStamp(IConfigurationRoot config)
+        using (var uow = service.BeginUnitOfWork())
         {
-            Console.WriteLine($"METHOD: {nameof(TestTimeStamp)}");
-            var manager = new ConsoleReportingConfigurationManager(config);
-            var services = new ServiceCollection();
-
-            services.ConfigureDynamicDataProvider(manager,
-                new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
-                    {
-                        return options.CurrentValue.Provider switch
-                        {
-                            DataProvider.LiteDb => new LiteDbTestDataService(
-                                provider.GetRequiredService<LiteDbServiceOptions>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Mssql => new MssqlTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Pgsql => new PgsqlTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Mysql => new MysqlTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.Sqlite => new SqliteTestDataService(
-                                provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
-                                provider.GetService<ILoggerFactory>()),
-                            DataProvider.NMemory => new NMemoryTestDataService(
-                                provider.GetService<ILoggerFactory>()),
-                            _ => throw new NotImplementedException()
-                        };
-                    }
-                )
-            );
-
-            var serviceProvider = services.BuildServiceProvider();
-            var service = serviceProvider.GetRequiredService<ITestDataService>();
-
-            using (var uow = service.BeginUnitOfWork())
+            var entities = uow.Dummy2Repository.GetAll();
+            foreach (var entity in entities)
             {
-                uow.Dummy2Repository.Add(new DummyEntity2 {Name = "Testname"});
-                uow.Commit();
+                entity.Name = "Test2";
+                uow.Dummy2Repository.Update(entity);
             }
 
-            using (var uow = service.BeginUnitOfWork())
-            {
-                var entities = uow.Dummy2Repository.GetAll();
-                foreach (var entity in entities)
+            uow.Commit();
+        }
+    }
+
+    /// <summary>
+    ///     Configures the given configuration builder.
+    /// </summary>
+    /// <param name="configurationBuilder"> The configuration builder. </param>
+    /// <returns>
+    ///     An IConfigurationBuilder.
+    /// </returns>
+    protected override IConfigurationBuilder Configure(IConfigurationBuilder configurationBuilder)
+    {
+        return configurationBuilder
+            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile("appsettings.secret.json", false, true);
+    }
+
+    /// <summary>
+    ///     Configure services.
+    /// </summary>
+    /// <param name="services"> The services. </param>
+    /// <returns>
+    ///     A ServiceCollection.
+    /// </returns>
+    protected override ServiceCollection ConfigureServices(ServiceCollection services)
+    {
+        base.ConfigureServices(services);
+        services.ConfigureDynamicDataProvider(Manager,
+            new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
                 {
-                    entity.Name = "Test2";
-                    uow.Dummy2Repository.Update(entity);
+                    return options.CurrentValue.Provider switch
+                    {
+                        DataProvider.LiteDb => new LiteDbTestDataService(
+                            provider.GetRequiredService<LiteDbServiceOptions>(),
+                            provider.GetService<ILoggerFactory>()),
+                        DataProvider.Mssql => new MssqlTestDataService(
+                            provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
+                            provider.GetService<ILoggerFactory>()),
+                        DataProvider.Pgsql => new PgsqlTestDataService(
+                            provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
+                            provider.GetService<ILoggerFactory>()),
+                        DataProvider.Mysql => new MysqlTestDataService(
+                            provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
+                            provider.GetService<ILoggerFactory>()),
+                        DataProvider.Sqlite => new SqliteTestDataService(
+                            provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
+                            provider.GetService<ILoggerFactory>()),
+                        DataProvider.NMemory => new NMemoryTestDataService(
+                            provider.GetService<ILoggerFactory>()),
+                        _ => throw new NotImplementedException()
+                    };
                 }
-
-                uow.Commit();
-            }
-        }
+            )
+        );
+        return services;
     }
 }

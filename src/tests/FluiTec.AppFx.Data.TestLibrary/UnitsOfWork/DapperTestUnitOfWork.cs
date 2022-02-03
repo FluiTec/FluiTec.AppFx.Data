@@ -34,11 +34,10 @@ namespace FluiTec.AppFx.Data.TestLibrary.UnitsOfWork
         public IDummyRepository DummyRepository => GetRepository<IDummyRepository>();
 
         /// <summary>
-        /// Gets the date time dummy repository.
+        ///     Gets the date time dummy repository.
         /// </summary>
-        ///
         /// <value>
-        /// The date time dummy repository.
+        ///     The date time dummy repository.
         /// </value>
         public IDateTimeDummyRepository DateTimeDummyRepository => GetRepository<IDateTimeDummyRepository>();
 

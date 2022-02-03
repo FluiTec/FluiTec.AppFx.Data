@@ -5,13 +5,12 @@ using Microsoft.Extensions.Logging;
 using WebSample.Data.Entities;
 using WebSample.Data.Repositories;
 
-namespace WebSample.Data.LiteDb
+namespace WebSample.Data.LiteDb;
+
+public class LiteDbDummyRepository : LiteDbWritableIntegerKeyTableDataRepository<DummyEntity>, IDummyRepository
 {
-    public class LiteDbDummyRepository : LiteDbWritableIntegerKeyTableDataRepository<DummyEntity>, IDummyRepository
+    public LiteDbDummyRepository(LiteDbUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
+        logger)
     {
-        public LiteDbDummyRepository(LiteDbUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
-            logger)
-        {
-        }
     }
 }

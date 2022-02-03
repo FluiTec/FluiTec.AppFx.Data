@@ -8,48 +8,46 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Data.TestLibrary.UnitsOfWork
 {
     /// <summary>
-    /// A memory test unit of work.
+    ///     A memory test unit of work.
     /// </summary>
     public class NMemoryTestUnitOfWork : NMemoryUnitOfWork, ITestUnitOfWork
     {
         /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
-        ///
         /// <param name="dataService">  The data service. </param>
         /// <param name="logger">       The logger. </param>
-        public NMemoryTestUnitOfWork(INMemoryDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService, logger)
+        public NMemoryTestUnitOfWork(INMemoryDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService,
+            logger)
         {
             RegisterRepositories();
         }
 
         /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
-        ///
         /// <param name="parentUnitOfWork"> The parent unit of work. </param>
         /// <param name="dataService">      The data service. </param>
         /// <param name="logger">           The logger. </param>
-        public NMemoryTestUnitOfWork(NMemoryUnitOfWork parentUnitOfWork, IDataService dataService, ILogger<IUnitOfWork> logger) : base(parentUnitOfWork, dataService, logger)
+        public NMemoryTestUnitOfWork(NMemoryUnitOfWork parentUnitOfWork, IDataService dataService,
+            ILogger<IUnitOfWork> logger) : base(parentUnitOfWork, dataService, logger)
         {
             RegisterRepositories();
         }
 
         /// <summary>
-        /// Gets the dummy repository.
+        ///     Gets the dummy repository.
         /// </summary>
-        ///
         /// <value>
-        /// The dummy repository.
+        ///     The dummy repository.
         /// </value>
         public IDummyRepository DummyRepository => GetRepository<IDummyRepository>();
 
         /// <summary>
-        /// Gets the date time dummy repository.
+        ///     Gets the date time dummy repository.
         /// </summary>
-        ///
         /// <value>
-        /// The date time dummy repository.
+        ///     The date time dummy repository.
         /// </value>
         public IDateTimeDummyRepository DateTimeDummyRepository => GetRepository<IDateTimeDummyRepository>();
 

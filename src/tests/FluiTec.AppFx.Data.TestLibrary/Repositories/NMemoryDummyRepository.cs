@@ -7,17 +7,17 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Data.TestLibrary.Repositories
 {
     /// <summary>
-    /// A memory dummy repository.
+    ///     A memory dummy repository.
     /// </summary>
     public class NMemoryDummyRepository : NMemoryWritableKeyTableDataRepository<DummyEntity, int>, IDummyRepository
     {
         /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
-        ///
         /// <param name="unitOfWork">   The unit of work. </param>
         /// <param name="logger">       The logger. </param>
-        public NMemoryDummyRepository(NMemoryUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+        public NMemoryDummyRepository(NMemoryUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
+            logger)
         {
         }
     }

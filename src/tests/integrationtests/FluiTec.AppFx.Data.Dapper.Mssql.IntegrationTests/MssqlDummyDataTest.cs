@@ -1,20 +1,19 @@
 ﻿using FluiTec.AppFx.Data.TestLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests
+namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests;
+
+/// <summary>
+///     (Unit Test Class) a mssql entity data test.
+/// </summary>
+[TestClass]
+[TestCategory("Integration")]
+public class MssqlDummyDataTest : DummyDataTest
 {
     /// <summary>
-    /// (Unit Test Class) a mssql entity data test.
+    ///     Default constructor.
     /// </summary>
-    [TestClass]
-    [TestCategory("Integration")]
-    public class MssqlDummyDataTest : DummyDataTest
+    public MssqlDummyDataTest() : base(new DbProvider())
     {
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public MssqlDummyDataTest() : base(new DbProvider())
-        {
-        }
     }
 }

@@ -5,13 +5,12 @@ using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace Cli.Sample.Data.Dapper
+namespace Cli.Sample.Data.Dapper;
+
+public class DapperDummyRepository : DapperWritableKeyTableDataRepository<DummyEntity, int>, IDummyRepository
 {
-    public class DapperDummyRepository : DapperWritableKeyTableDataRepository<DummyEntity, int>, IDummyRepository
+    public DapperDummyRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
+        logger)
     {
-        public DapperDummyRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
-            logger)
-        {
-        }
     }
 }

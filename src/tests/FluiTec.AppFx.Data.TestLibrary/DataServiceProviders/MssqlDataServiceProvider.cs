@@ -8,31 +8,28 @@ using FluiTec.AppFx.Data.UnitsOfWork;
 namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
 {
     /// <summary>
-    /// A mssql data service provider.
+    ///     A mssql data service provider.
     /// </summary>
-    ///
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
-    public abstract class MssqlDataServiceProvider<TDataService, TUnitOfWork> 
+    public abstract class MssqlDataServiceProvider<TDataService, TUnitOfWork>
         : EnvironmentConfiguredDapperDataServiceProvider<TDataService, TUnitOfWork>
         where TDataService : IDataService<TUnitOfWork>
         where TUnitOfWork : IUnitOfWork
     {
         /// <summary>
-        /// Gets the name of the variable.
+        ///     Gets the name of the variable.
         /// </summary>
-        ///
         /// <value>
-        /// The name of the variable.
+        ///     The name of the variable.
         /// </value>
         protected override string VariableName => "SA_PASSWORD";
 
         /// <summary>
-        /// Configure options.
+        ///     Configure options.
         /// </summary>
-        ///
         /// <returns>
-        /// The IDapperServiceOptions.
+        ///     The IDapperServiceOptions.
         /// </returns>
         protected override IDapperServiceOptions ConfigureOptions()
         {
@@ -41,14 +38,14 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
             {
                 ConnectionString =
                     $"Data Source=mssql;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={Environment.GetEnvironmentVariable(VariableName)};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
-            }; }
+            };
+        }
 
         /// <summary>
-        /// Configure admin options.
+        ///     Configure admin options.
         /// </summary>
-        ///
         /// <returns>
-        /// The DbAdminOptions.
+        ///     The DbAdminOptions.
         /// </returns>
         protected override DbAdminOptions ConfigureAdminOptions()
         {
