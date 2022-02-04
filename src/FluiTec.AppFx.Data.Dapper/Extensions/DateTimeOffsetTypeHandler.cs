@@ -21,13 +21,13 @@ public class DateTimeOffsetTypeHandler : SqlMapper.TypeHandler<DateTimeOffset>
         {
             case DbType.DateTime:
             case DbType.DateTime2:
+            case DbType.String:
             case DbType.AnsiString:
                 parameter.Value = value.UtcDateTime;
                 break;
             case DbType.Object:
                 parameter.Value = value.UtcDateTime.ToString("yyyy-MM-dd HH:mm:ss");
                 break;
-            case DbType.String:
             case DbType.DateTimeOffset:
                 parameter.Value = value;
                 break;

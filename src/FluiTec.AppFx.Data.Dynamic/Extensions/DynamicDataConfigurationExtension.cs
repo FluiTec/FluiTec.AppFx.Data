@@ -36,18 +36,25 @@ public static class DynamicDataConfigurationExtension
         return services;
     }
 
-    /// <summary>   Configure dynamic data provider. </summary>
-    /// <typeparam name="TDataService"> Type of the data service. </typeparam>
+    /// <summary>
+    /// Configure dynamic data provider.
+    /// </summary>
+    ///
+    /// <typeparam name="TDataService">     Type of the data service. </typeparam>
+    /// <typeparam name="TDynamicOptions">  Type of the dynamic options. </typeparam>
     /// <param name="services">             The services. </param>
     /// <param name="configurationManager"> Manager for configuration. </param>
     /// <param name="dataServiceProvider">  The data service provider. </param>
-    /// <returns>   An IServiceCollection. </returns>
+    ///
+    /// <returns>
+    /// An IServiceCollection.
+    /// </returns>
     private static IServiceCollection ConfigureDynamicDataProvider<TDataService, TDynamicOptions>(this IServiceCollection services,
         ConfigurationManager configurationManager, Func<IServiceProvider, TDataService> dataServiceProvider)
         where TDataService : class, IDataService
         where TDynamicOptions : class, IDynamicDataOptions, new()
     {
-        services.Configure<TDynamicOptions>(configurationManager, false);
+        services.Configure<TDynamicOptions>(configurationManager);
 
         services.AddTransient<IDataService>(dataServiceProvider);
         services.AddSingleton(dataServiceProvider);
@@ -76,8 +83,9 @@ public static class DynamicDataConfigurationExtension
     {
         return ConfigureDynamicDataProvider<TDataService, TDynamicOptions>(services, configurationManager, provider =>
         {
-            IOptionsMonitor<IDynamicDataOptions> try1 = provider.GetService<IOptionsMonitor<TDynamicOptions>>();
-            var dynamicOptions = try1!.CurrentValue?.Provider != DataProvider.Unconfigured ? try1 : provider.GetRequiredService<IOptionsMonitor<DynamicDataOptions>>();
+            IOptionsMonitor<IDynamicDataOptions> preferredOptions = provider.GetService<IOptionsMonitor<TDynamicOptions>>();
+            IOptionsMonitor<IDynamicDataOptions> fallbackOptions = provider.GetRequiredService<IOptionsMonitor<DynamicDataOptions>>();
+            var dynamicOptions = new FallbackDynamicDataOptions(preferredOptions, fallbackOptions);
 
             var service = dataServiceProvider(dynamicOptions, provider);
 
