@@ -9,7 +9,7 @@ namespace FluiTec.AppFx.Data.Repositories;
 /// <typeparam name="TKey">The type of the key.</typeparam>
 /// <seealso cref="FluiTec.AppFx.Data.Repositories.IKeyTableDataRepository{TEntity, TKey}" />
 public interface IWritableKeyTableDataRepository<TEntity, in TKey> : IKeyTableDataRepository<TEntity, TKey>
-    where TEntity : class, IKeyEntity<TKey>, new()
+    where TEntity : class, IEntity, new()
 {
     /// <summary>   Gets or sets a value indicating whether the expect identity key.</summary>
     /// <value> True if expect identity key, false if not.</value>
