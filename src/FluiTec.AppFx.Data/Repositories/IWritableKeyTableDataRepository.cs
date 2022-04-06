@@ -68,3 +68,262 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey> : IKeyTableDa
     /// <returns>   The delete.</returns>
     Task<bool> DeleteAsync(TEntity entity);
 }
+
+/// <summary>
+/// Interface for writable key table data repository.
+/// </summary>
+///
+/// <typeparam name="TEntity">  Type of the entity. </typeparam>
+/// <typeparam name="TKey1">    Type of the key 1. </typeparam>
+/// <typeparam name="TKey2">    Type of the key 2. </typeparam>
+public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2> : IKeyTableDataRepository<TEntity, TKey1, TKey2>
+    where TEntity : class, IEntity, new()
+{
+    /// <summary>
+    /// Gets or sets a value indicating whether the expect identity key.
+    /// </summary>
+    ///
+    /// <value>
+    /// True if expect identity key, false if not.
+    /// </value>
+    bool ExpectIdentityKey { get; set; }
+
+    /// <summary>
+    /// Adds entity.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    TEntity Add(TEntity entity);
+
+    /// <summary>
+    /// Adds an asynchronous.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// The add.
+    /// </returns>
+    Task<TEntity> AddAsync(TEntity entity);
+
+    /// <summary>
+    /// Adds a range.
+    /// </summary>
+    ///
+    /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
+    void AddRange(IEnumerable<TEntity> entities);
+
+    /// <summary>
+    /// Adds a range asynchronous.
+    /// </summary>
+    ///
+    /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
+    ///
+    /// <returns>
+    /// A Task.
+    /// </returns>
+    Task AddRangeAsync(IEnumerable<TEntity> entities);
+
+    /// <summary>
+    /// Updates the given entity.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    TEntity Update(TEntity entity);
+
+    /// <summary>
+    /// Updates the asynchronous described by entity.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// The update.
+    /// </returns>
+    Task<TEntity> UpdateAsync(TEntity entity);
+
+    /// <summary>
+    /// Deletes this object.
+    /// </summary>
+    ///
+    /// <param name="key1"> The first key. </param>
+    /// <param name="key2"> The second key. </param>
+    ///
+    /// <returns>
+    /// True if it succeeds, false if it fails.
+    /// </returns>
+    bool Delete(TKey1 key1, TKey2 key2);
+
+    /// <summary>
+    /// Deletes the asynchronous.
+    /// </summary>
+    ///
+    /// <param name="key1"> The first key. </param>
+    /// <param name="key2"> The second key. </param>
+    ///
+    /// <returns>
+    /// The delete.
+    /// </returns>
+    Task<bool> DeleteAsync(TKey1 key1, TKey2 key2);
+
+    /// <summary>
+    /// Deletes this object.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// True if it succeeds, false if it fails.
+    /// </returns>
+    bool Delete(TEntity entity);
+
+    /// <summary>
+    /// Deletes the asynchronous.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// The delete.
+    /// </returns>
+    Task<bool> DeleteAsync(TEntity entity);
+}
+
+/// <summary>
+/// Interface for writable key table data repository.
+/// </summary>
+///
+/// <typeparam name="TEntity">  Type of the entity. </typeparam>
+/// <typeparam name="TKey1">    Type of the key 1. </typeparam>
+/// <typeparam name="TKey2">    Type of the key 2. </typeparam>
+/// <typeparam name="TKey3">    Type of the key 3. </typeparam>
+public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2, in TKey3> : IKeyTableDataRepository<TEntity, TKey1, TKey2, TKey3>
+    where TEntity : class, IEntity, new()
+{
+    /// <summary>
+    /// Gets or sets a value indicating whether the expect identity key.
+    /// </summary>
+    ///
+    /// <value>
+    /// True if expect identity key, false if not.
+    /// </value>
+    bool ExpectIdentityKey { get; set; }
+
+    /// <summary>
+    /// Adds entity.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    TEntity Add(TEntity entity);
+
+    /// <summary>
+    /// Adds an asynchronous.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// The add.
+    /// </returns>
+    Task<TEntity> AddAsync(TEntity entity);
+
+    /// <summary>
+    /// Adds a range.
+    /// </summary>
+    ///
+    /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
+    void AddRange(IEnumerable<TEntity> entities);
+
+    /// <summary>
+    /// Adds a range asynchronous.
+    /// </summary>
+    ///
+    /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
+    ///
+    /// <returns>
+    /// A Task.
+    /// </returns>
+    Task AddRangeAsync(IEnumerable<TEntity> entities);
+
+    /// <summary>
+    /// Updates the given entity.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    TEntity Update(TEntity entity);
+
+    /// <summary>
+    /// Updates the asynchronous described by entity.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// The update.
+    /// </returns>
+    Task<TEntity> UpdateAsync(TEntity entity);
+
+    /// <summary>
+    /// Deletes this object.
+    /// </summary>
+    ///
+    /// <param name="key1"> The first key. </param>
+    /// <param name="key2"> The second key. </param>
+    /// <param name="key3"> The third key. </param>
+    ///
+    /// <returns>
+    /// True if it succeeds, false if it fails.
+    /// </returns>
+    bool Delete(TKey1 key1, TKey2 key2, TKey3 key3);
+
+    /// <summary>
+    /// Deletes the asynchronous.
+    /// </summary>
+    ///
+    /// <param name="key1"> The first key. </param>
+    /// <param name="key2"> The second key. </param>
+    /// <param name="key3"> The third key. </param>
+    ///
+    /// <returns>
+    /// The delete.
+    /// </returns>
+    Task<bool> DeleteAsync(TKey1 key1, TKey2 key2, TKey3 key3);
+
+    /// <summary>
+    /// Deletes this object.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// True if it succeeds, false if it fails.
+    /// </returns>
+    bool Delete(TEntity entity);
+
+    /// <summary>
+    /// Deletes the asynchronous.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity to add. </param>
+    ///
+    /// <returns>
+    /// The delete.
+    /// </returns>
+    Task<bool> DeleteAsync(TEntity entity);
+}

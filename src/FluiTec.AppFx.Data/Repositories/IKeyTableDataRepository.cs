@@ -20,3 +20,70 @@ public interface IKeyTableDataRepository<TEntity, in TKey> : ITableDataRepositor
     /// <returns>	A TEntity. </returns>
     Task<TEntity> GetAsync(TKey id);
 }
+
+/// <summary>
+/// Interface for key table data repository.
+/// </summary>
+///
+/// <typeparam name="TEntity">  Type of the entity. </typeparam>
+/// <typeparam name="TKey1">    Type of the key 1. </typeparam>
+/// <typeparam name="TKey2">    Type of the key 2. </typeparam>
+public interface IKeyTableDataRepository<TEntity, in TKey1, in TKey2> : ITableDataRepository<TEntity>
+    where TEntity : class, IEntity, new()
+{
+    /// <summary>	Gets an entity using the given identifiers. </summary>
+    /// <param name="key1"> The first key. </param>
+    /// <param name="key2"> The second key. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    TEntity Get(TKey1 key1, TKey2 key2);
+
+    /// <summary>	Gets an entity using the given identifiers. </summary>
+    /// <param name="key1"> The first key. </param>
+    /// <param name="key2"> The second key. </param>
+    ///
+    /// <returns>
+    /// The asynchronous entity.
+    /// </returns>
+    Task<TEntity> GetAsync(TKey1 key1, TKey2 key2);
+}
+
+/// <summary>
+/// Interface for key table data repository.
+/// </summary>
+///
+/// <typeparam name="TEntity">  Type of the entity. </typeparam>
+/// <typeparam name="TKey1">    Type of the key 1. </typeparam>
+/// <typeparam name="TKey2">    Type of the key 2. </typeparam>
+/// <typeparam name="TKey3">    Type of the key 3. </typeparam>
+public interface IKeyTableDataRepository<TEntity, in TKey1, in TKey2, in TKey3> : ITableDataRepository<TEntity>
+    where TEntity : class, IEntity, new()
+{
+    /// <summary>
+    /// Gets an entity using the given identifiers.
+    /// </summary>
+    ///
+    /// <param name="key1"> The first key. </param>
+    /// <param name="key2"> The second key. </param>
+    /// <param name="key3"> The third key. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    TEntity Get(TKey1 key1, TKey2 key2, TKey3 key3);
+
+    /// <summary>
+    /// Gets an entity using the given identifiers.
+    /// </summary>
+    ///
+    /// <param name="key1"> The first key. </param>
+    /// <param name="key2"> The second key. </param>
+    /// <param name="key3"> The third key. </param>
+    ///
+    /// <returns>
+    /// The asynchronous.
+    /// </returns>
+    Task<TEntity> GetAsync(TKey1 key1, TKey2 key2, TKey3 key3);
+}
