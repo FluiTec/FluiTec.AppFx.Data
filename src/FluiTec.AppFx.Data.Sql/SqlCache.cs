@@ -50,7 +50,14 @@ public static class SqlCache
             return propertyInfos;
 
         var allProperties = TypePropertiesChache(type);
-        var keyProperties = allProperties.Where(p => p.Name.ToLower() == "id").ToList();
+
+        var markedKeyProperties = allProperties
+            .Where(p => p.GetCustomAttribute<SqlKeyAttribute>() != null)
+            .ToList();
+        IList<PropertyInfo> keyProperties = markedKeyProperties.Any() 
+            ? markedKeyProperties
+            : allProperties.Where(p => p.Name == "Id").ToList();
+        
         TypeKeyProperties[type.TypeHandle] = keyProperties;
         return keyProperties;
     }

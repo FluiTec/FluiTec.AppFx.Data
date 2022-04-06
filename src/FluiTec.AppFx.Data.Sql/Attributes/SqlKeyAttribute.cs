@@ -3,8 +3,8 @@
 namespace FluiTec.AppFx.Data.Sql.Attributes;
 
 /// <summary>
-/// Attribute for SQL ignore.
+/// Attribute for SQL key.
 /// </summary>
-public class SqlIgnoreAttribute : Attribute
+public class SqlKeyAttribute : Attribute
 {
 }
