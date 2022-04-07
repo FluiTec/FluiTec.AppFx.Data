@@ -1,6 +1,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using FluiTec.AppFx.Data.EntityNameServices;
+using FluiTec.AppFx.Data.Sql.Tests.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Sql.Tests

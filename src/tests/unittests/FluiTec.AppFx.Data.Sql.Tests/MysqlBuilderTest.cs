@@ -1,5 +1,6 @@
 using System.Data;
 using FluiTec.AppFx.Data.EntityNameServices;
+using FluiTec.AppFx.Data.Sql.Tests.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MySql.Data.MySqlClient;
 

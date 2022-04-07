@@ -357,7 +357,7 @@ public class SqlBuilder
         if (_keyParameters.TryGetValue(type.TypeHandle, out var param)) return param;
 
         // generate param
-        param = Adapter.GetKeyParameter(type);
+        param = Adapter.GetKeyParameters(type);
 
         // add param to cache
         _keyParameters.TryAdd(type.TypeHandle, param);

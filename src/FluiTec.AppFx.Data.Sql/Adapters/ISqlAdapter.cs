@@ -24,7 +24,7 @@ public interface ISqlAdapter
     /// <summary>	Gets key parameter. </summary>
     /// <param name="type">	The type. </param>
     /// <returns>	The key parameter. </returns>
-    string GetKeyParameter(Type type);
+    string GetKeyParameters(Type type);
 
     /// <summary>   Gets insert statement.</summary>
     /// <param name="type"> The type. </param>

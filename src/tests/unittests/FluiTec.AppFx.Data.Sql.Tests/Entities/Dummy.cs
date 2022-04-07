@@ -1,4 +1,4 @@
-namespace FluiTec.AppFx.Data.Sql.Tests
+namespace FluiTec.AppFx.Data.Sql.Tests.Entities
 {
     /// <summary>	A dummy. </summary>
     public class Dummy

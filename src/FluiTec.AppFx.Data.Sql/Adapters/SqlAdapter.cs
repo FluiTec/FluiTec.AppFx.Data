@@ -29,10 +29,10 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <summary>	Gets key parameter. </summary>
     /// <param name="type">	The type. </param>
     /// <returns>	The key parameter. </returns>
-    public virtual string GetKeyParameter(Type type)
+    public virtual string GetKeyParameters(Type type)
     {
-        var key = SqlCache.TypeKeyPropertiesCache(type).Single();
-        return RenderParameterProperty(key);
+        var keys = SqlCache.TypeKeyPropertiesCache(type);
+        return RenderPropertyList(keys.ToArray()).ToString();
     }
 
     #endregion
@@ -51,9 +51,9 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <returns>	The by identifier statement. </returns>
     public virtual string GetByKeyStatement(Type type)
     {
-        var key = SqlCache.TypeKeyPropertiesCache(type).Single();
-        return
-            $"SELECT {RenderPropertyList(SqlCache.TypePropertiesChache(type).ToArray())} FROM {RenderTableName(type)} WHERE {RenderPropertyName(key)} = {RenderParameterProperty(key)}";
+        var keys = SqlCache.TypeKeyPropertiesCache(type).Select(k => k.Name).ToArray();
+        var fields = SqlCache.TypePropertiesChache(type).Select(k => k.Name).ToArray();
+        return GetByFilterStatement(type, keys, fields);
     }
 
     /// <summary>	Gets by filter statement. </summary>
@@ -176,12 +176,21 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <returns>	The update statement. </returns>
     public virtual string GetUpdateStatement(Type type)
     {
-        var key = SqlCache.TypeKeyPropertiesCache(type).Single();
+        var keys = SqlCache.TypeKeyPropertiesCache(type).ToArray();
+        var sb = new StringBuilder();
+        for (var i = 0; i < keys.Length; i++)
+        {
+            if (i > 0)
+                sb.Append(" AND ");
+            sb.Append($"{RenderPropertyName(keys[i])} = {RenderParameterProperty(keys[i])}");
+        }
+        var filterSql = sb.ToString();
+
         var setClauses = RenderSetStatements(type).ToString();
         return
             $"UPDATE {RenderTableName(type)} " +
             $"SET {setClauses} " +
-            $"WHERE {RenderPropertyName(key)} = {RenderParameterProperty(key)}";
+            $"WHERE {filterSql}";
     }
 
     /// <summary>   Gets update statement. </summary>
@@ -191,13 +200,21 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <returns>   The update statement. </returns>
     public virtual string GetUpdateStatement(Type type, DateTimeOffset timestamp, string timestampFieldname)
     {
-        var key = SqlCache.TypeKeyPropertiesCache(type).Single();
-        var unused = SqlCache.TypePropertiesChache(type).Single(p => p.Name == "TimeStamp");
+        var keys = SqlCache.TypeKeyPropertiesCache(type).ToArray();
+        var sb = new StringBuilder();
+        for (var i = 0; i < keys.Length; i++)
+        {
+            if (i > 0)
+                sb.Append(" AND ");
+            sb.Append($"{RenderPropertyName(keys[i])} = {RenderParameterProperty(keys[i])}");
+        }
+        var filterSql = sb.ToString();
+
         var setClauses = RenderSetStatements(type).ToString();
         return
             $"UPDATE {RenderTableName(type)} " +
             $"SET {setClauses} " +
-            $"WHERE {RenderPropertyName(key)} = {RenderParameterProperty(key)} AND {RenderPropertyName(timestampFieldname)} = {RenderParameterProperty("OriginalTimeStamp")}";
+            $"WHERE {filterSql} AND {RenderPropertyName(timestampFieldname)} = {RenderParameterProperty("OriginalTimeStamp")}";
     }
 
     /// <summary>	Gets delete statememt. </summary>
@@ -205,9 +222,17 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <returns>	The delete statememt. </returns>
     public virtual string GetDeleteStatememt(Type type)
     {
-        var key = SqlCache.TypeKeyPropertiesCache(type).Single();
+        var keys = SqlCache.TypeKeyPropertiesCache(type).ToArray();
+        var sb = new StringBuilder();
+        for (var i = 0; i < keys.Length; i++)
+        {
+            if (i > 0)
+                sb.Append(" AND ");
+            sb.Append($"{RenderPropertyName(keys[i])} = {RenderParameterProperty(keys[i])}");
+        }
+        var filterSql = sb.ToString();
         return
-            $"DELETE FROM {RenderTableName(type)} WHERE {RenderPropertyName(key)} = {RenderParameterProperty(key)}";
+            $"DELETE FROM {RenderTableName(type)} WHERE {filterSql}";
     }
 
     /// <summary>   Gets delete by statement.</summary>
@@ -382,6 +407,28 @@ public abstract class SqlAdapter : ISqlAdapter
         return sb;
     }
 
+    /// <summary>
+    /// Renders the parameter list described by type.
+    /// </summary>
+    ///
+    /// <param name="props">    The properties. </param>
+    ///
+    /// <returns>
+    /// A StringBuilder.
+    /// </returns>
+    public virtual StringBuilder RenderParameterList(PropertyInfo[] props)
+    {
+        var sb = new StringBuilder();
+        for (var i = 0; i < props.Length; i++)
+        {
+            if (i > 0)
+                sb.Append(", ");
+            sb.Append(RenderParameterProperty(props[i]));
+        }
+
+        return sb;
+    }
+
     /// <summary>	Renders the set statements described by type. </summary>
     /// <param name="type">	The type. </param>
     /// <returns>	A StringBuilder. </returns>
@@ -408,7 +455,10 @@ public abstract class SqlAdapter : ISqlAdapter
     /// </returns>
     public virtual IEnumerable<PropertyInfo> GetPropertiesWithoutKey(Type type)
     {
-        return SqlCache.TypePropertiesChache(type).Except(new[] {SqlCache.TypeKeyPropertiesCache(type).Single()});
+        var props = SqlCache.TypePropertiesChache(type);
+        var keyProps = SqlCache.TypeKeyPropertiesCache(type);
+
+        return keyProps.Count > 1 ? props : props.Except(keyProps);
     }
 
     #endregion

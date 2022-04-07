@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using FluiTec.AppFx.Data.Sql.Attributes;
+using FluiTec.AppFx.Data.Sql.Tests.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Sql.Tests
@@ -10,9 +10,9 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         [TestMethod]
         public void CanGetDefaultKey()
         {
-            var keys = SqlCache.TypeKeyPropertiesCache(typeof(DefaultDummy));
+            var keys = SqlCache.TypeKeyPropertiesCache(typeof(Dummy));
             Assert.AreEqual(1,keys.Count);
-            Assert.AreEqual(nameof(DefaultDummy.Id),keys.Single().Name);
+            Assert.AreEqual(nameof(Dummy.Id),keys.Single().Name);
         }
 
         [TestMethod]
@@ -31,25 +31,5 @@ namespace FluiTec.AppFx.Data.Sql.Tests
             Assert.IsTrue(keys.Any(k => k.Name == nameof(MultiKeyDummy.Id)));
             Assert.IsTrue(keys.Any(k => k.Name == nameof(MultiKeyDummy.MyKey)));
         }
-    }
-
-    public class DefaultDummy
-    {
-        public int Id { get; set; }
-    }
-
-    public class RenamedDummy
-    {
-        [SqlKey]
-        public int UId { get; set; }
-    }
-
-    public class MultiKeyDummy
-    {
-        [SqlKey]
-        public int Id { get; set; }
-
-        [SqlKey]
-        public int MyKey { get; set; }
     }
 }
