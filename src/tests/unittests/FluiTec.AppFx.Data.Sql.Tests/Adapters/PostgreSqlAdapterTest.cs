@@ -29,9 +29,9 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         /// </returns>
         protected override string GetExpectedKeyParameters(Type entityType)
         {
-            if (entityType == typeof(Dummy)) return "\"Id\"";
-            if (entityType == typeof(RenamedDummy)) return "\"UId\"";
-            if (entityType == typeof(MultiKeyDummy)) return "\"Id\", \"MyKey\"";
+            if (entityType == typeof(Dummy)) return "@Id";
+            if (entityType == typeof(RenamedDummy)) return "@UId";
+            if (entityType == typeof(MultiKeyDummy)) return "@Id, @MyKey";
             throw new NotImplementedException();
         }
 

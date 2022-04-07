@@ -31,8 +31,17 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <returns>	The key parameter. </returns>
     public virtual string GetKeyParameters(Type type)
     {
-        var keys = SqlCache.TypeKeyPropertiesCache(type);
-        return RenderPropertyList(keys.ToArray()).ToString();
+        var keys = SqlCache.TypeKeyPropertiesCache(type).ToArray();
+
+        var sb = new StringBuilder();
+        for (var i = 0; i < keys.Length; i++)
+        {
+            if (i > 0)
+                sb.Append(", ");
+            sb.Append(RenderParameterProperty(keys[i]));
+        }
+
+        return sb.ToString();
     }
 
     #endregion
