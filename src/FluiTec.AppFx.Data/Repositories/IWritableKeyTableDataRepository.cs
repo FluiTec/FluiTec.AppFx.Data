@@ -16,17 +16,6 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey> : IKeyTableDa
     // ReSharper disable once UnusedMemberInSuper.Global
     bool ExpectIdentityKey { get; set; }
 
-    /// <summary>	Updates the given entity. </summary>
-    /// <param name="entity">	The entity to add. </param>
-    /// <returns>	A TEntity. </returns>
-    // ReSharper disable once UnusedMember.Global
-    TEntity Update(TEntity entity);
-
-    /// <summary>   Updates the asynchronous described by entity.</summary>
-    /// <param name="entity">   The entity to add. </param>
-    /// <returns>   The update.</returns>
-    Task<TEntity> UpdateAsync(TEntity entity);
-
     /// <summary>   Deletes the given ID.</summary>
     /// <param name="id">   The Identifier to delete. </param>
     /// <returns>   True if it succeeds, false if it fails.</returns>

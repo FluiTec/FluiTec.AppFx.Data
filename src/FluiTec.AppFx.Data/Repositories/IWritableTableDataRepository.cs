@@ -12,16 +12,6 @@ namespace FluiTec.AppFx.Data.Repositories;
 public interface IWritableTableDataRepository<TEntity> : ITableDataRepository<TEntity>
     where TEntity : class, IEntity, new()
 {
-    /// <summary>   Deletes the given ID.</summary>
-    /// <param name="entity">   The entity to add. </param>
-    /// <returns>   True if it succeeds, false if it fails.</returns>
-    bool Delete(TEntity entity);
-
-    /// <summary>   Deletes the asynchronous described by ID.</summary>
-    /// <param name="entity">   The entity to add. </param>
-    /// <returns>   The delete.</returns>
-    Task<bool> DeleteAsync(TEntity entity);
-
     /// <summary>	Adds entity. </summary>
     /// <param name="entity">	The entity to add. </param>
     /// <returns>	A TEntity. </returns>
@@ -42,4 +32,25 @@ public interface IWritableTableDataRepository<TEntity> : ITableDataRepository<TE
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
     /// <returns>   An asynchronous result.</returns>
     Task AddRangeAsync(IEnumerable<TEntity> entities);
+
+    /// <summary>	Updates the given entity. </summary>
+    /// <param name="entity">	The entity to add. </param>
+    /// <returns>	A TEntity. </returns>
+    // ReSharper disable once UnusedMember.Global
+    TEntity Update(TEntity entity);
+
+    /// <summary>   Updates the asynchronous described by entity.</summary>
+    /// <param name="entity">   The entity to add. </param>
+    /// <returns>   The update.</returns>
+    Task<TEntity> UpdateAsync(TEntity entity);
+
+    /// <summary>   Deletes the given ID.</summary>
+    /// <param name="entity">   The entity to add. </param>
+    /// <returns>   True if it succeeds, false if it fails.</returns>
+    bool Delete(TEntity entity);
+
+    /// <summary>   Deletes the asynchronous described by ID.</summary>
+    /// <param name="entity">   The entity to add. </param>
+    /// <returns>   The delete.</returns>
+    Task<bool> DeleteAsync(TEntity entity);
 }
