@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageProjectUrl>https://www.nuget.org/packages/FluiTec.AppFx.Data.Ef/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/FluiTec/FluiTec.AppFx.Data.Ef</RepositoryUrl>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PostBuildEvent></PostBuildEvent>
+		<PreBuildEvent></PreBuildEvent>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\LICENSE.md">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\..\THIRD_PARTY_LICENSES.md">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>

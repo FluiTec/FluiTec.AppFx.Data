@@ -58,32 +58,25 @@ public abstract class DapperDataService<TUnitOfWork> : BaseDapperDataService<TUn
     /// <returns>   An Action&lt;IMigrationRunnerBuilder&gt; </returns>
     protected virtual Action<IMigrationRunnerBuilder> ConfigureSqlType()
     {
-        switch (SqlType)
+        return SqlType switch
         {
-            case SqlType.Mssql:
-                return rb => rb.AddSqlServer2016();
-            case SqlType.Mysql:
-                return rb => rb.AddMySql5();
-            case SqlType.Pgsql:
-                return rb => rb.AddPostgres();
-            case SqlType.Sqlite:
-                return rb => rb.AddSQLite();
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+            SqlType.Mssql => rb => rb.AddSqlServer2016(),
+            SqlType.Mysql => rb => rb.AddMySql5(),
+            SqlType.Pgsql => rb => rb.AddPostgres(),
+            SqlType.Sqlite => rb => rb.AddSQLite(),
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 
     /// <summary>   Determines if we can supports schema.</summary>
     /// <returns>   True if it succeeds, false if it fails.</returns>
     protected virtual bool SupportsSchema()
     {
-        switch (SqlType)
+        return SqlType switch
         {
-            case SqlType.Mysql:
-                return false;
-            default:
-                return true;
-        }
+            SqlType.Mysql => false,
+            _ => true
+        };
     }
 
     /// <summary>   Gets the migration assemblies in this collection. </summary>
