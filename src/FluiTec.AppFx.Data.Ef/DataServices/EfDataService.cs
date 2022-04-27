@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.VersionTableInfo;
-using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
+using FluiTec.AppFx.Data.Ef.UnitsOfWork;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace FluiTec.AppFx.Data.Dapper.DataServices;
+namespace FluiTec.AppFx.Data.Ef.DataServices;
 
-/// <summary>   A service for accessing dapper data information. </summary>
-public abstract class DapperDataService<TUnitOfWork> : BaseDapperDataService<TUnitOfWork>
-    where TUnitOfWork : DapperUnitOfWork, IUnitOfWork
+/// <summary>
+/// A service for accessing ef data information.
+/// </summary>
+///
+/// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
+public abstract class EfDataService<TUnitOfWork> : BaseEfDataService<TUnitOfWork>
+    where TUnitOfWork : EfUnitOfWork, IUnitOfWork
 {
     #region Fields
 
@@ -23,20 +27,23 @@ public abstract class DapperDataService<TUnitOfWork> : BaseDapperDataService<TUn
 
     #region Constructors
 
-    /// <summary>   Constructor. </summary>
-    /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
-    /// <param name="loggerFactory">        The logger factory. </param>
-    protected DapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory)
-        : base(dapperServiceOptions, loggerFactory)
+    /// <summary>
+    /// Specialized constructor for use only by derived class.
+    /// </summary>
+    ///
+    /// <param name="options">          Options for controlling the operation. </param>
+    /// <param name="loggerFactory">    The logger factory. </param>
+    protected EfDataService(ISqlServiceOptions options, ILoggerFactory loggerFactory) : base(options, loggerFactory)
     {
     }
 
-    /// <summary>   Specialized constructor for use only by derived class. </summary>
-    /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
-    /// <param name="loggerFactory">        The logger factory. </param>
-    protected DapperDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
-        ILoggerFactory loggerFactory)
-        : base(dapperServiceOptions, loggerFactory)
+    /// <summary>
+    /// Specialized constructor for use only by derived class.
+    /// </summary>
+    ///
+    /// <param name="options">          Options for controlling the operation. </param>
+    /// <param name="loggerFactory">    The logger factory. </param>
+    protected EfDataService(IOptionsMonitor<ISqlServiceOptions> options, ILoggerFactory loggerFactory) : base(options, loggerFactory)
     {
     }
 
@@ -46,8 +53,7 @@ public abstract class DapperDataService<TUnitOfWork> : BaseDapperDataService<TUn
 
     /// <summary>   Gets information describing the meta. </summary>
     /// <value> Information describing the meta. </value>
-    public override IVersionTableMetaData MetaData =>
-        _metaData ??= new VersionTable(Schema, SupportsSchema());
+    public override IVersionTableMetaData MetaData => _metaData ??= new VersionTable(Schema, SupportsSchema());
 
     /// <summary>   Gets a value indicating whether the supports migration. </summary>
     /// <value> True if supports migration, false if not. </value>
@@ -92,7 +98,7 @@ public abstract class DapperDataService<TUnitOfWork> : BaseDapperDataService<TUn
     /// </remarks>
     protected virtual IEnumerable<Assembly> GetMigrationAssemblies()
     {
-        return new[] {GetType().BaseType?.Assembly, GetType().Assembly};
+        return new[] { GetType().BaseType?.Assembly, GetType().Assembly };
     }
 
     /// <summary>   Gets the migrator. </summary>

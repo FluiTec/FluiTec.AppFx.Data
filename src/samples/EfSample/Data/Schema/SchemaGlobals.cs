@@ -4,7 +4,7 @@
 public static class SchemaGlobals
 {
     /// <summary>   The schema. </summary>
-    public const string Schema = "Test";
+    public const string Schema = "TestEf";
 
     /// <summary>   The dummy table. </summary>
     public const string DummyTable = "Dummy";

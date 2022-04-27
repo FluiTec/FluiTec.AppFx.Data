@@ -1,4 +1,4 @@
-﻿using FluiTec.AppFx.Data.Dapper.Migration;
+﻿using FluiTec.AppFx.Data.Migration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Dapper.Tests.Migration

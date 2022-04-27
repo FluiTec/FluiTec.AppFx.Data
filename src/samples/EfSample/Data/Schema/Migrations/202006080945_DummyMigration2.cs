@@ -1,12 +1,12 @@
 ﻿using EfSample.Data.Schema;
 using FluentMigrator;
 using FluiTec.AppFx.Data.Dapper.Extensions;
-using FluiTec.AppFx.Data.Dapper.Migration;
+using FluiTec.AppFx.Data.Migration;
 
 namespace DynamicSample.Data.Schema.Migrations
 {
     /// <summary>   A dummy2 migration. </summary>
-    [DapperMigration(2020, 06, 08, 9, 45, "Achim Schnell")]
+    [ExtendedMigration(2020, 06, 08, 9, 45, "Achim Schnell")]
     public class DummyMigration2 : Migration
     {
         /// <summary>   Collect the UP migration expressions. </summary>

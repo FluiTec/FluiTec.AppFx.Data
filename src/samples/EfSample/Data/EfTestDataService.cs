@@ -1,4 +1,5 @@
 ﻿using EfSample.Data.Context;
+using EfSample.Data.Schema;
 using FluiTec.AppFx.Data;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Ef;
@@ -14,7 +15,7 @@ namespace EfSample.Data;
 /// <summary>
 /// A service for accessing ef test data information.
 /// </summary>
-public class EfTestDataService : BaseEfDataService<EfTestUnitOfWork>, ITestDataService
+public class EfTestDataService : EfDataService<EfTestUnitOfWork>, ITestDataService
 {
     /// <summary>
     /// Constructor.
@@ -46,25 +47,13 @@ public class EfTestDataService : BaseEfDataService<EfTestUnitOfWork>, ITestDataS
     public override string Name => nameof(EfTestDataService);
 
     /// <summary>
-    /// Gets a value indicating whether the supports migration.
+    /// Gets the schema.
     /// </summary>
     ///
     /// <value>
-    /// True if supports migration, false if not.
+    /// The schema.
     /// </value>
-    public override bool SupportsMigration => false;
-
-    /// <summary>
-    /// Gets the migrator.
-    /// </summary>
-    ///
-    /// <returns>
-    /// The migrator.
-    /// </returns>
-    public override IDataMigrator GetMigrator()
-    {
-        throw new NotImplementedException();
-    }
+    public override string Schema => SchemaGlobals.Schema;
 
     /// <summary>
     /// Begins unit of work.
@@ -100,7 +89,7 @@ public class EfTestDataService : BaseEfDataService<EfTestUnitOfWork>, ITestDataS
                 $"Incompatible implementation of UnitOfWork. Must be of type {nameof(EfUnitOfWork)}!");
         return new EfTestUnitOfWork(work, this, LoggerFactory?.CreateLogger<IUnitOfWork>());
     }
-
+    
     /// <summary>
     /// Gets the context.
     /// </summary>

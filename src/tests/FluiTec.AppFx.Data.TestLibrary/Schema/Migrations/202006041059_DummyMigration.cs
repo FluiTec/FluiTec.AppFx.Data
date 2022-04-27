@@ -1,10 +1,10 @@
 ﻿using FluiTec.AppFx.Data.Dapper.Extensions;
-using FluiTec.AppFx.Data.Dapper.Migration;
+using FluiTec.AppFx.Data.Migration;
 
 namespace FluiTec.AppFx.Data.TestLibrary.Schema.Migrations
 {
     /// <summary>   A dummy migration. </summary>
-    [DapperMigration(2020, 10, 28, 15, 12, "Achim Schnell")]
+    [ExtendedMigration(2020, 10, 28, 15, 12, "Achim Schnell")]
     public class DummyMigration : FluentMigrator.Migration
     {
         /// <summary>   Collect the UP migration expressions. </summary>
