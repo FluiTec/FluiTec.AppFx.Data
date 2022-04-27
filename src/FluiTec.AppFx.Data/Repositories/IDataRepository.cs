@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 
@@ -16,17 +17,29 @@ public interface IDataRepository<TEntity> : IRepository
     // ReSharper disable once UnusedMemberInSuper.Global
     IEnumerable<TEntity> GetAll();
 
-    /// <summary>   Gets all asynchronous.</summary>
+    /// <summary>
+    /// Gets all asynchronous.
+    /// </summary>
+    ///
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
     /// <returns>
-    ///     An enumerator that allows foreach to be used to process all items in this collection.
+    /// An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
-    Task<IEnumerable<TEntity>> GetAllAsync();
+    Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default);
 
     /// <summary>   Counts the number of records. </summary>
     /// <returns>   An int defining the total number of records. </returns>
     int Count();
 
-    /// <summary>   Count asynchronous.</summary>
-    /// <returns>   The count.</returns>
-    Task<int> CountAsync();
+    /// <summary>
+    /// Count asynchronous.
+    /// </summary>
+    ///
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The count.
+    /// </returns>
+    Task<int> CountAsync(CancellationToken ctx = default);
 }

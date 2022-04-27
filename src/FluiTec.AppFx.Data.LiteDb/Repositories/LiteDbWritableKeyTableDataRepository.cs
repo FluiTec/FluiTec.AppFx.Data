@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
@@ -58,10 +59,17 @@ public abstract class LiteDbWritableKeyTableDataRepository<TEntity, TKey> :
         return entity;
     }
 
-    /// <summary>   Adds entity.</summary>
+    /// <summary>
+    /// Adds entity.
+    /// </summary>
+    ///
     /// <param name="entity">   The entity to add. </param>
-    /// <returns>   A TEntity.</returns>
-    public virtual Task<TEntity> AddAsync(TEntity entity)
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    public virtual Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default)
     {
         if (entity is ITimeStampedKeyEntity stampedEntity)
             stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
@@ -84,10 +92,17 @@ public abstract class LiteDbWritableKeyTableDataRepository<TEntity, TKey> :
             Collection.Insert(entity);
     }
 
-    /// <summary>   Adds a range asynchronous.</summary>
+    /// <summary>
+    /// Adds a range asynchronous.
+    /// </summary>
+    ///
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
-    /// <returns>   An asynchronous result.</returns>
-    public virtual Task AddRangeAsync(IEnumerable<TEntity> entities)
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
+    public virtual Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default)
     {
         AddRange(entities);
         return Task.CompletedTask;
@@ -116,10 +131,17 @@ public abstract class LiteDbWritableKeyTableDataRepository<TEntity, TKey> :
         return success ? entity : throw new UpdateException(entity);
     }
 
-    /// <summary>   Updates the asynchronous described by entity.</summary>
+    /// <summary>
+    /// Updates the asynchronous described by entity.
+    /// </summary>
+    ///
     /// <param name="entity">   The entity to add. </param>
-    /// <returns>   The update.</returns>
-    public Task<TEntity> UpdateAsync(TEntity entity)
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The update.
+    /// </returns>
+    public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default)
     {
         return Task.FromResult(Update(entity));
     }
@@ -131,10 +153,17 @@ public abstract class LiteDbWritableKeyTableDataRepository<TEntity, TKey> :
         return Collection.Delete(GetBsonKey(id));
     }
 
-    /// <summary>   Deletes the asynchronous described by ID.</summary>
+    /// <summary>
+    /// Deletes the asynchronous described by ID.
+    /// </summary>
+    ///
     /// <param name="id">   The Identifier to delete. </param>
-    /// <returns>   The delete.</returns>
-    public virtual Task<bool> DeleteAsync(TKey id)
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The delete.
+    /// </returns>
+    public virtual Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {
         return Task.FromResult(Delete(id));
     }
@@ -146,10 +175,17 @@ public abstract class LiteDbWritableKeyTableDataRepository<TEntity, TKey> :
         return Collection.Delete(GetBsonKey(entity.Id));
     }
 
-    /// <summary>   Deletes the asynchronous described by ID.</summary>
+    /// <summary>
+    /// Deletes the asynchronous described by ID.
+    /// </summary>
+    ///
     /// <param name="entity">   The entity to add. </param>
-    /// <returns>   The delete.</returns>
-    public virtual Task<bool> DeleteAsync(TEntity entity)
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The delete.
+    /// </returns>
+    public virtual Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default)
     {
         return Task.FromResult(Delete(entity));
     }

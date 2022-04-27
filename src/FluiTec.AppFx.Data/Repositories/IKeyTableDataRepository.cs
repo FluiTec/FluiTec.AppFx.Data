@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 
 namespace FluiTec.AppFx.Data.Repositories;
@@ -15,10 +16,17 @@ public interface IKeyTableDataRepository<TEntity, in TKey> : ITableDataRepositor
     /// <returns>	A TEntity. </returns>
     TEntity Get(TKey id);
 
-    /// <summary>   Gets an entity asynchronous.</summary>
+    /// <summary>
+    /// Gets an entity asynchronous.
+    /// </summary>
+    ///
     /// <param name="id">   The Identifier to use. </param>
-    /// <returns>	A TEntity. </returns>
-    Task<TEntity> GetAsync(TKey id);
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default);
 }
 
 /// <summary>
@@ -40,14 +48,18 @@ public interface IKeyTableDataRepository<TEntity, in TKey1, in TKey2> : ITableDa
     /// </returns>
     TEntity Get(TKey1 key1, TKey2 key2);
 
-    /// <summary>	Gets an entity using the given identifiers. </summary>
+    /// <summary>
+    /// Gets an entity using the given identifiers.
+    /// </summary>
+    ///
     /// <param name="key1"> The first key. </param>
     /// <param name="key2"> The second key. </param>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The asynchronous entity.
     /// </returns>
-    Task<TEntity> GetAsync(TKey1 key1, TKey2 key2);
+    Task<TEntity> GetAsync(TKey1 key1, TKey2 key2, CancellationToken ctx = default);
 }
 
 /// <summary>
@@ -81,9 +93,10 @@ public interface IKeyTableDataRepository<TEntity, in TKey1, in TKey2, in TKey3> 
     /// <param name="key1"> The first key. </param>
     /// <param name="key2"> The second key. </param>
     /// <param name="key3"> The third key. </param>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The asynchronous.
     /// </returns>
-    Task<TEntity> GetAsync(TKey1 key1, TKey2 key2, TKey3 key3);
+    Task<TEntity> GetAsync(TKey1 key1, TKey2 key2, TKey3 key3, CancellationToken ctx = default);
 }

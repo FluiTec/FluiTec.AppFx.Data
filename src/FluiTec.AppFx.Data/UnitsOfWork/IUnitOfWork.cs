@@ -35,7 +35,19 @@ public interface IUnitOfWork : IDisposable
     /// <returns>
     ///     The repository.
     /// </returns>
-    IDataRepository<TEntity> GetRepository<TEntity, TKey>() where TEntity : class, IKeyEntity<TKey>, new();
+    IDataRepository<TEntity> GetDataRepository<TEntity>() where TEntity : class, IEntity, new();
+
+    /// <summary>
+    /// Gets writeable repository.
+    /// </summary>
+    ///
+    /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+    ///
+    /// <returns>
+    /// The writeable repository.
+    /// </returns>
+    IWritableTableDataRepository<TEntity> GetWritableRepository<TEntity>()
+        where TEntity : class, IEntity, new();
 
     /// <summary>
     ///     Gets writable repository.
@@ -45,6 +57,6 @@ public interface IUnitOfWork : IDisposable
     /// <returns>
     ///     The writable repository.
     /// </returns>
-    IWritableKeyTableDataRepository<TEntity, TKey> GetWritableRepository<TEntity, TKey>()
+    IWritableKeyTableDataRepository<TEntity, TKey> GetKeyWritableRepository<TEntity, TKey>()
         where TEntity : class, IKeyEntity<TKey>, new();
 }

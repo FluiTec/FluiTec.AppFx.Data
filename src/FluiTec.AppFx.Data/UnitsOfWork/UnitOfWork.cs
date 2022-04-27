@@ -106,11 +106,11 @@ public abstract class UnitOfWork : IUnitOfWork
     ///     Gets the repository.
     /// </summary>
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    /// <typeparam name="TKey">     Type of the key. </typeparam>
     /// <returns>
     ///     The repository.
     /// </returns>
-    public IDataRepository<TEntity> GetRepository<TEntity, TKey>() where TEntity : class, IKeyEntity<TKey>, new()
+    public IDataRepository<TEntity> GetDataRepository<TEntity>() 
+        where TEntity : class, IEntity, new()
     {
         var expectedType = typeof(IDataRepository<TEntity>);
         var repoTypes = RepositoryProviders.Keys;
@@ -130,6 +130,36 @@ public abstract class UnitOfWork : IUnitOfWork
     }
 
     /// <summary>
+    /// Gets writeable repository.
+    /// </summary>
+    ///
+    /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+    ///
+    /// <returns>
+    /// The writeable repository.
+    /// </returns>
+    public IWritableTableDataRepository<TEntity> GetWritableRepository<TEntity>()
+        where TEntity : class, IEntity, new()
+    {
+        var expectedType = typeof(IDataRepository<TEntity>);
+        var repoTypes = RepositoryProviders.Keys;
+
+        foreach (var repoType in repoTypes.Where(repoType => expectedType.IsAssignableFrom(repoType)))
+        {
+            if (Repositories.ContainsKey(repoType)) // already created?
+                return Repositories[repoType] as IWritableTableDataRepository<TEntity>;
+
+            // create, add to list and return
+            var repo = RepositoryProviders[repoType]
+                .Invoke(this, DataService.LoggerFactory?.CreateLogger<IDataRepository<TEntity>>());
+            Repositories.Add(repoType, repo);
+            return repo as IWritableTableDataRepository<TEntity>;
+        }
+
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
     ///     Gets writable repository.
     /// </summary>
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
@@ -137,12 +167,12 @@ public abstract class UnitOfWork : IUnitOfWork
     /// <returns>
     ///     The writable repository.
     /// </returns>
-    public IWritableKeyTableDataRepository<TEntity, TKey> GetWritableRepository<TEntity, TKey>()
+    public IWritableKeyTableDataRepository<TEntity, TKey> GetKeyWritableRepository<TEntity, TKey>()
         where TEntity : class, IKeyEntity<TKey>, new()
     {
-        return GetRepository<TEntity, TKey>() as IWritableKeyTableDataRepository<TEntity, TKey>;
+        return GetDataRepository<TEntity>() as IWritableKeyTableDataRepository<TEntity, TKey>;
     }
-
+    
     #endregion
 
     #region IDisposable

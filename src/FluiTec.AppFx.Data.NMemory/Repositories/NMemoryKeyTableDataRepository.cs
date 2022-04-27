@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
@@ -32,10 +33,17 @@ public class NMemoryKeyTableDataRepository<TEntity, TKey> : NMemoryDataRepositor
         return Table.SingleOrDefault(e => e.Id.Equals(id));
     }
 
-    /// <summary>   Gets an entity asynchronous.</summary>
+    /// <summary>
+    /// Gets an entity asynchronous.
+    /// </summary>
+    ///
     /// <param name="id">   The Identifier to use. </param>
-    /// <returns>	A TEntity. </returns>
-    public Task<TEntity> GetAsync(TKey id)
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    public Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
         return Task.FromResult(Get(id));
     }

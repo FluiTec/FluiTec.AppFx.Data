@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
@@ -90,9 +91,16 @@ public abstract class LiteDbDataRepository<TEntity> : IDataRepository<TEntity>
         return Collection.FindAll();
     }
 
-    /// <summary>   Gets all asynchronous.</summary>
-    /// <returns>An enumerator that allows foreach to be used to process all items in this collection.</returns>
-    public virtual Task<IEnumerable<TEntity>> GetAllAsync()
+    /// <summary>
+    /// Gets all asynchronous.
+    /// </summary>
+    ///
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// An enumerator that allows foreach to be used to process all items in this collection.
+    /// </returns>
+    public virtual Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
     {
         return Task.FromResult(GetAll());
     }
@@ -104,9 +112,16 @@ public abstract class LiteDbDataRepository<TEntity> : IDataRepository<TEntity>
         return Collection.Count();
     }
 
-    /// <summary>   Count asynchronous.</summary>
-    /// <returns>   The count.</returns>
-    public Task<int> CountAsync()
+    /// <summary>
+    /// Count asynchronous.
+    /// </summary>
+    ///
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The count.
+    /// </returns>
+    public Task<int> CountAsync(CancellationToken ctx = default)
     {
         return Task.FromResult(Count());
     }

@@ -3,39 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluiTec.AppFx.Data.Ef.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
-using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using NMemory.Tables;
 
-namespace FluiTec.AppFx.Data.NMemory.Repositories;
+namespace FluiTec.AppFx.Data.Ef.Repositories;
 
 /// <summary>
-///     A memory data repository.
+/// An ef data repository.
 /// </summary>
+///
 /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
+public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>
     where TEntity : class, IEntity, new()
 {
     #region Constructors
 
     /// <summary>
-    ///     Specialized constructor for use only by derived class.
+    /// Specialized constructor for use only by derived class.
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     Thrown when one or more required arguments are
-    ///     null.
-    /// </exception>
+    ///
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    ///
     /// <param name="unitOfWork">   The unit of work. </param>
     /// <param name="logger">       The logger. </param>
-    protected NMemoryDataRepository(NMemoryUnitOfWork unitOfWork, ILogger<IRepository> logger)
+    protected EfDataRepository(EfUnitOfWork unitOfWork, ILogger<IRepository> logger)
     {
         UnitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         Logger = logger; // we accept null here
         EntityType = typeof(TEntity);
-        TableName = GetTableName();
-        Table = UnitOfWork.NMemoryDataService.GetTable<TEntity>();
     }
 
     #endregion
@@ -44,7 +43,7 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
 
     /// <summary>   Gets the unit of work. </summary>
     /// <value> The unit of work. </value>
-    public NMemoryUnitOfWork UnitOfWork { get; }
+    public EfUnitOfWork UnitOfWork { get; }
 
     /// <summary>   Gets the logger. </summary>
     /// <value> The logger. </value>
@@ -54,50 +53,39 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
     /// <value>	The type of the entity. </value>
     public Type EntityType { get; }
 
-    /// <summary>   Gets the name of the table. </summary>
-    /// <value> The name of the table. </value>
-    public virtual string TableName { get; }
-
     /// <summary>
-    ///     Gets the table.
+    /// Gets the name of the table.
     /// </summary>
+    ///
     /// <value>
-    ///     The table.
+    /// The name of the table.
     /// </value>
-    public ITable<TEntity> Table { get; }
-
-    #endregion
-
-    #region Methods
-
-    /// <summary>   Gets table name. </summary>
-    /// <returns>   The table name. </returns>
-    protected string GetTableName()
-    {
-        return GetTableName(EntityType);
-    }
-
-    /// <summary>	Gets table name. </summary>
-    /// <returns>	The table name. </returns>
-    protected string GetTableName(Type t)
-    {
-        return t.Name;
-    }
-
-    #endregion
-
-    #region IDataRepository
+    public string TableName => Set.EntityType.Name;
 
     /// <summary>
-    ///     Gets all entities in this collection.
+    /// Gets the set.
     /// </summary>
+    ///
+    /// <value>
+    /// The set.
+    /// </value>
+    protected DbSet<TEntity> Set => UnitOfWork.Context.Set<TEntity>();
+
+    #endregion
+
+    /// <summary>
+    /// Gets all entities in this collection.
+    /// </summary>
+    ///
     /// <returns>
-    ///     An enumerator that allows foreach to be used to process all items in this collection.
+    /// An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
     public IEnumerable<TEntity> GetAll()
     {
-        return Table.ToList();
+        return Set.ToList();
     }
+
+    #region ITableDataRepository
 
     /// <summary>
     /// Gets all asynchronous.
@@ -108,20 +96,21 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
     /// <returns>
     /// An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
-    public Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
+    public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
     {
-        return Task.FromResult(GetAll());
+        return await Set.ToListAsync(ctx);
     }
 
     /// <summary>
-    ///     Counts the number of records.
+    /// Counts the number of records.
     /// </summary>
+    ///
     /// <returns>
-    ///     An int defining the total number of records.
+    /// An int defining the total number of records.
     /// </returns>
     public int Count()
     {
-        return (int) Table.Count;
+        return Set.Count();
     }
 
     /// <summary>
@@ -135,7 +124,7 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
     /// </returns>
     public Task<int> CountAsync(CancellationToken ctx = default)
     {
-        return Task.FromResult(Count());
+        return Set.CountAsync(ctx);
     }
 
     #endregion

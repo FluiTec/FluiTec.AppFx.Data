@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
@@ -31,12 +32,19 @@ public abstract class DapperKeyTableDataRepository<TEntity, TKey> : DapperDataRe
         return UnitOfWork.Connection.Get<TEntity>(id, UnitOfWork.Transaction);
     }
 
-    /// <summary>   Gets an entity asynchronous.</summary>
+    /// <summary>
+    /// Gets an entity asynchronous.
+    /// </summary>
+    ///
     /// <param name="id">   The Identifier to use. </param>
-    /// <returns>	A TEntity. </returns>
-    public Task<TEntity> GetAsync(TKey id)
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    public Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
-        return UnitOfWork.Connection.GetAsync<TEntity>(id, UnitOfWork.Transaction);
+        return UnitOfWork.Connection.GetAsync<TEntity>(id, UnitOfWork.Transaction, cancellationToken: ctx);
     }
 
     /// <summary>

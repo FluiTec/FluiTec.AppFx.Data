@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
@@ -98,14 +99,20 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
         return entity;
     }
 
-    /// <summary>   Adds entity.</summary>
-    /// <exception cref="InvalidOperationException">
-    ///     Thrown when the requested operation is
-    ///     invalid.
-    /// </exception>
+    /// <summary>
+    /// Adds entity.
+    /// </summary>
+    ///
+    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
+    ///                                                 invalid. </exception>
+    ///
     /// <param name="entity">   The entity to add. </param>
-    /// <returns>   A TEntity.</returns>
-    public virtual async Task<TEntity> AddAsync(TEntity entity)
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default)
     {
         if (entity is ITimeStampedKeyEntity stampedEntity)
             stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
@@ -127,7 +134,7 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
         {
             if (entity.Id.Equals(GetDefault(typeof(TKey))))
                 throw new InvalidOperationException("EntityKey must be set to a non default value.");
-            await UnitOfWork.Connection.InsertAsync(entity, UnitOfWork.Transaction);
+            await UnitOfWork.Connection.InsertAsync(entity, UnitOfWork.Transaction, cancellationToken: ctx);
         }
 
         return entity;
@@ -159,14 +166,20 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
         }
     }
 
-    /// <summary>   Adds a range asynchronous.</summary>
-    /// <exception cref="InvalidOperationException">
-    ///     Thrown when the requested operation is
-    ///     invalid.
-    /// </exception>
+    /// <summary>
+    /// Adds a range asynchronous.
+    /// </summary>
+    ///
+    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
+    ///                                                 invalid. </exception>
+    ///
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
-    /// <returns>   An asynchronous result.</returns>
-    public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities)
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
+    public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default)
     {
         var keyEntities = entities as TEntity[] ?? entities.ToArray();
 
@@ -186,7 +199,7 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
         {
             if (keyEntities.Any(e => e.Id.Equals(GetDefault(typeof(TKey)))))
                 throw new InvalidOperationException("EntityKey must be set to a non default value.");
-            await UnitOfWork.Connection.InsertMultipleAsync(keyEntities, UnitOfWork.Transaction);
+            await UnitOfWork.Connection.InsertMultipleAsync(keyEntities, UnitOfWork.Transaction, cancellationToken:ctx);
         }
     }
 
@@ -210,10 +223,19 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
         throw new UpdateException(entity);
     }
 
-    /// <summary>   Updates the asynchronous described by entity.</summary>
+    /// <summary>
+    /// Updates the asynchronous described by entity.
+    /// </summary>
+    ///
+    /// <exception cref="UpdateException">  Thrown when an Update error condition occurs. </exception>
+    ///
     /// <param name="entity">   The entity to add. </param>
-    /// <returns>   The update.</returns>
-    public virtual async Task<TEntity> UpdateAsync(TEntity entity)
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The update.
+    /// </returns>
+    public virtual async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default)
     {
         if (entity is ITimeStampedKeyEntity stampedEntity)
         {
@@ -225,7 +247,7 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
             throw new UpdateException(entity);
         }
 
-        if (await UnitOfWork.Connection.UpdateAsync(entity, UnitOfWork.Transaction))
+        if (await UnitOfWork.Connection.UpdateAsync(entity, UnitOfWork.Transaction, cancellationToken:ctx))
             return entity;
         throw new UpdateException(entity);
     }
@@ -237,12 +259,19 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
         return UnitOfWork.Connection.Delete<TEntity>(id, UnitOfWork.Transaction);
     }
 
-    /// <summary>   Deletes the asynchronous described by ID.</summary>
+    /// <summary>
+    /// Deletes the asynchronous described by ID.
+    /// </summary>
+    ///
     /// <param name="id">   The Identifier to delete. </param>
-    /// <returns>   An asynchronous result.</returns>
-    public virtual Task<bool> DeleteAsync(TKey id)
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
+    public virtual Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {
-        return UnitOfWork.Connection.DeleteAsync<TEntity>(id, UnitOfWork.Transaction);
+        return UnitOfWork.Connection.DeleteAsync<TEntity>(id, UnitOfWork.Transaction, cancellationToken:ctx);
     }
 
     /// <summary>   Deletes the given entity. </summary>
@@ -252,12 +281,19 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
         return Delete(entity.Id);
     }
 
-    /// <summary>   Deletes the asynchronous described by ID.</summary>
+    /// <summary>
+    /// Deletes the asynchronous described by ID.
+    /// </summary>
+    ///
     /// <param name="entity">   The entity to add. </param>
-    /// <returns>   The delete.</returns>
-    public virtual Task<bool> DeleteAsync(TEntity entity)
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The delete.
+    /// </returns>
+    public virtual Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default)
     {
-        return DeleteAsync(entity.Id);
+        return DeleteAsync(entity.Id, ctx);
     }
 
     /// <summary>   Gets a default.</summary>

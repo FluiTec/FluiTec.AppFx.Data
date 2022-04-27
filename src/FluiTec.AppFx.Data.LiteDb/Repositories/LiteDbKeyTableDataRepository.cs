@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
@@ -37,18 +38,31 @@ public abstract class LiteDbKeyTableDataRepository<TEntity, TKey> : LiteDbDataRe
 
     #region IKeyTableDataRepository
 
-    /// <summary>   Gets an entity using the given identifier. </summary>
+    /// <summary>
+    /// Gets an entity using the given identifier.
+    /// </summary>
+    ///
     /// <param name="id">   The Identifier to use. </param>
-    /// <returns>   A TEntity. </returns>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
     public virtual TEntity Get(TKey id)
     {
         return Collection.FindById(GetBsonKey(id));
     }
 
-    /// <summary>   Gets an entity asynchronous.</summary>
+    /// <summary>
+    /// Gets an entity asynchronous.
+    /// </summary>
+    ///
     /// <param name="id">   The Identifier to use. </param>
-    /// <returns>   A TEntity.</returns>
-    public virtual Task<TEntity> GetAsync(TKey id)
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    public virtual Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
         return Task.FromResult(Get(id));
     }

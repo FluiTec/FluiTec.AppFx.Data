@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -111,13 +112,18 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
         return UnitOfWork.Connection.GetAll<TEntity>(UnitOfWork.Transaction);
     }
 
-    /// <summary>   Gets all asynchronous.</summary>
+    /// <summary>
+    /// Gets all asynchronous.
+    /// </summary>
+    ///
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
     /// <returns>
-    ///     An enumerator that allows foreach to be used to process all items in this collection.
+    /// An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
-    public virtual Task<IEnumerable<TEntity>> GetAllAsync()
+    public virtual Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
     {
-        return UnitOfWork.Connection.GetAllAsync<TEntity>(UnitOfWork.Transaction);
+        return UnitOfWork.Connection.GetAllAsync<TEntity>(UnitOfWork.Transaction, cancellationToken: ctx);
     }
 
     /// <summary>   Gets the count. </summary>
@@ -128,12 +134,19 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
         return UnitOfWork.Connection.ExecuteScalar<int>(command, null, UnitOfWork.Transaction);
     }
 
-    /// <summary>   Count asynchronous.</summary>
-    /// <returns>   The count.</returns>
-    public virtual Task<int> CountAsync()
+    /// <summary>
+    /// Count asynchronous.
+    /// </summary>
+    ///
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The count.
+    /// </returns>
+    public virtual Task<int> CountAsync(CancellationToken ctx = default)
     {
         var command = GetFromCache(() => $"SELECT COUNT(*) FROM {TableName}", nameof(Count));
-        return UnitOfWork.Connection.ExecuteScalarAsync<int>(command, null, UnitOfWork.Transaction);
+        return UnitOfWork.Connection.ExecuteScalarAsync<int>(new CommandDefinition(command, null, UnitOfWork.Transaction, cancellationToken: ctx));
     }
 
     #endregion

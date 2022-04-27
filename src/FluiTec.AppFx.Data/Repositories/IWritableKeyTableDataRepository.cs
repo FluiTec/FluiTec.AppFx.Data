@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 
@@ -21,10 +22,17 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey> : IKeyTableDa
     /// <returns>   True if it succeeds, false if it fails.</returns>
     bool Delete(TKey id);
 
-    /// <summary>   Deletes the asynchronous described by ID.</summary>
+    /// <summary>
+    /// Deletes the asynchronous described by ID.
+    /// </summary>
+    ///
     /// <param name="id">   The Identifier to delete. </param>
-    /// <returns>   The delete.</returns>
-    Task<bool> DeleteAsync(TKey id);
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The delete.
+    /// </returns>
+    Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default);
 }
 
 /// <summary>
@@ -62,11 +70,12 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2> : 
     /// </summary>
     ///
     /// <param name="entity">   The entity to add. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The add.
     /// </returns>
-    Task<TEntity> AddAsync(TEntity entity);
+    Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default);
 
     /// <summary>
     /// Adds a range.
@@ -80,11 +89,12 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2> : 
     /// </summary>
     ///
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// A Task.
     /// </returns>
-    Task AddRangeAsync(IEnumerable<TEntity> entities);
+    Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default);
 
     /// <summary>
     /// Updates the given entity.
@@ -102,11 +112,12 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2> : 
     /// </summary>
     ///
     /// <param name="entity">   The entity to add. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The update.
     /// </returns>
-    Task<TEntity> UpdateAsync(TEntity entity);
+    Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default);
 
     /// <summary>
     /// Deletes this object.
@@ -126,11 +137,12 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2> : 
     ///
     /// <param name="key1"> The first key. </param>
     /// <param name="key2"> The second key. </param>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The delete.
     /// </returns>
-    Task<bool> DeleteAsync(TKey1 key1, TKey2 key2);
+    Task<bool> DeleteAsync(TKey1 key1, TKey2 key2, CancellationToken ctx = default);
 
     /// <summary>
     /// Deletes this object.
@@ -148,11 +160,12 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2> : 
     /// </summary>
     ///
     /// <param name="entity">   The entity to add. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The delete.
     /// </returns>
-    Task<bool> DeleteAsync(TEntity entity);
+    Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default);
 }
 
 /// <summary>
@@ -191,11 +204,12 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2, in
     /// </summary>
     ///
     /// <param name="entity">   The entity to add. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The add.
     /// </returns>
-    Task<TEntity> AddAsync(TEntity entity);
+    Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default);
 
     /// <summary>
     /// Adds a range.
@@ -209,11 +223,12 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2, in
     /// </summary>
     ///
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// A Task.
     /// </returns>
-    Task AddRangeAsync(IEnumerable<TEntity> entities);
+    Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default);
 
     /// <summary>
     /// Updates the given entity.
@@ -231,11 +246,12 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2, in
     /// </summary>
     ///
     /// <param name="entity">   The entity to add. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The update.
     /// </returns>
-    Task<TEntity> UpdateAsync(TEntity entity);
+    Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default);
 
     /// <summary>
     /// Deletes this object.
@@ -257,11 +273,12 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2, in
     /// <param name="key1"> The first key. </param>
     /// <param name="key2"> The second key. </param>
     /// <param name="key3"> The third key. </param>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The delete.
     /// </returns>
-    Task<bool> DeleteAsync(TKey1 key1, TKey2 key2, TKey3 key3);
+    Task<bool> DeleteAsync(TKey1 key1, TKey2 key2, TKey3 key3, CancellationToken ctx = default);
 
     /// <summary>
     /// Deletes this object.
@@ -279,9 +296,10 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey1, in TKey2, in
     /// </summary>
     ///
     /// <param name="entity">   The entity to add. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The delete.
     /// </returns>
-    Task<bool> DeleteAsync(TEntity entity);
+    Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default);
 }

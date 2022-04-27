@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using FluiTec.AppFx.Data.Entities;
@@ -32,18 +33,27 @@ public static class SqlExtensions
         return connection.Query<TEntity>(sql, null, transaction, commandTimeout: commandTimeout);
     }
 
-    /// <summary>   An IDbConnection extension method that gets all asynchronous.</summary>
+    /// <summary>
+    /// An IDbConnection extension method that gets all asynchronous.
+    /// </summary>
+    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    /// <param name="connection">       The connection to act on. </param>
-    /// <param name="transaction">      (Optional) The transaction. </param>
-    /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    /// <returns>   all async&lt; t entity&gt;</returns>
+    /// <param name="connection">           The connection to act on. </param>
+    /// <param name="transaction">          (Optional) The transaction. </param>
+    /// <param name="commandTimeout">       (Optional) The command timeout. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    ///
+    /// <returns>
+    /// all async&lt; t entity&gt;
+    /// </returns>
     public static Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(this IDbConnection connection,
-        IDbTransaction transaction = null, int? commandTimeout = null)
+        IDbTransaction transaction = null, int? commandTimeout = null, CancellationToken cancellationToken = default)
     {
         var sql = connection.GetBuilder().SelectAll(typeof(TEntity));
         OnSqlGenerated(sql);
-        return connection.QueryAsync<TEntity>(sql, null, transaction, commandTimeout);
+        return connection.QueryAsync<TEntity>(new CommandDefinition(sql, null, transaction, commandTimeout,
+            cancellationToken: cancellationToken));
     }
 
     /// <summary>	An IDbConnection extension method that gets. </summary>
@@ -67,16 +77,24 @@ public static class SqlExtensions
         return connection.QuerySingleOrDefault<TEntity>(sql, parameters, transaction, commandTimeout);
     }
 
-    /// <summary>   An IDbConnection extension method that gets an asynchronous.</summary>
+    /// <summary>
+    /// An IDbConnection extension method that gets an asynchronous.
+    /// </summary>
+    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    /// <param name="connection">       The connection to act on. </param>
-    /// <param name="id">               The identifier. </param>
-    /// <param name="transaction">      (Optional) The transaction. </param>
-    /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    /// <returns>   The async&lt; t entity&gt;</returns>
+    /// <param name="connection">           The connection to act on. </param>
+    /// <param name="id">                   The identifier. </param>
+    /// <param name="transaction">          (Optional) The transaction. </param>
+    /// <param name="commandTimeout">       (Optional) The command timeout. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    ///
+    /// <returns>
+    /// The async&lt; t entity&gt;
+    /// </returns>
     public static Task<TEntity> GetAsync<TEntity>(this IDbConnection connection, dynamic id,
         IDbTransaction transaction = null,
-        int? commandTimeout = null) where TEntity : class
+        int? commandTimeout = null, CancellationToken cancellationToken = default) where TEntity : class
     {
         var type = typeof(TEntity);
 
@@ -86,7 +104,8 @@ public static class SqlExtensions
 
         var parameters = new DynamicParameters();
         parameters.Add(builder.KeyParameter(type), id);
-        return connection.QuerySingleOrDefaultAsync<TEntity>(sql, parameters, transaction, commandTimeout);
+        return connection.QuerySingleOrDefaultAsync<TEntity>(new CommandDefinition(sql, parameters, transaction,
+            commandTimeout, cancellationToken: cancellationToken));
     }
 
     /// <summary>   An IDbConnection extension method that inserts.</summary>
@@ -107,15 +126,23 @@ public static class SqlExtensions
         connection.Execute(sql, entity, transaction, commandTimeout);
     }
 
-    /// <summary>   An IDbConnection extension method that inserts an asynchronous.</summary>
+    /// <summary>
+    /// An IDbConnection extension method that inserts an asynchronous.
+    /// </summary>
+    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    /// <param name="connection">       The connection to act on. </param>
-    /// <param name="entity">           The entity. </param>
-    /// <param name="transaction">      (Optional) The transaction. </param>
-    /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    /// <returns>   An asynchronous result.</returns>
+    /// <param name="connection">           The connection to act on. </param>
+    /// <param name="entity">               The entity. </param>
+    /// <param name="transaction">          (Optional) The transaction. </param>
+    /// <param name="commandTimeout">       (Optional) The command timeout. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    ///
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
     public static async Task InsertAsync<TEntity>(this IDbConnection connection, TEntity entity,
-        IDbTransaction transaction = null, int? commandTimeout = null)
+        IDbTransaction transaction = null, int? commandTimeout = null, CancellationToken cancellationToken = default)
     {
         var type = typeof(TEntity);
 
@@ -123,7 +150,8 @@ public static class SqlExtensions
         var sql = builder.Insert(type);
         OnSqlGenerated(sql);
 
-        await connection.ExecuteAsync(sql, entity, transaction, commandTimeout);
+        await connection.ExecuteAsync(new CommandDefinition(sql, entity, transaction, commandTimeout,
+            cancellationToken: cancellationToken));
     }
 
     /// <summary>	An IDbConnection extension method that inserts. </summary>
@@ -207,17 +235,25 @@ public static class SqlExtensions
         return connection.Execute(sql, entities, transaction, commandTimeout);
     }
 
-    /// <summary>An IDbConnection extension method that inserts a multiple asynchronous.</summary>
+    /// <summary>
+    /// An IDbConnection extension method that inserts a multiple asynchronous.
+    /// </summary>
+    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    /// <param name="connection">       The connection to act on. </param>
-    /// <param name="entities">         The entities. </param>
-    /// <param name="transaction">      (Optional) The transaction. </param>
-    /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    /// <returns>   A long.</returns>
+    /// <param name="connection">           The connection to act on. </param>
+    /// <param name="entities">             The entities. </param>
+    /// <param name="transaction">          (Optional) The transaction. </param>
+    /// <param name="commandTimeout">       (Optional) The command timeout. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    ///
+    /// <returns>
+    /// A long.
+    /// </returns>
     public static Task<int> InsertMultipleAsync<TEntity>(this IDbConnection connection,
         IEnumerable<TEntity> entities,
         IDbTransaction transaction = null,
-        int? commandTimeout = null)
+        int? commandTimeout = null, CancellationToken cancellationToken = default)
     {
         var type = typeof(TEntity);
 
@@ -226,7 +262,8 @@ public static class SqlExtensions
         OnSqlGenerated(sql);
 
         // just return number of affected rows instead of the indivitual id's
-        return connection.ExecuteAsync(sql, entities, transaction, commandTimeout);
+        return connection.ExecuteAsync(new CommandDefinition(sql, entities, transaction, commandTimeout,
+            cancellationToken: cancellationToken));
     }
 
     /// <summary>	An IDbConnection extension method that inserts an automatic multiple. </summary>
@@ -296,16 +333,24 @@ public static class SqlExtensions
         return connection.Execute(sql, parameters, transaction, commandTimeout) > 0;
     }
 
-    /// <summary>   An IDbConnection extension method that updates the asynchronous.</summary>
+    /// <summary>
+    /// An IDbConnection extension method that updates the asynchronous.
+    /// </summary>
+    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    /// <param name="connection">       The connection to act on. </param>
-    /// <param name="entity">           The entity. </param>
-    /// <param name="transaction">      (Optional) The transaction. </param>
-    /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    /// <returns>   True if it succeeds, false if it fails.</returns>
+    /// <param name="connection">           The connection to act on. </param>
+    /// <param name="entity">               The entity. </param>
+    /// <param name="transaction">          (Optional) The transaction. </param>
+    /// <param name="commandTimeout">       (Optional) The command timeout. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    ///
+    /// <returns>
+    /// True if it succeeds, false if it fails.
+    /// </returns>
     public static async Task<bool> UpdateAsync<TEntity>(this IDbConnection connection, TEntity entity,
         IDbTransaction transaction = null,
-        int? commandTimeout = null)
+        int? commandTimeout = null, CancellationToken cancellationToken = default)
     {
         var type = typeof(TEntity);
 
@@ -317,7 +362,8 @@ public static class SqlExtensions
         foreach (var p in builder.ParameterList(type))
             parameters.Add(p.Value, p.Key.GetValue(entity));
 
-        return await connection.ExecuteAsync(sql, parameters, transaction, commandTimeout) > 0;
+        return await connection.ExecuteAsync(new CommandDefinition(sql, parameters, transaction, commandTimeout,
+            cancellationToken: cancellationToken)) > 0;
     }
 
     /// <summary>   An IDbConnection extension method that updates this object. </summary>
@@ -418,16 +464,24 @@ public static class SqlExtensions
         return connection.Execute(sql, parameters, transaction, commandTimeout) > 0;
     }
 
-    /// <summary>   An IDbConnection extension method that deletes the asynchronous.</summary>
+    /// <summary>
+    /// An IDbConnection extension method that deletes the asynchronous.
+    /// </summary>
+    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    /// <param name="connection">       The connection to act on. </param>
-    /// <param name="id">               The identifier. </param>
-    /// <param name="transaction">      (Optional) The transaction. </param>
-    /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    /// <returns>   True if it succeeds, false if it fails.</returns>
+    /// <param name="connection">           The connection to act on. </param>
+    /// <param name="id">                   The identifier. </param>
+    /// <param name="transaction">          (Optional) The transaction. </param>
+    /// <param name="commandTimeout">       (Optional) The command timeout. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    ///
+    /// <returns>
+    /// True if it succeeds, false if it fails.
+    /// </returns>
     public static async Task<bool> DeleteAsync<TEntity>(this IDbConnection connection, dynamic id,
         IDbTransaction transaction = null,
-        int? commandTimeout = null)
+        int? commandTimeout = null, CancellationToken cancellationToken = default)
     {
         var type = typeof(TEntity);
 
@@ -438,7 +492,8 @@ public static class SqlExtensions
         var parameters = new DynamicParameters();
         parameters.Add(builder.KeyParameter(type), id);
 
-        return await connection.ExecuteAsync(sql, parameters, transaction, commandTimeout) > 0;
+        return await connection.ExecuteAsync(new CommandDefinition(sql, parameters, transaction, commandTimeout,
+            cancellationToken: cancellationToken)) > 0;
     }
 
     /// <summary>	Executes the SQL generated action. </summary>
