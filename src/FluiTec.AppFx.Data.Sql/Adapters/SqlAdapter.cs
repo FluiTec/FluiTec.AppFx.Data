@@ -334,6 +334,15 @@ public abstract class SqlAdapter : ISqlAdapter
         return propertyName;
     }
 
+    /// <summary>
+    /// Gets name service.
+    /// </summary>
+    ///
+    /// <returns>
+    /// The name service.
+    /// </returns>
+    public IEntityNameService GetNameService() => EntityNameService;
+
     /// <summary>	Renders the parameter property described by propertyInfo. </summary>
     /// <param name="propertyInfo">	Information describing the property. </param>
     /// <returns>	A string. </returns>

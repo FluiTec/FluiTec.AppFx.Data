@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Options.Attributes;
+﻿using FluiTec.AppFx.Data.Migration;
+using FluiTec.AppFx.Options.Attributes;
 
 namespace FluiTec.AppFx.Data.Dapper.Mssql;
 
@@ -23,4 +24,13 @@ public class MssqlDapperServiceOptions : DapperServiceOptions
     /// <summary>   Gets the connection factory. </summary>
     /// <value> The connection factory. </value>
     public override IConnectionFactory ConnectionFactory { get; }
+
+    /// <summary>
+    /// Gets the type of the SQL.
+    /// </summary>
+    ///
+    /// <value>
+    /// The type of the SQL.
+    /// </value>
+    public override SqlType SqlType => SqlType.Mssql;
 }

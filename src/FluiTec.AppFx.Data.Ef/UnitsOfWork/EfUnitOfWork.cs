@@ -1,7 +1,7 @@
 ﻿using System;
+using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Ef.DataServices;
 using FluiTec.AppFx.Data.UnitsOfWork;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Ef.UnitsOfWork;
@@ -11,6 +11,13 @@ namespace FluiTec.AppFx.Data.Ef.UnitsOfWork;
 /// </summary>
 public class EfUnitOfWork : UnitOfWork
 {
+    #region Fields
+
+    /// <summary>True to owns connection.</summary>
+    private readonly bool _ownsContext = true;
+
+    #endregion
+
     #region Properties
 
     /// <summary>
@@ -20,7 +27,7 @@ public class EfUnitOfWork : UnitOfWork
     /// <value>
     /// The context.
     /// </value>
-    public DynamicDbContext Context { get; set; }
+    public IDynamicDbContext Context { get; set; }
 
     #endregion
 
@@ -37,6 +44,24 @@ public class EfUnitOfWork : UnitOfWork
         Context = dataService.GetContext();
     }
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    ///
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    ///
+    /// <param name="parentUnitOfWork"> The parent unit of work. </param>
+    /// <param name="dataService">      The data service. </param>
+    /// <param name="logger">           The logger. </param>
+    public EfUnitOfWork(EfUnitOfWork parentUnitOfWork, IDataService dataService, ILogger<IUnitOfWork> logger) 
+        : base(dataService, logger)
+    {
+        if (parentUnitOfWork == null) throw new ArgumentNullException(nameof(parentUnitOfWork));
+        _ownsContext = false;
+        Context = parentUnitOfWork.Context;
+    }
+
     #endregion
 
     #region IUnitOfWork
@@ -51,6 +76,7 @@ public class EfUnitOfWork : UnitOfWork
         if (Context == null)
             throw new InvalidOperationException(
                 "UnitOfWork can't be committed since it's already finished. (Missing DbContext)");
+        if (!_ownsContext) return;
 
         // clear transaction
         Context.SaveChanges();
@@ -69,6 +95,7 @@ public class EfUnitOfWork : UnitOfWork
         if (Context == null)
             throw new InvalidOperationException(
                 "UnitOfWork can't be rolled back since it's already finished. (Missing transaction)");
+        if (!_ownsContext) return;
 
         // clear transaction
         Context.Dispose();

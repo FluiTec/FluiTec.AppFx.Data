@@ -1,6 +1,8 @@
 ﻿using System;
+using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FluiTec.AppFx.Data.Ef.Extensions;
 
@@ -24,18 +26,31 @@ public static class DbContextExtensions
     /// </returns>
     public static DbContextOptions GetOption(SqlType sqlType, string connectionString)
     {
-        switch (sqlType)
+        return sqlType switch
         {
-            case SqlType.Mssql:
-                return new DbContextOptionsBuilder().UseSqlServer(connectionString).Options;
-            case SqlType.Mysql:
-                return new DbContextOptionsBuilder().UseMySQL(connectionString).Options;
-            case SqlType.Pgsql:
-                return new DbContextOptionsBuilder().UseNpgsql(connectionString).Options;
-            case SqlType.Sqlite:
-                return new DbContextOptionsBuilder().UseSqlite(connectionString).Options;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(sqlType), sqlType, null);
-        }
+            SqlType.Mssql => new DbContextOptionsBuilder().UseSqlServer(connectionString).Options,
+            SqlType.Mysql => new DbContextOptionsBuilder().UseMySQL(connectionString).Options,
+            SqlType.Pgsql => new DbContextOptionsBuilder().UseNpgsql(connectionString).Options,
+            SqlType.Sqlite => new DbContextOptionsBuilder().UseSqlite(connectionString).Options,
+            _ => throw new ArgumentOutOfRangeException(nameof(sqlType), sqlType, null)
+        };
+    }
+
+    /// <summary>
+    /// An EntityTypeBuilder&lt;TEntity&gt; extension method that converts this object to a table.
+    /// </summary>
+    ///
+    /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+    /// <param name="entityTypeBuilder">    The entityTypeBuilder to act on. </param>
+    /// <param name="nameService">          The name service. </param>
+    ///
+    /// <returns>
+    /// The given data converted to an EntityTypeBuilder&lt;TEntity&gt;
+    /// </returns>
+    public static EntityTypeBuilder<TEntity> ToTable<TEntity>(this EntityTypeBuilder<TEntity> entityTypeBuilder,
+        IEntityNameService nameService) where TEntity : class
+    {
+        var schemaAndName = nameService.SchemaAndName(typeof(TEntity));
+        return (EntityTypeBuilder<TEntity>) ((EntityTypeBuilder) entityTypeBuilder).ToTable(schemaAndName.Item2, schemaAndName.Item1);
     }
 }

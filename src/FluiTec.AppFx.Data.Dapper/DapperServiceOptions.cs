@@ -1,4 +1,5 @@
 ﻿using System;
+using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Options.Attributes;
 
 namespace FluiTec.AppFx.Data.Dapper;
@@ -25,7 +26,7 @@ public abstract class DapperServiceOptions : IDapperServiceOptions
                 nameof(connectionString));
         ConnectionString = connectionString;
     }
-
+    
     /// <summary>   Gets the connection factory. </summary>
     /// <value> The connection factory. </value>
     public abstract IConnectionFactory ConnectionFactory { get; }
@@ -34,4 +35,13 @@ public abstract class DapperServiceOptions : IDapperServiceOptions
     /// <value> The connection string. </value>
     [ConfigurationSecret]
     public string ConnectionString { get; set; }
+
+    /// <summary>
+    /// Gets the type of the SQL.
+    /// </summary>
+    ///
+    /// <value>
+    /// The type of the SQL.
+    /// </value>
+    public abstract SqlType SqlType { get; }
 }

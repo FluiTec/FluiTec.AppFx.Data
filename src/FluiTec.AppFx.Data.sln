@@ -98,6 +98,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Ef", "Fl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfSample", "samples\EfSample\EfSample.csproj", "{6BBF45CD-A0A1-4C2D-8E47-C4BD2BAD1BD1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Migration", "FluiTec.AppFx.Data.Migration\FluiTec.AppFx.Data.Migration.csproj", "{40E1993E-7834-4C77-AE27-A47CA3983BFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -240,6 +242,10 @@ Global
 		{6BBF45CD-A0A1-4C2D-8E47-C4BD2BAD1BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BBF45CD-A0A1-4C2D-8E47-C4BD2BAD1BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BBF45CD-A0A1-4C2D-8E47-C4BD2BAD1BD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40E1993E-7834-4C77-AE27-A47CA3983BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40E1993E-7834-4C77-AE27-A47CA3983BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40E1993E-7834-4C77-AE27-A47CA3983BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40E1993E-7834-4C77-AE27-A47CA3983BFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

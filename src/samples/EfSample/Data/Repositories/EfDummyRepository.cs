@@ -9,7 +9,7 @@ namespace EfSample.Data.Repositories;
 /// <summary>
 /// An ef dummy repository.
 /// </summary>
-public class EfDummyRepository : EfWritableTableDataRepository<DummyEntity>
+public class EfDummyRepository : EfWritableTableDataRepository<DummyEntity>, IDummyRepository
 {
     /// <summary>
     /// Constructor.

@@ -1,5 +1,7 @@
-﻿using FluiTec.AppFx.Data.Ef.Extensions;
+﻿using System;
+using FluiTec.AppFx.Data.Ef.Extensions;
 using FluiTec.AppFx.Data.Migration;
+using FluiTec.AppFx.Data.Sql;
 using Microsoft.EntityFrameworkCore;
 
 namespace FluiTec.AppFx.Data.Ef;
@@ -7,7 +9,7 @@ namespace FluiTec.AppFx.Data.Ef;
 /// <summary>
 /// A dynamic database context.
 /// </summary>
-public class DynamicDbContext : DbContext
+public class DynamicDbContext : DbContext, IDynamicDbContext
 {
     /// <summary>
     /// Gets the type of the SQL.
@@ -28,6 +30,15 @@ public class DynamicDbContext : DbContext
     public string ConnectionString { get; }
 
     /// <summary>
+    /// Gets the SQL builder.
+    /// </summary>
+    ///
+    /// <value>
+    /// The SQL builder.
+    /// </value>
+    public SqlBuilder SqlBuilder { get; }
+
+    /// <summary>
     /// Constructor.
     /// </summary>
     ///
@@ -38,5 +49,23 @@ public class DynamicDbContext : DbContext
     {
         SqlType = sqlType;
         ConnectionString = connectionString;
+        SqlBuilder = sqlType.GetBuilder();
+    }
+
+    /// <summary>
+    /// Gets table name.
+    /// </summary>
+    ///
+    /// <param name="type"> The type. </param>
+    ///
+    /// <returns>
+    /// The table name.
+    /// </returns>
+    protected string GetTableName(Type type)
+    {
+        var x = SqlBuilder.Adapter.RenderTableName(type);
+        return SqlBuilder.Adapter.RenderTableName(type)
+            .Replace("]", "", StringComparison.OrdinalIgnoreCase)
+            .Replace("[", "", StringComparison.OrdinalIgnoreCase);
     }
 }

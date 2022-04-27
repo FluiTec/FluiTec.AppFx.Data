@@ -17,6 +17,7 @@ public abstract class BaseEfDataService<TUnitOfWork> : DataService<TUnitOfWork>,
     where TUnitOfWork : EfUnitOfWork, IUnitOfWork
 {
     private readonly string _connectionString;
+    private readonly SqlType? _sqlType;
 
     #region Constructors
 
@@ -33,6 +34,7 @@ public abstract class BaseEfDataService<TUnitOfWork> : DataService<TUnitOfWork>,
     {
         if (options == null) throw new ArgumentNullException(nameof(options));
         _connectionString = options.ConnectionString;
+        _sqlType = options.SqlType;
     }
 
     /// <summary>
@@ -60,9 +62,11 @@ public abstract class BaseEfDataService<TUnitOfWork> : DataService<TUnitOfWork>,
     /// <value> Options that control the dapper service. </value>
     protected IOptionsMonitor<ISqlServiceOptions> ServiceOptions { get; }
 
+    public string ConnectionString => _connectionString ?? ServiceOptions.CurrentValue.ConnectionString;
+
     /// <summary>   Gets the type of the SQL. </summary>
     /// <value> The type of the SQL. </value>
-    public abstract SqlType SqlType { get; }
+    public SqlType SqlType => _sqlType ?? ServiceOptions.CurrentValue.SqlType;
 
     #endregion
 
@@ -92,7 +96,7 @@ public abstract class BaseEfDataService<TUnitOfWork> : DataService<TUnitOfWork>,
     /// <returns>
     /// The context.
     /// </returns>
-    public abstract DynamicDbContext GetContext();
+    public abstract IDynamicDbContext GetContext();
 
     #endregion
 }

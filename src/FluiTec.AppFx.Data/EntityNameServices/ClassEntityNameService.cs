@@ -16,4 +16,18 @@ public class ClassEntityNameService : IEntityNameService
             throw new ArgumentNullException(nameof(type));
         return type.Name;
     }
+
+    /// <summary>
+    /// Schema and name.
+    /// </summary>
+    ///
+    /// <param name="type"> The type. </param>
+    ///
+    /// <returns>
+    /// A Tuple&lt;string,string&gt;
+    /// </returns>
+    public virtual Tuple<string, string> SchemaAndName(Type type)
+    {
+        return new Tuple<string, string>(null, Name(type));
+    }
 }

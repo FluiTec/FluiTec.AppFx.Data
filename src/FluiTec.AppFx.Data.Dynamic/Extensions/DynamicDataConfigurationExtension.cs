@@ -6,6 +6,7 @@ using FluiTec.AppFx.Data.Dapper.SqLite;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Dynamic;
 using FluiTec.AppFx.Data.Dynamic.Configuration;
+using FluiTec.AppFx.Data.Ef;
 using FluiTec.AppFx.Data.LiteDb;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Options;
@@ -27,6 +28,7 @@ public static class DynamicDataConfigurationExtension
         services.Configure<DynamicDataOptions>(configurationManager, true);
 
         // provider-configurations are optional (at least here)
+        services.Configure<EfSqlServiceOptions>(configurationManager);
         services.Configure<LiteDbServiceOptions>(configurationManager);
         services.Configure<MssqlDapperServiceOptions>(configurationManager);
         services.Configure<MysqlDapperServiceOptions>(configurationManager);

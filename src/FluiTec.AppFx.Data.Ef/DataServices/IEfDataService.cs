@@ -14,5 +14,5 @@ public interface IEfDataService : IDataService
     /// <returns>
     /// The context.
     /// </returns>
-    DynamicDbContext GetContext();
+    IDynamicDbContext GetContext();
 }
