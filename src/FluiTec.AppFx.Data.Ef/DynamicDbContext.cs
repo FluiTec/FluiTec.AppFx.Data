@@ -84,8 +84,11 @@ public class DynamicDbContext : DbContext, IDynamicDbContext
 
         // configure keys
         var keys = SqlCache.TypeKeyPropertiesCache(entityType).ToArray();
-        modelBuilder.Entity(entityType)
-            .HasKey(keys.Select(p => p.Name).ToArray());
+        if (keys.Any())
+        {
+            modelBuilder.Entity(entityType)
+                .HasKey(keys.Select(p => p.Name).ToArray());
+        }
 
         var props = SqlCache.TypePropertiesChache(entityType).ToArray();
         foreach (var prop in props)
