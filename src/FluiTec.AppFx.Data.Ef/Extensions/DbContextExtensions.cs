@@ -53,4 +53,20 @@ public static class DbContextExtensions
         var schemaAndName = nameService.SchemaAndName(typeof(TEntity));
         return (EntityTypeBuilder<TEntity>) ((EntityTypeBuilder) entityTypeBuilder).ToTable(schemaAndName.Item2, schemaAndName.Item1);
     }
+
+    /// <summary>
+    /// An EntityTypeBuilder&lt;TEntity&gt; extension method that converts this object to a table.
+    /// </summary>
+    ///
+    /// <param name="entityTypeBuilder">    The entityTypeBuilder to act on. </param>
+    /// <param name="nameService">          The name service. </param>
+    ///
+    /// <returns>
+    /// The given data converted to an EntityTypeBuilder&lt;TEntity&gt;
+    /// </returns>
+    public static EntityTypeBuilder ToTable(this EntityTypeBuilder entityTypeBuilder, IEntityNameService nameService)
+    {
+        var schemaAndName = nameService.SchemaAndName(entityTypeBuilder.Metadata.ClrType);
+        return entityTypeBuilder.ToTable(schemaAndName.Item2, schemaAndName.Item1);
+    }
 }

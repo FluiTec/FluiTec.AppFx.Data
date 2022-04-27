@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using FluiTec.AppFx.Data.Ef.Extensions;
+using FluiTec.AppFx.Data.Entities;
+using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.Sql;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +14,8 @@ namespace FluiTec.AppFx.Data.Ef;
 /// </summary>
 public class DynamicDbContext : DbContext, IDynamicDbContext
 {
+    private readonly Type[] _supportedIdentityTypes = { typeof(int), typeof(long) };
+
     /// <summary>
     /// Gets the type of the SQL.
     /// </summary>
@@ -39,6 +44,15 @@ public class DynamicDbContext : DbContext, IDynamicDbContext
     public SqlBuilder SqlBuilder { get; }
 
     /// <summary>
+    /// Gets the name service.
+    /// </summary>
+    ///
+    /// <value>
+    /// The name service.
+    /// </value>
+    public IEntityNameService NameService { get; }
+
+    /// <summary>
     /// Constructor.
     /// </summary>
     ///
@@ -50,22 +64,36 @@ public class DynamicDbContext : DbContext, IDynamicDbContext
         SqlType = sqlType;
         ConnectionString = connectionString;
         SqlBuilder = sqlType.GetBuilder();
+        NameService = SqlBuilder.Adapter.GetNameService();
     }
 
     /// <summary>
-    /// Gets table name.
+    /// Configure model for entity.
     /// </summary>
     ///
-    /// <param name="type"> The type. </param>
-    ///
-    /// <returns>
-    /// The table name.
-    /// </returns>
-    protected string GetTableName(Type type)
+    /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+    /// <param name="modelBuilder"> The model builder. </param>
+    protected void ConfigureModelForEntity<TEntity>(ModelBuilder modelBuilder) 
+        where TEntity : class, IEntity
     {
-        var x = SqlBuilder.Adapter.RenderTableName(type);
-        return SqlBuilder.Adapter.RenderTableName(type)
-            .Replace("]", "", StringComparison.OrdinalIgnoreCase)
-            .Replace("[", "", StringComparison.OrdinalIgnoreCase);
+        var entityType = typeof(TEntity);
+
+        // configure schema and name of table
+        modelBuilder.Entity(entityType)
+            .ToTable(NameService);
+
+        // configure keys
+        var keys = SqlCache.TypeKeyPropertiesCache(entityType).ToArray();
+        modelBuilder.Entity(entityType)
+            .HasKey(keys.Select(p => p.Name).ToArray());
+
+        var props = SqlCache.TypePropertiesChache(entityType).ToArray();
+        foreach (var prop in props)
+        {
+            var propBuilder = modelBuilder.Entity(entityType)
+                .Property(prop.Name);
+            if (keys.Length == 1 && prop == keys.Single() && _supportedIdentityTypes.Contains(prop.PropertyType))
+                propBuilder.UseIdentityColumn();
+        }
     }
 }
