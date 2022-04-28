@@ -95,7 +95,7 @@ public class DynamicDbContext : DbContext, IDynamicDbContext
         {
             var propBuilder = modelBuilder.Entity(entityType)
                 .Property(prop.Name);
-            if (keys.Length == 1 && prop == keys.Single().PropertyInfo && _supportedIdentityTypes.Contains(prop.PropertyType))
+            if (prop == keys.Single().PropertyInfo && keys.Single().ExtendedData.IdentityKey)
                 propBuilder.UseIdentityColumn();
         }
     }

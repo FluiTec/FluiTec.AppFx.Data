@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Dynamic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Ef.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -44,6 +49,9 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// </returns>
     public TEntity Add(TEntity entity)
     {
+        if (entity is ITimeStampedKeyEntity stampedEntity)
+            stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
+
         Set.Add(entity);
         Context.SaveChanges();
         return entity;
@@ -61,6 +69,9 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// </returns>
     public async Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default)
     {
+        if (entity is ITimeStampedKeyEntity stampedEntity)
+            stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
+
         var result = await Set.AddAsync(entity, ctx);
         Context.SaveChanges();
         return result.Entity;
@@ -73,7 +84,13 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
     public void AddRange(IEnumerable<TEntity> entities)
     {
-        Set.AddRange(entities);
+        var keyEntities = entities as TEntity[] ?? entities.ToArray();
+
+        foreach (var entity in keyEntities)
+            if (entity is ITimeStampedKeyEntity stampedEntity)
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
+
+        Set.AddRange(keyEntities);
         Context.SaveChanges();
     }
 
@@ -89,7 +106,13 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// </returns>
     public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default)
     {
-        await Set.AddRangeAsync(entities, ctx);
+        var keyEntities = entities as TEntity[] ?? entities.ToArray();
+
+        foreach (var entity in keyEntities)
+            if (entity is ITimeStampedKeyEntity stampedEntity)
+                stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
+
+        await Set.AddRangeAsync(keyEntities, ctx);
         Context.SaveChanges();
     }
 
@@ -104,6 +127,16 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// </returns>
     public TEntity Update(TEntity entity)
     {
+        if (entity is ITimeStampedKeyEntity stampedEntity)
+        {
+            var originalTimeStamp = stampedEntity.TimeStamp;
+            stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
+
+            var dbEntity = Get(GetKey(entity)) as ITimeStampedKeyEntity;
+            if (dbEntity?.TimeStamp != originalTimeStamp)
+                throw new UpdateException(entity);
+        }
+
         Set.Attach(entity);
         if (UnitOfWork.Context.Entry(entity).State == EntityState.Added)
             throw new UpdateException(entity);
@@ -122,14 +155,24 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// <returns>
     /// The update.
     /// </returns>
-    public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default)
+    public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default)
     {
+        if (entity is ITimeStampedKeyEntity stampedEntity)
+        {
+            var originalTimeStamp = stampedEntity.TimeStamp;
+            stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
+
+            var dbEntity = await GetAsync(GetKey(entity).Values.ToArray(), ctx) as ITimeStampedKeyEntity;
+            if (dbEntity?.TimeStamp != originalTimeStamp)
+                throw new UpdateException(entity);
+        }
+
         Set.Attach(entity);
         if (UnitOfWork.Context.Entry(entity).State == EntityState.Added)
             throw new UpdateException(entity);
         UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
         Context.SaveChanges();
-        return Task.FromResult(entity);
+        return entity;
     }
 
     /// <summary>
@@ -193,6 +236,33 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     {
         var entity = await GetAsync(keys, ctx);
         return await DeleteAsync(entity, ctx);
+    }
+
+    #endregion
+
+    #region Methods
+
+    /// <summary>
+    /// Gets a key.
+    /// </summary>
+    ///
+    /// <param name="entity">   The entity. </param>
+    ///
+    /// <returns>
+    /// The key.
+    /// </returns>
+    protected IDictionary<string, object> GetKey(TEntity entity)
+    {
+        var key = new ExpandoObject() as IDictionary<string, object>;
+
+        foreach (var k in SqlCache.TypeKeyPropertiesCache(EntityType)
+                     .OrderBy(kp => kp.ExtendedData.Order)
+                     .ToList())
+        {
+            key.Add(k.PropertyInfo.Name, k.PropertyInfo.GetValue(entity, null));
+        }
+
+        return key;
     }
 
     #endregion
