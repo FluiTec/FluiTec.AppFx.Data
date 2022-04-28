@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 
@@ -12,11 +11,6 @@ namespace FluiTec.AppFx.Data.Repositories;
 public interface IWritableKeyTableDataRepository<TEntity, in TKey> : IKeyTableDataRepository<TEntity, TKey>, IWritableTableDataRepository<TEntity>
     where TEntity : class, IEntity, new()
 {
-    /// <summary>   Gets or sets a value indicating whether the expect identity key.</summary>
-    /// <value> True if expect identity key, false if not.</value>
-    // ReSharper disable once UnusedMemberInSuper.Global
-    bool ExpectIdentityKey { get; set; }
-
     /// <summary>   Deletes the given ID.</summary>
     /// <param name="id">   The Identifier to delete. </param>
     /// <returns>   True if it succeeds, false if it fails.</returns>

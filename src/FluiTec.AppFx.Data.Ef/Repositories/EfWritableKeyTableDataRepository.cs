@@ -8,12 +8,12 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Data.Ef.Repositories;
 
 /// <summary>
-/// An ef key data repository.
+/// An ef writable key table data repository.
 /// </summary>
 ///
 /// <typeparam name="TEntity">  Type of the entity. </typeparam>
 /// <typeparam name="TKey">     Type of the key. </typeparam>
-public class EfKeyDataRepository<TEntity, TKey> : EfDataRepository<TEntity>, IKeyTableDataRepository<TEntity, TKey>
+public class EfWritableKeyTableDataRepository<TEntity, TKey> : EfWritableTableDataRepository<TEntity>, IWritableKeyTableDataRepository<TEntity, TKey>
     where TEntity : class, IEntity, new()
 {
     /// <summary>
@@ -22,9 +22,11 @@ public class EfKeyDataRepository<TEntity, TKey> : EfDataRepository<TEntity>, IKe
     ///
     /// <param name="unitOfWork">   The unit of work. </param>
     /// <param name="logger">       The logger. </param>
-    protected EfKeyDataRepository(EfUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+    protected EfWritableKeyTableDataRepository(EfUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
     {
     }
+
+    #region IKeyTableDataRepository
 
     /// <summary>
     /// Gets an entity using the given identifier.
@@ -41,20 +43,6 @@ public class EfKeyDataRepository<TEntity, TKey> : EfDataRepository<TEntity>, IKe
     }
 
     /// <summary>
-    /// Gets an entity using the given identifier.
-    /// </summary>
-    ///
-    /// <param name="keys"> A variable-length parameters list containing keys. </param>
-    ///
-    /// <returns>
-    /// A TEntity.
-    /// </returns>
-    public TEntity Get(params object[] keys)
-    {
-        return Set.Find(keys);
-    }
-
-    /// <summary>
     /// Gets an entity asynchronous.
     /// </summary>
     ///
@@ -66,21 +54,43 @@ public class EfKeyDataRepository<TEntity, TKey> : EfDataRepository<TEntity>, IKe
     /// </returns>
     public async Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
-        return await Set.FindAsync(new object[] {id}, ctx);
+        return await Set.FindAsync(new object[] { id }, ctx);
+    }
+
+    #endregion
+
+    #region IWritableKeyTableDataRepository
+
+    /// <summary>
+    /// Deletes the given ID.
+    /// </summary>
+    ///
+    /// <param name="id">   The Identifier to delete. </param>
+    ///
+    /// <returns>
+    /// True if it succeeds, false if it fails.
+    /// </returns>
+    public bool Delete(TKey id)
+    {
+        var entity = Get(id);
+        return Delete(entity);
     }
 
     /// <summary>
-    /// Gets an entity asynchronous.
+    /// Deletes the asynchronous described by ID.
     /// </summary>
     ///
-    /// <param name="keys"> A variable-length parameters list containing keys. </param>
+    /// <param name="id">   The Identifier to delete. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
-    /// A TEntity.
+    /// The delete.
     /// </returns>
-    public async Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
+    public async Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {
-        return await Set.FindAsync(keys, ctx);
+        var entity = await GetAsync(id, ctx);
+        return await DeleteAsync(entity, ctx);
     }
+
+    #endregion
 }

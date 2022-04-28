@@ -145,7 +145,7 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <returns>	The insert automatic key statement. </returns>
     public virtual string GetInsertAutoKeyStatement(Type type)
     {
-        var key = SqlCache.TypeKeyPropertiesCache(type).Single().PropertyInfo;
+        var key = SqlCache.TypeKeyPropertiesCache(type).Single(tk => tk.ExtendedData.IdentityKey).PropertyInfo;
         var columnList = RenderAutoKeyColumnList(type).ToString();
         var parameterList = RenderAutoKeyParameterList(type).ToString();
 

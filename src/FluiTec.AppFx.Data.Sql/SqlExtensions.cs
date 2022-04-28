@@ -76,10 +76,9 @@ public static class SqlExtensions
 
         if (typeKeys.Count > 1 || id is IDictionary<string, object>)
         {
-            var keyParams = id as IDictionary<string, object>;
             var parameters = new DynamicParameters();
 
-            if (keyParams != null)
+            if (id is IDictionary<string, object> keyParams)
             {
                 if (keyParams.Count != typeKeys.Count)
                     throw new InvalidOperationException(
@@ -132,10 +131,9 @@ public static class SqlExtensions
 
         if (typeKeys.Count > 1 || id is IDictionary<string, object>)
         {
-            var keyParams = id as IDictionary<string, object>;
             var parameters = new DynamicParameters();
 
-            if (keyParams != null)
+            if (id is IDictionary<string, object> keyParams)
             {
                 if (keyParams.Count != typeKeys.Count)
                     throw new InvalidOperationException(
@@ -206,44 +204,16 @@ public static class SqlExtensions
             cancellationToken: cancellationToken));
     }
 
-    /// <summary>	An IDbConnection extension method that inserts. </summary>
-    /// <typeparam name="TEntity">	Type of the entity. </typeparam>
-    /// <param name="connection">	 	The connection to act on. </param>
-    /// <param name="entity">		 	The entity. </param>
-    /// <param name="transaction">   	(Optional) The transaction. </param>
-    /// <param name="commandTimeout">	(Optional) The command timeout. </param>
-    /// <returns>	A long. </returns>
-    public static long InsertAuto<TEntity>(this IDbConnection connection, TEntity entity,
-        IDbTransaction transaction = null,
-        int? commandTimeout = null)
-    {
-        var type = typeof(TEntity);
-
-        var builder = connection.GetBuilder();
-        var sql = builder.InsertAutoKey(type);
-        OnSqlGenerated(sql);
-
-        var multi = connection.QueryMultiple(sql, entity, transaction, commandTimeout);
-
-        var result = multi.Read().FirstOrDefault();
-        if (result?.Id == null) return 0;
-
-        var id = (int) result.Id;
-
-        var keyProperty = SqlCache.TypeKeyPropertiesCache(type).Single();
-        keyProperty.PropertyInfo.SetValue(entity, id);
-
-        return id;
-    }
-
-    /// <summary>An IDbConnection extension method that inserts an automatic asynchronous.</summary>
+    /// <summary>
+    /// An IDbConnection extension method that inserts an automatic.
+    /// </summary>
+    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">       The connection to act on. </param>
     /// <param name="entity">           The entity. </param>
     /// <param name="transaction">      (Optional) The transaction. </param>
     /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    /// <returns>   A long.</returns>
-    public static async Task<long> InsertAutoAsync<TEntity>(this IDbConnection connection, TEntity entity,
+    public static void InsertAuto<TEntity>(this IDbConnection connection, TEntity entity,
         IDbTransaction transaction = null,
         int? commandTimeout = null)
     {
@@ -253,17 +223,47 @@ public static class SqlExtensions
         var sql = builder.InsertAutoKey(type);
         OnSqlGenerated(sql);
 
-        var multi = await connection.QueryMultipleAsync(sql, entity, transaction, commandTimeout);
+        var result = connection.ExecuteScalar<object>(sql, entity, transaction, commandTimeout);
+        var cast = Convert.ChangeType(result,
+            SqlCache.TypeKeyPropertiesCache(typeof(TEntity))
+                .Single(tk => tk.ExtendedData.IdentityKey).PropertyInfo.PropertyType);
 
-        var result = (await multi.ReadAsync()).FirstOrDefault();
-        if (result?.Id == null) return 0;
+        var keyProperty = SqlCache.TypeKeyPropertiesCache(type).Single(tk => tk.ExtendedData.IdentityKey);
+        keyProperty.PropertyInfo.SetValue(entity, cast);
+    }
 
-        var id = (int) result.Id;
+    /// <summary>
+    /// An IDbConnection extension method that inserts an automatic asynchronous.
+    /// </summary>
+    ///
+    /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+    /// <param name="connection">           The connection to act on. </param>
+    /// <param name="entity">               The entity. </param>
+    /// <param name="transaction">          (Optional) The transaction. </param>
+    /// <param name="commandTimeout">       (Optional) The command timeout. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    ///
+    /// <returns>
+    /// A long.
+    /// </returns>
+    public static async Task InsertAutoAsync<TEntity>(this IDbConnection connection, TEntity entity,
+        IDbTransaction transaction = null,
+        int? commandTimeout = null, CancellationToken cancellationToken = default)
+    {
+        var type = typeof(TEntity);
+
+        var builder = connection.GetBuilder();
+        var sql = builder.InsertAutoKey(type);
+        OnSqlGenerated(sql);
+        
+        var result = await connection.ExecuteScalarAsync<object>(new CommandDefinition(sql, entity, transaction, commandTimeout, cancellationToken: cancellationToken));
+        var cast = Convert.ChangeType(result,
+            SqlCache.TypeKeyPropertiesCache(typeof(TEntity))
+                .Single(tk => tk.ExtendedData.IdentityKey).PropertyInfo.PropertyType);
 
         var keyProperty = SqlCache.TypeKeyPropertiesCache(type).Single();
-        keyProperty.PropertyInfo.SetValue(entity, id);
-
-        return id;
+        keyProperty.PropertyInfo.SetValue(entity, cast);
     }
 
     /// <summary>   An IDbConnection extension method that inserts a multiple.</summary>
@@ -339,17 +339,25 @@ public static class SqlExtensions
         return connection.Execute(sql, entities, transaction, commandTimeout);
     }
 
-    /// <summary>An IDbConnection extension method that inserts an automatic multiple asynchronous.</summary>
+    /// <summary>
+    /// An IDbConnection extension method that inserts an automatic multiple asynchronous.
+    /// </summary>
+    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    /// <param name="connection">       The connection to act on. </param>
-    /// <param name="entities">         The entities. </param>
-    /// <param name="transaction">      (Optional) The transaction. </param>
-    /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    /// <returns>   A long.</returns>
+    /// <param name="connection">           The connection to act on. </param>
+    /// <param name="entities">             The entities. </param>
+    /// <param name="transaction">          (Optional) The transaction. </param>
+    /// <param name="commandTimeout">       (Optional) The command timeout. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    ///
+    /// <returns>
+    /// A long.
+    /// </returns>
     public static Task<int> InsertAutoMultipleAsync<TEntity>(this IDbConnection connection,
         IEnumerable<TEntity> entities,
         IDbTransaction transaction = null,
-        int? commandTimeout = null)
+        int? commandTimeout = null, CancellationToken cancellationToken = default)
     {
         var type = typeof(TEntity);
 
@@ -358,7 +366,7 @@ public static class SqlExtensions
         OnSqlGenerated(sql);
 
         // just return number of affected rows instead of the indivitual id's
-        return connection.ExecuteAsync(sql, entities, transaction, commandTimeout);
+        return connection.ExecuteAsync(new CommandDefinition(sql, entities, transaction, commandTimeout, cancellationToken: cancellationToken));
     }
 
     /// <summary>	An IDbConnection extension method that updates this object. </summary>
@@ -510,10 +518,34 @@ public static class SqlExtensions
         var sql = builder.Delete(type);
         OnSqlGenerated(sql);
 
-        var parameters = new DynamicParameters();
-        parameters.Add(builder.KeyParameter(type), id);
+        var typeKeys = SqlCache.TypeKeyPropertiesCache(typeof(TEntity));
 
-        return connection.Execute(sql, parameters, transaction, commandTimeout) > 0;
+        if (typeKeys.Count > 1 || id is IDictionary<string, object>)
+        {
+            var parameters = new DynamicParameters();
+
+            if (id is IDictionary<string, object> keyParams)
+            {
+                if (keyParams.Count != typeKeys.Count)
+                    throw new InvalidOperationException(
+                        $"Invalid id, KeyCount-Mismatch. TypeConfig requires {typeKeys.Count} keys, query received {keyParams.Count} keys.");
+                foreach (var p in keyParams)
+                {
+                    parameters.Add(p.Key, p.Value);
+                }
+            }
+            else
+                throw new InvalidOperationException(
+                    "Invalid id, a type having multiple keys must be queried using multiple keys!");
+            
+            return connection.Execute(sql, parameters, transaction, commandTimeout) > 0;
+        }
+        else
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add(builder.KeyParameter(type), id);
+            return connection.Execute(sql, parameters, transaction, commandTimeout) > 0;
+        }
     }
 
     /// <summary>
@@ -541,11 +573,34 @@ public static class SqlExtensions
         var sql = builder.Delete(type);
         OnSqlGenerated(sql);
 
-        var parameters = new DynamicParameters();
-        parameters.Add(builder.KeyParameter(type), id);
+        var typeKeys = SqlCache.TypeKeyPropertiesCache(typeof(TEntity));
 
-        return await connection.ExecuteAsync(new CommandDefinition(sql, parameters, transaction, commandTimeout,
-            cancellationToken: cancellationToken)) > 0;
+        if (typeKeys.Count > 1 || id is IDictionary<string, object>)
+        {
+            var parameters = new DynamicParameters();
+
+            if (id is IDictionary<string, object> keyParams)
+            {
+                if (keyParams.Count != typeKeys.Count)
+                    throw new InvalidOperationException(
+                        $"Invalid id, KeyCount-Mismatch. TypeConfig requires {typeKeys.Count} keys, query received {keyParams.Count} keys.");
+                foreach (var p in keyParams)
+                {
+                    parameters.Add(p.Key, p.Value);
+                }
+            }
+            else
+                throw new InvalidOperationException(
+                    "Invalid id, a type having multiple keys must be queried using multiple keys!");
+
+            return await connection.ExecuteAsync(new CommandDefinition(sql, parameters, transaction, commandTimeout, cancellationToken: cancellationToken)) > 0;
+        }
+        else
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add(builder.KeyParameter(type), id);
+            return await connection.ExecuteAsync(new CommandDefinition(sql, parameters, transaction, commandTimeout, cancellationToken: cancellationToken)) > 0;
+        }
     }
 
     /// <summary>	Executes the SQL generated action. </summary>

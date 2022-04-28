@@ -1,4 +1,6 @@
-﻿using FluiTec.AppFx.Data.Entities;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using FluiTec.AppFx.Data.Entities;
 
 namespace FluiTec.AppFx.Data.Repositories;
 
@@ -12,4 +14,27 @@ public interface ITableDataRepository<TEntity> : IDataRepository<TEntity>
     /// <value>	The name of the table. </value>
     // ReSharper disable once UnusedMemberInSuper.Global
     string TableName { get; }
+
+    /// <summary>
+    /// Gets an entity using the given identifier.
+    /// </summary>
+    ///
+    /// <param name="keys"> A variable-length parameters list containing keys. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    TEntity Get(params object[] keys);
+    
+    /// <summary>
+    /// Gets an entity asynchronous.
+    /// </summary>
+    ///
+    /// <param name="keys"> A variable-length parameters list containing keys. </param>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default);
 }

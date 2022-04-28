@@ -66,6 +66,17 @@ public interface IWritableTableDataRepository<TEntity> : ITableDataRepository<TE
     /// </returns>
     Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default);
 
+    /// <summary>
+    /// Deletes the given ID.
+    /// </summary>
+    ///
+    /// <param name="keys"> The keys. </param>
+    ///
+    /// <returns>
+    /// True if it succeeds, false if it fails.
+    /// </returns>
+    bool Delete(params object[] keys);
+
     /// <summary>   Deletes the given ID.</summary>
     /// <param name="entity">   The entity to add. </param>
     /// <returns>   True if it succeeds, false if it fails.</returns>
@@ -82,4 +93,16 @@ public interface IWritableTableDataRepository<TEntity> : ITableDataRepository<TE
     /// The delete.
     /// </returns>
     Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default);
+
+    /// <summary>
+    /// Deletes the asynchronous described by ID.
+    /// </summary>
+    ///
+    /// <param name="keys"> The keys. </param>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The delete.
+    /// </returns>
+    Task<bool> DeleteAsync(object[] keys, CancellationToken ctx = default);
 }

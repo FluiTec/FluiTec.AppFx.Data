@@ -82,8 +82,37 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     protected DbSet<TEntity> Set => UnitOfWork.Context.Set<TEntity>();
 
     #endregion
-    
+
     #region ITableDataRepository
+
+    /// <summary>
+    /// Gets an entity using the given identifier.
+    /// </summary>
+    ///
+    /// <param name="keys"> A variable-length parameters list containing keys. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    public TEntity Get(params object[] keys)
+    {
+        return Set.Find(keys);
+    }
+
+    /// <summary>
+    /// Gets an entity asynchronous.
+    /// </summary>
+    ///
+    /// <param name="keys"> A variable-length parameters list containing keys. </param>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    public async Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
+    {
+        return await Set.FindAsync(keys, ctx);
+    }
 
     /// <summary>
     /// Gets all entities in this collection.

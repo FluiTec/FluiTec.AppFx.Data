@@ -146,6 +146,20 @@ public abstract class LiteDbWritableKeyTableDataRepository<TEntity, TKey> :
         return Task.FromResult(Update(entity));
     }
 
+    /// <summary>
+    /// Deletes the given ID.
+    /// </summary>
+    ///
+    /// <param name="keys"> The keys. </param>
+    ///
+    /// <returns>
+    /// True if it succeeds, false if it fails.
+    /// </returns>
+    public bool Delete(params object[] keys)
+    {
+        return Delete(Get(keys));
+    }
+
     /// <summary>   Deletes the given ID. </summary>
     /// <param name="id">   The Identifier to delete. </param>
     public virtual bool Delete(TKey id)
@@ -188,6 +202,22 @@ public abstract class LiteDbWritableKeyTableDataRepository<TEntity, TKey> :
     public virtual Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default)
     {
         return Task.FromResult(Delete(entity));
+    }
+
+    /// <summary>
+    /// Deletes the asynchronous described by ID.
+    /// </summary>
+    ///
+    /// <param name="keys"> The keys. </param>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The delete.
+    /// </returns>
+    public async Task<bool> DeleteAsync(object[] keys, CancellationToken ctx = default)
+    {
+        var entity = await GetAsync(keys, ctx);
+        return await DeleteAsync(entity, ctx);
     }
 
     #endregion
