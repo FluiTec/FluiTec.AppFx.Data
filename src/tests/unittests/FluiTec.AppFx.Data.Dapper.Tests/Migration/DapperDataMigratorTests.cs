@@ -2,7 +2,7 @@
 using System.Reflection;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.VersionTableInfo;
-using FluiTec.AppFx.Data.Dapper.Migration;
+using FluiTec.AppFx.Data.Migration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -16,14 +16,14 @@ namespace FluiTec.AppFx.Data.Dapper.Tests.Migration
         public void TestThrowsOnMissingScanAssemblies()
         {
             var versionMock = new Mock<IVersionTableMetaData>();
-            var unused = new DapperDataMigrator(string.Empty, null, versionMock.Object, builder => { });
+            var unused = new DataMigrator(string.Empty, null, versionMock.Object, builder => { });
         }
 
         [TestMethod]
         public void TestWontThrowOnMissingMigrations()
         {
             var versionMock = new Mock<IVersionTableMetaData>();
-            var unused = new DapperDataMigrator(string.Empty, Array.Empty<Assembly>(), versionMock.Object,
+            var unused = new DataMigrator(string.Empty, Array.Empty<Assembly>(), versionMock.Object,
                 builder => { builder.AddSQLite(); });
         }
     }

@@ -17,6 +17,6 @@ internal class DbProvider : MysqlDataServiceProvider<ITestDataService, ITestUnit
     /// </returns>
     public override ITestDataService ProvideDataService()
     {
-        return new MysqlTestDataService(ServiceOptions, null);
+        return new MysqlDapperTestDataService(ServiceOptions, null);
     }
 }

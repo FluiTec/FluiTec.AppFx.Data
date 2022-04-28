@@ -4,23 +4,24 @@ using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.TestLibrary.DataServices
 {
-    /// <summary>   A service for accessing mssql test data information.</summary>
-    public class MssqlTestDataService : DapperTestDataService
+    /// <summary>   A service for accessing mysql test data information.</summary>
+    public class MysqlDapperTestDataService : DapperTestDataService
     {
         /// <summary>   Constructor.</summary>
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
-        public MssqlTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(
-            dapperServiceOptions, loggerFactory)
+        public MysqlDapperTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) :
+            base(
+                dapperServiceOptions, loggerFactory)
         {
         }
 
         /// <summary>   Gets the name.</summary>
         /// <value> The name.</value>
-        public override string Name => nameof(MssqlTestDataService);
+        public override string Name => nameof(MysqlDapperTestDataService);
 
         /// <summary>   Gets the type of the SQL.</summary>
         /// <value> The type of the SQL.</value>
-        public override SqlType SqlType => SqlType.Mssql;
+        public override SqlType SqlType => SqlType.Mysql;
     }
 }

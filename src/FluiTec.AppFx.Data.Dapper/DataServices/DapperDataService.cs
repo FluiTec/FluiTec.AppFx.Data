@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.VersionTableInfo;
-using FluiTec.AppFx.Data.Dapper.Migration;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
@@ -16,7 +15,11 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices;
 public abstract class DapperDataService<TUnitOfWork> : BaseDapperDataService<TUnitOfWork>
     where TUnitOfWork : DapperUnitOfWork, IUnitOfWork
 {
+    #region Fields
+
     private IVersionTableMetaData _metaData;
+
+    #endregion
 
     #region Constructors
 
@@ -58,32 +61,25 @@ public abstract class DapperDataService<TUnitOfWork> : BaseDapperDataService<TUn
     /// <returns>   An Action&lt;IMigrationRunnerBuilder&gt; </returns>
     protected virtual Action<IMigrationRunnerBuilder> ConfigureSqlType()
     {
-        switch (SqlType)
+        return SqlType switch
         {
-            case SqlType.Mssql:
-                return rb => rb.AddSqlServer2016();
-            case SqlType.Mysql:
-                return rb => rb.AddMySql5();
-            case SqlType.Pgsql:
-                return rb => rb.AddPostgres();
-            case SqlType.Sqlite:
-                return rb => rb.AddSQLite();
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+            SqlType.Mssql => rb => rb.AddSqlServer2016(),
+            SqlType.Mysql => rb => rb.AddMySql5(),
+            SqlType.Pgsql => rb => rb.AddPostgres(),
+            SqlType.Sqlite => rb => rb.AddSQLite(),
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 
     /// <summary>   Determines if we can supports schema.</summary>
     /// <returns>   True if it succeeds, false if it fails.</returns>
     protected virtual bool SupportsSchema()
     {
-        switch (SqlType)
+        return SqlType switch
         {
-            case SqlType.Mysql:
-                return false;
-            default:
-                return true;
-        }
+            SqlType.Mysql => false,
+            _ => true
+        };
     }
 
     /// <summary>   Gets the migration assemblies in this collection. </summary>
@@ -103,7 +99,7 @@ public abstract class DapperDataService<TUnitOfWork> : BaseDapperDataService<TUn
     /// <returns>   The migrator. </returns>
     public override IDataMigrator GetMigrator()
     {
-        return new DapperDataMigrator(ConnectionString, GetMigrationAssemblies(), MetaData, ConfigureSqlType());
+        return new DataMigrator(ConnectionString, GetMigrationAssemblies(), MetaData, ConfigureSqlType());
     }
 
     #endregion

@@ -1,6 +1,6 @@
 ﻿using FluentMigrator.Runner.VersionTableInfo;
 
-namespace FluiTec.AppFx.Data.Dapper.Migration;
+namespace FluiTec.AppFx.Data.Migration;
 
 /// <summary>   A version table. </summary>
 [VersionTableMetaData]

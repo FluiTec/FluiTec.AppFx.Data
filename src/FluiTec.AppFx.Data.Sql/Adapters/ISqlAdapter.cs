@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Text;
+using FluiTec.AppFx.Data.EntityNameServices;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters;
 
@@ -127,4 +128,12 @@ public interface ISqlAdapter
     /// <param name="propertyName"> Name of the property. </param>
     /// <returns>A string.</returns>
     string RenderPropertyName(string propertyName);
+
+    /// <summary>
+    ///     Gets name service.
+    /// </summary>
+    /// <returns>
+    ///     The name service.
+    /// </returns>
+    IEntityNameService GetNameService();
 }

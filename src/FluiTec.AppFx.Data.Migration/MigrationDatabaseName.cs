@@ -1,4 +1,4 @@
-﻿namespace FluiTec.AppFx.Data.Dapper.Migration;
+﻿namespace FluiTec.AppFx.Data.Migration;
 
 /// <summary>A migration database name.</summary>
 public class MigrationDatabaseName

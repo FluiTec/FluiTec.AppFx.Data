@@ -4,5 +4,4 @@ namespace WebSample;
 
 public class SampleDynamicDataOptions : DynamicDataOptions
 {
-    
 }

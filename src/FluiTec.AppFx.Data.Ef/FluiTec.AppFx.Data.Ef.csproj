@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6</TargetFramework>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageProjectUrl>https://www.nuget.org/packages/FluiTec.AppFx.Data.Ef/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/FluiTec/FluiTec.AppFx.Data.Ef</RepositoryUrl>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PostBuildEvent></PostBuildEvent>
+		<PreBuildEvent></PreBuildEvent>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\LICENSE.md">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\..\THIRD_PARTY_LICENSES.md">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="FluentMigrator.Runner.Core" Version="3.3.2" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
+	  <PackageReference Include="MySql.EntityFrameworkCore" Version="6.0.1" />
+	  <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj" />
+		<ProjectReference Include="..\FluiTec.AppFx.Data.Migration\FluiTec.AppFx.Data.Migration.csproj" />
+		<ProjectReference Include="..\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj" />
+		<ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="DataServices\" />
+	  <Folder Include="Extensions\" />
+	  <Folder Include="Repositories\" />
+	</ItemGroup>
+
+</Project>

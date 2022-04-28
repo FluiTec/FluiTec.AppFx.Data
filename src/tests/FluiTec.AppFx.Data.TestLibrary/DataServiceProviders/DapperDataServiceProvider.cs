@@ -14,8 +14,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
     /// </summary>
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
-    public abstract class
-        DapperDataServiceProvider<TDataService, TUnitOfWork> : DataServiceProvider<TDataService, TUnitOfWork>
+    public abstract class DapperDataServiceProvider<TDataService, TUnitOfWork>
+        : DataServiceProvider<TDataService, TUnitOfWork>
         where TDataService : IDataService<TUnitOfWork>
         where TUnitOfWork : IUnitOfWork
     {

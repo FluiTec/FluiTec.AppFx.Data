@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net6</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://www.nuget.org/packages/FluiTec.AppFx.Data/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FluiTec/FluiTec.AppFx.Data</RepositoryUrl>
@@ -35,6 +35,7 @@
     <ProjectReference Include="..\FluiTec.AppFx.Data.Dapper.SqLite\FluiTec.AppFx.Data.Dapper.SqLite.csproj" />
     <ProjectReference Include="..\FluiTec.AppFx.Data.Dapper\FluiTec.AppFx.Data.Dapper.csproj" />
     <ProjectReference Include="..\FluiTec.AppFx.Data.LiteDb\FluiTec.AppFx.Data.LiteDb.csproj" />
+    <ProjectReference Include="..\FluiTec.AppFx.Data.Ef\FluiTec.AppFx.Data.Ef.csproj" />
   </ItemGroup>
 
 </Project>

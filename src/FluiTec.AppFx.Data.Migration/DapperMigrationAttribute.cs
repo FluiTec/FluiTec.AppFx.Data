@@ -1,10 +1,10 @@
 ﻿using System;
 using FluentMigrator;
 
-namespace FluiTec.AppFx.Data.Dapper.Migration;
+namespace FluiTec.AppFx.Data.Migration;
 
-/// <summary>   Attribute for dapper migration. </summary>
-public class DapperMigrationAttribute : MigrationAttribute
+/// <summary>   Attribute for extended migration. </summary>
+public class ExtendedMigrationAttribute : MigrationAttribute
 {
     /// <summary>   Constructor. </summary>
     /// <param name="year">     The year. </param>
@@ -13,7 +13,7 @@ public class DapperMigrationAttribute : MigrationAttribute
     /// <param name="hour">     The hour. </param>
     /// <param name="minute">   The minute. </param>
     /// <param name="author">   The author. </param>
-    public DapperMigrationAttribute(int year, int month, int day, int hour, int minute, string author)
+    public ExtendedMigrationAttribute(int year, int month, int day, int hour, int minute, string author)
         : base(CalculateValue(year, month, day, hour, minute))
     {
         Author = author;

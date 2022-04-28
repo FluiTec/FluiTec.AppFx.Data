@@ -1,5 +1,5 @@
 ﻿using System;
-using FluiTec.AppFx.Data.Dapper.Migration;
+using FluiTec.AppFx.Data.Migration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Dapper.Tests.Migration
@@ -11,7 +11,7 @@ namespace FluiTec.AppFx.Data.Dapper.Tests.Migration
         public void TestSavesAuthor()
         {
             const string author = "sample";
-            var attribute = new DapperMigrationAttribute(2020, 10, 10, 10, 10, author);
+            var attribute = new ExtendedMigrationAttribute(2020, 10, 10, 10, 10, author);
             Assert.AreEqual(author, attribute.Author);
         }
 
@@ -27,7 +27,7 @@ namespace FluiTec.AppFx.Data.Dapper.Tests.Migration
 
             var version = new DateTime(year, month, day, hour, minute, 0).Ticks;
 
-            var attribute = new DapperMigrationAttribute(year, month, day, hour, minute, author);
+            var attribute = new ExtendedMigrationAttribute(year, month, day, hour, minute, author);
             Assert.AreEqual(version, attribute.Version);
         }
     }

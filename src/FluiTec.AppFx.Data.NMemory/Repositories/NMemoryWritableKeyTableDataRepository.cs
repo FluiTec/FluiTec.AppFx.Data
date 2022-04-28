@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
@@ -77,10 +78,11 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     ///     Adds entity.
     /// </summary>
     /// <param name="entity">   The entity to add. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public Task<TEntity> AddAsync(TEntity entity)
+    public Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default)
     {
         return Task.FromResult(Add(entity));
     }
@@ -99,10 +101,11 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     ///     Adds a range asynchronous.
     /// </summary>
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     /// <returns>
     ///     An asynchronous result.
     /// </returns>
-    public Task AddRangeAsync(IEnumerable<TEntity> entities)
+    public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default)
     {
         AddRange(entities);
         return Task.CompletedTask;
@@ -135,12 +138,25 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     ///     Updates the asynchronous described by entity.
     /// </summary>
     /// <param name="entity">   The entity to add. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     /// <returns>
     ///     The update.
     /// </returns>
-    public Task<TEntity> UpdateAsync(TEntity entity)
+    public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default)
     {
         return Task.FromResult(Update(entity));
+    }
+
+    /// <summary>
+    ///     Deletes the given ID.
+    /// </summary>
+    /// <param name="keys"> The keys. </param>
+    /// <returns>
+    ///     True if it succeeds, false if it fails.
+    /// </returns>
+    public bool Delete(params object[] keys)
+    {
+        return Delete(Get(keys));
     }
 
     /// <summary>
@@ -159,10 +175,11 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     ///     Deletes the asynchronous described by ID.
     /// </summary>
     /// <param name="id">   The Identifier to delete. </param>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
     /// <returns>
     ///     The delete.
     /// </returns>
-    public Task<bool> DeleteAsync(TKey id)
+    public Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {
         return Task.FromResult(Delete(id));
     }
@@ -186,12 +203,27 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     ///     Deletes the asynchronous described by ID.
     /// </summary>
     /// <param name="entity">   The entity to add. </param>
+    /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
     /// <returns>
     ///     The delete.
     /// </returns>
-    public Task<bool> DeleteAsync(TEntity entity)
+    public Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default)
     {
         return Task.FromResult(Delete(entity));
+    }
+
+    /// <summary>
+    ///     Deletes the asynchronous described by ID.
+    /// </summary>
+    /// <param name="keys"> The keys. </param>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
+    /// <returns>
+    ///     The delete.
+    /// </returns>
+    public async Task<bool> DeleteAsync(object[] keys, CancellationToken ctx = default)
+    {
+        var entity = await GetAsync(keys, ctx);
+        return await DeleteAsync(entity, ctx);
     }
 
     /// <summary>   Gets a default.</summary>

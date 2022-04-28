@@ -100,7 +100,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
+            var entity = uow.GetWritableRepository<TEntity>().Add(CreateEntity());
             Assert.IsTrue(HasValidKey(entity));
         }
 
@@ -112,7 +112,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            var entity = uow.GetWritableRepository<TEntity, TKey>().AddAsync(CreateEntity()).Result;
+            var entity = uow.GetWritableRepository<TEntity>().AddAsync(CreateEntity()).Result;
             Assert.IsTrue(HasValidKey(entity));
         }
 
@@ -124,9 +124,9 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            uow.GetWritableRepository<TEntity, TKey>().AddRange(CreateEntities());
+            uow.GetWritableRepository<TEntity>().AddRange(CreateEntities());
 
-            var entities = uow.GetRepository<TEntity, TKey>().GetAll();
+            var entities = uow.GetDataRepository<TEntity>().GetAll();
             foreach (var entity in entities)
                 Assert.IsTrue(HasValidKey(entity));
         }
@@ -139,9 +139,9 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            uow.GetWritableRepository<TEntity, TKey>().AddRangeAsync(CreateEntities()).Wait();
+            uow.GetWritableRepository<TEntity>().AddRangeAsync(CreateEntities()).Wait();
 
-            var entities = uow.GetRepository<TEntity, TKey>().GetAllAsync().Result;
+            var entities = uow.GetDataRepository<TEntity>().GetAllAsync().Result;
             foreach (var entity in entities)
                 Assert.IsTrue(HasValidKey(entity));
         }
@@ -158,8 +158,22 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
-            var dbEntity = uow.GetWritableRepository<TEntity, TKey>().Get(entity.Id);
+            var entity = uow.GetWritableRepository<TEntity>().Add(CreateEntity());
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().Get(entity.Id);
+
+            Assert.IsTrue(EntityEquals(entity, dbEntity));
+        }
+
+        /// <summary>
+        ///     (Unit Test Method) can read entity by keys.
+        /// </summary>
+        [TestMethod]
+        public virtual void CanReadEntityByKeys()
+        {
+            using var uow = BeginUnitOfWork();
+
+            var entity = uow.GetWritableRepository<TEntity>().Add(CreateEntity());
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().Get(new object[] {entity.Id});
 
             Assert.IsTrue(EntityEquals(entity, dbEntity));
         }
@@ -172,8 +186,22 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
-            var dbEntity = uow.GetWritableRepository<TEntity, TKey>().GetAsync(entity.Id).Result;
+            var entity = uow.GetWritableRepository<TEntity>().Add(CreateEntity());
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().GetAsync(entity.Id).Result;
+
+            Assert.IsTrue(EntityEquals(entity, dbEntity));
+        }
+
+        /// <summary>
+        ///     (Unit Test Method) can read entity by keys asynchronous.
+        /// </summary>
+        [TestMethod]
+        public virtual void CanReadEntityByKeysAsync()
+        {
+            using var uow = BeginUnitOfWork();
+
+            var entity = uow.GetWritableRepository<TEntity>().Add(CreateEntity());
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().GetAsync(new object[] {entity.Id}).Result;
 
             Assert.IsTrue(EntityEquals(entity, dbEntity));
         }
@@ -187,9 +215,9 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
             using var uow = BeginUnitOfWork();
 
             var entities = CreateEntities().ToList();
-            uow.GetWritableRepository<TEntity, TKey>().AddRange(entities);
+            uow.GetWritableRepository<TEntity>().AddRange(entities);
 
-            var dbCount = uow.GetRepository<TEntity, TKey>().GetAll().Count();
+            var dbCount = uow.GetDataRepository<TEntity>().GetAll().Count();
 
             Assert.AreEqual(entities.Count, dbCount);
         }
@@ -203,9 +231,9 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
             using var uow = BeginUnitOfWork();
 
             var entities = CreateEntities().ToList();
-            uow.GetWritableRepository<TEntity, TKey>().AddRange(entities);
+            uow.GetWritableRepository<TEntity>().AddRange(entities);
 
-            var dbCount = uow.GetRepository<TEntity, TKey>().GetAllAsync().Result.Count();
+            var dbCount = uow.GetDataRepository<TEntity>().GetAllAsync().Result.Count();
 
             Assert.AreEqual(entities.Count, dbCount);
         }
@@ -219,9 +247,9 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
             using var uow = BeginUnitOfWork();
 
             var entities = CreateEntities().ToList();
-            uow.GetWritableRepository<TEntity, TKey>().AddRange(entities);
+            uow.GetKeyWritableRepository<TEntity, TKey>().AddRange(entities);
 
-            var dbCount = uow.GetRepository<TEntity, TKey>().Count();
+            var dbCount = uow.GetDataRepository<TEntity>().Count();
 
             Assert.AreEqual(entities.Count, dbCount);
         }
@@ -235,9 +263,9 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
             using var uow = BeginUnitOfWork();
 
             var entities = CreateEntities().ToList();
-            uow.GetWritableRepository<TEntity, TKey>().AddRange(entities);
+            uow.GetWritableRepository<TEntity>().AddRange(entities);
 
-            var dbCount = uow.GetRepository<TEntity, TKey>().CountAsync().Result;
+            var dbCount = uow.GetDataRepository<TEntity>().CountAsync().Result;
 
             Assert.AreEqual(entities.Count, dbCount);
         }
@@ -254,12 +282,12 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
+            var entity = uow.GetWritableRepository<TEntity>().Add(CreateEntity());
             ChangeEntity(entity);
 
-            uow.GetWritableRepository<TEntity, TKey>().Update(entity);
+            uow.GetWritableRepository<TEntity>().Update(entity);
 
-            var dbEntity = uow.GetWritableRepository<TEntity, TKey>().Get(entity.Id);
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().Get(entity.Id);
             Assert.IsTrue(EntityEquals(entity, dbEntity));
         }
 
@@ -271,12 +299,12 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            var entity = uow.GetWritableRepository<TEntity, TKey>().AddAsync(CreateEntity()).Result;
+            var entity = uow.GetWritableRepository<TEntity>().AddAsync(CreateEntity()).Result;
             ChangeEntity(entity);
 
-            uow.GetWritableRepository<TEntity, TKey>().UpdateAsync(entity).Wait();
+            uow.GetWritableRepository<TEntity>().UpdateAsync(entity).Wait();
 
-            var dbEntity = uow.GetWritableRepository<TEntity, TKey>().GetAsync(entity.Id).Result;
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().GetAsync(entity.Id).Result;
             Assert.IsTrue(EntityEquals(entity, dbEntity));
         }
 
@@ -289,7 +317,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            uow.GetWritableRepository<TEntity, TKey>().Update(CreateNonUpdateableEntity());
+            uow.GetWritableRepository<TEntity>().Update(CreateNonUpdateableEntity());
         }
 
         /// <summary>
@@ -302,7 +330,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
 
             try
             {
-                var unused = uow.GetWritableRepository<TEntity, TKey>().UpdateAsync(CreateNonUpdateableEntity()).Result;
+                var unused = uow.GetWritableRepository<TEntity>().UpdateAsync(CreateNonUpdateableEntity()).Result;
             }
             catch (UpdateException e)
             {
@@ -326,11 +354,11 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
+            var entity = uow.GetWritableRepository<TEntity>().Add(CreateEntity());
 
-            Assert.IsTrue(uow.GetWritableRepository<TEntity, TKey>().Delete(entity));
+            Assert.IsTrue(uow.GetWritableRepository<TEntity>().Delete(entity));
 
-            var dbEntity = uow.GetWritableRepository<TEntity, TKey>().Get(entity.Id);
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().Get(entity.Id);
 
             Assert.IsNull(dbEntity);
         }
@@ -343,12 +371,12 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            var entity = uow.GetWritableRepository<TEntity, TKey>().AddAsync(CreateEntity()).Result;
+            var entity = uow.GetWritableRepository<TEntity>().AddAsync(CreateEntity()).Result;
             ChangeEntity(entity);
 
-            Assert.IsTrue(uow.GetWritableRepository<TEntity, TKey>().DeleteAsync(entity).Result);
+            Assert.IsTrue(uow.GetWritableRepository<TEntity>().DeleteAsync(entity).Result);
 
-            var dbEntity = uow.GetWritableRepository<TEntity, TKey>().GetAsync(entity.Id).Result;
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().GetAsync(entity.Id).Result;
 
             Assert.IsNull(dbEntity);
         }
@@ -361,12 +389,12 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            var entity = uow.GetWritableRepository<TEntity, TKey>().Add(CreateEntity());
+            var entity = uow.GetWritableRepository<TEntity>().Add(CreateEntity());
             ChangeEntity(entity);
 
-            Assert.IsTrue(uow.GetWritableRepository<TEntity, TKey>().Delete(entity.Id));
+            Assert.IsTrue(uow.GetKeyWritableRepository<TEntity, TKey>().Delete(entity.Id));
 
-            var dbEntity = uow.GetWritableRepository<TEntity, TKey>().Get(entity.Id);
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().Get(entity.Id);
 
             Assert.IsNull(dbEntity);
         }
@@ -379,12 +407,12 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         {
             using var uow = BeginUnitOfWork();
 
-            var entity = uow.GetWritableRepository<TEntity, TKey>().AddAsync(CreateEntity()).Result;
+            var entity = uow.GetWritableRepository<TEntity>().AddAsync(CreateEntity()).Result;
             ChangeEntity(entity);
 
-            Assert.IsTrue(uow.GetWritableRepository<TEntity, TKey>().DeleteAsync(entity.Id).Result);
+            Assert.IsTrue(uow.GetKeyWritableRepository<TEntity, TKey>().DeleteAsync(entity.Id).Result);
 
-            var dbEntity = uow.GetWritableRepository<TEntity, TKey>().GetAsync(entity.Id).Result;
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().GetAsync(entity.Id).Result;
 
             Assert.IsNull(dbEntity);
         }

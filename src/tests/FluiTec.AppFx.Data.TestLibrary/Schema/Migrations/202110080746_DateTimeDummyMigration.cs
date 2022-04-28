@@ -1,12 +1,12 @@
 ﻿using FluiTec.AppFx.Data.Dapper.Extensions;
-using FluiTec.AppFx.Data.Dapper.Migration;
+using FluiTec.AppFx.Data.Migration;
 
 namespace FluiTec.AppFx.Data.TestLibrary.Schema.Migrations
 {
     /// <summary>
     /// A date time dummy migration.
     /// </summary>
-    [DapperMigration(2021, 10, 08, 07, 46, "Achim Schnell")]
+    [ExtendedMigration(2021, 10, 08, 07, 46, "Achim Schnell")]
     public class DateTimeDummyMigration : FluentMigrator.Migration
     {
         /// <summary>

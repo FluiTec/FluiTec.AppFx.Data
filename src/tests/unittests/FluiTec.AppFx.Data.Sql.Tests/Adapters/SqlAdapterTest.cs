@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluiTec.AppFx.Data.Sql.Adapters;
@@ -9,35 +8,32 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
 {
     /// <summary>
-    /// A SQL adapter test.
+    ///     A SQL adapter test.
     /// </summary>
     public abstract class SqlAdapterTest
     {
         /// <summary>
-        /// Gets the adapter.
+        ///     Specialized constructor for use only by derived class.
         /// </summary>
-        ///
-        /// <value>
-        /// The adapter.
-        /// </value>
-        public ISqlAdapter Adapter { get; }
-
-        /// <summary>
-        /// Specialized constructor for use only by derived class.
-        /// </summary>
-        ///
         /// <param name="adapter">  The adapter. </param>
         protected SqlAdapterTest(ISqlAdapter adapter)
         {
             Adapter = adapter;
         }
 
+        /// <summary>
+        ///     Gets the adapter.
+        /// </summary>
+        /// <value>
+        ///     The adapter.
+        /// </value>
+        public ISqlAdapter Adapter { get; }
+
         protected abstract string GetExpectedKeyParameters(Type entityType);
 
         /// <summary>
-        /// (Unit Test Method) tests get key parameters.
+        ///     (Unit Test Method) tests get key parameters.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -52,9 +48,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         protected abstract string GetExpectedSelectAllStatement(Type entityType);
 
         /// <summary>
-        /// (Unit Test Method) tests select all statement.
+        ///     (Unit Test Method) tests select all statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -69,9 +64,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         protected abstract string GetExpectedByKeyStatement(Type entityType);
 
         /// <summary>
-        /// (Unit Test Method) tests get by key statement.
+        ///     (Unit Test Method) tests get by key statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -83,17 +77,17 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
             Assert.AreEqual(GetExpectedByKeyStatement(entityType), statement);
         }
 
-        protected abstract string GetExpectedByFilterStatement(Type entityType, string filterProperty, string[] selectProperties);
+        protected abstract string GetExpectedByFilterStatement(Type entityType, string filterProperty,
+            string[] selectProperties);
 
         /// <summary>
-        /// (Unit Test Method) tests get by filter statement.
+        ///     (Unit Test Method) tests get by filter statement.
         /// </summary>
-        ///
         /// <param name="entityType">       Type of the entity. </param>
         /// <param name="filterProperty">   The filter property. </param>
         /// <param name="selectProperties"> The select properties. </param>
         [TestMethod]
-        [DataRow(typeof(Dummy), "Name", new [] {"Id", "Name"})]
+        [DataRow(typeof(Dummy), "Name", new[] {"Id", "Name"})]
         [DataRow(typeof(RenamedDummy), "Name", new[] {"UId", "Name"})]
         [DataRow(typeof(MultiKeyDummy), "MyKey", new[] {"Id", "MyKey"})]
         public void GetByFilterStatementTest(Type entityType, string filterProperty, string[] selectProperties)
@@ -102,39 +96,40 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
             Assert.AreEqual(GetExpectedByFilterStatement(entityType, filterProperty, selectProperties), statement);
         }
 
-        protected abstract string GetExpectedByFilterInStatement(Type entityType, string filterProperty, string colName, string[] selectFields);
+        protected abstract string GetExpectedByFilterInStatement(Type entityType, string filterProperty, string colName,
+            string[] selectFields);
 
         /// <summary>
-        /// (Unit Test Method) tests get by filter in statement.
+        ///     (Unit Test Method) tests get by filter in statement.
         /// </summary>
-        ///
         /// <param name="entityType">       Type of the entity. </param>
         /// <param name="filterProperty">   The filter property. </param>
         /// <param name="colName">          Name of the col. </param>
         /// <param name="selectFields">     The select fields. </param>
         [TestMethod]
-        [DataRow(typeof(Dummy), "Name", "Names", new[] { "Id", "Name" })]
-        [DataRow(typeof(RenamedDummy), "Name", "Names", new[] { "UId", "Name" })]
-        [DataRow(typeof(MultiKeyDummy), "MyKey", "Keys", new[] { "Id", "MyKey" })]
-        public void GetByFilterInStatementTest(Type entityType, string filterProperty, string colName, string[] selectFields)
+        [DataRow(typeof(Dummy), "Name", "Names", new[] {"Id", "Name"})]
+        [DataRow(typeof(RenamedDummy), "Name", "Names", new[] {"UId", "Name"})]
+        [DataRow(typeof(MultiKeyDummy), "MyKey", "Keys", new[] {"Id", "MyKey"})]
+        public void GetByFilterInStatementTest(Type entityType, string filterProperty, string colName,
+            string[] selectFields)
         {
             var statement = Adapter.GetByFilterInStatement(entityType, filterProperty, colName, selectFields);
-            Assert.AreEqual(GetExpectedByFilterInStatement(entityType, filterProperty, colName, selectFields), statement);
+            Assert.AreEqual(GetExpectedByFilterInStatement(entityType, filterProperty, colName, selectFields),
+                statement);
         }
 
         protected abstract string GetExpectedByFilterStatement(Type entityType, string[] properties);
 
         /// <summary>
-        /// (Unit Test Method) tests get by multi filter statement.
+        ///     (Unit Test Method) tests get by multi filter statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         /// <param name="_">            The. </param>
         /// <param name="properties">   The properties. </param>
         [TestMethod]
-        [DataRow(typeof(Dummy), "_", new[] { "Id", "Name" })]
-        [DataRow(typeof(RenamedDummy), "_", new[] { "UId", "Name" })]
-        [DataRow(typeof(MultiKeyDummy), "_", new[] { "Id", "MyKey" })]
+        [DataRow(typeof(Dummy), "_", new[] {"Id", "Name"})]
+        [DataRow(typeof(RenamedDummy), "_", new[] {"UId", "Name"})]
+        [DataRow(typeof(MultiKeyDummy), "_", new[] {"Id", "MyKey"})]
         public void GetByMultiFilterStatementTest(Type entityType, string _, string[] properties)
         {
             var statement = Adapter.GetByFilterStatement(entityType, properties, properties);
@@ -144,9 +139,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         protected abstract string GetExpectedInsertStatement(Type entityType);
 
         /// <summary>
-        /// (Unit Test Method) tests get insert statement.
+        ///     (Unit Test Method) tests get insert statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -157,13 +151,12 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
             var statement = Adapter.GetInsertStatement(entityType);
             Assert.AreEqual(GetExpectedInsertStatement(entityType), statement);
         }
-        
+
         protected abstract string GetExpectedInsertAutoKeyStatement(Type entityType);
 
         /// <summary>
-        /// (Unit Test Method) tests get insert automatic key statement.
+        ///     (Unit Test Method) tests get insert automatic key statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -177,9 +170,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         protected abstract string GetExpectedInsertMultipleStatement(Type entityType);
 
         /// <summary>
-        /// (Unit Test Method) tests get insert multiple statement.
+        ///     (Unit Test Method) tests get insert multiple statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -194,9 +186,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         protected abstract string GetExpectedInsertAutoKeyMultipleStatement(Type entityType);
 
         /// <summary>
-        /// (Unit Test Method) tests get insert automatic key multiple statement.
+        ///     (Unit Test Method) tests get insert automatic key multiple statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -210,9 +201,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         protected abstract string GetExpectedUpdateStatement(Type entityType);
 
         /// <summary>
-        /// (Unit Test Method) tests get update statement.
+        ///     (Unit Test Method) tests get update statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -227,9 +217,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         protected abstract string GetExpectedDeleteStatement(Type entityType);
 
         /// <summary>
-        /// (Unit Test Method) tests get delete statememt.
+        ///     (Unit Test Method) tests get delete statememt.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -244,9 +233,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         protected abstract string GetExpectedDeleteByStatement(Type entityType, string filterProperty);
 
         /// <summary>
-        /// (Unit Test Method) tests get delete by statememt.
+        ///     (Unit Test Method) tests get delete by statememt.
         /// </summary>
-        ///
         /// <param name="entityType">       Type of the entity. </param>
         /// <param name="filterProperty">   The filter property. </param>
         [TestMethod]
@@ -262,9 +250,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         protected abstract string RenderExpectedPropertyList(PropertyInfo[] props, Type entityType = null);
 
         /// <summary>
-        /// (Unit Test Method) renders the property list test described by entityType.
+        ///     (Unit Test Method) renders the property list test described by entityType.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -278,9 +265,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         }
 
         /// <summary>
-        /// (Unit Test Method) renders the property list test 1 described by entityType.
+        ///     (Unit Test Method) renders the property list test 1 described by entityType.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -296,9 +282,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         protected abstract string GetExpectedRenderTableName(Type entityType);
 
         /// <summary>
-        /// (Unit Test Method) renders the table name test described by entityType.
+        ///     (Unit Test Method) renders the table name test described by entityType.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -313,9 +298,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         protected abstract string GetExpectedRenderPropertyName(string propName);
 
         /// <summary>
-        /// (Unit Test Method) renders the property name test described by entityType.
+        ///     (Unit Test Method) renders the property name test described by entityType.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -324,15 +308,12 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         public void RenderPropertyNameTest(Type entityType)
         {
             foreach (var p in SqlCache.TypePropertiesChache(entityType))
-            {
                 Assert.AreEqual(GetExpectedRenderPropertyName(p.Name), Adapter.RenderPropertyName(p));
-            }
         }
 
         /// <summary>
-        /// (Unit Test Method) renders the property name test 1 described by entityType.
+        ///     (Unit Test Method) renders the property name test 1 described by entityType.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -341,17 +322,14 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         public void RenderPropertyNameTest1(Type entityType)
         {
             foreach (var p in SqlCache.TypePropertiesChache(entityType))
-            {
                 Assert.AreEqual(GetExpectedRenderPropertyName(p.Name), Adapter.RenderPropertyName(p.Name));
-            }
         }
 
         protected abstract string GetExpectedRenderParameterPropertyName(string pName);
 
         /// <summary>
-        /// (Unit Test Method) renders the parameter property test described by entityType.
+        ///     (Unit Test Method) renders the parameter property test described by entityType.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -360,15 +338,12 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         public void RenderParameterPropertyTest(Type entityType)
         {
             foreach (var p in SqlCache.TypePropertiesChache(entityType))
-            {
                 Assert.AreEqual(GetExpectedRenderParameterPropertyName(p.Name), Adapter.RenderParameterProperty(p));
-            }
         }
 
         /// <summary>
-        /// (Unit Test Method) renders the parameter property test 1 described by entityType.
+        ///     (Unit Test Method) renders the parameter property test 1 described by entityType.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         [TestMethod]
         [DataRow(typeof(Dummy))]
@@ -377,9 +352,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         public void RenderParameterPropertyTest1(Type entityType)
         {
             foreach (var p in SqlCache.TypePropertiesChache(entityType))
-            {
-                Assert.AreEqual(GetExpectedRenderParameterPropertyName(p.Name), Adapter.RenderParameterProperty(p.Name));
-            }
+                Assert.AreEqual(GetExpectedRenderParameterPropertyName(p.Name),
+                    Adapter.RenderParameterProperty(p.Name));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
@@ -101,10 +102,11 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
     /// <summary>
     ///     Gets all asynchronous.
     /// </summary>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
     /// <returns>
     ///     An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
-    public Task<IEnumerable<TEntity>> GetAllAsync()
+    public Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
     {
         return Task.FromResult(GetAll());
     }
@@ -123,10 +125,11 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
     /// <summary>
     ///     Count asynchronous.
     /// </summary>
+    /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
     /// <returns>
     ///     The count.
     /// </returns>
-    public Task<int> CountAsync()
+    public Task<int> CountAsync(CancellationToken ctx = default)
     {
         return Task.FromResult(Count());
     }

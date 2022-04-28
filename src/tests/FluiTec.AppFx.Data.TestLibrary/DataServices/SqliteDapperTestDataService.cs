@@ -7,15 +7,16 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServices
     /// <summary>
     ///     A service for accessing sqlite test data information.
     /// </summary>
-    public class SqliteTestDataService : DapperTestDataService
+    public class SqliteDapperTestDataService : DapperTestDataService
     {
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
-        public SqliteTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(
-            dapperServiceOptions, loggerFactory)
+        public SqliteDapperTestDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) :
+            base(
+                dapperServiceOptions, loggerFactory)
         {
         }
 
@@ -25,7 +26,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServices
         /// <value>
         ///     The name.
         /// </value>
-        public override string Name => nameof(SqliteTestDataService);
+        public override string Name => nameof(SqliteDapperTestDataService);
 
         /// <summary>
         ///     Gets the type of the SQL.

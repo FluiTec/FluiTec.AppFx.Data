@@ -11,8 +11,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         public void CanGetDefaultKey()
         {
             var keys = SqlCache.TypeKeyPropertiesCache(typeof(Dummy));
-            Assert.AreEqual(1,keys.Count);
-            Assert.AreEqual(nameof(Dummy.Id),keys.Single().Name);
+            Assert.AreEqual(1, keys.Count);
+            Assert.AreEqual(nameof(Dummy.Id), keys.Single().PropertyInfo.Name);
         }
 
         [TestMethod]
@@ -20,7 +20,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         {
             var keys = SqlCache.TypeKeyPropertiesCache(typeof(RenamedDummy));
             Assert.AreEqual(1, keys.Count);
-            Assert.AreEqual(nameof(RenamedDummy.UId), keys.Single().Name);
+            Assert.AreEqual(nameof(RenamedDummy.UId), keys.Single().PropertyInfo.Name);
         }
 
         [TestMethod]
@@ -28,8 +28,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         {
             var keys = SqlCache.TypeKeyPropertiesCache(typeof(MultiKeyDummy));
             Assert.AreEqual(2, keys.Count);
-            Assert.IsTrue(keys.Any(k => k.Name == nameof(MultiKeyDummy.Id)));
-            Assert.IsTrue(keys.Any(k => k.Name == nameof(MultiKeyDummy.MyKey)));
+            Assert.IsTrue(keys.Any(k => k.PropertyInfo.Name == nameof(MultiKeyDummy.Id)));
+            Assert.IsTrue(keys.Any(k => k.PropertyInfo.Name == nameof(MultiKeyDummy.MyKey)));
         }
     }
 }

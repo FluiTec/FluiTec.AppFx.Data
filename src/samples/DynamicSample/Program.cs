@@ -4,7 +4,6 @@ using DynamicSample.Data.Entities;
 using DynamicSample.Data.LiteDb;
 using DynamicSample.Data.Mssql;
 using DynamicSample.Data.Mysql;
-using DynamicSample.Data.NMemory;
 using DynamicSample.Data.Pgsql;
 using DynamicSample.Data.Sqlite;
 using FluiTec.AppFx.Data.Dapper.Mssql;
@@ -129,34 +128,6 @@ internal class Program : ValidatingConfigurationManagerProgram
                 _ => throw new NotImplementedException()
             };
         });
-
-        //services.ConfigureDynamicDataProvider(Manager,
-        //    new Func<IOptionsMonitor<DynamicDataOptions>, IServiceProvider, ITestDataService>((options, provider) =>
-        //        {
-        //            return options.CurrentValue.Provider switch
-        //            {
-        //                DataProvider.LiteDb => new LiteDbTestDataService(
-        //                    provider.GetRequiredService<LiteDbServiceOptions>(),
-        //                    provider.GetService<ILoggerFactory>()),
-        //                DataProvider.Mssql => new MssqlTestDataService(
-        //                    provider.GetRequiredService<IOptionsMonitor<MssqlDapperServiceOptions>>(),
-        //                    provider.GetService<ILoggerFactory>()),
-        //                DataProvider.Pgsql => new PgsqlTestDataService(
-        //                    provider.GetRequiredService<IOptionsMonitor<PgsqlDapperServiceOptions>>(),
-        //                    provider.GetService<ILoggerFactory>()),
-        //                DataProvider.Mysql => new MysqlTestDataService(
-        //                    provider.GetRequiredService<IOptionsMonitor<MysqlDapperServiceOptions>>(),
-        //                    provider.GetService<ILoggerFactory>()),
-        //                DataProvider.Sqlite => new SqliteTestDataService(
-        //                    provider.GetRequiredService<IOptionsMonitor<SqliteDapperServiceOptions>>(),
-        //                    provider.GetService<ILoggerFactory>()),
-        //                DataProvider.NMemory => new NMemoryTestDataService(
-        //                    provider.GetService<ILoggerFactory>()),
-        //                _ => throw new NotImplementedException()
-        //            };
-        //        }
-        //    )
-        //);
 
         return services;
     }

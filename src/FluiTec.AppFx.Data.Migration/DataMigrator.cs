@@ -7,14 +7,12 @@ using FluentMigrator.Runner;
 using FluentMigrator.Runner.Exceptions;
 using FluentMigrator.Runner.Initialization;
 using FluentMigrator.Runner.VersionTableInfo;
-using FluiTec.AppFx.Data.Migration;
 using Microsoft.Extensions.DependencyInjection;
-using MigrationInfo = FluiTec.AppFx.Data.Migration.MigrationInfo;
 
-namespace FluiTec.AppFx.Data.Dapper.Migration;
+namespace FluiTec.AppFx.Data.Migration;
 
 /// <summary>   A dapper data migrator. </summary>
-public class DapperDataMigrator : IDataMigrator
+public class DataMigrator : IDataMigrator
 {
     /// <summary>
     ///     (Immutable) the loader.
@@ -34,7 +32,7 @@ public class DapperDataMigrator : IDataMigrator
     /// <param name="scanAssemblies">       The scan assemblies. </param>
     /// <param name="metaData">             Information describing the meta. </param>
     /// <param name="configureSqlProvider"> The configure SQL provider. </param>
-    public DapperDataMigrator(string connectionString, IEnumerable<Assembly> scanAssemblies,
+    public DataMigrator(string connectionString, IEnumerable<Assembly> scanAssemblies,
         IVersionTableMetaData metaData, Action<IMigrationRunnerBuilder> configureSqlProvider)
     {
         if (scanAssemblies == null)
