@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Ef.UnitsOfWork;
@@ -16,7 +17,7 @@ namespace FluiTec.AppFx.Data.Ef.Repositories;
 /// </summary>
 ///
 /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>
+public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpressionDataRepository<TEntity>
     where TEntity : class, IEntity, new()
 {
     #region Constructors
@@ -63,6 +64,15 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>
     public string TableName => Set.EntityType.Name;
 
     /// <summary>
+    /// Gets the context.
+    /// </summary>
+    ///
+    /// <value>
+    /// The context.
+    /// </value>
+    protected IDynamicDbContext Context => UnitOfWork.Context;
+
+    /// <summary>
     /// Gets the set.
     /// </summary>
     ///
@@ -72,6 +82,8 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>
     protected DbSet<TEntity> Set => UnitOfWork.Context.Set<TEntity>();
 
     #endregion
+    
+    #region ITableDataRepository
 
     /// <summary>
     /// Gets all entities in this collection.
@@ -84,8 +96,6 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>
     {
         return Set.ToList();
     }
-
-    #region ITableDataRepository
 
     /// <summary>
     /// Gets all asynchronous.
@@ -125,6 +135,39 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>
     public Task<int> CountAsync(CancellationToken ctx = default)
     {
         return Set.CountAsync(ctx);
+    }
+
+    #endregion
+
+    #region IExpressionDataRepository
+
+    /// <summary>
+    /// Enumerates the items in this collection that meet given criteria.
+    /// </summary>
+    ///
+    /// <param name="expression">   The expression. </param>
+    ///
+    /// <returns>
+    /// An enumerator that allows foreach to be used to process the matched items.
+    /// </returns>
+    public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression)
+    {
+        return Set.Where(expression).ToList();
+    }
+
+    /// <summary>
+    /// Finds the asynchronous in this collection.
+    /// </summary>
+    ///
+    /// <param name="expression">   The expression. </param>
+    /// <param name="ctx">          (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// An enumerator that allows foreach to be used to process the asynchronous in this collection.
+    /// </returns>
+    public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ctx = default)
+    {
+        return await Set.Where(expression).ToListAsync(ctx);
     }
 
     #endregion

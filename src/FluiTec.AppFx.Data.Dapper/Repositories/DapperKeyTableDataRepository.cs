@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
@@ -33,6 +36,20 @@ public abstract class DapperKeyTableDataRepository<TEntity, TKey> : DapperDataRe
     }
 
     /// <summary>
+    /// Gets an entity using the given identifier.
+    /// </summary>
+    ///
+    /// <param name="keys"> A variable-length parameters list containing keys. </param>
+    ///
+    /// <returns>
+    /// A TEntity.
+    /// </returns>
+    public TEntity Get(params object[] keys)
+    {
+        return UnitOfWork.Connection.Get<TEntity>(GetKey(keys), UnitOfWork.Transaction);
+    }
+
+    /// <summary>
     /// Gets an entity asynchronous.
     /// </summary>
     ///
@@ -45,6 +62,35 @@ public abstract class DapperKeyTableDataRepository<TEntity, TKey> : DapperDataRe
     public Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
         return UnitOfWork.Connection.GetAsync<TEntity>(id, UnitOfWork.Transaction, cancellationToken: ctx);
+    }
+
+    public Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
+    {
+        return UnitOfWork.Connection.GetAsync<TEntity>(GetKey(keys), UnitOfWork.Transaction);
+    }
+
+    /// <summary>
+    /// Gets a key.
+    /// </summary>
+    ///
+    /// <param name="keys"> A variable-length parameters list containing keys. </param>
+    ///
+    /// <returns>
+    /// The key.
+    /// </returns>
+    private IDictionary<string, object> GetKey(params object[] keys)
+    {
+        var typeKeys = SqlCache.TypeKeyPropertiesCache(EntityType)
+            .OrderBy(p => p.ExtendedData.Order)
+            .ToArray();
+        var key = new ExpandoObject() as IDictionary<string, object>;
+
+        for (var i = 0; i < keys.Length; i++)
+        {
+            key.Add(typeKeys[i].PropertyInfo.Name, keys[i]);
+        }
+
+        return key;
     }
 
     /// <summary>

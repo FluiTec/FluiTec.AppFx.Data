@@ -17,6 +17,6 @@ internal class DbProvider : SqliteDataServiceProvider<ITestDataService, ITestUni
     /// </returns>
     public override ITestDataService ProvideDataService()
     {
-        return new SqliteTestDataService(ServiceOptions, null);
+        return new SqliteDapperTestDataService(ServiceOptions, null);
     }
 }

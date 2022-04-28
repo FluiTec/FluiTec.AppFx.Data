@@ -1,5 +1,4 @@
 ﻿using System;
-using FluentMigrator.Runner.VersionTableInfo;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Ef.UnitsOfWork;
 using FluiTec.AppFx.Data.Migration;
@@ -68,11 +67,7 @@ public abstract class BaseEfDataService<TUnitOfWork> : DataService<TUnitOfWork>,
     /// <summary>   Gets the type of the SQL. </summary>
     /// <value> The type of the SQL. </value>
     public SqlType SqlType => _sqlType ?? ServiceOptions.CurrentValue.SqlType;
-
-    /// <summary>   Gets information describing the meta. </summary>
-    /// <value> Information describing the meta. </value>
-    public abstract IVersionTableMetaData MetaData { get; }
-
+    
     /// <summary>   Gets the schema. </summary>
     /// <value> The schema. </value>
     public abstract string Schema { get; }

@@ -42,7 +42,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
         /// </returns>
         protected override DateTimeDummyEntity CreateNonUpdateableEntity()
         {
-            return new DateTimeDummyEntity {Id = 100, Name = "Dummy", ChangeDate = DateTimeOffset.UtcNow};
+            return new DateTimeDummyEntity {Id = default, Name = "Dummy", ChangeDate = DateTimeOffset.UtcNow};
         }
 
         /// <summary>

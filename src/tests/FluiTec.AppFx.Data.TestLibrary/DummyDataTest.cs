@@ -40,7 +40,7 @@ namespace FluiTec.AppFx.Data.TestLibrary
         /// </returns>
         protected override DummyEntity CreateNonUpdateableEntity()
         {
-            return new DummyEntity {Id = 100, Name = "Dummy"};
+            return new DummyEntity {Id = default, Name = "Dummy"};
         }
 
         /// <summary>

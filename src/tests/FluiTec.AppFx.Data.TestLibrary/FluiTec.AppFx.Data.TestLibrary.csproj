@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="DataTests\" />
+    <Folder Include="Contexts\" />
   </ItemGroup>
 
 </Project>

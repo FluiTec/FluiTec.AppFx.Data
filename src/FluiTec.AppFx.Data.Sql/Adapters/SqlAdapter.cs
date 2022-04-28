@@ -38,7 +38,7 @@ public abstract class SqlAdapter : ISqlAdapter
         {
             if (i > 0)
                 sb.Append(", ");
-            sb.Append(RenderParameterProperty(keys[i]));
+            sb.Append(RenderParameterProperty(keys[i].PropertyInfo));
         }
 
         return sb.ToString();
@@ -60,7 +60,7 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <returns>	The by identifier statement. </returns>
     public virtual string GetByKeyStatement(Type type)
     {
-        var keys = SqlCache.TypeKeyPropertiesCache(type).Select(k => k.Name).ToArray();
+        var keys = SqlCache.TypeKeyPropertiesCache(type).Select(k => k.PropertyInfo.Name).ToArray();
         var fields = SqlCache.TypePropertiesChache(type).Select(k => k.Name).ToArray();
         return GetByFilterStatement(type, keys, fields);
     }
@@ -145,7 +145,7 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <returns>	The insert automatic key statement. </returns>
     public virtual string GetInsertAutoKeyStatement(Type type)
     {
-        var key = SqlCache.TypeKeyPropertiesCache(type).Single();
+        var key = SqlCache.TypeKeyPropertiesCache(type).Single().PropertyInfo;
         var columnList = RenderAutoKeyColumnList(type).ToString();
         var parameterList = RenderAutoKeyParameterList(type).ToString();
 
@@ -191,7 +191,7 @@ public abstract class SqlAdapter : ISqlAdapter
         {
             if (i > 0)
                 sb.Append(" AND ");
-            sb.Append($"{RenderPropertyName(keys[i])} = {RenderParameterProperty(keys[i])}");
+            sb.Append($"{RenderPropertyName(keys[i].PropertyInfo)} = {RenderParameterProperty(keys[i].PropertyInfo)}");
         }
         var filterSql = sb.ToString();
 
@@ -215,7 +215,7 @@ public abstract class SqlAdapter : ISqlAdapter
         {
             if (i > 0)
                 sb.Append(" AND ");
-            sb.Append($"{RenderPropertyName(keys[i])} = {RenderParameterProperty(keys[i])}");
+            sb.Append($"{RenderPropertyName(keys[i].PropertyInfo)} = {RenderParameterProperty(keys[i].PropertyInfo)}");
         }
         var filterSql = sb.ToString();
 
@@ -237,7 +237,7 @@ public abstract class SqlAdapter : ISqlAdapter
         {
             if (i > 0)
                 sb.Append(" AND ");
-            sb.Append($"{RenderPropertyName(keys[i])} = {RenderParameterProperty(keys[i])}");
+            sb.Append($"{RenderPropertyName(keys[i].PropertyInfo)} = {RenderParameterProperty(keys[i].PropertyInfo)}");
         }
         var filterSql = sb.ToString();
         return
@@ -474,7 +474,7 @@ public abstract class SqlAdapter : ISqlAdapter
     public virtual IEnumerable<PropertyInfo> GetPropertiesWithoutKey(Type type)
     {
         var props = SqlCache.TypePropertiesChache(type);
-        var keyProps = SqlCache.TypeKeyPropertiesCache(type);
+        var keyProps = SqlCache.TypeKeyPropertiesCache(type).Select(p => p.PropertyInfo).ToList();
 
         return keyProps.Count > 1 ? props : props.Except(keyProps);
     }

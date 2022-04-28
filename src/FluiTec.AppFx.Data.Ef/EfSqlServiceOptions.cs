@@ -48,5 +48,5 @@ public class EfSqlServiceOptions : ISqlServiceOptions
     /// <value>
     /// The type of the SQL.
     /// </value>
-    public SqlType SqlType { get; }
+    public SqlType SqlType { get; set; }
 }

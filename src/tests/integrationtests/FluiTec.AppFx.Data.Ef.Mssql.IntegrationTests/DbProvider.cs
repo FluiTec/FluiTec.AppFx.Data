@@ -2,12 +2,12 @@
 using FluiTec.AppFx.Data.TestLibrary.DataServices;
 using FluiTec.AppFx.Data.TestLibrary.UnitsOfWork;
 
-namespace FluiTec.AppFx.Data.Dapper.Mysql.IntegrationTests;
+namespace FluiTec.AppFx.Data.Ef.Mssql.IntegrationTests;
 
 /// <summary>
 ///     A database provider.
 /// </summary>
-internal class DbProvider : MysqlDataServiceProvider<ITestDataService, ITestUnitOfWork>
+internal class DbProvider : MssqlEfDataServiceProvider<ITestDataService, ITestUnitOfWork>
 {
     /// <summary>
     ///     Provide data service.
@@ -17,6 +17,6 @@ internal class DbProvider : MysqlDataServiceProvider<ITestDataService, ITestUnit
     /// </returns>
     public override ITestDataService ProvideDataService()
     {
-        return new MysqlDapperTestDataService(ServiceOptions, null);
+        return new EfTestDataService(ServiceOptions, null);
     }
 }

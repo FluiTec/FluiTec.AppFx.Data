@@ -87,7 +87,7 @@ public class DynamicDbContext : DbContext, IDynamicDbContext
         if (keys.Any())
         {
             modelBuilder.Entity(entityType)
-                .HasKey(keys.Select(p => p.Name).ToArray());
+                .HasKey(keys.Select(p => p.PropertyInfo.Name).ToArray());
         }
 
         var props = SqlCache.TypePropertiesChache(entityType).ToArray();
@@ -95,7 +95,7 @@ public class DynamicDbContext : DbContext, IDynamicDbContext
         {
             var propBuilder = modelBuilder.Entity(entityType)
                 .Property(prop.Name);
-            if (keys.Length == 1 && prop == keys.Single() && _supportedIdentityTypes.Contains(prop.PropertyType))
+            if (keys.Length == 1 && prop == keys.Single().PropertyInfo && _supportedIdentityTypes.Contains(prop.PropertyType))
                 propBuilder.UseIdentityColumn();
         }
     }

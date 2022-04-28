@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
+using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Entities;
 
 namespace FluiTec.AppFx.Data.Repositories;
@@ -35,5 +36,5 @@ public interface IExpressionDataRepository<TEntity> : IDataRepository<TEntity>
     /// <returns>
     /// An enumerator that allows foreach to be used to process the asynchronous in this collection.
     /// </returns>
-    IEnumerable<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ctx = default);
+    Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ctx = default);
 }

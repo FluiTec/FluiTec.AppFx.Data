@@ -7,7 +7,7 @@ namespace FluiTec.AppFx.Data.Dapper.Mssql.IntegrationTests;
 /// <summary>
 ///     A database provider.
 /// </summary>
-internal class DbProvider : MssqlDataServiceProvider<ITestDataService, ITestUnitOfWork>
+internal class DbProvider : MssqlDapperDataServiceProvider<ITestDataService, ITestUnitOfWork>
 {
     /// <summary>
     ///     Provide data service.
@@ -17,6 +17,6 @@ internal class DbProvider : MssqlDataServiceProvider<ITestDataService, ITestUnit
     /// </returns>
     public override ITestDataService ProvideDataService()
     {
-        return new MssqlTestDataService(ServiceOptions, null);
+        return new MssqlDapperTestDataService(ServiceOptions, null);
     }
 }

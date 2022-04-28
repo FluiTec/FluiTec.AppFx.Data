@@ -72,9 +72,35 @@ public static class SqlExtensions
         var sql = builder.SelectByKey(type);
         OnSqlGenerated(sql);
 
-        var parameters = new DynamicParameters();
-        parameters.Add(builder.KeyParameter(type), id);
-        return connection.QuerySingleOrDefault<TEntity>(sql, parameters, transaction, commandTimeout);
+        var typeKeys = SqlCache.TypeKeyPropertiesCache(typeof(TEntity));
+
+        if (typeKeys.Count > 1 || id is IDictionary<string, object>)
+        {
+            var keyParams = id as IDictionary<string, object>;
+            var parameters = new DynamicParameters();
+
+            if (keyParams != null)
+            {
+                if (keyParams.Count != typeKeys.Count)
+                    throw new InvalidOperationException(
+                        $"Invalid id, KeyCount-Mismatch. TypeConfig requires {typeKeys.Count} keys, query received {keyParams.Count} keys.");
+                foreach (var p in keyParams)
+                {
+                    parameters.Add(p.Key, p.Value);
+                }
+            }
+            else
+                throw new InvalidOperationException(
+                    "Invalid id, a type having multiple keys must be queried using multiple keys!");
+
+            return connection.QuerySingleOrDefault<TEntity>(sql, parameters, transaction, commandTimeout);
+        }
+        else
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add(builder.KeyParameter(type), id);
+            return connection.QuerySingleOrDefault<TEntity>(sql, parameters, transaction, commandTimeout);
+        }
     }
 
     /// <summary>
@@ -102,10 +128,36 @@ public static class SqlExtensions
         var sql = builder.SelectByKey(type);
         OnSqlGenerated(sql);
 
-        var parameters = new DynamicParameters();
-        parameters.Add(builder.KeyParameter(type), id);
-        return connection.QuerySingleOrDefaultAsync<TEntity>(new CommandDefinition(sql, parameters, transaction,
-            commandTimeout, cancellationToken: cancellationToken));
+        var typeKeys = SqlCache.TypeKeyPropertiesCache(typeof(TEntity));
+
+        if (typeKeys.Count > 1 || id is IDictionary<string, object>)
+        {
+            var keyParams = id as IDictionary<string, object>;
+            var parameters = new DynamicParameters();
+
+            if (keyParams != null)
+            {
+                if (keyParams.Count != typeKeys.Count)
+                    throw new InvalidOperationException(
+                        $"Invalid id, KeyCount-Mismatch. TypeConfig requires {typeKeys.Count} keys, query received {keyParams.Count} keys.");
+                foreach (var p in keyParams)
+                {
+                    parameters.Add(p.Key, p.Value);
+                }
+            }
+            else
+                throw new InvalidOperationException(
+                    "Invalid id, a type having multiple keys must be queried using multiple keys!");
+
+            return connection.QuerySingleOrDefaultAsync<TEntity>(new CommandDefinition(sql, parameters, transaction,
+                commandTimeout, cancellationToken: cancellationToken));
+        }
+        else
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add(builder.KeyParameter(type), id);
+            return connection.QuerySingleOrDefaultAsync<TEntity>(new CommandDefinition(sql, parameters, transaction, commandTimeout, cancellationToken: cancellationToken));
+        }
     }
 
     /// <summary>   An IDbConnection extension method that inserts.</summary>
@@ -179,7 +231,7 @@ public static class SqlExtensions
         var id = (int) result.Id;
 
         var keyProperty = SqlCache.TypeKeyPropertiesCache(type).Single();
-        keyProperty.SetValue(entity, id);
+        keyProperty.PropertyInfo.SetValue(entity, id);
 
         return id;
     }
@@ -209,7 +261,7 @@ public static class SqlExtensions
         var id = (int) result.Id;
 
         var keyProperty = SqlCache.TypeKeyPropertiesCache(type).Single();
-        keyProperty.SetValue(entity, id);
+        keyProperty.PropertyInfo.SetValue(entity, id);
 
         return id;
     }

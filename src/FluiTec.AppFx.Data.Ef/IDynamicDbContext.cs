@@ -2,6 +2,7 @@
 using FluiTec.AppFx.Data.Migration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace FluiTec.AppFx.Data.Ef;
 
@@ -59,4 +60,13 @@ public interface IDynamicDbContext : IDisposable
     /// An EntityEntry&lt;TEntity&gt;
     /// </returns>
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
+
+    /// <summary>
+    /// Gets the database.
+    /// </summary>
+    ///
+    /// <value>
+    /// The database.
+    /// </value>
+    DatabaseFacade Database { get; }
 }

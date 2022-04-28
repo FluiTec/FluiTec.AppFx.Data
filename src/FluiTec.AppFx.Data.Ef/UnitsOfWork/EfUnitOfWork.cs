@@ -2,6 +2,7 @@
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Ef.DataServices;
 using FluiTec.AppFx.Data.UnitsOfWork;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Ef.UnitsOfWork;
@@ -20,6 +21,8 @@ public class EfUnitOfWork : UnitOfWork
 
     #region Properties
 
+    public IDbContextTransaction Transaction { get; private set; }
+
     /// <summary>
     /// Gets or sets the context.
     /// </summary>
@@ -27,7 +30,7 @@ public class EfUnitOfWork : UnitOfWork
     /// <value>
     /// The context.
     /// </value>
-    public IDynamicDbContext Context { get; set; }
+    public IDynamicDbContext Context { get; private set; }
 
     #endregion
 
@@ -42,6 +45,7 @@ public class EfUnitOfWork : UnitOfWork
     public EfUnitOfWork(IEfDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService, logger)
     {
         Context = dataService.GetContext();
+        Transaction = Context.Database.BeginTransaction();
     }
 
     /// <summary>
@@ -60,6 +64,7 @@ public class EfUnitOfWork : UnitOfWork
         if (parentUnitOfWork == null) throw new ArgumentNullException(nameof(parentUnitOfWork));
         _ownsContext = false;
         Context = parentUnitOfWork.Context;
+        Transaction = parentUnitOfWork.Transaction;
     }
 
     #endregion
@@ -79,8 +84,12 @@ public class EfUnitOfWork : UnitOfWork
         if (!_ownsContext) return;
 
         // clear transaction
-        Context.SaveChanges();
+        //Context.SaveChanges();
+        Transaction.Commit();
+
+        Transaction.Dispose();
         Context.Dispose();
+        Transaction = null;
         Context = null;
     }
 
@@ -97,8 +106,12 @@ public class EfUnitOfWork : UnitOfWork
                 "UnitOfWork can't be rolled back since it's already finished. (Missing transaction)");
         if (!_ownsContext) return;
 
+        Transaction.Rollback();
+
         // clear transaction
+        Transaction.Dispose();
         Context.Dispose();
+        Transaction = null;
         Context = null;
     }
 

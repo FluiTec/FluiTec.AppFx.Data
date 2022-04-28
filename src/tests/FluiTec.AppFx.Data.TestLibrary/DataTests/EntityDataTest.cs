@@ -165,6 +165,20 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         }
 
         /// <summary>
+        /// (Unit Test Method) can read entity by keys.
+        /// </summary>
+        [TestMethod]
+        public virtual void CanReadEntityByKeys()
+        {
+            using var uow = BeginUnitOfWork();
+
+            var entity = uow.GetWritableRepository<TEntity>().Add(CreateEntity());
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().Get(new object[] {entity.Id});
+
+            Assert.IsTrue(EntityEquals(entity, dbEntity));
+        }
+
+        /// <summary>
         ///     (Unit Test Method) can read entity asynchronous.
         /// </summary>
         [TestMethod]
@@ -174,6 +188,20 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
 
             var entity = uow.GetWritableRepository<TEntity>().Add(CreateEntity());
             var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().GetAsync(entity.Id).Result;
+
+            Assert.IsTrue(EntityEquals(entity, dbEntity));
+        }
+
+        /// <summary>
+        /// (Unit Test Method) can read entity by keys asynchronous.
+        /// </summary>
+        [TestMethod]
+        public virtual void CanReadEntityByKeysAsync()
+        {
+            using var uow = BeginUnitOfWork();
+
+            var entity = uow.GetWritableRepository<TEntity>().Add(CreateEntity());
+            var dbEntity = uow.GetKeyWritableRepository<TEntity, TKey>().GetAsync(new object[] {entity.Id}).Result;
 
             Assert.IsTrue(EntityEquals(entity, dbEntity));
         }

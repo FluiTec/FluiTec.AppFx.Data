@@ -50,8 +50,8 @@ public static class DbContextExtensions
     public static EntityTypeBuilder<TEntity> ToTable<TEntity>(this EntityTypeBuilder<TEntity> entityTypeBuilder,
         IEntityNameService nameService) where TEntity : class
     {
-        var schemaAndName = nameService.SchemaAndName(typeof(TEntity));
-        return (EntityTypeBuilder<TEntity>) ((EntityTypeBuilder) entityTypeBuilder).ToTable(schemaAndName.Item2, schemaAndName.Item1);
+        var (item1, item2) = nameService.SchemaAndName(typeof(TEntity));
+        return (EntityTypeBuilder<TEntity>) ((EntityTypeBuilder) entityTypeBuilder).ToTable(item2, item1);
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public static class DbContextExtensions
     /// </returns>
     public static EntityTypeBuilder ToTable(this EntityTypeBuilder entityTypeBuilder, IEntityNameService nameService)
     {
-        var schemaAndName = nameService.SchemaAndName(entityTypeBuilder.Metadata.ClrType);
-        return entityTypeBuilder.ToTable(schemaAndName.Item2, schemaAndName.Item1);
+        var (item1, item2) = nameService.SchemaAndName(entityTypeBuilder.Metadata.ClrType);
+        return entityTypeBuilder.ToTable(item2, item1);
     }
 }

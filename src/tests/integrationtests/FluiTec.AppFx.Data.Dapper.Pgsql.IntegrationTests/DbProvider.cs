@@ -17,6 +17,6 @@ internal class DbProvider : PgsqlDataServiceProvider<ITestDataService, ITestUnit
     /// </returns>
     public override ITestDataService ProvideDataService()
     {
-        return new PgsqlTestDataService(ServiceOptions, null);
+        return new PgsqlDapperTestDataService(ServiceOptions, null);
     }
 }

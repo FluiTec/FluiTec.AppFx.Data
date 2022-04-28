@@ -1,19 +1,21 @@
 ﻿using System;
-using FluiTec.AppFx.Data.Dapper;
 using FluiTec.AppFx.Data.Dapper.Mssql;
 using FluiTec.AppFx.Data.DataServices;
+using FluiTec.AppFx.Data.Ef;
+using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.TestLibrary.Configuration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 
 namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
 {
     /// <summary>
-    ///     A mssql data service provider.
+    /// A mssql ef data service provider.
     /// </summary>
+    ///
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
-    public abstract class MssqlDapperDataServiceProvider<TDataService, TUnitOfWork>
-        : EnvironmentConfiguredDapperDataServiceProvider<TDataService, TUnitOfWork>
+    public abstract class MssqlEfDataServiceProvider<TDataService, TUnitOfWork>
+        : EnvironmentConfiguredEfDataServiceProvider<TDataService, TUnitOfWork>
         where TDataService : IDataService<TUnitOfWork>
         where TUnitOfWork : IUnitOfWork
     {
@@ -31,11 +33,12 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         /// <returns>
         ///     The IDapperServiceOptions.
         /// </returns>
-        protected override IDapperServiceOptions ConfigureOptions()
+        protected override ISqlServiceOptions ConfigureOptions()
         {
             if (!EnvironmentConfigured) return ConfigurationManager.ExtractSettings<MssqlDapperServiceOptions>();
-            return new MssqlDapperServiceOptions
+            return new EfSqlServiceOptions
             {
+                SqlType = SqlType.Mssql,
                 ConnectionString =
                     $"Data Source=mssql;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={Environment.GetEnvironmentVariable(VariableName)};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
             };

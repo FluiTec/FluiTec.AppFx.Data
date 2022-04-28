@@ -17,9 +17,18 @@ public class SqlKeyAttribute : Attribute
     public bool IdentityKey { get; }
 
     /// <summary>
+    /// Gets the order.
+    /// </summary>
+    ///
+    /// <value>
+    /// The order.
+    /// </value>
+    public int Order { get; }
+
+    /// <summary>
     /// Default constructor.
     /// </summary>
-    public SqlKeyAttribute() : this(true)
+    public SqlKeyAttribute() : this(true, 0)
     {
 
     }
@@ -29,8 +38,10 @@ public class SqlKeyAttribute : Attribute
     /// </summary>
     ///
     /// <param name="identityKey">  True if identity key, false if not. </param>
-    public SqlKeyAttribute(bool identityKey)
+    /// <param name="order">        The order. </param>
+    public SqlKeyAttribute(bool identityKey, int order)
     {
         IdentityKey = identityKey;
+        Order = order;
     }
 }
