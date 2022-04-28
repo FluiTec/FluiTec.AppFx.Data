@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Data.Ef.UnitsOfWork;
 
 /// <summary>
-/// An ef unit of work.
+///     An ef unit of work.
 /// </summary>
 public class EfUnitOfWork : UnitOfWork
 {
@@ -19,16 +19,33 @@ public class EfUnitOfWork : UnitOfWork
 
     #endregion
 
+    #region IDisposable
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing, releasing, or resetting
+    ///     unmanaged resources.
+    /// </summary>
+    /// <param name="disposing">
+    ///     true to release both managed and unmanaged resources; false to
+    ///     release only unmanaged resources.
+    /// </param>
+    protected override void Dispose(bool disposing)
+    {
+        if (Context != null)
+            Rollback();
+    }
+
+    #endregion
+
     #region Properties
 
     public IDbContextTransaction Transaction { get; private set; }
 
     /// <summary>
-    /// Gets or sets the context.
+    ///     Gets or sets the context.
     /// </summary>
-    ///
     /// <value>
-    /// The context.
+    ///     The context.
     /// </value>
     public IDynamicDbContext Context { get; private set; }
 
@@ -37,9 +54,8 @@ public class EfUnitOfWork : UnitOfWork
     #region Constructors
 
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///
     /// <param name="dataService">  The data service. </param>
     /// <param name="logger">       The logger. </param>
     public EfUnitOfWork(IEfDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService, logger)
@@ -49,16 +65,16 @@ public class EfUnitOfWork : UnitOfWork
     }
 
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
-    ///
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="parentUnitOfWork"> The parent unit of work. </param>
     /// <param name="dataService">      The data service. </param>
     /// <param name="logger">           The logger. </param>
-    public EfUnitOfWork(EfUnitOfWork parentUnitOfWork, IDataService dataService, ILogger<IUnitOfWork> logger) 
+    public EfUnitOfWork(EfUnitOfWork parentUnitOfWork, IDataService dataService, ILogger<IUnitOfWork> logger)
         : base(dataService, logger)
     {
         if (parentUnitOfWork == null) throw new ArgumentNullException(nameof(parentUnitOfWork));
@@ -73,9 +89,10 @@ public class EfUnitOfWork : UnitOfWork
 
     /// <summary>   Gets or sets the logger factory. </summary>
     /// <summary>   Commits the UnitOfWork. </summary>
-    ///
-    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-    ///                                                 invalid. </exception>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the requested operation is
+    ///     invalid.
+    /// </exception>
     public override void Commit()
     {
         if (Context == null)
@@ -94,11 +111,12 @@ public class EfUnitOfWork : UnitOfWork
     }
 
     /// <summary>
-    /// Rolls back the UnitOfWork.
+    ///     Rolls back the UnitOfWork.
     /// </summary>
-    ///
-    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-    ///                                                 invalid. </exception>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the requested operation is
+    ///     invalid.
+    /// </exception>
     public override void Rollback()
     {
         if (Context == null)
@@ -113,24 +131,6 @@ public class EfUnitOfWork : UnitOfWork
         Context.Dispose();
         Transaction = null;
         Context = null;
-    }
-
-    #endregion
-
-    #region IDisposable
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing, releasing, or resetting
-    ///     unmanaged resources.
-    /// </summary>
-    /// <param name="disposing">
-    ///     true to release both managed and unmanaged resources; false to
-    ///     release only unmanaged resources.
-    /// </param>
-    protected override void Dispose(bool disposing)
-    {
-        if (Context != null)
-            Rollback();
     }
 
     #endregion

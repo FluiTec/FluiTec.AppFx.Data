@@ -13,29 +13,29 @@ using Microsoft.Extensions.Options;
 namespace FluiTec.AppFx.Data.TestLibrary.DataServices
 {
     /// <summary>
-    /// A service for accessing ef test data information.
+    ///     A service for accessing ef test data information.
     /// </summary>
     public class EfTestDataService : EfDataService<EfTestUnitOfWork>, ITestDataService
     {
         #region Constructors
 
         /// <summary>
-        /// Specialized constructor for use only by derived class.
+        ///     Specialized constructor for use only by derived class.
         /// </summary>
-        ///
         /// <param name="options">          Options for controlling the operation. </param>
         /// <param name="loggerFactory">    The logger factory. </param>
-        public EfTestDataService(ISqlServiceOptions options, ILoggerFactory loggerFactory) : base(options, loggerFactory)
+        public EfTestDataService(ISqlServiceOptions options, ILoggerFactory loggerFactory) : base(options,
+            loggerFactory)
         {
         }
 
         /// <summary>
-        /// Specialized constructor for use only by derived class.
+        ///     Specialized constructor for use only by derived class.
         /// </summary>
-        ///
         /// <param name="options">          Options for controlling the operation. </param>
         /// <param name="loggerFactory">    The logger factory. </param>
-        public EfTestDataService(IOptionsMonitor<ISqlServiceOptions> options, ILoggerFactory loggerFactory) : base(options, loggerFactory)
+        public EfTestDataService(IOptionsMonitor<ISqlServiceOptions> options, ILoggerFactory loggerFactory) : base(
+            options, loggerFactory)
         {
         }
 
@@ -44,33 +44,30 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServices
         #region Properties
 
         /// <summary>
-        /// Gets the name.
+        ///     Gets the name.
         /// </summary>
-        ///
         /// <value>
-        /// The name.
+        ///     The name.
         /// </value>
         public override string Name => nameof(EfDataService<EfTestUnitOfWork>);
 
         /// <summary>
-        /// Gets the schema.
+        ///     Gets the schema.
         /// </summary>
-        ///
         /// <value>
-        /// The schema.
+        ///     The schema.
         /// </value>
         public override string Schema => SchemaGlobals.Schema;
 
         #endregion
 
         #region Methods
-        
+
         /// <summary>
-        /// Begins unit of work.
+        ///     Begins unit of work.
         /// </summary>
-        ///
         /// <returns>
-        /// An IUnitOfWork.
+        ///     An IUnitOfWork.
         /// </returns>
         public override EfTestUnitOfWork BeginUnitOfWork()
         {
@@ -78,18 +75,19 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServices
         }
 
         /// <summary>
-        /// Begins unit of work.
+        ///     Begins unit of work.
         /// </summary>
-        ///
-        /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-        ///                                             null. </exception>
-        /// <exception cref="ArgumentException">        Thrown when one or more arguments have
-        ///                                             unsupported or illegal values. </exception>
-        ///
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown when one or more required arguments are
+        ///     null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     Thrown when one or more arguments have
+        ///     unsupported or illegal values.
+        /// </exception>
         /// <param name="other">    The other. </param>
-        ///
         /// <returns>
-        /// An IUnitOfWork.
+        ///     An IUnitOfWork.
         /// </returns>
         public override EfTestUnitOfWork BeginUnitOfWork(IUnitOfWork other)
         {
@@ -114,13 +112,12 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServices
         {
             return BeginUnitOfWork();
         }
-        
+
         /// <summary>
-        /// Gets the context.
+        ///     Gets the context.
         /// </summary>
-        ///
         /// <returns>
-        /// The context.
+        ///     The context.
         /// </returns>
         public override IDynamicDbContext GetContext()
         {

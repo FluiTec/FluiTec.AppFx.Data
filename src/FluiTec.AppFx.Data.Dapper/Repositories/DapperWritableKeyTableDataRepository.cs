@@ -29,7 +29,7 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
     #endregion
 
     #region IWritableKeyTableDataRepository
-    
+
     /// <summary>   Deletes the given ID. </summary>
     /// <param name="id">   The Identifier to delete. </param>
     public virtual bool Delete(TKey id)
@@ -38,19 +38,17 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
     }
 
     /// <summary>
-    /// Deletes the asynchronous described by ID.
+    ///     Deletes the asynchronous described by ID.
     /// </summary>
-    ///
     /// <param name="id">   The Identifier to delete. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// An asynchronous result.
+    ///     An asynchronous result.
     /// </returns>
     public virtual Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {
-        return UnitOfWork.Connection.DeleteAsync<TEntity>(id, UnitOfWork.Transaction, cancellationToken:ctx);
+        return UnitOfWork.Connection.DeleteAsync<TEntity>(id, UnitOfWork.Transaction, cancellationToken: ctx);
     }
-    
+
     #endregion
 }

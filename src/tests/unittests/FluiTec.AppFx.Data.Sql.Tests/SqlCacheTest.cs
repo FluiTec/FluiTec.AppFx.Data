@@ -11,8 +11,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         public void CanGetDefaultKey()
         {
             var keys = SqlCache.TypeKeyPropertiesCache(typeof(Dummy));
-            Assert.AreEqual(1,keys.Count);
-            Assert.AreEqual(nameof(Dummy.Id),keys.Single().PropertyInfo.Name);
+            Assert.AreEqual(1, keys.Count);
+            Assert.AreEqual(nameof(Dummy.Id), keys.Single().PropertyInfo.Name);
         }
 
         [TestMethod]

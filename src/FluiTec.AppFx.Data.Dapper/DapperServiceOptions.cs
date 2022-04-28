@@ -26,7 +26,7 @@ public abstract class DapperServiceOptions : IDapperServiceOptions
                 nameof(connectionString));
         ConnectionString = connectionString;
     }
-    
+
     /// <summary>   Gets the connection factory. </summary>
     /// <value> The connection factory. </value>
     public abstract IConnectionFactory ConnectionFactory { get; }
@@ -37,11 +37,10 @@ public abstract class DapperServiceOptions : IDapperServiceOptions
     public string ConnectionString { get; set; }
 
     /// <summary>
-    /// Gets the type of the SQL.
+    ///     Gets the type of the SQL.
     /// </summary>
-    ///
     /// <value>
-    /// The type of the SQL.
+    ///     The type of the SQL.
     /// </value>
     public abstract SqlType SqlType { get; }
 }

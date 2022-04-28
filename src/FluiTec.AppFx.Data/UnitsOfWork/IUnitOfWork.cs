@@ -38,13 +38,11 @@ public interface IUnitOfWork : IDisposable
     IDataRepository<TEntity> GetDataRepository<TEntity>() where TEntity : class, IEntity, new();
 
     /// <summary>
-    /// Gets writeable repository.
+    ///     Gets writeable repository.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    ///
     /// <returns>
-    /// The writeable repository.
+    ///     The writeable repository.
     /// </returns>
     IWritableTableDataRepository<TEntity> GetWritableRepository<TEntity>()
         where TEntity : class, IEntity, new();

@@ -8,14 +8,13 @@ using Microsoft.Extensions.Logging;
 namespace EfSample.Data;
 
 /// <summary>
-/// An ef test unit of work.
+///     An ef test unit of work.
 /// </summary>
 public class EfTestUnitOfWork : EfUnitOfWork, ITestUnitOfWork
 {
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///
     /// <param name="dataService">  The data service. </param>
     /// <param name="logger">       The logger. </param>
     public EfTestUnitOfWork(IEfDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService, logger)
@@ -24,33 +23,32 @@ public class EfTestUnitOfWork : EfUnitOfWork, ITestUnitOfWork
     }
 
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///
     /// <param name="parentUnitOfWork"> The parent unit of work. </param>
     /// <param name="dataService">      The data service. </param>
     /// <param name="logger">           The logger. </param>
-    public EfTestUnitOfWork(EfUnitOfWork parentUnitOfWork, IDataService dataService, ILogger<IUnitOfWork> logger) : base(
-        parentUnitOfWork, dataService, logger)
+    public EfTestUnitOfWork(EfUnitOfWork parentUnitOfWork, IDataService dataService, ILogger<IUnitOfWork> logger) :
+        base(
+            parentUnitOfWork, dataService, logger)
     {
         RegisterRepositories();
     }
 
     /// <summary>
-    /// Gets the dummy repository.
+    ///     Gets the dummy repository.
     /// </summary>
-    ///
     /// <value>
-    /// The dummy repository.
+    ///     The dummy repository.
     /// </value>
     public IDummyRepository DummyRepository => GetRepository<IDummyRepository>();
 
     /// <summary>
-    /// Registers the repositories.
+    ///     Registers the repositories.
     /// </summary>
     private void RegisterRepositories()
     {
         RepositoryProviders.Add(typeof(IDummyRepository),
-            (uow, log) => new EfDummyRepository((EfTestUnitOfWork)uow, log));
+            (uow, log) => new EfDummyRepository((EfTestUnitOfWork) uow, log));
     }
 }

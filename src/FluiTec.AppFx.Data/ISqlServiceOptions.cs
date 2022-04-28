@@ -3,7 +3,7 @@
 namespace FluiTec.AppFx.Data;
 
 /// <summary>
-/// Interface for SQL service options.
+///     Interface for SQL service options.
 /// </summary>
 public interface ISqlServiceOptions
 {
@@ -12,11 +12,10 @@ public interface ISqlServiceOptions
     string ConnectionString { get; }
 
     /// <summary>
-    /// Gets the type of the SQL.
+    ///     Gets the type of the SQL.
     /// </summary>
-    ///
     /// <value>
-    /// The type of the SQL.
+    ///     The type of the SQL.
     /// </value>
     SqlType SqlType { get; }
 }

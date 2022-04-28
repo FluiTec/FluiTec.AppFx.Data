@@ -27,11 +27,10 @@ public class SqliteDapperServiceOptions : DapperServiceOptions
     public override IConnectionFactory ConnectionFactory { get; }
 
     /// <summary>
-    /// Gets the type of the SQL.
+    ///     Gets the type of the SQL.
     /// </summary>
-    ///
     /// <value>
-    /// The type of the SQL.
+    ///     The type of the SQL.
     /// </value>
     public override SqlType SqlType => SqlType.Sqlite;
 }

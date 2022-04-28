@@ -109,7 +109,7 @@ public abstract class UnitOfWork : IUnitOfWork
     /// <returns>
     ///     The repository.
     /// </returns>
-    public IDataRepository<TEntity> GetDataRepository<TEntity>() 
+    public IDataRepository<TEntity> GetDataRepository<TEntity>()
         where TEntity : class, IEntity, new()
     {
         var expectedType = typeof(IDataRepository<TEntity>);
@@ -130,13 +130,11 @@ public abstract class UnitOfWork : IUnitOfWork
     }
 
     /// <summary>
-    /// Gets writeable repository.
+    ///     Gets writeable repository.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    ///
     /// <returns>
-    /// The writeable repository.
+    ///     The writeable repository.
     /// </returns>
     public IWritableTableDataRepository<TEntity> GetWritableRepository<TEntity>()
         where TEntity : class, IEntity, new()
@@ -172,7 +170,7 @@ public abstract class UnitOfWork : IUnitOfWork
     {
         return GetDataRepository<TEntity>() as IWritableKeyTableDataRepository<TEntity, TKey>;
     }
-    
+
     #endregion
 
     #region IDisposable

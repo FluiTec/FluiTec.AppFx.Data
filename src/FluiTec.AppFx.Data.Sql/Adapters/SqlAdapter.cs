@@ -193,6 +193,7 @@ public abstract class SqlAdapter : ISqlAdapter
                 sb.Append(" AND ");
             sb.Append($"{RenderPropertyName(keys[i].PropertyInfo)} = {RenderParameterProperty(keys[i].PropertyInfo)}");
         }
+
         var filterSql = sb.ToString();
 
         var setClauses = RenderSetStatements(type).ToString();
@@ -217,6 +218,7 @@ public abstract class SqlAdapter : ISqlAdapter
                 sb.Append(" AND ");
             sb.Append($"{RenderPropertyName(keys[i].PropertyInfo)} = {RenderParameterProperty(keys[i].PropertyInfo)}");
         }
+
         var filterSql = sb.ToString();
 
         var setClauses = RenderSetStatements(type).ToString();
@@ -239,6 +241,7 @@ public abstract class SqlAdapter : ISqlAdapter
                 sb.Append(" AND ");
             sb.Append($"{RenderPropertyName(keys[i].PropertyInfo)} = {RenderParameterProperty(keys[i].PropertyInfo)}");
         }
+
         var filterSql = sb.ToString();
         return
             $"DELETE FROM {RenderTableName(type)} WHERE {filterSql}";
@@ -335,13 +338,15 @@ public abstract class SqlAdapter : ISqlAdapter
     }
 
     /// <summary>
-    /// Gets name service.
+    ///     Gets name service.
     /// </summary>
-    ///
     /// <returns>
-    /// The name service.
+    ///     The name service.
     /// </returns>
-    public IEntityNameService GetNameService() => EntityNameService;
+    public IEntityNameService GetNameService()
+    {
+        return EntityNameService;
+    }
 
     /// <summary>	Renders the parameter property described by propertyInfo. </summary>
     /// <param name="propertyInfo">	Information describing the property. </param>
@@ -426,13 +431,11 @@ public abstract class SqlAdapter : ISqlAdapter
     }
 
     /// <summary>
-    /// Renders the parameter list described by type.
+    ///     Renders the parameter list described by type.
     /// </summary>
-    ///
     /// <param name="props">    The properties. </param>
-    ///
     /// <returns>
-    /// A StringBuilder.
+    ///     A StringBuilder.
     /// </returns>
     public virtual StringBuilder RenderParameterList(PropertyInfo[] props)
     {

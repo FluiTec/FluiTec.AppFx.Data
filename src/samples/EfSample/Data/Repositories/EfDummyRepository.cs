@@ -7,14 +7,13 @@ using Microsoft.Extensions.Logging;
 namespace EfSample.Data.Repositories;
 
 /// <summary>
-/// An ef dummy repository.
+///     An ef dummy repository.
 /// </summary>
 public class EfDummyRepository : EfWritableKeyTableDataRepository<DummyEntity, int>, IDummyRepository
 {
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///
     /// <param name="unitOfWork">   The unit of work. </param>
     /// <param name="logger">       The logger. </param>
     public EfDummyRepository(EfUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)

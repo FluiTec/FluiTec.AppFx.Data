@@ -9,9 +9,8 @@ using FluiTec.AppFx.Data.UnitsOfWork;
 namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
 {
     /// <summary>
-    /// A mssql ef data service provider.
+    ///     A mssql ef data service provider.
     /// </summary>
-    ///
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
     public abstract class MssqlEfDataServiceProvider<TDataService, TUnitOfWork>

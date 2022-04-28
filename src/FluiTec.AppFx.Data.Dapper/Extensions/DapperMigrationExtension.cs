@@ -46,9 +46,8 @@ public static class DapperMigrationExtension
     }
 
     /// <summary>
-    /// An IDeleteColumnFromTableSyntax extension method that from table.
+    ///     An IDeleteColumnFromTableSyntax extension method that from table.
     /// </summary>
-    ///
     /// <param name="expressionRoot">   The expressionRoot to act on. </param>
     /// <param name="schemaName">       Name of the schema. </param>
     /// <param name="tableName">        Name of the table. </param>
@@ -65,9 +64,8 @@ public static class DapperMigrationExtension
     }
 
     /// <summary>
-    /// An ICreateExpressionRoot extension method that tables.
+    ///     An ICreateExpressionRoot extension method that tables.
     /// </summary>
-    ///
     /// <param name="expressionRoot">   The expressionRoot to act on. </param>
     /// <param name="schemaName">       Name of the schema. </param>
     /// <param name="tableName">        Name of the table. </param>

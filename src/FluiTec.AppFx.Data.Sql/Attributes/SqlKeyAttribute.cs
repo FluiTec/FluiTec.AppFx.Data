@@ -3,40 +3,20 @@
 namespace FluiTec.AppFx.Data.Sql.Attributes;
 
 /// <summary>
-/// Attribute for SQL key.
+///     Attribute for SQL key.
 /// </summary>
 public class SqlKeyAttribute : Attribute
 {
     /// <summary>
-    /// Gets a value indicating whether the identity key.
-    /// </summary>
-    ///
-    /// <value>
-    /// True if identity key, false if not.
-    /// </value>
-    public bool IdentityKey { get; }
-
-    /// <summary>
-    /// Gets the order.
-    /// </summary>
-    ///
-    /// <value>
-    /// The order.
-    /// </value>
-    public int Order { get; }
-
-    /// <summary>
-    /// Default constructor.
+    ///     Default constructor.
     /// </summary>
     public SqlKeyAttribute() : this(true, 0)
     {
-
     }
 
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///
     /// <param name="identityKey">  True if identity key, false if not. </param>
     /// <param name="order">        The order. </param>
     public SqlKeyAttribute(bool identityKey, int order)
@@ -44,4 +24,20 @@ public class SqlKeyAttribute : Attribute
         IdentityKey = identityKey;
         Order = order;
     }
+
+    /// <summary>
+    ///     Gets a value indicating whether the identity key.
+    /// </summary>
+    /// <value>
+    ///     True if identity key, false if not.
+    /// </value>
+    public bool IdentityKey { get; }
+
+    /// <summary>
+    ///     Gets the order.
+    /// </summary>
+    /// <value>
+    ///     The order.
+    /// </value>
+    public int Order { get; }
 }

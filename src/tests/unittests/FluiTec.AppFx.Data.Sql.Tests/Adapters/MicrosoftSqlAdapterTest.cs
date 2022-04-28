@@ -9,27 +9,24 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
 {
     /// <summary>
-    /// A microsoft SQL adapter test.
+    ///     A microsoft SQL adapter test.
     /// </summary>
     [TestClass]
     public class MicrosoftSqlAdapterTest : SqlAdapterTest
     {
         /// <summary>
-        /// Default constructor.
+        ///     Default constructor.
         /// </summary>
         public MicrosoftSqlAdapterTest() : base(new MicrosoftSqlAdapter(new AttributeEntityNameService()))
         {
-
         }
 
         /// <summary>
-        /// Gets expected key parameters.
+        ///     Gets expected key parameters.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
-        ///
         /// <returns>
-        /// The expected key parameters.
+        ///     The expected key parameters.
         /// </returns>
         protected override string GetExpectedKeyParameters(Type entityType)
         {
@@ -40,13 +37,11 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         }
 
         /// <summary>
-        /// Gets expected select all statement.
+        ///     Gets expected select all statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
-        ///
         /// <returns>
-        /// The expected select all statement.
+        ///     The expected select all statement.
         /// </returns>
         protected override string GetExpectedSelectAllStatement(Type entityType)
         {
@@ -57,137 +52,137 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         }
 
         /// <summary>
-        /// Gets expected by key statement.
+        ///     Gets expected by key statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
-        ///
         /// <returns>
-        /// The expected by key statement.
+        ///     The expected by key statement.
         /// </returns>
         protected override string GetExpectedByKeyStatement(Type entityType)
         {
             if (entityType == typeof(Dummy)) return "SELECT [Id], [Name] FROM [dbo].[Dummy] WHERE [Id] = @Id";
-            if (entityType == typeof(RenamedDummy)) return "SELECT [UId], [Name] FROM [dbo].[RenamedDummy] WHERE [UId] = @UId";
-            if (entityType == typeof(MultiKeyDummy)) return "SELECT [Id], [MyKey] FROM [dbo].[MultiKeyDummy] WHERE [Id] = @Id AND [MyKey] = @MyKey";
+            if (entityType == typeof(RenamedDummy))
+                return "SELECT [UId], [Name] FROM [dbo].[RenamedDummy] WHERE [UId] = @UId";
+            if (entityType == typeof(MultiKeyDummy))
+                return "SELECT [Id], [MyKey] FROM [dbo].[MultiKeyDummy] WHERE [Id] = @Id AND [MyKey] = @MyKey";
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets expected by filter statement.
+        ///     Gets expected by filter statement.
         /// </summary>
-        ///
         /// <param name="entityType">       Type of the entity. </param>
         /// <param name="filterProperty">   The filter property. </param>
         /// <param name="selectProperties"> The select properties. </param>
-        ///
         /// <returns>
-        /// The expected by filter statement.
+        ///     The expected by filter statement.
         /// </returns>
-        protected override string GetExpectedByFilterStatement(Type entityType, string filterProperty, string[] selectProperties)
+        protected override string GetExpectedByFilterStatement(Type entityType, string filterProperty,
+            string[] selectProperties)
         {
             if (entityType == typeof(Dummy)) return "SELECT [Id], [Name] FROM [dbo].[Dummy] WHERE [Name] = @Name";
-            if (entityType == typeof(RenamedDummy)) return "SELECT [UId], [Name] FROM [dbo].[RenamedDummy] WHERE [Name] = @Name";
-            if (entityType == typeof(MultiKeyDummy)) return "SELECT [Id], [MyKey] FROM [dbo].[MultiKeyDummy] WHERE [MyKey] = @MyKey";
+            if (entityType == typeof(RenamedDummy))
+                return "SELECT [UId], [Name] FROM [dbo].[RenamedDummy] WHERE [Name] = @Name";
+            if (entityType == typeof(MultiKeyDummy))
+                return "SELECT [Id], [MyKey] FROM [dbo].[MultiKeyDummy] WHERE [MyKey] = @MyKey";
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets expected by filter in statement.
+        ///     Gets expected by filter in statement.
         /// </summary>
-        ///
         /// <param name="entityType">       Type of the entity. </param>
         /// <param name="filterProperty">   The filter property. </param>
         /// <param name="colName">          Name of the col. </param>
         /// <param name="selectFields">     The select fields. </param>
-        ///
         /// <returns>
-        /// The expected by filter in statement.
+        ///     The expected by filter in statement.
         /// </returns>
-        protected override string GetExpectedByFilterInStatement(Type entityType, string filterProperty, string colName, string[] selectFields)
+        protected override string GetExpectedByFilterInStatement(Type entityType, string filterProperty, string colName,
+            string[] selectFields)
         {
             if (entityType == typeof(Dummy)) return "SELECT [Id], [Name] FROM [dbo].[Dummy] WHERE [Name] IN @Names";
-            if (entityType == typeof(RenamedDummy)) return "SELECT [UId], [Name] FROM [dbo].[RenamedDummy] WHERE [Name] IN @Names";
-            if (entityType == typeof(MultiKeyDummy)) return "SELECT [Id], [MyKey] FROM [dbo].[MultiKeyDummy] WHERE [MyKey] IN @Keys";
+            if (entityType == typeof(RenamedDummy))
+                return "SELECT [UId], [Name] FROM [dbo].[RenamedDummy] WHERE [Name] IN @Names";
+            if (entityType == typeof(MultiKeyDummy))
+                return "SELECT [Id], [MyKey] FROM [dbo].[MultiKeyDummy] WHERE [MyKey] IN @Keys";
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets expected by filter statement.
+        ///     Gets expected by filter statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
         /// <param name="properties">   The properties. </param>
-        ///
         /// <returns>
-        /// The expected by filter statement.
+        ///     The expected by filter statement.
         /// </returns>
         protected override string GetExpectedByFilterStatement(Type entityType, string[] properties)
         {
-            if (entityType == typeof(Dummy)) return "SELECT [Id], [Name] FROM [dbo].[Dummy] WHERE [Id] = @Id AND [Name] = @Name";
-            if (entityType == typeof(RenamedDummy)) return "SELECT [UId], [Name] FROM [dbo].[RenamedDummy] WHERE [UId] = @UId AND [Name] = @Name";
-            if (entityType == typeof(MultiKeyDummy)) return "SELECT [Id], [MyKey] FROM [dbo].[MultiKeyDummy] WHERE [Id] = @Id AND [MyKey] = @MyKey";
+            if (entityType == typeof(Dummy))
+                return "SELECT [Id], [Name] FROM [dbo].[Dummy] WHERE [Id] = @Id AND [Name] = @Name";
+            if (entityType == typeof(RenamedDummy))
+                return "SELECT [UId], [Name] FROM [dbo].[RenamedDummy] WHERE [UId] = @UId AND [Name] = @Name";
+            if (entityType == typeof(MultiKeyDummy))
+                return "SELECT [Id], [MyKey] FROM [dbo].[MultiKeyDummy] WHERE [Id] = @Id AND [MyKey] = @MyKey";
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets expected insert statement.
+        ///     Gets expected insert statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
-        ///
         /// <returns>
-        /// The expected insert statement.
+        ///     The expected insert statement.
         /// </returns>
         protected override string GetExpectedInsertStatement(Type entityType)
         {
             if (entityType == typeof(Dummy)) return "INSERT INTO [dbo].[Dummy] ([Id], [Name]) VALUES (@Id, @Name)";
-            if (entityType == typeof(RenamedDummy)) return "INSERT INTO [dbo].[RenamedDummy] ([UId], [Name]) VALUES (@UId, @Name)";
-            if (entityType == typeof(MultiKeyDummy)) return "INSERT INTO [dbo].[MultiKeyDummy] ([Id], [MyKey]) VALUES (@Id, @MyKey)";
+            if (entityType == typeof(RenamedDummy))
+                return "INSERT INTO [dbo].[RenamedDummy] ([UId], [Name]) VALUES (@UId, @Name)";
+            if (entityType == typeof(MultiKeyDummy))
+                return "INSERT INTO [dbo].[MultiKeyDummy] ([Id], [MyKey]) VALUES (@Id, @MyKey)";
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets expected insert automatic key statement.
+        ///     Gets expected insert automatic key statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
-        ///
         /// <returns>
-        /// The expected insert automatic key statement.
+        ///     The expected insert automatic key statement.
         /// </returns>
         protected override string GetExpectedInsertAutoKeyStatement(Type entityType)
         {
-            if (entityType == typeof(Dummy)) return "INSERT INTO [dbo].[Dummy] ([Name]) VALUES (@Name);SELECT SCOPE_IDENTITY() [Id]";
-            if (entityType == typeof(RenamedDummy)) return "INSERT INTO [dbo].[RenamedDummy] ([Name]) VALUES (@Name);SELECT SCOPE_IDENTITY() [UId]";
+            if (entityType == typeof(Dummy))
+                return "INSERT INTO [dbo].[Dummy] ([Name]) VALUES (@Name);SELECT SCOPE_IDENTITY() [Id]";
+            if (entityType == typeof(RenamedDummy))
+                return "INSERT INTO [dbo].[RenamedDummy] ([Name]) VALUES (@Name);SELECT SCOPE_IDENTITY() [UId]";
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets expected insert multiple statement.
+        ///     Gets expected insert multiple statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
-        ///
         /// <returns>
-        /// The expected insert multiple statement.
+        ///     The expected insert multiple statement.
         /// </returns>
         protected override string GetExpectedInsertMultipleStatement(Type entityType)
         {
             if (entityType == typeof(Dummy)) return "INSERT INTO [dbo].[Dummy] ([Name]) VALUES (@Name)";
             if (entityType == typeof(RenamedDummy)) return "INSERT INTO [dbo].[RenamedDummy] ([Name]) VALUES (@Name)";
-            if (entityType == typeof(MultiKeyDummy)) return "INSERT INTO [dbo].[MultiKeyDummy] ([Id], [MyKey]) VALUES (@Id, @MyKey)";
+            if (entityType == typeof(MultiKeyDummy))
+                return "INSERT INTO [dbo].[MultiKeyDummy] ([Id], [MyKey]) VALUES (@Id, @MyKey)";
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets expected insert automatic key multiple statement.
+        ///     Gets expected insert automatic key multiple statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
-        ///
         /// <returns>
-        /// The expected insert automatic key multiple statement.
+        ///     The expected insert automatic key multiple statement.
         /// </returns>
         protected override string GetExpectedInsertAutoKeyMultipleStatement(Type entityType)
         {
@@ -197,48 +192,46 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         }
 
         /// <summary>
-        /// Gets expected update statement.
+        ///     Gets expected update statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
-        ///
         /// <returns>
-        /// The expected update statement.
+        ///     The expected update statement.
         /// </returns>
         protected override string GetExpectedUpdateStatement(Type entityType)
         {
             if (entityType == typeof(Dummy)) return "UPDATE [dbo].[Dummy] SET [Name] = @Name WHERE [Id] = @Id";
-            if (entityType == typeof(RenamedDummy)) return "UPDATE [dbo].[RenamedDummy] SET [Name] = @Name WHERE [UId] = @UId";
-            if (entityType == typeof(MultiKeyDummy)) return "UPDATE [dbo].[MultiKeyDummy] SET [Id] = @Id, [MyKey] = @MyKey WHERE [Id] = @Id AND [MyKey] = @MyKey";
+            if (entityType == typeof(RenamedDummy))
+                return "UPDATE [dbo].[RenamedDummy] SET [Name] = @Name WHERE [UId] = @UId";
+            if (entityType == typeof(MultiKeyDummy))
+                return
+                    "UPDATE [dbo].[MultiKeyDummy] SET [Id] = @Id, [MyKey] = @MyKey WHERE [Id] = @Id AND [MyKey] = @MyKey";
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets expected delete statement.
+        ///     Gets expected delete statement.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
-        ///
         /// <returns>
-        /// The expected delete statement.
+        ///     The expected delete statement.
         /// </returns>
         protected override string GetExpectedDeleteStatement(Type entityType)
         {
             if (entityType == typeof(Dummy)) return "DELETE FROM [dbo].[Dummy] WHERE [Id] = @Id";
             if (entityType == typeof(RenamedDummy)) return "DELETE FROM [dbo].[RenamedDummy] WHERE [UId] = @UId";
-            if (entityType == typeof(MultiKeyDummy)) return "DELETE FROM [dbo].[MultiKeyDummy] WHERE [Id] = @Id AND [MyKey] = @MyKey";
+            if (entityType == typeof(MultiKeyDummy))
+                return "DELETE FROM [dbo].[MultiKeyDummy] WHERE [Id] = @Id AND [MyKey] = @MyKey";
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets expected delete by statement.
+        ///     Gets expected delete by statement.
         /// </summary>
-        ///
         /// <param name="entityType">       Type of the entity. </param>
         /// <param name="filterProperty">   The filter property. </param>
-        ///
         /// <returns>
-        /// The expected delete by statement.
+        ///     The expected delete by statement.
         /// </returns>
         protected override string GetExpectedDeleteByStatement(Type entityType, string filterProperty)
         {
@@ -249,14 +242,12 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         }
 
         /// <summary>
-        /// Renders the expected property list described by props.
+        ///     Renders the expected property list described by props.
         /// </summary>
-        ///
         /// <param name="props">        The properties. </param>
         /// <param name="entityType">   Type of the entity. </param>
-        ///
         /// <returns>
-        /// A string.
+        ///     A string.
         /// </returns>
         protected override string RenderExpectedPropertyList(PropertyInfo[] props, Type entityType = null)
         {
@@ -274,13 +265,11 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         }
 
         /// <summary>
-        /// Gets expected render table name.
+        ///     Gets expected render table name.
         /// </summary>
-        ///
         /// <param name="entityType">   Type of the entity. </param>
-        ///
         /// <returns>
-        /// The expected render table name.
+        ///     The expected render table name.
         /// </returns>
         protected override string GetExpectedRenderTableName(Type entityType)
         {
@@ -291,25 +280,27 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         }
 
         /// <summary>
-        /// Gets expected render property name.
+        ///     Gets expected render property name.
         /// </summary>
-        ///
         /// <param name="propName"> Name of the property. </param>
-        ///
         /// <returns>
-        /// The expected render property name.
+        ///     The expected render property name.
         /// </returns>
-        protected override string GetExpectedRenderPropertyName(string propName) => $"[{propName}]";
+        protected override string GetExpectedRenderPropertyName(string propName)
+        {
+            return $"[{propName}]";
+        }
 
         /// <summary>
-        /// Gets expected render parameter property name.
+        ///     Gets expected render parameter property name.
         /// </summary>
-        ///
         /// <param name="pName">    The name. </param>
-        ///
         /// <returns>
-        /// The expected render parameter property name.
+        ///     The expected render parameter property name.
         /// </returns>
-        protected override string GetExpectedRenderParameterPropertyName(string pName) => $"@{pName}";
+        protected override string GetExpectedRenderParameterPropertyName(string pName)
+        {
+            return $"@{pName}";
+        }
     }
 }

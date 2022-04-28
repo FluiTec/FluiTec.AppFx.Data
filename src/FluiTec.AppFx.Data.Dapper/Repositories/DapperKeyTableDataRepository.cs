@@ -32,14 +32,12 @@ public abstract class DapperKeyTableDataRepository<TEntity, TKey> : DapperWritab
     }
 
     /// <summary>
-    /// Gets an entity asynchronous.
+    ///     Gets an entity asynchronous.
     /// </summary>
-    ///
     /// <param name="id">   The Identifier to use. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public virtual Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {

@@ -113,13 +113,11 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
     }
 
     /// <summary>
-    /// Gets all asynchronous.
+    ///     Gets all asynchronous.
     /// </summary>
-    ///
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// An enumerator that allows foreach to be used to process all items in this collection.
+    ///     An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
     public virtual Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
     {
@@ -135,18 +133,17 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
     }
 
     /// <summary>
-    /// Count asynchronous.
+    ///     Count asynchronous.
     /// </summary>
-    ///
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The count.
+    ///     The count.
     /// </returns>
     public virtual Task<int> CountAsync(CancellationToken ctx = default)
     {
         var command = GetFromCache(() => $"SELECT COUNT(*) FROM {TableName}", nameof(Count));
-        return UnitOfWork.Connection.ExecuteScalarAsync<int>(new CommandDefinition(command, null, UnitOfWork.Transaction, cancellationToken: ctx));
+        return UnitOfWork.Connection.ExecuteScalarAsync<int>(new CommandDefinition(command, null,
+            UnitOfWork.Transaction, cancellationToken: ctx));
     }
 
     #endregion

@@ -36,13 +36,11 @@ public class NMemoryKeyTableDataRepository<TEntity, TKey> : NMemoryDataRepositor
     }
 
     /// <summary>
-    /// Gets an entity using the given identifier.
+    ///     Gets an entity using the given identifier.
     /// </summary>
-    ///
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public TEntity Get(params object[] keys)
     {
@@ -50,32 +48,12 @@ public class NMemoryKeyTableDataRepository<TEntity, TKey> : NMemoryDataRepositor
     }
 
     /// <summary>
-    /// Keys match.
+    ///     Gets an entity asynchronous.
     /// </summary>
-    ///
-    /// <param name="entity">   The entity. </param>
-    /// <param name="keys">     The keys. </param>
-    ///
-    /// <returns>
-    /// True if it succeeds, false if it fails.
-    /// </returns>
-    private bool KeysMatch(TEntity entity, IReadOnlyList<object> keys)
-    {
-        var typeKeys = SqlCache.TypeKeyPropertiesCache(EntityType)
-                .OrderBy(tk => tk.ExtendedData.Order)
-                .ToList();
-        return !typeKeys.Where((t, i) => !t.PropertyInfo.GetValue(entity, null).Equals(keys[i])).Any();
-    }
-
-    /// <summary>
-    /// Gets an entity asynchronous.
-    /// </summary>
-    ///
     /// <param name="id">   The Identifier to use. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
@@ -83,17 +61,31 @@ public class NMemoryKeyTableDataRepository<TEntity, TKey> : NMemoryDataRepositor
     }
 
     /// <summary>
-    /// Gets an entity asynchronous.
+    ///     Gets an entity asynchronous.
     /// </summary>
-    ///
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
     {
         return Task.FromResult(Table.SingleOrDefault(entity => KeysMatch(entity, keys)));
+    }
+
+    /// <summary>
+    ///     Keys match.
+    /// </summary>
+    /// <param name="entity">   The entity. </param>
+    /// <param name="keys">     The keys. </param>
+    /// <returns>
+    ///     True if it succeeds, false if it fails.
+    /// </returns>
+    private bool KeysMatch(TEntity entity, IReadOnlyList<object> keys)
+    {
+        var typeKeys = SqlCache.TypeKeyPropertiesCache(EntityType)
+            .OrderBy(tk => tk.ExtendedData.Order)
+            .ToList();
+        return !typeKeys.Where((t, i) => !t.PropertyInfo.GetValue(entity, null).Equals(keys[i])).Any();
     }
 }

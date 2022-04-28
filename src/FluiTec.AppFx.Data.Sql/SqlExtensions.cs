@@ -34,18 +34,18 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that gets all asynchronous.
+    ///     An IDbConnection extension method that gets all asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// all async&lt; t entity&gt;
+    ///     all async&lt; t entity&gt;
     /// </returns>
     public static Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(this IDbConnection connection,
         IDbTransaction transaction = null, int? commandTimeout = null, CancellationToken cancellationToken = default)
@@ -83,14 +83,13 @@ public static class SqlExtensions
                 if (keyParams.Count != typeKeys.Count)
                     throw new InvalidOperationException(
                         $"Invalid id, KeyCount-Mismatch. TypeConfig requires {typeKeys.Count} keys, query received {keyParams.Count} keys.");
-                foreach (var p in keyParams)
-                {
-                    parameters.Add(p.Key, p.Value);
-                }
+                foreach (var p in keyParams) parameters.Add(p.Key, p.Value);
             }
             else
+            {
                 throw new InvalidOperationException(
                     "Invalid id, a type having multiple keys must be queried using multiple keys!");
+            }
 
             return connection.QuerySingleOrDefault<TEntity>(sql, parameters, transaction, commandTimeout);
         }
@@ -103,19 +102,19 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that gets an asynchronous.
+    ///     An IDbConnection extension method that gets an asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="id">                   The identifier. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// The async&lt; t entity&gt;
+    ///     The async&lt; t entity&gt;
     /// </returns>
     public static Task<TEntity> GetAsync<TEntity>(this IDbConnection connection, dynamic id,
         IDbTransaction transaction = null,
@@ -138,14 +137,13 @@ public static class SqlExtensions
                 if (keyParams.Count != typeKeys.Count)
                     throw new InvalidOperationException(
                         $"Invalid id, KeyCount-Mismatch. TypeConfig requires {typeKeys.Count} keys, query received {keyParams.Count} keys.");
-                foreach (var p in keyParams)
-                {
-                    parameters.Add(p.Key, p.Value);
-                }
+                foreach (var p in keyParams) parameters.Add(p.Key, p.Value);
             }
             else
+            {
                 throw new InvalidOperationException(
                     "Invalid id, a type having multiple keys must be queried using multiple keys!");
+            }
 
             return connection.QuerySingleOrDefaultAsync<TEntity>(new CommandDefinition(sql, parameters, transaction,
                 commandTimeout, cancellationToken: cancellationToken));
@@ -154,7 +152,8 @@ public static class SqlExtensions
         {
             var parameters = new DynamicParameters();
             parameters.Add(builder.KeyParameter(type), id);
-            return connection.QuerySingleOrDefaultAsync<TEntity>(new CommandDefinition(sql, parameters, transaction, commandTimeout, cancellationToken: cancellationToken));
+            return connection.QuerySingleOrDefaultAsync<TEntity>(new CommandDefinition(sql, parameters, transaction,
+                commandTimeout, cancellationToken: cancellationToken));
         }
     }
 
@@ -177,19 +176,19 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts an asynchronous.
+    ///     An IDbConnection extension method that inserts an asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="entity">               The entity. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// An asynchronous result.
+    ///     An asynchronous result.
     /// </returns>
     public static async Task InsertAsync<TEntity>(this IDbConnection connection, TEntity entity,
         IDbTransaction transaction = null, int? commandTimeout = null, CancellationToken cancellationToken = default)
@@ -205,9 +204,8 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts an automatic.
+    ///     An IDbConnection extension method that inserts an automatic.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">       The connection to act on. </param>
     /// <param name="entity">           The entity. </param>
@@ -233,19 +231,19 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts an automatic asynchronous.
+    ///     An IDbConnection extension method that inserts an automatic asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="entity">               The entity. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// A long.
+    ///     A long.
     /// </returns>
     public static async Task InsertAutoAsync<TEntity>(this IDbConnection connection, TEntity entity,
         IDbTransaction transaction = null,
@@ -256,8 +254,9 @@ public static class SqlExtensions
         var builder = connection.GetBuilder();
         var sql = builder.InsertAutoKey(type);
         OnSqlGenerated(sql);
-        
-        var result = await connection.ExecuteScalarAsync<object>(new CommandDefinition(sql, entity, transaction, commandTimeout, cancellationToken: cancellationToken));
+
+        var result = await connection.ExecuteScalarAsync<object>(new CommandDefinition(sql, entity, transaction,
+            commandTimeout, cancellationToken: cancellationToken));
         var cast = Convert.ChangeType(result,
             SqlCache.TypeKeyPropertiesCache(typeof(TEntity))
                 .Single(tk => tk.ExtendedData.IdentityKey).PropertyInfo.PropertyType);
@@ -288,19 +287,19 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts a multiple asynchronous.
+    ///     An IDbConnection extension method that inserts a multiple asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="entities">             The entities. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// A long.
+    ///     A long.
     /// </returns>
     public static Task<int> InsertMultipleAsync<TEntity>(this IDbConnection connection,
         IEnumerable<TEntity> entities,
@@ -340,19 +339,19 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts an automatic multiple asynchronous.
+    ///     An IDbConnection extension method that inserts an automatic multiple asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="entities">             The entities. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// A long.
+    ///     A long.
     /// </returns>
     public static Task<int> InsertAutoMultipleAsync<TEntity>(this IDbConnection connection,
         IEnumerable<TEntity> entities,
@@ -366,7 +365,8 @@ public static class SqlExtensions
         OnSqlGenerated(sql);
 
         // just return number of affected rows instead of the indivitual id's
-        return connection.ExecuteAsync(new CommandDefinition(sql, entities, transaction, commandTimeout, cancellationToken: cancellationToken));
+        return connection.ExecuteAsync(new CommandDefinition(sql, entities, transaction, commandTimeout,
+            cancellationToken: cancellationToken));
     }
 
     /// <summary>	An IDbConnection extension method that updates this object. </summary>
@@ -394,19 +394,19 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that updates the asynchronous.
+    ///     An IDbConnection extension method that updates the asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="entity">               The entity. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
     public static async Task<bool> UpdateAsync<TEntity>(this IDbConnection connection, TEntity entity,
         IDbTransaction transaction = null,
@@ -529,15 +529,14 @@ public static class SqlExtensions
                 if (keyParams.Count != typeKeys.Count)
                     throw new InvalidOperationException(
                         $"Invalid id, KeyCount-Mismatch. TypeConfig requires {typeKeys.Count} keys, query received {keyParams.Count} keys.");
-                foreach (var p in keyParams)
-                {
-                    parameters.Add(p.Key, p.Value);
-                }
+                foreach (var p in keyParams) parameters.Add(p.Key, p.Value);
             }
             else
+            {
                 throw new InvalidOperationException(
                     "Invalid id, a type having multiple keys must be queried using multiple keys!");
-            
+            }
+
             return connection.Execute(sql, parameters, transaction, commandTimeout) > 0;
         }
         else
@@ -549,19 +548,19 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that deletes the asynchronous.
+    ///     An IDbConnection extension method that deletes the asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="id">                   The identifier. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
     public static async Task<bool> DeleteAsync<TEntity>(this IDbConnection connection, dynamic id,
         IDbTransaction transaction = null,
@@ -584,22 +583,23 @@ public static class SqlExtensions
                 if (keyParams.Count != typeKeys.Count)
                     throw new InvalidOperationException(
                         $"Invalid id, KeyCount-Mismatch. TypeConfig requires {typeKeys.Count} keys, query received {keyParams.Count} keys.");
-                foreach (var p in keyParams)
-                {
-                    parameters.Add(p.Key, p.Value);
-                }
+                foreach (var p in keyParams) parameters.Add(p.Key, p.Value);
             }
             else
+            {
                 throw new InvalidOperationException(
                     "Invalid id, a type having multiple keys must be queried using multiple keys!");
+            }
 
-            return await connection.ExecuteAsync(new CommandDefinition(sql, parameters, transaction, commandTimeout, cancellationToken: cancellationToken)) > 0;
+            return await connection.ExecuteAsync(new CommandDefinition(sql, parameters, transaction, commandTimeout,
+                cancellationToken: cancellationToken)) > 0;
         }
         else
         {
             var parameters = new DynamicParameters();
             parameters.Add(builder.KeyParameter(type), id);
-            return await connection.ExecuteAsync(new CommandDefinition(sql, parameters, transaction, commandTimeout, cancellationToken: cancellationToken)) > 0;
+            return await connection.ExecuteAsync(new CommandDefinition(sql, parameters, transaction, commandTimeout,
+                cancellationToken: cancellationToken)) > 0;
         }
     }
 

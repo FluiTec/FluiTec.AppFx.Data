@@ -13,9 +13,8 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Data.Ef.Repositories;
 
 /// <summary>
-/// An ef data repository.
+///     An ef data repository.
 /// </summary>
-///
 /// <typeparam name="TEntity">  Type of the entity. </typeparam>
 public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpressionDataRepository<TEntity>
     where TEntity : class, IEntity, new()
@@ -23,12 +22,12 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     #region Constructors
 
     /// <summary>
-    /// Specialized constructor for use only by derived class.
+    ///     Specialized constructor for use only by derived class.
     /// </summary>
-    ///
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
-    ///
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="unitOfWork">   The unit of work. </param>
     /// <param name="logger">       The logger. </param>
     protected EfDataRepository(EfUnitOfWork unitOfWork, ILogger<IRepository> logger)
@@ -55,29 +54,26 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     public Type EntityType { get; }
 
     /// <summary>
-    /// Gets the name of the table.
+    ///     Gets the name of the table.
     /// </summary>
-    ///
     /// <value>
-    /// The name of the table.
+    ///     The name of the table.
     /// </value>
     public string TableName => Set.EntityType.Name;
 
     /// <summary>
-    /// Gets the context.
+    ///     Gets the context.
     /// </summary>
-    ///
     /// <value>
-    /// The context.
+    ///     The context.
     /// </value>
     protected IDynamicDbContext Context => UnitOfWork.Context;
 
     /// <summary>
-    /// Gets the set.
+    ///     Gets the set.
     /// </summary>
-    ///
     /// <value>
-    /// The set.
+    ///     The set.
     /// </value>
     protected DbSet<TEntity> Set => UnitOfWork.Context.Set<TEntity>();
 
@@ -86,13 +82,11 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     #region ITableDataRepository
 
     /// <summary>
-    /// Gets an entity using the given identifier.
+    ///     Gets an entity using the given identifier.
     /// </summary>
-    ///
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public TEntity Get(params object[] keys)
     {
@@ -100,14 +94,12 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     }
 
     /// <summary>
-    /// Gets an entity asynchronous.
+    ///     Gets an entity asynchronous.
     /// </summary>
-    ///
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public async Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
     {
@@ -115,11 +107,10 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     }
 
     /// <summary>
-    /// Gets all entities in this collection.
+    ///     Gets all entities in this collection.
     /// </summary>
-    ///
     /// <returns>
-    /// An enumerator that allows foreach to be used to process all items in this collection.
+    ///     An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
     public IEnumerable<TEntity> GetAll()
     {
@@ -127,13 +118,11 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     }
 
     /// <summary>
-    /// Gets all asynchronous.
+    ///     Gets all asynchronous.
     /// </summary>
-    ///
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// An enumerator that allows foreach to be used to process all items in this collection.
+    ///     An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
     public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
     {
@@ -141,11 +130,10 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     }
 
     /// <summary>
-    /// Counts the number of records.
+    ///     Counts the number of records.
     /// </summary>
-    ///
     /// <returns>
-    /// An int defining the total number of records.
+    ///     An int defining the total number of records.
     /// </returns>
     public int Count()
     {
@@ -153,13 +141,11 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     }
 
     /// <summary>
-    /// Count asynchronous.
+    ///     Count asynchronous.
     /// </summary>
-    ///
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The count.
+    ///     The count.
     /// </returns>
     public Task<int> CountAsync(CancellationToken ctx = default)
     {
@@ -171,13 +157,11 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     #region IExpressionDataRepository
 
     /// <summary>
-    /// Enumerates the items in this collection that meet given criteria.
+    ///     Enumerates the items in this collection that meet given criteria.
     /// </summary>
-    ///
     /// <param name="expression">   The expression. </param>
-    ///
     /// <returns>
-    /// An enumerator that allows foreach to be used to process the matched items.
+    ///     An enumerator that allows foreach to be used to process the matched items.
     /// </returns>
     public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression)
     {
@@ -185,16 +169,15 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     }
 
     /// <summary>
-    /// Finds the asynchronous in this collection.
+    ///     Finds the asynchronous in this collection.
     /// </summary>
-    ///
     /// <param name="expression">   The expression. </param>
     /// <param name="ctx">          (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// An enumerator that allows foreach to be used to process the asynchronous in this collection.
+    ///     An enumerator that allows foreach to be used to process the asynchronous in this collection.
     /// </returns>
-    public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ctx = default)
+    public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> expression,
+        CancellationToken ctx = default)
     {
         return await Set.Where(expression).ToListAsync(ctx);
     }

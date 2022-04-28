@@ -12,9 +12,8 @@ using Microsoft.Extensions.Options;
 namespace FluiTec.AppFx.Data.Ef.DataServices;
 
 /// <summary>
-/// A service for accessing ef data information.
+///     A service for accessing ef data information.
 /// </summary>
-///
 /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
 public abstract class EfDataService<TUnitOfWork> : BaseEfDataService<TUnitOfWork>
     where TUnitOfWork : EfUnitOfWork, IUnitOfWork
@@ -28,9 +27,8 @@ public abstract class EfDataService<TUnitOfWork> : BaseEfDataService<TUnitOfWork
     #region Constructors
 
     /// <summary>
-    /// Specialized constructor for use only by derived class.
+    ///     Specialized constructor for use only by derived class.
     /// </summary>
-    ///
     /// <param name="options">          Options for controlling the operation. </param>
     /// <param name="loggerFactory">    The logger factory. </param>
     protected EfDataService(ISqlServiceOptions options, ILoggerFactory loggerFactory) : base(options, loggerFactory)
@@ -38,12 +36,12 @@ public abstract class EfDataService<TUnitOfWork> : BaseEfDataService<TUnitOfWork
     }
 
     /// <summary>
-    /// Specialized constructor for use only by derived class.
+    ///     Specialized constructor for use only by derived class.
     /// </summary>
-    ///
     /// <param name="options">          Options for controlling the operation. </param>
     /// <param name="loggerFactory">    The logger factory. </param>
-    protected EfDataService(IOptionsMonitor<ISqlServiceOptions> options, ILoggerFactory loggerFactory) : base(options, loggerFactory)
+    protected EfDataService(IOptionsMonitor<ISqlServiceOptions> options, ILoggerFactory loggerFactory) : base(options,
+        loggerFactory)
     {
     }
 
@@ -98,7 +96,7 @@ public abstract class EfDataService<TUnitOfWork> : BaseEfDataService<TUnitOfWork
     /// </remarks>
     protected virtual IEnumerable<Assembly> GetMigrationAssemblies()
     {
-        return new[] { GetType().BaseType?.Assembly, GetType().Assembly };
+        return new[] {GetType().BaseType?.Assembly, GetType().Assembly};
     }
 
     /// <summary>   Gets the migrator. </summary>

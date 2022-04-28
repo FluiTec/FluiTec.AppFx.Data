@@ -11,14 +11,13 @@ using Microsoft.Extensions.Options;
 namespace EfSample;
 
 /// <summary>
-/// A program.
+///     A program.
 /// </summary>
 internal class Program : ValidatingConfigurationManagerProgram
 {
     /// <summary>
-    /// Main entry-point for this application.
+    ///     Main entry-point for this application.
     /// </summary>
-    ///
     /// <param name="args"> A variable-length parameters list containing arguments. </param>
     private static void Main(params string[] args)
     {
@@ -28,9 +27,10 @@ internal class Program : ValidatingConfigurationManagerProgram
         var service = sp.GetRequiredService<ITestDataService>();
         using (var uow = service.BeginUnitOfWork())
         {
-            uow.DummyRepository.Add(new DummyEntity { Name = "Testname" });
+            uow.DummyRepository.Add(new DummyEntity {Name = "Testname"});
             uow.Commit();
         }
+
         using (var uow = service.BeginUnitOfWork())
         {
             var e = uow.DummyRepository.GetAll();
@@ -62,11 +62,11 @@ internal class Program : ValidatingConfigurationManagerProgram
     {
         base.ConfigureServices(services);
 
-        services.ConfigureDynamicDataProvider<ITestDataService, DynamicDataOptions>(Manager, 
+        services.ConfigureDynamicDataProvider<ITestDataService, DynamicDataOptions>(Manager,
             (options, provider) =>
-            new EfTestDataService(
-                provider.GetRequiredService<IOptionsMonitor<EfSqlServiceOptions>>(),
-                provider.GetService<ILoggerFactory>()));
+                new EfTestDataService(
+                    provider.GetRequiredService<IOptionsMonitor<EfSqlServiceOptions>>(),
+                    provider.GetService<ILoggerFactory>()));
 
         return services;
     }

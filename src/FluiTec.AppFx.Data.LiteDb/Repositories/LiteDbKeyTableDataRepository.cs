@@ -43,13 +43,11 @@ public abstract class LiteDbKeyTableDataRepository<TEntity, TKey> : LiteDbDataRe
     #region IKeyTableDataRepository
 
     /// <summary>
-    /// Gets an entity using the given identifier.
+    ///     Gets an entity using the given identifier.
     /// </summary>
-    ///
     /// <param name="id">   The Identifier to use. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public virtual TEntity Get(TKey id)
     {
@@ -57,13 +55,11 @@ public abstract class LiteDbKeyTableDataRepository<TEntity, TKey> : LiteDbDataRe
     }
 
     /// <summary>
-    /// Gets an entity using the given identifier.
+    ///     Gets an entity using the given identifier.
     /// </summary>
-    ///
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public TEntity Get(params object[] keys)
     {
@@ -85,14 +81,12 @@ public abstract class LiteDbKeyTableDataRepository<TEntity, TKey> : LiteDbDataRe
     }
 
     /// <summary>
-    /// Gets an entity asynchronous.
+    ///     Gets an entity asynchronous.
     /// </summary>
-    ///
     /// <param name="id">   The Identifier to use. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public virtual Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
@@ -100,14 +94,12 @@ public abstract class LiteDbKeyTableDataRepository<TEntity, TKey> : LiteDbDataRe
     }
 
     /// <summary>
-    /// Gets an entity asynchronous.
+    ///     Gets an entity asynchronous.
     /// </summary>
-    ///
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
     {

@@ -130,11 +130,10 @@ public interface ISqlAdapter
     string RenderPropertyName(string propertyName);
 
     /// <summary>
-    /// Gets name service.
+    ///     Gets name service.
     /// </summary>
-    ///
     /// <returns>
-    /// The name service.
+    ///     The name service.
     /// </returns>
     IEntityNameService GetNameService();
 }

@@ -16,8 +16,9 @@ public static class SqlCache
         new();
 
     /// <summary>	The type key properties. </summary>
-    private static readonly ConcurrentDictionary<RuntimeTypeHandle, IList<PropertyInfoEx<SqlKeyAttribute>>> TypeKeyProperties =
-        new();
+    private static readonly ConcurrentDictionary<RuntimeTypeHandle, IList<PropertyInfoEx<SqlKeyAttribute>>>
+        TypeKeyProperties =
+            new();
 
     /// <summary>	The entity name cache. </summary>
     public static ConcurrentDictionary<RuntimeTypeHandle, string> EntityNameCache =
@@ -53,12 +54,12 @@ public static class SqlCache
         var allProperties = TypePropertiesChache(type);
 
         var markedKeyProperties = allProperties
-            .Select(p => 
+            .Select(p =>
                 new PropertyInfoEx<SqlKeyAttribute>(p, p.GetCustomAttribute<SqlKeyAttribute>()))
             .Where(p => p.HasExtendedData)
             .ToList();
 
-        IList<PropertyInfoEx<SqlKeyAttribute>> keyProperties = markedKeyProperties.Any() 
+        IList<PropertyInfoEx<SqlKeyAttribute>> keyProperties = markedKeyProperties.Any()
             ? markedKeyProperties
             : allProperties.Where(p => p.Name == "Id")
                 .Select(p =>

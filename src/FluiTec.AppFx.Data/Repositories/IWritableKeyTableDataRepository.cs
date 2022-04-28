@@ -8,7 +8,8 @@ namespace FluiTec.AppFx.Data.Repositories;
 /// <typeparam name="TEntity">The type of the entity.</typeparam>
 /// <typeparam name="TKey">The type of the key.</typeparam>
 /// <seealso cref="FluiTec.AppFx.Data.Repositories.IKeyTableDataRepository{TEntity, TKey}" />
-public interface IWritableKeyTableDataRepository<TEntity, in TKey> : IKeyTableDataRepository<TEntity, TKey>, IWritableTableDataRepository<TEntity>
+public interface IWritableKeyTableDataRepository<TEntity, in TKey> : IKeyTableDataRepository<TEntity, TKey>,
+    IWritableTableDataRepository<TEntity>
     where TEntity : class, IEntity, new()
 {
     /// <summary>   Deletes the given ID.</summary>
@@ -17,14 +18,12 @@ public interface IWritableKeyTableDataRepository<TEntity, in TKey> : IKeyTableDa
     bool Delete(TKey id);
 
     /// <summary>
-    /// Deletes the asynchronous described by ID.
+    ///     Deletes the asynchronous described by ID.
     /// </summary>
-    ///
     /// <param name="id">   The Identifier to delete. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The delete.
+    ///     The delete.
     /// </returns>
     Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default);
 }

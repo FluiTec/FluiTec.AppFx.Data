@@ -3,7 +3,7 @@
 namespace FluiTec.AppFx.Data.Ef;
 
 /// <summary>
-/// An ef SQL service options validator.
+///     An ef SQL service options validator.
 /// </summary>
 public class EfSqlServiceOptionsValidator : AbstractValidator<EfSqlServiceOptions>
 {

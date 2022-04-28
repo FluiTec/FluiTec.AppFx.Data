@@ -39,19 +39,18 @@ public static class DynamicDataConfigurationExtension
     }
 
     /// <summary>
-    /// Configure dynamic data provider.
+    ///     Configure dynamic data provider.
     /// </summary>
-    ///
     /// <typeparam name="TDataService">     Type of the data service. </typeparam>
     /// <typeparam name="TDynamicOptions">  Type of the dynamic options. </typeparam>
     /// <param name="services">             The services. </param>
     /// <param name="configurationManager"> Manager for configuration. </param>
     /// <param name="dataServiceProvider">  The data service provider. </param>
-    ///
     /// <returns>
-    /// An IServiceCollection.
+    ///     An IServiceCollection.
     /// </returns>
-    private static IServiceCollection ConfigureDynamicDataProvider<TDataService, TDynamicOptions>(this IServiceCollection services,
+    private static IServiceCollection ConfigureDynamicDataProvider<TDataService, TDynamicOptions>(
+        this IServiceCollection services,
         ConfigurationManager configurationManager, Func<IServiceProvider, TDataService> dataServiceProvider)
         where TDataService : class, IDataService
         where TDynamicOptions : class, IDynamicDataOptions, new()
@@ -64,17 +63,15 @@ public static class DynamicDataConfigurationExtension
     }
 
     /// <summary>
-    /// Configure dynamic data provider.
+    ///     Configure dynamic data provider.
     /// </summary>
-    ///
     /// <typeparam name="TDataService">     Type of the data service. </typeparam>
     /// <typeparam name="TDynamicOptions">  Type of the dynamic options. </typeparam>
     /// <param name="services">             The services. </param>
     /// <param name="configurationManager"> Manager for configuration. </param>
     /// <param name="dataServiceProvider">  The data service provider. </param>
-    ///
     /// <returns>
-    /// An IServiceCollection.
+    ///     An IServiceCollection.
     /// </returns>
     public static IServiceCollection ConfigureDynamicDataProvider<TDataService, TDynamicOptions>(
         this IServiceCollection services,
@@ -85,8 +82,10 @@ public static class DynamicDataConfigurationExtension
     {
         return ConfigureDynamicDataProvider<TDataService, TDynamicOptions>(services, configurationManager, provider =>
         {
-            IOptionsMonitor<IDynamicDataOptions> preferredOptions = provider.GetService<IOptionsMonitor<TDynamicOptions>>();
-            IOptionsMonitor<IDynamicDataOptions> fallbackOptions = provider.GetRequiredService<IOptionsMonitor<DynamicDataOptions>>();
+            IOptionsMonitor<IDynamicDataOptions> preferredOptions =
+                provider.GetService<IOptionsMonitor<TDynamicOptions>>();
+            IOptionsMonitor<IDynamicDataOptions> fallbackOptions =
+                provider.GetRequiredService<IOptionsMonitor<DynamicDataOptions>>();
             var dynamicOptions = new FallbackDynamicDataOptions(preferredOptions, fallbackOptions);
 
             var service = dataServiceProvider(dynamicOptions, provider);

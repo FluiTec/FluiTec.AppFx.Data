@@ -7,22 +7,21 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace FluiTec.AppFx.Data.Ef.Extensions;
 
 /// <summary>
-/// A database context extensions.
+///     A database context extensions.
 /// </summary>
 public static class DbContextExtensions
 {
     /// <summary>
-    /// Gets an option.
+    ///     Gets an option.
     /// </summary>
-    ///
-    /// <exception cref="ArgumentOutOfRangeException">  Thrown when one or more arguments are outside
-    ///                                                 the required range. </exception>
-    ///
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown when one or more arguments are outside
+    ///     the required range.
+    /// </exception>
     /// <param name="sqlType">          Type of the SQL. </param>
     /// <param name="connectionString"> The connection string. </param>
-    ///
     /// <returns>
-    /// The option.
+    ///     The option.
     /// </returns>
     public static DbContextOptions GetOption(SqlType sqlType, string connectionString)
     {
@@ -37,15 +36,13 @@ public static class DbContextExtensions
     }
 
     /// <summary>
-    /// An EntityTypeBuilder&lt;TEntity&gt; extension method that converts this object to a table.
+    ///     An EntityTypeBuilder&lt;TEntity&gt; extension method that converts this object to a table.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="entityTypeBuilder">    The entityTypeBuilder to act on. </param>
     /// <param name="nameService">          The name service. </param>
-    ///
     /// <returns>
-    /// The given data converted to an EntityTypeBuilder&lt;TEntity&gt;
+    ///     The given data converted to an EntityTypeBuilder&lt;TEntity&gt;
     /// </returns>
     public static EntityTypeBuilder<TEntity> ToTable<TEntity>(this EntityTypeBuilder<TEntity> entityTypeBuilder,
         IEntityNameService nameService) where TEntity : class
@@ -55,14 +52,12 @@ public static class DbContextExtensions
     }
 
     /// <summary>
-    /// An EntityTypeBuilder&lt;TEntity&gt; extension method that converts this object to a table.
+    ///     An EntityTypeBuilder&lt;TEntity&gt; extension method that converts this object to a table.
     /// </summary>
-    ///
     /// <param name="entityTypeBuilder">    The entityTypeBuilder to act on. </param>
     /// <param name="nameService">          The name service. </param>
-    ///
     /// <returns>
-    /// The given data converted to an EntityTypeBuilder&lt;TEntity&gt;
+    ///     The given data converted to an EntityTypeBuilder&lt;TEntity&gt;
     /// </returns>
     public static EntityTypeBuilder ToTable(this EntityTypeBuilder entityTypeBuilder, IEntityNameService nameService)
     {

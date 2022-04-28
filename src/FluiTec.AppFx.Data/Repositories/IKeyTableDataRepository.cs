@@ -15,16 +15,14 @@ public interface IKeyTableDataRepository<TEntity, in TKey> : ITableDataRepositor
     /// <param name="id">	The Identifier to use. </param>
     /// <returns>	A TEntity. </returns>
     TEntity Get(TKey id);
-    
+
     /// <summary>
-    /// Gets an entity asynchronous.
+    ///     Gets an entity asynchronous.
     /// </summary>
-    ///
     /// <param name="id">   The Identifier to use. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default);
 }

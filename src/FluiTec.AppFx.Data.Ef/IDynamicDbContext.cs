@@ -7,66 +7,58 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 namespace FluiTec.AppFx.Data.Ef;
 
 /// <summary>
-/// Interface for dynamic database context.
+///     Interface for dynamic database context.
 /// </summary>
 public interface IDynamicDbContext : IDisposable
 {
     /// <summary>
-    /// Gets the type of the SQL.
+    ///     Gets the type of the SQL.
     /// </summary>
-    ///
     /// <value>
-    /// The type of the SQL.
+    ///     The type of the SQL.
     /// </value>
     SqlType SqlType { get; }
 
     /// <summary>
-    /// Gets the connection string.
+    ///     Gets the connection string.
     /// </summary>
-    ///
     /// <value>
-    /// The connection string.
+    ///     The connection string.
     /// </value>
     string ConnectionString { get; }
 
     /// <summary>
-    /// Gets the set.
+    ///     Gets the database.
     /// </summary>
-    ///
+    /// <value>
+    ///     The database.
+    /// </value>
+    DatabaseFacade Database { get; }
+
+    /// <summary>
+    ///     Gets the set.
+    /// </summary>
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    ///
     /// <returns>
-    /// A DbSet&lt;TEntity&gt;
+    ///     A DbSet&lt;TEntity&gt;
     /// </returns>
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
     /// <summary>
-    /// Saves the changes.
+    ///     Saves the changes.
     /// </summary>
-    ///
     /// <returns>
-    /// An int.
+    ///     An int.
     /// </returns>
     int SaveChanges();
 
     /// <summary>
-    /// Entries the given entity.
+    ///     Entries the given entity.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="entity">   The entity. </param>
-    ///
     /// <returns>
-    /// An EntityEntry&lt;TEntity&gt;
+    ///     An EntityEntry&lt;TEntity&gt;
     /// </returns>
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
-
-    /// <summary>
-    /// Gets the database.
-    /// </summary>
-    ///
-    /// <value>
-    /// The database.
-    /// </value>
-    DatabaseFacade Database { get; }
 }

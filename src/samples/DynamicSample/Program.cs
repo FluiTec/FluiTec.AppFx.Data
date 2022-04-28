@@ -4,7 +4,6 @@ using DynamicSample.Data.Entities;
 using DynamicSample.Data.LiteDb;
 using DynamicSample.Data.Mssql;
 using DynamicSample.Data.Mysql;
-using DynamicSample.Data.NMemory;
 using DynamicSample.Data.Pgsql;
 using DynamicSample.Data.Sqlite;
 using FluiTec.AppFx.Data.Dapper.Mssql;

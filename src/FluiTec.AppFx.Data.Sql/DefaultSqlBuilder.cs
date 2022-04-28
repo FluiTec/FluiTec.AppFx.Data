@@ -10,24 +10,22 @@ namespace FluiTec.AppFx.Data.Sql;
 /// <summary>	A default SQL builder. </summary>
 public static class DefaultSqlBuilder
 {
+    /// <summary>
+    ///     Gets SQL builder by database delegate.
+    /// </summary>
+    /// <param name="sqlType">  Type of the SQL. </param>
+    /// <returns>
+    ///     A SqlBuilder.
+    /// </returns>
+    public delegate SqlBuilder GetSqlBuilderByDbDelegate(SqlType sqlType);
+
     /// <summary>	Gets SQL builder delegate. </summary>
     /// <param name="connection">	The connection. </param>
     /// <returns>	A SqlBuilder. </returns>
     public delegate SqlBuilder GetSqlBuilderDelegate(IDbConnection connection);
 
     /// <summary>
-    /// Gets SQL builder by database delegate.
-    /// </summary>
-    ///
-    /// <param name="sqlType">  Type of the SQL. </param>
-    ///
-    /// <returns>
-    /// A SqlBuilder.
-    /// </returns>
-    public delegate SqlBuilder GetSqlBuilderByDbDelegate(SqlType sqlType);
-
-    /// <summary>
-    /// (Immutable) The padlock.
+    ///     (Immutable) The padlock.
     /// </summary>
     private static readonly object Padlock = new();
 
@@ -41,7 +39,7 @@ public static class DefaultSqlBuilder
     public static GetSqlBuilderDelegate GetSqlBuilder;
 
     /// <summary>
-    /// The get SQL by database builder.
+    ///     The get SQL by database builder.
     /// </summary>
     public static GetSqlBuilderByDbDelegate GetSqlByDbBuilder;
 
@@ -90,13 +88,11 @@ public static class DefaultSqlBuilder
     }
 
     /// <summary>
-    /// An IDbConnection extension method that gets a builder.
+    ///     An IDbConnection extension method that gets a builder.
     /// </summary>
-    ///
     /// <param name="dbType">   The dbType to act on. </param>
-    ///
     /// <returns>
-    /// The builder.
+    ///     The builder.
     /// </returns>
     public static SqlBuilder GetBuilder(this SqlType dbType)
     {

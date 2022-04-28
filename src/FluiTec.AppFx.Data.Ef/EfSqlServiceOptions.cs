@@ -5,26 +5,25 @@ using FluiTec.AppFx.Options.Attributes;
 namespace FluiTec.AppFx.Data.Ef;
 
 /// <summary>
-/// An ef SQL service options.
+///     An ef SQL service options.
 /// </summary>
 [ConfigurationKey("FluiTec.EntityFramework")]
 public class EfSqlServiceOptions : ISqlServiceOptions
 {
     /// <summary>
-    /// Default constructor.
+    ///     Default constructor.
     /// </summary>
     public EfSqlServiceOptions()
     {
-
     }
 
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///
-    /// <exception cref="ArgumentException">    Thrown when one or more arguments have unsupported or
-    ///                                         illegal values. </exception>
-    ///
+    /// <exception cref="ArgumentException">
+    ///     Thrown when one or more arguments have unsupported or
+    ///     illegal values.
+    /// </exception>
     /// <param name="connectionString"> The connection string. </param>
     /// <param name="sqlType">          Type of the SQL. </param>
     public EfSqlServiceOptions(string connectionString, SqlType sqlType)
@@ -42,11 +41,10 @@ public class EfSqlServiceOptions : ISqlServiceOptions
     public string ConnectionString { get; set; }
 
     /// <summary>
-    /// Gets the type of the SQL.
+    ///     Gets the type of the SQL.
     /// </summary>
-    ///
     /// <value>
-    /// The type of the SQL.
+    ///     The type of the SQL.
     /// </value>
     public SqlType SqlType { get; set; }
 }

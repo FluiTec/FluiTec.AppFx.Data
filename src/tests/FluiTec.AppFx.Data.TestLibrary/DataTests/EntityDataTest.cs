@@ -165,7 +165,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         }
 
         /// <summary>
-        /// (Unit Test Method) can read entity by keys.
+        ///     (Unit Test Method) can read entity by keys.
         /// </summary>
         [TestMethod]
         public virtual void CanReadEntityByKeys()
@@ -193,7 +193,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         }
 
         /// <summary>
-        /// (Unit Test Method) can read entity by keys asynchronous.
+        ///     (Unit Test Method) can read entity by keys asynchronous.
         /// </summary>
         [TestMethod]
         public virtual void CanReadEntityByKeysAsync()

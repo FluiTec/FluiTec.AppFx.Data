@@ -9,20 +9,18 @@ public class EntityNameAttribute : Attribute
     #region Properties
 
     /// <summary>
-    /// Gets the schema.
+    ///     Gets the schema.
     /// </summary>
-    ///
     /// <value>
-    /// The schema.
+    ///     The schema.
     /// </value>
     public string Schema { get; }
 
     /// <summary>
-    /// Gets the name only.
+    ///     Gets the name only.
     /// </summary>
-    ///
     /// <value>
-    /// The name only.
+    ///     The name only.
     /// </value>
     public string NameOnly { get; }
 

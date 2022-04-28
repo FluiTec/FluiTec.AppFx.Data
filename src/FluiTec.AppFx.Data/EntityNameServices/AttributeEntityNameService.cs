@@ -15,7 +15,8 @@ public class AttributeEntityNameService : ClassEntityNameService
     /// <summary>	Gets or sets a list of names of the entities. </summary>
     /// <value>	A list of names of the entities. </value>
     private static readonly ConcurrentDictionary<Type, string> EntityNames = new();
-    private static readonly  ConcurrentDictionary<Type, Tuple<string, string>> EntitySchemaNames = new ();
+
+    private static readonly ConcurrentDictionary<Type, Tuple<string, string>> EntitySchemaNames = new();
 
     /// <summary>Names the specified type.</summary>
     /// <param name="type">The type.</param>
@@ -37,16 +38,15 @@ public class AttributeEntityNameService : ClassEntityNameService
     }
 
     /// <summary>
-    /// Schema and name.
+    ///     Schema and name.
     /// </summary>
-    ///
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
-    ///
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="type"> The type. </param>
-    ///
     /// <returns>
-    /// A Tuple&lt;string,string&gt;
+    ///     A Tuple&lt;string,string&gt;
     /// </returns>
     public override Tuple<string, string> SchemaAndName(Type type)
     {

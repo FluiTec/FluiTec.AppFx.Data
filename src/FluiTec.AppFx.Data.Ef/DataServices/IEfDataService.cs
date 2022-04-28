@@ -3,16 +3,15 @@
 namespace FluiTec.AppFx.Data.Ef.DataServices;
 
 /// <summary>
-/// Interface for ef data service.
+///     Interface for ef data service.
 /// </summary>
 public interface IEfDataService : IDataService
 {
     /// <summary>
-    /// Gets the context.
+    ///     Gets the context.
     /// </summary>
-    ///
     /// <returns>
-    /// The context.
+    ///     The context.
     /// </returns>
     IDynamicDbContext GetContext();
 }

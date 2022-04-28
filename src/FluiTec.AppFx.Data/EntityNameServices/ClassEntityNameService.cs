@@ -18,13 +18,11 @@ public class ClassEntityNameService : IEntityNameService
     }
 
     /// <summary>
-    /// Schema and name.
+    ///     Schema and name.
     /// </summary>
-    ///
     /// <param name="type"> The type. </param>
-    ///
     /// <returns>
-    /// A Tuple&lt;string,string&gt;
+    ///     A Tuple&lt;string,string&gt;
     /// </returns>
     public virtual Tuple<string, string> SchemaAndName(Type type)
     {

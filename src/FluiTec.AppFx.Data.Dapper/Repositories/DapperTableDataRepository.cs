@@ -14,9 +14,8 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Data.Dapper.Repositories;
 
 /// <summary>
-/// A dapper table data repository.
+///     A dapper table data repository.
 /// </summary>
-///
 /// <typeparam name="TEntity">  Type of the entity. </typeparam>
 public abstract class DapperTableDataRepository<TEntity> : DapperDataRepository<TEntity>,
     ITableDataRepository<TEntity>
@@ -40,26 +39,43 @@ public abstract class DapperTableDataRepository<TEntity> : DapperDataRepository<
     #region Properties
 
     /// <summary>
-    /// Gets the key properties.
+    ///     Gets the key properties.
     /// </summary>
-    ///
     /// <value>
-    /// The key properties.
+    ///     The key properties.
     /// </value>
     protected IList<PropertyInfoEx<SqlKeyAttribute>> KeyProperties { get; }
+
+    #endregion
+
+    #region Methods
+
+    /// <summary>
+    ///     Gets a key.
+    /// </summary>
+    /// <param name="keys"> A variable-length parameters list containing keys. </param>
+    /// <returns>
+    ///     The key.
+    /// </returns>
+    protected IDictionary<string, object> GetKey(params object[] keys)
+    {
+        var key = new ExpandoObject() as IDictionary<string, object>;
+
+        for (var i = 0; i < keys.Length; i++) key.Add(KeyProperties[i].PropertyInfo.Name, keys[i]);
+
+        return key;
+    }
 
     #endregion
 
     #region ITableDataRepository
 
     /// <summary>
-    /// Gets an entity using the given identifier.
+    ///     Gets an entity using the given identifier.
     /// </summary>
-    ///
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public virtual TEntity Get(params object[] keys)
     {
@@ -67,43 +83,16 @@ public abstract class DapperTableDataRepository<TEntity> : DapperDataRepository<
     }
 
     /// <summary>
-    /// Gets an entity asynchronous.
+    ///     Gets an entity asynchronous.
     /// </summary>
-    ///
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public virtual Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
     {
         return UnitOfWork.Connection.GetAsync<TEntity>(GetKey(keys), UnitOfWork.Transaction);
-    }
-
-    #endregion
-
-    #region Methods
-
-    /// <summary>
-    /// Gets a key.
-    /// </summary>
-    ///
-    /// <param name="keys"> A variable-length parameters list containing keys. </param>
-    ///
-    /// <returns>
-    /// The key.
-    /// </returns>
-    protected IDictionary<string, object> GetKey(params object[] keys)
-    {
-        var key = new ExpandoObject() as IDictionary<string, object>;
-
-        for (var i = 0; i < keys.Length; i++)
-        {
-            key.Add(KeyProperties[i].PropertyInfo.Name, keys[i]);
-        }
-
-        return key;
     }
 
     #endregion

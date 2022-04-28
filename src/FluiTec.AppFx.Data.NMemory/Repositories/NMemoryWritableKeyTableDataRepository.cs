@@ -75,14 +75,12 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     }
 
     /// <summary>
-    /// Adds entity.
+    ///     Adds entity.
     /// </summary>
-    ///
     /// <param name="entity">   The entity to add. </param>
     /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default)
     {
@@ -100,14 +98,12 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     }
 
     /// <summary>
-    /// Adds a range asynchronous.
+    ///     Adds a range asynchronous.
     /// </summary>
-    ///
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
     /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// An asynchronous result.
+    ///     An asynchronous result.
     /// </returns>
     public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default)
     {
@@ -139,14 +135,12 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     }
 
     /// <summary>
-    /// Updates the asynchronous described by entity.
+    ///     Updates the asynchronous described by entity.
     /// </summary>
-    ///
     /// <param name="entity">   The entity to add. </param>
     /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The update.
+    ///     The update.
     /// </returns>
     public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default)
     {
@@ -154,13 +148,11 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     }
 
     /// <summary>
-    /// Deletes the given ID.
+    ///     Deletes the given ID.
     /// </summary>
-    ///
     /// <param name="keys"> The keys. </param>
-    ///
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
     public bool Delete(params object[] keys)
     {
@@ -180,14 +172,12 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     }
 
     /// <summary>
-    /// Deletes the asynchronous described by ID.
+    ///     Deletes the asynchronous described by ID.
     /// </summary>
-    ///
     /// <param name="id">   The Identifier to delete. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The delete.
+    ///     The delete.
     /// </returns>
     public Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {
@@ -210,14 +200,12 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     }
 
     /// <summary>
-    /// Deletes the asynchronous described by ID.
+    ///     Deletes the asynchronous described by ID.
     /// </summary>
-    ///
     /// <param name="entity">   The entity to add. </param>
     /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The delete.
+    ///     The delete.
     /// </returns>
     public Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default)
     {
@@ -225,14 +213,12 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     }
 
     /// <summary>
-    /// Deletes the asynchronous described by ID.
+    ///     Deletes the asynchronous described by ID.
     /// </summary>
-    ///
     /// <param name="keys"> The keys. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The delete.
+    ///     The delete.
     /// </returns>
     public async Task<bool> DeleteAsync(object[] keys, CancellationToken ctx = default)
     {

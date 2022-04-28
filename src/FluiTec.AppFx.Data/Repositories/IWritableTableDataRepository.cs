@@ -6,9 +6,8 @@ using FluiTec.AppFx.Data.Entities;
 namespace FluiTec.AppFx.Data.Repositories;
 
 /// <summary>
-/// Interface for writable data repository.
+///     Interface for writable data repository.
 /// </summary>
-///
 /// <typeparam name="TEntity">  Type of the entity. </typeparam>
 public interface IWritableTableDataRepository<TEntity> : ITableDataRepository<TEntity>
     where TEntity : class, IEntity, new()
@@ -20,14 +19,12 @@ public interface IWritableTableDataRepository<TEntity> : ITableDataRepository<TE
     TEntity Add(TEntity entity);
 
     /// <summary>
-    /// Adds entity.
+    ///     Adds entity.
     /// </summary>
-    ///
     /// <param name="entity">   The entity to add. </param>
     /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default);
 
@@ -37,14 +34,12 @@ public interface IWritableTableDataRepository<TEntity> : ITableDataRepository<TE
     void AddRange(IEnumerable<TEntity> entities);
 
     /// <summary>
-    /// Adds a range asynchronous.
+    ///     Adds a range asynchronous.
     /// </summary>
-    ///
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
     /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// An asynchronous result.
+    ///     An asynchronous result.
     /// </returns>
     Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default);
 
@@ -55,25 +50,21 @@ public interface IWritableTableDataRepository<TEntity> : ITableDataRepository<TE
     TEntity Update(TEntity entity);
 
     /// <summary>
-    /// Updates the asynchronous described by entity.
+    ///     Updates the asynchronous described by entity.
     /// </summary>
-    ///
     /// <param name="entity">   The entity to add. </param>
     /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The update.
+    ///     The update.
     /// </returns>
     Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default);
 
     /// <summary>
-    /// Deletes the given ID.
+    ///     Deletes the given ID.
     /// </summary>
-    ///
     /// <param name="keys"> The keys. </param>
-    ///
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
     bool Delete(params object[] keys);
 
@@ -83,26 +74,22 @@ public interface IWritableTableDataRepository<TEntity> : ITableDataRepository<TE
     bool Delete(TEntity entity);
 
     /// <summary>
-    /// Deletes the asynchronous described by ID.
+    ///     Deletes the asynchronous described by ID.
     /// </summary>
-    ///
     /// <param name="entity">   The entity to add. </param>
     /// <param name="ctx">      (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The delete.
+    ///     The delete.
     /// </returns>
     Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default);
 
     /// <summary>
-    /// Deletes the asynchronous described by ID.
+    ///     Deletes the asynchronous described by ID.
     /// </summary>
-    ///
     /// <param name="keys"> The keys. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The delete.
+    ///     The delete.
     /// </returns>
     Task<bool> DeleteAsync(object[] keys, CancellationToken ctx = default);
 }

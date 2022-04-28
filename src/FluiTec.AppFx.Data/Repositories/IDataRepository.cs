@@ -18,13 +18,11 @@ public interface IDataRepository<TEntity> : IRepository
     IEnumerable<TEntity> GetAll();
 
     /// <summary>
-    /// Gets all asynchronous.
+    ///     Gets all asynchronous.
     /// </summary>
-    ///
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// An enumerator that allows foreach to be used to process all items in this collection.
+    ///     An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
     Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default);
 
@@ -33,13 +31,11 @@ public interface IDataRepository<TEntity> : IRepository
     int Count();
 
     /// <summary>
-    /// Count asynchronous.
+    ///     Count asynchronous.
     /// </summary>
-    ///
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The count.
+    ///     The count.
     /// </returns>
     Task<int> CountAsync(CancellationToken ctx = default);
 }

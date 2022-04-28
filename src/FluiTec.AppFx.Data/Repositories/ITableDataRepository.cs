@@ -16,25 +16,21 @@ public interface ITableDataRepository<TEntity> : IDataRepository<TEntity>
     string TableName { get; }
 
     /// <summary>
-    /// Gets an entity using the given identifier.
+    ///     Gets an entity using the given identifier.
     /// </summary>
-    ///
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     TEntity Get(params object[] keys);
-    
+
     /// <summary>
-    /// Gets an entity asynchronous.
+    ///     Gets an entity asynchronous.
     /// </summary>
-    ///
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default);
 }

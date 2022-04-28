@@ -8,34 +8,32 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Data.Ef.Repositories;
 
 /// <summary>
-/// An ef writable key table data repository.
+///     An ef writable key table data repository.
 /// </summary>
-///
 /// <typeparam name="TEntity">  Type of the entity. </typeparam>
 /// <typeparam name="TKey">     Type of the key. </typeparam>
-public class EfWritableKeyTableDataRepository<TEntity, TKey> : EfWritableTableDataRepository<TEntity>, IWritableKeyTableDataRepository<TEntity, TKey>
+public class EfWritableKeyTableDataRepository<TEntity, TKey> : EfWritableTableDataRepository<TEntity>,
+    IWritableKeyTableDataRepository<TEntity, TKey>
     where TEntity : class, IEntity, new()
 {
     /// <summary>
-    /// Specialized constructor for use only by derived class.
+    ///     Specialized constructor for use only by derived class.
     /// </summary>
-    ///
     /// <param name="unitOfWork">   The unit of work. </param>
     /// <param name="logger">       The logger. </param>
-    protected EfWritableKeyTableDataRepository(EfUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+    protected EfWritableKeyTableDataRepository(EfUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
+        logger)
     {
     }
 
     #region IKeyTableDataRepository
 
     /// <summary>
-    /// Gets an entity using the given identifier.
+    ///     Gets an entity using the given identifier.
     /// </summary>
-    ///
     /// <param name="id">   The Identifier to use. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public TEntity Get(TKey id)
     {
@@ -43,18 +41,16 @@ public class EfWritableKeyTableDataRepository<TEntity, TKey> : EfWritableTableDa
     }
 
     /// <summary>
-    /// Gets an entity asynchronous.
+    ///     Gets an entity asynchronous.
     /// </summary>
-    ///
     /// <param name="id">   The Identifier to use. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
     public async Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
-        return await Set.FindAsync(new object[] { id }, ctx);
+        return await Set.FindAsync(new object[] {id}, ctx);
     }
 
     #endregion
@@ -62,13 +58,11 @@ public class EfWritableKeyTableDataRepository<TEntity, TKey> : EfWritableTableDa
     #region IWritableKeyTableDataRepository
 
     /// <summary>
-    /// Deletes the given ID.
+    ///     Deletes the given ID.
     /// </summary>
-    ///
     /// <param name="id">   The Identifier to delete. </param>
-    ///
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
     public bool Delete(TKey id)
     {
@@ -77,14 +71,12 @@ public class EfWritableKeyTableDataRepository<TEntity, TKey> : EfWritableTableDa
     }
 
     /// <summary>
-    /// Deletes the asynchronous described by ID.
+    ///     Deletes the asynchronous described by ID.
     /// </summary>
-    ///
     /// <param name="id">   The Identifier to delete. </param>
     /// <param name="ctx">  (Optional) A token that allows processing to be cancelled. </param>
-    ///
     /// <returns>
-    /// The delete.
+    ///     The delete.
     /// </returns>
     public async Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {

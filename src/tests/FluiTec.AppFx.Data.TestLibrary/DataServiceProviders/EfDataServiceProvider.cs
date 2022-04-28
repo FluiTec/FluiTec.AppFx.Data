@@ -9,12 +9,11 @@ using ConfigurationManager = FluiTec.AppFx.Options.Managers.ConfigurationManager
 namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
 {
     /// <summary>
-    /// An ef data service provider.
+    ///     An ef data service provider.
     /// </summary>
-    ///
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
-    public abstract class EfDataServiceProvider<TDataService, TUnitOfWork> 
+    public abstract class EfDataServiceProvider<TDataService, TUnitOfWork>
         : DataServiceProvider<TDataService, TUnitOfWork>
         where TDataService : IDataService<TUnitOfWork>
         where TUnitOfWork : IUnitOfWork
@@ -59,11 +58,10 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         protected ConfigurationManager ConfigurationManager { get; }
 
         /// <summary>
-        /// Gets or sets options for controlling the service.
+        ///     Gets or sets options for controlling the service.
         /// </summary>
-        ///
         /// <value>
-        /// Options that control the service.
+        ///     Options that control the service.
         /// </value>
         public ISqlServiceOptions ServiceOptions { get; protected set; }
 
@@ -80,11 +78,10 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         #region Methods
 
         /// <summary>
-        /// Configure options.
+        ///     Configure options.
         /// </summary>
-        ///
         /// <returns>
-        /// The ISqlServiceOptions.
+        ///     The ISqlServiceOptions.
         /// </returns>
         protected abstract ISqlServiceOptions ConfigureOptions();
 
