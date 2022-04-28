@@ -62,6 +62,9 @@ public class DynamicDbContext : DbContext, IDynamicDbContext
     /// </value>
     public string ConnectionString { get; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
+
     /// <summary>
     ///     Configure model for entity.
     /// </summary>
@@ -74,7 +77,7 @@ public class DynamicDbContext : DbContext, IDynamicDbContext
 
         // configure schema and name of table
         modelBuilder.Entity(entityType)
-            .ToTable(NameService);
+            .ToTable(NameService, SqlType);
 
         // configure keys
         var keys = SqlCache.TypeKeyPropertiesCache(entityType).ToArray();

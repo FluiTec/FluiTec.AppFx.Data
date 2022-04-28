@@ -52,16 +52,52 @@ public static class DbContextExtensions
     }
 
     /// <summary>
-    ///     An EntityTypeBuilder&lt;TEntity&gt; extension method that converts this object to a table.
+    /// An EntityTypeBuilder&lt;TEntity&gt; extension method that converts this object to a table.
     /// </summary>
+    ///
     /// <param name="entityTypeBuilder">    The entityTypeBuilder to act on. </param>
     /// <param name="nameService">          The name service. </param>
+    /// <param name="type">                 The type. </param>
+    ///
     /// <returns>
-    ///     The given data converted to an EntityTypeBuilder&lt;TEntity&gt;
+    /// The given data converted to an EntityTypeBuilder&lt;TEntity&gt;
     /// </returns>
-    public static EntityTypeBuilder ToTable(this EntityTypeBuilder entityTypeBuilder, IEntityNameService nameService)
+    public static EntityTypeBuilder ToTable(this EntityTypeBuilder entityTypeBuilder, IEntityNameService nameService, SqlType type)
     {
-        var (item1, item2) = nameService.SchemaAndName(entityTypeBuilder.Metadata.ClrType);
-        return entityTypeBuilder.ToTable(item2, item1);
+        if (type.SupportsSchema())
+        {
+            var (item1, item2) = nameService.SchemaAndName(entityTypeBuilder.Metadata.ClrType);
+            return entityTypeBuilder.ToTable(item2, item1);
+        }
+        else
+        {
+            var (item1, item2) = nameService.SchemaAndName(entityTypeBuilder.Metadata.ClrType);
+            var name = $"{item1}_{item2}";
+            return entityTypeBuilder.ToTable(name);
+        }
+    }
+
+    /// <summary>
+    /// A SqlType extension method that supports schema.
+    /// </summary>
+    ///
+    /// <exception cref="ArgumentOutOfRangeException">  Thrown when one or more arguments are outside
+    ///                                                 the required range. </exception>
+    ///
+    /// <param name="type"> The type. </param>
+    ///
+    /// <returns>
+    /// True if it succeeds, false if it fails.
+    /// </returns>
+    public static bool SupportsSchema(this SqlType type)
+    {
+        return type switch
+        {
+            SqlType.Mssql => true,
+            SqlType.Mysql => false,
+            SqlType.Pgsql => true,
+            SqlType.Sqlite => false,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
     }
 }
