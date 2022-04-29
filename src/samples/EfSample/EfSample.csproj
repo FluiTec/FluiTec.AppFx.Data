@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj" />
     <ProjectReference Include="..\..\FluiTec.AppFx.Data.Dapper\FluiTec.AppFx.Data.Dapper.csproj" />
     <ProjectReference Include="..\..\FluiTec.AppFx.Data.Dynamic\FluiTec.AppFx.Data.Dynamic.csproj" />
     <ProjectReference Include="..\..\FluiTec.AppFx.Data.Ef\FluiTec.AppFx.Data.Ef.csproj" />

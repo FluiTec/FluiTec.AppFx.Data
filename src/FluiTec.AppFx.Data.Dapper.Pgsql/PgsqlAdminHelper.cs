@@ -3,13 +3,14 @@
 namespace FluiTec.AppFx.Data.Dapper.Pgsql;
 
 /// <summary>   A mssql admin helper.</summary>
-public static class PgsqlAdminHelper
+public class PgsqlAdminHelper : IAdminHelper
 {
     /// <summary>   Creates a dababase.</summary>
     /// <param name="adminConnectionString">    The admin connection string. </param>
     /// <param name="dbName">                   Name of the database. </param>
-    public static void CreateDababase(string adminConnectionString, string dbName)
+    public static int CreateDababase(string adminConnectionString, string dbName)
     {
+        var result = -1;
         using var connection = new NpgsqlConnection(adminConnectionString);
         try
         {
@@ -17,12 +18,13 @@ public static class PgsqlAdminHelper
             var createDbSql = $"DROP DATABASE IF EXISTS {dbName};\r\n" +
                               $"CREATE DATABASE {dbName};";
             using var createDbCmd = new NpgsqlCommand(createDbSql, connection);
-            createDbCmd.ExecuteNonQuery();
+            result = createDbCmd.ExecuteNonQuery();
         }
         finally
         {
             connection.Close();
         }
+        return result;
     }
 
     /// <summary>   Creates user and login.</summary>
@@ -30,9 +32,10 @@ public static class PgsqlAdminHelper
     /// <param name="dbName">                   Name of the database. </param>
     /// <param name="userName">                 Name of the user. </param>
     /// <param name="password">                 The password. </param>
-    public static void CreateUserAndLogin(string adminConnectionString, string dbName, string userName,
+    public static int CreateUserAndLogin(string adminConnectionString, string dbName, string userName,
         string password)
     {
+        var result = -1;
         using var connection = new NpgsqlConnection(adminConnectionString);
         try
         {
@@ -48,11 +51,13 @@ public static class PgsqlAdminHelper
                                 "$do$;\r\n" +
                                 $"ALTER DATABASE {dbName} OWNER TO {userName};";
             using var createUserCmd = new NpgsqlCommand(createUserSql, connection);
-            createUserCmd.ExecuteNonQuery();
+            result = createUserCmd.ExecuteNonQuery();
         }
         finally
         {
             connection.Close();
         }
+
+        return result;
     }
 }
