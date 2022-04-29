@@ -2,9 +2,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using FluiTec.AppFx.Data.Sql.Adapters;
+using ImmediateReflection;
 
 namespace FluiTec.AppFx.Data.Sql;
 
@@ -38,7 +38,7 @@ public class SqlBuilder
         new();
 
     /// <summary>	List of parameters. </summary>
-    private readonly ConcurrentDictionary<RuntimeTypeHandle, List<KeyValuePair<PropertyInfo, string>>>
+    private readonly ConcurrentDictionary<RuntimeTypeHandle, List<KeyValuePair<ImmediateProperty, string>>>
         _parameterList =
             new();
 
@@ -369,7 +369,7 @@ public class SqlBuilder
     /// <summary>	Parameter list. </summary>
     /// <param name="type">	The type. </param>
     /// <returns>	A List&lt;KeyValuePair&lt;PropertyInfo,string&gt;&gt; </returns>
-    public List<KeyValuePair<PropertyInfo, string>> ParameterList(Type type)
+    public List<KeyValuePair<ImmediateProperty, string>> ParameterList(Type type)
     {
         // try to find parameters in cache and return them
         if (_parameterList.TryGetValue(type.TypeHandle, out var paramList))
@@ -377,7 +377,7 @@ public class SqlBuilder
 
         // generate paramList
         paramList = SqlCache.TypePropertiesChache(type).Select(p =>
-                new KeyValuePair<PropertyInfo, string>(p, Adapter.RenderParameterProperty(p)))
+                new KeyValuePair<ImmediateProperty, string>(p, Adapter.RenderParameterProperty(p)))
             .ToList();
 
         // add paramlist to cache

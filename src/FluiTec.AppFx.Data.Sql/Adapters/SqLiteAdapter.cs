@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using FluiTec.AppFx.Data.EntityNameServices;
+﻿using FluiTec.AppFx.Data.EntityNameServices;
+using ImmediateReflection;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters;
 
@@ -29,7 +29,7 @@ public class SqLiteAdapter : SqlAdapter
     /// <summary>	Gets automatic key statement. </summary>
     /// <param name="propertyInfo">	Information describing the property. </param>
     /// <returns>	The automatic key statement. </returns>
-    public override string GetAutoKeyStatement(PropertyInfo propertyInfo)
+    public override string GetAutoKeyStatement(ImmediateProperty propertyInfo)
     {
         return $";SELECT last_insert_rowid() {RenderPropertyName(propertyInfo)}";
     }

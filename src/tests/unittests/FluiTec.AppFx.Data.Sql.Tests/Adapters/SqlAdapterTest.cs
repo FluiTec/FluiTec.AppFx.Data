@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using FluiTec.AppFx.Data.Sql.Adapters;
 using FluiTec.AppFx.Data.Sql.Tests.Entities;
+using ImmediateReflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
@@ -247,7 +247,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
             Assert.AreEqual(GetExpectedDeleteByStatement(entityType, filterProperty), statement);
         }
 
-        protected abstract string RenderExpectedPropertyList(PropertyInfo[] props, Type entityType = null);
+        protected abstract string RenderExpectedPropertyList(ImmediateProperty[] props, Type entityType = null);
 
         /// <summary>
         ///     (Unit Test Method) renders the property list test described by entityType.

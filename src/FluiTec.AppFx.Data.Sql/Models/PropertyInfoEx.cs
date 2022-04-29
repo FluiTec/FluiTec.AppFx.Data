@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Reflection;
+using ImmediateReflection;
 
 namespace FluiTec.AppFx.Data.Sql.Models;
 
@@ -14,7 +14,7 @@ public class PropertyInfoEx<TExtended>
     /// </summary>
     /// <param name="propertyInfo"> Information describing the property. </param>
     /// <param name="extendedData"> Information describing the extended. </param>
-    public PropertyInfoEx(PropertyInfo propertyInfo, TExtended extendedData)
+    public PropertyInfoEx(ImmediateProperty propertyInfo, TExtended extendedData)
     {
         PropertyInfo = propertyInfo ?? throw new ArgumentNullException(nameof(propertyInfo));
         ExtendedData = extendedData;
@@ -26,7 +26,7 @@ public class PropertyInfoEx<TExtended>
     /// <value>
     ///     Information describing the property.
     /// </value>
-    public PropertyInfo PropertyInfo { get; }
+    public ImmediateProperty PropertyInfo { get; }
 
     /// <summary>
     ///     Gets information describing the extended.

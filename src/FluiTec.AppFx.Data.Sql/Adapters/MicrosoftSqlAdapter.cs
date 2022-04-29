@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using ImmediateReflection;
 using System.Text;
 using FluiTec.AppFx.Data.EntityNameServices;
 
@@ -41,7 +41,7 @@ public class MicrosoftSqlAdapter : SqlAdapter
     /// <summary>	Gets automatic key statement. </summary>
     /// <param name="propertyInfo">	Information describing the property. </param>
     /// <returns>	The automatic key statement. </returns>
-    public override string GetAutoKeyStatement(PropertyInfo propertyInfo)
+    public override string GetAutoKeyStatement(ImmediateProperty propertyInfo)
     {
         return $";SELECT SCOPE_IDENTITY() {RenderPropertyName(propertyInfo)}";
     }
@@ -49,7 +49,7 @@ public class MicrosoftSqlAdapter : SqlAdapter
     /// <summary>   Renders the property name described by propertyInfo. </summary>
     /// <param name="propertyInfo"> Information describing the property. </param>
     /// <returns>   A string. </returns>
-    public override string RenderPropertyName(PropertyInfo propertyInfo)
+    public override string RenderPropertyName(ImmediateProperty propertyInfo)
     {
         return RenderPropertyName(propertyInfo.Name);
     }

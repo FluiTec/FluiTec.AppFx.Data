@@ -1,6 +1,8 @@
 using System.Data;
+using System.Linq;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Sql.Tests.Entities;
+using ImmediateReflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Npgsql;
 
@@ -37,7 +39,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         public void TestRenderPropertyName()
         {
             var type = typeof(Dummy);
-            var propertyInfo = type.GetProperty(nameof(Dummy.Id));
+            var propertyInfo = type.GetImmediateProperty(nameof(Dummy.Id));
             var propertyName = $"\"{nameof(Dummy.Id)}\"";
             var renderedPropertyName = _connection.GetBuilder().Adapter.RenderPropertyName(propertyInfo);
             Assert.AreEqual(propertyName, renderedPropertyName);
@@ -55,16 +57,16 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         [TestMethod]
         public void TestRenderPropertyList()
         {
-            var properties = typeof(Dummy).GetProperties();
-            var renderedList = _connection.GetBuilder().Adapter.RenderPropertyList(properties);
+            var properties = typeof(Dummy).GetImmediateProperties();
+            var renderedList = _connection.GetBuilder().Adapter.RenderPropertyList(properties.ToArray());
             Assert.AreEqual("\"Id\", \"Name\"", renderedList.ToString());
         }
 
         [TestMethod]
         public void TestRenderPropertyListWithTable()
         {
-            var properties = typeof(Dummy).GetProperties();
-            var renderedList = _connection.GetBuilder().Adapter.RenderPropertyList(typeof(Dummy), properties);
+            var properties = typeof(Dummy).GetImmediateProperties();
+            var renderedList = _connection.GetBuilder().Adapter.RenderPropertyList(typeof(Dummy), properties.ToArray());
             Assert.AreEqual("\"public\".\"Dummy\".\"Id\", \"public\".\"Dummy\".\"Name\"", renderedList.ToString());
         }
 

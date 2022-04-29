@@ -50,7 +50,7 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
         foreach (var k in SqlCache.TypeKeyPropertiesCache(EntityType)
                      .OrderBy(kp => kp.ExtendedData.Order)
                      .ToList())
-            key.Add(k.PropertyInfo.Name, k.PropertyInfo.GetValue(entity, null));
+            key.Add(k.PropertyInfo.Name, k.PropertyInfo.GetValue(entity));
 
         return key;
     }

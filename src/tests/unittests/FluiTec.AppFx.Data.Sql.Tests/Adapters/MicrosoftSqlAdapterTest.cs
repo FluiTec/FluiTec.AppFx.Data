@@ -1,9 +1,9 @@
 using System;
-using System.Reflection;
 using System.Text;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Sql.Adapters;
 using FluiTec.AppFx.Data.Sql.Tests.Entities;
+using ImmediateReflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
@@ -249,7 +249,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         /// <returns>
         ///     A string.
         /// </returns>
-        protected override string RenderExpectedPropertyList(PropertyInfo[] props, Type entityType = null)
+        protected override string RenderExpectedPropertyList(ImmediateProperty[] props, Type entityType = null)
         {
             var sb = new StringBuilder();
             for (var i = 0; i < props.Length; i++)

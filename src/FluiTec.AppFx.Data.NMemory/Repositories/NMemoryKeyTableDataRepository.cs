@@ -86,6 +86,6 @@ public class NMemoryKeyTableDataRepository<TEntity, TKey> : NMemoryDataRepositor
         var typeKeys = SqlCache.TypeKeyPropertiesCache(EntityType)
             .OrderBy(tk => tk.ExtendedData.Order)
             .ToList();
-        return !typeKeys.Where((t, i) => !t.PropertyInfo.GetValue(entity, null).Equals(keys[i])).Any();
+        return !typeKeys.Where((t, i) => !t.PropertyInfo.GetValue(entity).Equals(keys[i])).Any();
     }
 }

@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using FluiTec.AppFx.Data.EntityNameServices;
+using ImmediateReflection;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters;
 
@@ -20,7 +20,7 @@ public class PostgreSqlAdapter : SqlAdapter
     /// <summary>	Gets automatic key statement. </summary>
     /// <param name="propertyInfo">	Information describing the property. </param>
     /// <returns>	The automatic key statement. </returns>
-    public override string GetAutoKeyStatement(PropertyInfo propertyInfo)
+    public override string GetAutoKeyStatement(ImmediateProperty propertyInfo)
     {
         return $" RETURNING {RenderPropertyName(propertyInfo)}";
     }
@@ -49,7 +49,7 @@ public class PostgreSqlAdapter : SqlAdapter
     /// <summary>	Renders the property name described by propertyInfo. </summary>
     /// <param name="propertyInfo">	Information describing the property. </param>
     /// <returns>	A string. </returns>
-    public override string RenderPropertyName(PropertyInfo propertyInfo)
+    public override string RenderPropertyName(ImmediateProperty propertyInfo)
     {
         return RenderPropertyName(propertyInfo.Name);
     }
@@ -66,7 +66,7 @@ public class PostgreSqlAdapter : SqlAdapter
     /// <param name="propertyInfo">     Information describing the property. </param>
     /// <param name="collectionName">   Name of the collection. </param>
     /// <returns>   A string.</returns>
-    public override string RenderInFilterByProperty(PropertyInfo propertyInfo, string collectionName)
+    public override string RenderInFilterByProperty(ImmediateProperty propertyInfo, string collectionName)
     {
         return $"{RenderPropertyName(propertyInfo)} = ANY(@{collectionName})";
     }

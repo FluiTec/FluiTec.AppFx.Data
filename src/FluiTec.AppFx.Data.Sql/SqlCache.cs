@@ -2,9 +2,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using FluiTec.AppFx.Data.Sql.Attributes;
 using FluiTec.AppFx.Data.Sql.Models;
+using ImmediateReflection;
 
 namespace FluiTec.AppFx.Data.Sql;
 
@@ -12,7 +12,7 @@ namespace FluiTec.AppFx.Data.Sql;
 public static class SqlCache
 {
     /// <summary>	The type properties. </summary>
-    private static readonly ConcurrentDictionary<RuntimeTypeHandle, IList<PropertyInfo>> TypeProperties =
+    private static readonly ConcurrentDictionary<RuntimeTypeHandle, IList<ImmediateProperty>> TypeProperties =
         new();
 
     /// <summary>	The type key properties. </summary>
@@ -27,16 +27,16 @@ public static class SqlCache
     /// <summary>	Type properties chache. </summary>
     /// <param name="type">	The type. </param>
     /// <returns>	A list of. </returns>
-    public static IList<PropertyInfo> TypePropertiesChache(Type type)
+    public static IList<ImmediateProperty> TypePropertiesChache(Type type)
     {
         if (TypeProperties.TryGetValue(type.TypeHandle, out var propertyInfos))
             return propertyInfos;
 
-        var allProperties = type.GetProperties();
+        var allProperties = type.GetImmediateProperties();
 
-        var properties = new List<PropertyInfo>();
+        var properties = new List<ImmediateProperty>();
         foreach (var property in allProperties)
-            if (!property.GetCustomAttributes(typeof(SqlIgnoreAttribute)).Any())
+            if (!property.GetAttributes(typeof(SqlIgnoreAttribute)).Any())
                 properties.Add(property);
 
         TypeProperties[type.TypeHandle] = properties.ToList();
@@ -55,7 +55,7 @@ public static class SqlCache
 
         var markedKeyProperties = allProperties
             .Select(p =>
-                new PropertyInfoEx<SqlKeyAttribute>(p, p.GetCustomAttribute<SqlKeyAttribute>()))
+                new PropertyInfoEx<SqlKeyAttribute>(p, p.GetAttribute<SqlKeyAttribute>()))
             .Where(p => p.HasExtendedData)
             .ToList();
 

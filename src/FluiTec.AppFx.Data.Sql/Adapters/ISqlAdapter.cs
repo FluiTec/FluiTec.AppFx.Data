@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Reflection;
 using System.Text;
+using ImmediateReflection;
 using FluiTec.AppFx.Data.EntityNameServices;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters;
@@ -73,18 +73,18 @@ public interface ISqlAdapter
     /// <summary>	Renders the property list described by properties. </summary>
     /// <param name="properties">	The properties. </param>
     /// <returns>	A StringBuilder. </returns>
-    StringBuilder RenderPropertyList(PropertyInfo[] properties);
+    StringBuilder RenderPropertyList(ImmediateProperty[] properties);
 
     /// <summary>   Renders the property list described by properties.</summary>
     /// <param name="tableType">    Type of the table. </param>
     /// <param name="properties">   The properties. </param>
     /// <returns>   A StringBuilder.</returns>
-    StringBuilder RenderPropertyList(Type tableType, PropertyInfo[] properties);
+    StringBuilder RenderPropertyList(Type tableType, ImmediateProperty[] properties);
 
     /// <summary>	Renders the parameter property described by propertyInfo. </summary>
     /// <param name="propertyInfo">	Information describing the property. </param>
     /// <returns>	A string. </returns>
-    string RenderParameterProperty(PropertyInfo propertyInfo);
+    string RenderParameterProperty(ImmediateProperty propertyInfo);
 
     /// <summary>   Renders the parameter property described by propertyInfo. </summary>
     /// <param name="propertyName"> Name of the property. </param>
@@ -122,7 +122,7 @@ public interface ISqlAdapter
     /// <summary>Renders the property name described by propertyInfo.</summary>
     /// <param name="propertyInfo"> Information describing the property. </param>
     /// <returns>A string.</returns>
-    string RenderPropertyName(PropertyInfo propertyInfo);
+    string RenderPropertyName(ImmediateProperty propertyInfo);
 
     /// <summary>Renders the property name described by propertyName.</summary>
     /// <param name="propertyName"> Name of the property. </param>

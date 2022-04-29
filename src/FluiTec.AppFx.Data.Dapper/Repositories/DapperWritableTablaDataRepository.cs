@@ -57,7 +57,7 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     {
         var key = new ExpandoObject() as IDictionary<string, object>;
 
-        foreach (var k in KeyProperties) key.Add(k.PropertyInfo.Name, k.PropertyInfo.GetValue(entity, null));
+        foreach (var k in KeyProperties) key.Add(k.PropertyInfo.Name, k.PropertyInfo.GetValue(entity));
 
         return key;
     }

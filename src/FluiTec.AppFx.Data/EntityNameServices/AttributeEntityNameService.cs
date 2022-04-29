@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using System.Reflection;
+using ImmediateReflection;
 
 namespace FluiTec.AppFx.Data.EntityNameServices;
 
@@ -29,8 +29,7 @@ public class AttributeEntityNameService : ClassEntityNameService
         if (EntityNames.ContainsKey(type)) return EntityNames[type];
 
         EntityNames.TryAdd(type,
-            type.GetTypeInfo().GetCustomAttributes(typeof(EntityNameAttribute)).SingleOrDefault() is
-                EntityNameAttribute attribute
+            type.GetImmediateType().GetAttributes<EntityNameAttribute>().SingleOrDefault() is { } attribute
                 ? attribute.Name
                 : base.Name(type));
 
@@ -55,8 +54,7 @@ public class AttributeEntityNameService : ClassEntityNameService
         if (EntitySchemaNames.ContainsKey(type)) return EntitySchemaNames[type];
 
         EntitySchemaNames.TryAdd(type,
-            type.GetTypeInfo().GetCustomAttributes(typeof(EntityNameAttribute)).SingleOrDefault() is
-                EntityNameAttribute attribute
+            type.GetImmediateType().GetAttributes<EntityNameAttribute>().SingleOrDefault() is { } attribute
                 ? new Tuple<string, string>(attribute.Schema, attribute.NameOnly)
                 : new Tuple<string, string>(null, base.Name(type)));
 

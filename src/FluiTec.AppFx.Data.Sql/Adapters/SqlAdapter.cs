@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using ImmediateReflection;
 using System.Text;
 using FluiTec.AppFx.Data.EntityNameServices;
 
@@ -178,7 +178,7 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <summary>	Gets automatic key statement. </summary>
     /// <param name="propertyInfo">	Information describing the property. </param>
     /// <returns>	The automatic key statement. </returns>
-    public abstract string GetAutoKeyStatement(PropertyInfo propertyInfo);
+    public abstract string GetAutoKeyStatement(ImmediateProperty propertyInfo);
 
     /// <summary>	Gets update statement. </summary>
     /// <param name="type">	The type. </param>
@@ -264,7 +264,7 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <summary>	Renders the property list described by properties. </summary>
     /// <param name="properties">	The properties. </param>
     /// <returns>	A string. </returns>
-    public virtual StringBuilder RenderPropertyList(PropertyInfo[] properties)
+    public virtual StringBuilder RenderPropertyList(ImmediateProperty[] properties)
     {
         var sb = new StringBuilder();
         for (var i = 0; i < properties.Length; i++)
@@ -281,7 +281,7 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <param name="tableType">    Type of the table. </param>
     /// <param name="properties">   The properties. </param>
     /// <returns>   A StringBuilder.</returns>
-    public virtual StringBuilder RenderPropertyList(Type tableType, PropertyInfo[] properties)
+    public virtual StringBuilder RenderPropertyList(Type tableType, ImmediateProperty[] properties)
     {
         RenderTableName("");
         var sb = new StringBuilder();
@@ -324,7 +324,7 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <summary>	Renders the property name described by propertyInfo. </summary>
     /// <param name="propertyInfo">	Information describing the property. </param>
     /// <returns>	A string. </returns>
-    public virtual string RenderPropertyName(PropertyInfo propertyInfo)
+    public virtual string RenderPropertyName(ImmediateProperty propertyInfo)
     {
         return propertyInfo.Name;
     }
@@ -351,7 +351,7 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <summary>	Renders the parameter property described by propertyInfo. </summary>
     /// <param name="propertyInfo">	Information describing the property. </param>
     /// <returns>	A string. </returns>
-    public virtual string RenderParameterProperty(PropertyInfo propertyInfo)
+    public virtual string RenderParameterProperty(ImmediateProperty propertyInfo)
     {
         return RenderParameterProperty(propertyInfo.Name);
     }
@@ -373,7 +373,7 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <param name="propertyInfo">     Information describing the property. </param>
     /// <param name="collectionName">   Name of the collection. </param>
     /// <returns>   A string.</returns>
-    public virtual string RenderInFilterByProperty(PropertyInfo propertyInfo, string collectionName)
+    public virtual string RenderInFilterByProperty(ImmediateProperty propertyInfo, string collectionName)
     {
         return $"{RenderPropertyName(propertyInfo)} IN @{collectionName}";
     }
@@ -437,7 +437,7 @@ public abstract class SqlAdapter : ISqlAdapter
     /// <returns>
     ///     A StringBuilder.
     /// </returns>
-    public virtual StringBuilder RenderParameterList(PropertyInfo[] props)
+    public virtual StringBuilder RenderParameterList(ImmediateProperty[] props)
     {
         var sb = new StringBuilder();
         for (var i = 0; i < props.Length; i++)
@@ -474,7 +474,7 @@ public abstract class SqlAdapter : ISqlAdapter
     ///     An enumerator that allows foreach to be used to process the columns without keys in this
     ///     collection.
     /// </returns>
-    public virtual IEnumerable<PropertyInfo> GetPropertiesWithoutKey(Type type)
+    public virtual IEnumerable<ImmediateProperty> GetPropertiesWithoutKey(Type type)
     {
         var props = SqlCache.TypePropertiesChache(type);
         var keyProps = SqlCache.TypeKeyPropertiesCache(type).Select(p => p.PropertyInfo).ToList();
