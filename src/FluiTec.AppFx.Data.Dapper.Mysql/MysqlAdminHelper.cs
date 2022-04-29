@@ -11,6 +11,7 @@ public static class MysqlAdminHelper
     /// <param name="dbName">                   Name of the database. </param>
     public static void CreateDababase(string adminConnectionString, string dbName)
     {
+        System.Console.WriteLine($"LOG:MysqlAdminHelper:CreateDatabase - ConStr: {adminConnectionString}, DB: {dbName}");
         using var connection = new MySqlConnection(adminConnectionString);
         try
         {
@@ -18,11 +19,13 @@ public static class MysqlAdminHelper
             var createDbSql = $"DROP DATABASE IF EXISTS {dbName};\r\n" +
                               $"CREATE DATABASE {dbName};";
             using var createDbCmd = new MySqlCommand(createDbSql, connection);
-            createDbCmd.ExecuteNonQuery();
+            var result = createDbCmd.ExecuteNonQuery();
+            System.Console.WriteLine($"LOG:MysqlAdminHelper:CreateDatabase - RESULT {result}");
         }
         finally
         {
             connection.Close();
+            System.Console.WriteLine("LOG:MysqlAdminHelper:CreateDatabase - FAULTED");
         }
     }
 

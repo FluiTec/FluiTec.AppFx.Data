@@ -66,4 +66,22 @@ public class TypeBenchmark
     {
         return _fastTypeAccessor[_testInstance, "Id"];
     }
+
+    [Benchmark]
+    public void WriteReflectionIntProperty()
+    {
+        _propertyInfo.SetValue(_testInstance, 200);
+    }
+
+    [Benchmark]
+    public void WriteImmediateReflectionIntProperty()
+    {
+        _propertyAccessor.SetValue(_testInstance, 200);
+    }
+
+    [Benchmark]
+    public void WriteFastIntProperty()
+    {
+        _fastTypeAccessor[_testInstance, "Id"] = 200; 
+    }
 }
