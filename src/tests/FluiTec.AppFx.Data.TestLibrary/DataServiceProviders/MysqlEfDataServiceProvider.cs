@@ -55,7 +55,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         /// </returns>
         protected override DbAdminOptions ConfigureAdminOptions()
         {
-            return ConfigurationManager.ExtractSettings<MysqlAdminOption>();
+            return ConfigurationManager.ExtractSettings<MysqlAdminOption>("Ef.Mysql");
         }
     }
 }
