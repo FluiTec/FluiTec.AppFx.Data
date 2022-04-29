@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using System;
+using Npgsql;
 
 namespace FluiTec.AppFx.Data.Dapper.Pgsql;
 
@@ -11,6 +12,7 @@ public class PgsqlAdminHelper : IAdminHelper
     public static int CreateDababase(string adminConnectionString, string dbName)
     {
         var result = -1;
+        System.Console.WriteLine($"LOG:AdminHelper:CreateDatabase - ConStr: {adminConnectionString}, DB: {dbName}");
         using var connection = new NpgsqlConnection(adminConnectionString);
         try
         {
@@ -19,6 +21,11 @@ public class PgsqlAdminHelper : IAdminHelper
                               $"CREATE DATABASE {dbName};";
             using var createDbCmd = new NpgsqlCommand(createDbSql, connection);
             result = createDbCmd.ExecuteNonQuery();
+            System.Console.WriteLine($"LOG:AdminHelper:CreateDatabase - RESULT {result}");
+        }
+        catch (Exception)
+        {
+            System.Console.WriteLine("LOG:AdminHelper:CreateDatabase - FAULTED");
         }
         finally
         {

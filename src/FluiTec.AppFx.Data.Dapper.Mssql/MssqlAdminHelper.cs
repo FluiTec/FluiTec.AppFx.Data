@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System;
+using Microsoft.Data.SqlClient;
 
 namespace FluiTec.AppFx.Data.Dapper.Mssql;
 
@@ -11,6 +12,7 @@ public class MssqlAdminHelper : IAdminHelper
     public static int CreateDababase(string adminConnectionString, string dbName)
     {
         var result = -1;
+        System.Console.WriteLine($"LOG:AdminHelper:CreateDatabase - ConStr: {adminConnectionString}, DB: {dbName}");
         using var connection = new SqlConnection(adminConnectionString);
         try
         {
@@ -19,6 +21,11 @@ public class MssqlAdminHelper : IAdminHelper
                               $"CREATE DATABASE {dbName};";
             using var createDbCmd = new SqlCommand(createDbSql, connection);
             result = createDbCmd.ExecuteNonQuery();
+            System.Console.WriteLine($"LOG:AdminHelper:CreateDatabase - RESULT {result}");
+        }
+        catch (Exception)
+        {
+            System.Console.WriteLine("LOG:AdminHelper:CreateDatabase - FAULTED");
         }
         finally
         {

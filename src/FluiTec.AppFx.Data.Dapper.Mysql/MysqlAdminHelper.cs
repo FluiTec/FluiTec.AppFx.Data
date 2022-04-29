@@ -12,7 +12,7 @@ public class MysqlAdminHelper : IAdminHelper
     public static int CreateDababase(string adminConnectionString, string dbName)
     {
         var result = -1;
-        System.Console.WriteLine($"LOG:MysqlAdminHelper:CreateDatabase - ConStr: {adminConnectionString}, DB: {dbName}");
+        System.Console.WriteLine($"LOG:AdminHelper:CreateDatabase - ConStr: {adminConnectionString}, DB: {dbName}");
         using var connection = new MySqlConnection(adminConnectionString);
         try
         {
@@ -21,11 +21,11 @@ public class MysqlAdminHelper : IAdminHelper
                               $"CREATE DATABASE {dbName};";
             using var createDbCmd = new MySqlCommand(createDbSql, connection);
             result = createDbCmd.ExecuteNonQuery();
-            System.Console.WriteLine($"LOG:MysqlAdminHelper:CreateDatabase - RESULT {result}");
+            System.Console.WriteLine($"LOG:AdminHelper:CreateDatabase - RESULT {result}");
         }
         catch (Exception)
         {
-            System.Console.WriteLine("LOG:MysqlAdminHelper:CreateDatabase - FAULTED");
+            System.Console.WriteLine("LOG:AdminHelper:CreateDatabase - FAULTED");
         }
         finally
         {
