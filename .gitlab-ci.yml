@@ -14,6 +14,8 @@ services:
       alias: postgres2
     - name: mcr.microsoft.com/mssql/server:latest
       alias: mssql
+    - name: mcr.microsoft.com/mssql/server:latest
+      alias: mssql2
     - name: mysql:latest
       alias: mysql
     - name: mysql:latest

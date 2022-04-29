@@ -40,7 +40,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
             {
                 SqlType = SqlType.Mssql,
                 ConnectionString =
-                    $"Data Source=mssql;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={Environment.GetEnvironmentVariable(VariableName)};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+                    $"Data Source=mssql2;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={Environment.GetEnvironmentVariable(VariableName)};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
             };
         }
 
