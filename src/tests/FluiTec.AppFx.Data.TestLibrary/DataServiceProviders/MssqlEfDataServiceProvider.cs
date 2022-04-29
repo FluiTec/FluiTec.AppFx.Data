@@ -52,7 +52,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         /// </returns>
         protected override DbAdminOptions ConfigureAdminOptions()
         {
-            return ConfigurationManager.ExtractSettings<MssqlAdminOption>();
+            return ConfigurationManager.ExtractSettings<MssqlAdminOption>("Ef.Mssql");
         }
     }
 }
