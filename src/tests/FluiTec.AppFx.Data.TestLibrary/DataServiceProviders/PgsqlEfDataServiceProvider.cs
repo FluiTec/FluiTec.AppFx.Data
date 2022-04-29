@@ -1,5 +1,5 @@
 ﻿using System;
-using FluiTec.AppFx.Data.Dapper.Mssql;
+using FluiTec.AppFx.Data.Dapper.Pgsql;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Ef;
 using FluiTec.AppFx.Data.Migration;
@@ -29,7 +29,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
 
         protected override ISqlServiceOptions ConfigureOptions()
         {
-            if (!EnvironmentConfigured) return ConfigurationManager.ExtractSettings<MssqlDapperServiceOptions>();
+            if (!EnvironmentConfigured) return ConfigurationManager.ExtractSettings<PgsqlDapperServiceOptions>();
 
             var db = Environment.GetEnvironmentVariable("POSTGRES_DB");
             var usr = Environment.GetEnvironmentVariable("POSTGRES_USER");
@@ -37,7 +37,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
             return new EfSqlServiceOptions
             {
                 SqlType = SqlType.Pgsql,
-                ConnectionString = $"User ID={usr};Host=postgres;Database={db};Pooling=true;"
+                ConnectionString = $"User ID={usr};Host=postgres2;Database={db};Pooling=true;"
             };
         }
 

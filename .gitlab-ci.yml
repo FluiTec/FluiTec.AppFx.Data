@@ -10,6 +10,8 @@ stages:
 services:
     - name: postgres:latest
       alias: postgres
+    - name: postgres:latest
+      alias: postgres2
     - name: mcr.microsoft.com/mssql/server:latest
       alias: mssql
     - name: mysql:latest
