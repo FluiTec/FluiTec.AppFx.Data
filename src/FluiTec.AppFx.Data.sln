@@ -96,9 +96,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.LiteDb.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Ef", "FluiTec.AppFx.Data.Ef\FluiTec.AppFx.Data.Ef.csproj", "{76C12DF9-F115-4D22-A2B8-901CD5695155}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfSample", "samples\EfSample\EfSample.csproj", "{6BBF45CD-A0A1-4C2D-8E47-C4BD2BAD1BD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfSample", "samples\EfSample\EfSample.csproj", "{6BBF45CD-A0A1-4C2D-8E47-C4BD2BAD1BD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Data.Migration", "FluiTec.AppFx.Data.Migration\FluiTec.AppFx.Data.Migration.csproj", "{40E1993E-7834-4C77-AE27-A47CA3983BFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Migration", "FluiTec.AppFx.Data.Migration\FluiTec.AppFx.Data.Migration.csproj", "{40E1993E-7834-4C77-AE27-A47CA3983BFC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Ef.Mssql.IntegrationTests", "tests\integrationtests\FluiTec.AppFx.Data.Ef.Mssql.IntegrationTests\FluiTec.AppFx.Data.Ef.Mssql.IntegrationTests.csproj", "{FFF2F0A9-E51C-4280-83E6-600EA3A3257E}"
 EndProject
@@ -107,6 +107,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Ef.Pgsql.IntegrationTests", "tests\integrationtests\FluiTec.AppFx.Data.Ef.Pgsql.IntegrationTests\FluiTec.AppFx.Data.Ef.Pgsql.IntegrationTests.csproj", "{3E424426-8765-40AB-808F-223C97F7DF81}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Ef.Sqlite.IntegrationTests", "tests\integrationtests\FluiTec.AppFx.Data.Ef.Sqlite.IntegrationTests\FluiTec.AppFx.Data.Ef.Sqlite.IntegrationTests.csproj", "{4EF81F1B-4F44-4397-BB70-FFB4A052EC0C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReflectionBenchmark", "ReflectionBenchmark\ReflectionBenchmark.csproj", "{66EC3447-6BC0-4FF3-BD7B-0A6ABFA2F2CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -270,6 +272,10 @@ Global
 		{4EF81F1B-4F44-4397-BB70-FFB4A052EC0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EF81F1B-4F44-4397-BB70-FFB4A052EC0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EF81F1B-4F44-4397-BB70-FFB4A052EC0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66EC3447-6BC0-4FF3-BD7B-0A6ABFA2F2CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66EC3447-6BC0-4FF3-BD7B-0A6ABFA2F2CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66EC3447-6BC0-4FF3-BD7B-0A6ABFA2F2CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66EC3447-6BC0-4FF3-BD7B-0A6ABFA2F2CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
