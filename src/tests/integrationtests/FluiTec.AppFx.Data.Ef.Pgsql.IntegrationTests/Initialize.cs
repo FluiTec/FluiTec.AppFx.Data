@@ -1,4 +1,4 @@
-﻿using FluiTec.AppFx.Data.Dapper.Mssql;
+﻿using FluiTec.AppFx.Data.Dapper.Pgsql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Ef.Pgsql.IntegrationTests;
@@ -14,10 +14,10 @@ public static class Initialize
         var provider = new DbProvider();
         var dataService = provider.ProvideDataService();
 
-        MssqlAdminHelper.CreateDababase(
+        PgsqlAdminHelper.CreateDababase(
             provider.AdminOptions.AdminConnectionString ?? provider.ServiceOptions.ConnectionString,
             provider.AdminOptions.IntegrationDb);
-        MssqlAdminHelper.CreateUserAndLogin(
+        PgsqlAdminHelper.CreateUserAndLogin(
             provider.AdminOptions.AdminConnectionString ?? provider.ServiceOptions.ConnectionString,
             provider.AdminOptions.IntegrationDb,
             provider.AdminOptions.IntegrationUser, provider.AdminOptions.IntegrationPassword);
