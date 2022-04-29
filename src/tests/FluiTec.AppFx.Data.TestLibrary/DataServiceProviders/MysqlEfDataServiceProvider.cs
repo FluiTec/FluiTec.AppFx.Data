@@ -43,7 +43,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
             return new EfSqlServiceOptions
             {
                 SqlType = SqlType.Mysql,
-                ConnectionString = $"Server=mysql;Database={db};Uid=root;Pwd={pw}"
+                ConnectionString = $"Server=mysql2;Database={db};Uid=root;Pwd={pw}"
             };
         }
 

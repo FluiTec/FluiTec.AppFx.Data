@@ -23,10 +23,13 @@ public class MysqlAdminHelper : IAdminHelper
             result = createDbCmd.ExecuteNonQuery();
             System.Console.WriteLine($"LOG:MysqlAdminHelper:CreateDatabase - RESULT {result}");
         }
+        catch (Exception)
+        {
+            System.Console.WriteLine("LOG:MysqlAdminHelper:CreateDatabase - FAULTED");
+        }
         finally
         {
             connection.Close();
-            System.Console.WriteLine("LOG:MysqlAdminHelper:CreateDatabase - FAULTED");
         }
         return result;
     }
