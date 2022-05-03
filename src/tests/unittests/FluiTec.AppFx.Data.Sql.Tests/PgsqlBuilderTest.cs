@@ -9,28 +9,27 @@ using Npgsql;
 namespace FluiTec.AppFx.Data.Sql.Tests
 {
     [TestClass]
-    public class PgsqlBuilderTest
+    public class PgsqlBuilderTest : SqlBuilderTest
     {
-        /// <summary>	The connection. </summary>
-        private readonly IDbConnection _connection;
-
-        /// <summary>	Default constructor. </summary>
-        public PgsqlBuilderTest()
-        {
-            _connection = new NpgsqlConnection();
-        }
+        /// <summary>
+        /// Gets the connection.
+        /// </summary>
+        ///
+        /// <returns>
+        /// The connection.
+        /// </returns>
+        protected override IDbConnection GetConnection() => new NpgsqlConnection();
 
         [TestMethod]
         public void TestGetBuilder()
         {
-            // just test this doesnt throw
-            _connection.GetBuilder();
+            Assert.IsNotNull(Builder);
         }
 
         [TestMethod]
         public void TestRenderTableName()
         {
-            var tableName = _connection.GetBuilder().Adapter.RenderTableName(typeof(Dummy));
+            var tableName = Builder.Adapter.RenderTableName(typeof(Dummy));
             var nameService = new AttributeEntityNameService();
             Assert.AreEqual($"\"public\".\"{nameService.Name(typeof(Dummy))}\"", tableName);
         }
@@ -41,7 +40,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests
             var type = typeof(Dummy);
             var propertyInfo = type.GetImmediateProperty(nameof(Dummy.Id));
             var propertyName = $"\"{nameof(Dummy.Id)}\"";
-            var renderedPropertyName = _connection.GetBuilder().Adapter.RenderPropertyName(propertyInfo);
+            var renderedPropertyName = Builder.Adapter.RenderPropertyName(propertyInfo);
             Assert.AreEqual(propertyName, renderedPropertyName);
         }
 
@@ -50,7 +49,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         public void TestRenderPropertyNameByString(string name)
         {
             var propertyName = $"\"{name}\"";
-            var renderedPropertyName = _connection.GetBuilder().Adapter.RenderPropertyName(name);
+            var renderedPropertyName = Builder.Adapter.RenderPropertyName(name);
             Assert.AreEqual(propertyName, renderedPropertyName);
         }
 
@@ -58,7 +57,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         public void TestRenderPropertyList()
         {
             var properties = typeof(Dummy).GetImmediateProperties();
-            var renderedList = _connection.GetBuilder().Adapter.RenderPropertyList(properties.ToArray());
+            var renderedList = Builder.Adapter.RenderPropertyList(properties.ToArray());
             Assert.AreEqual("\"Id\", \"Name\"", renderedList.ToString());
         }
 
@@ -66,31 +65,31 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         public void TestRenderPropertyListWithTable()
         {
             var properties = typeof(Dummy).GetImmediateProperties();
-            var renderedList = _connection.GetBuilder().Adapter.RenderPropertyList(typeof(Dummy), properties.ToArray());
+            var renderedList = Builder.Adapter.RenderPropertyList(typeof(Dummy), properties.ToArray());
             Assert.AreEqual("\"public\".\"Dummy\".\"Id\", \"public\".\"Dummy\".\"Name\"", renderedList.ToString());
         }
 
         [TestMethod]
         public void SelectByFilterTest()
         {
-            var sql = _connection.GetBuilder().SelectByFilter(typeof(Dummy), nameof(Dummy.Name));
+            var sql = Builder.SelectByFilter(typeof(Dummy), nameof(Dummy.Name));
             Assert.AreEqual("SELECT \"Id\", \"Name\" FROM \"public\".\"Dummy\" WHERE \"Name\" = @Name", sql);
         }
 
         [TestMethod]
         public void SelectByInFilterTest()
         {
-            var sql = _connection.GetBuilder().SelectByInFilter(typeof(Dummy), nameof(Dummy.Id), "Ids");
+            var sql = Builder.SelectByInFilter(typeof(Dummy), nameof(Dummy.Id), "Ids");
             Assert.AreEqual("SELECT \"Id\", \"Name\" FROM \"public\".\"Dummy\" WHERE \"Id\" = ANY(@Ids)", sql);
         }
 
         [TestMethod]
         public void SelectByFilterMultiTest()
         {
-            var sql1 = _connection.GetBuilder().SelectByFilter(typeof(Dummy), new[] {nameof(Dummy.Name)});
+            var sql1 = Builder.SelectByFilter(typeof(Dummy), new[] {nameof(Dummy.Name)});
             Assert.AreEqual("SELECT \"Id\", \"Name\" FROM \"public\".\"Dummy\" WHERE \"Name\" = @Name", sql1);
 
-            var sql2 = _connection.GetBuilder()
+            var sql2 = Builder
                 .SelectByFilter(typeof(Dummy), new[] {nameof(Dummy.Id), nameof(Dummy.Name)});
             Assert.AreEqual("SELECT \"Id\", \"Name\" FROM \"public\".\"Dummy\" WHERE \"Id\" = @Id AND \"Name\" = @Name",
                 sql2);
@@ -99,28 +98,28 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         [TestMethod]
         public void TestSelectAll()
         {
-            var sql = _connection.GetBuilder().SelectAll(typeof(Dummy));
+            var sql = Builder.SelectAll(typeof(Dummy));
             Assert.AreEqual($"SELECT \"Id\", \"Name\" FROM \"public\".\"{nameof(Dummy)}\"", sql);
         }
 
         [TestMethod]
         public void TestSelectByKey()
         {
-            var sql = _connection.GetBuilder().SelectByKey(typeof(Dummy));
+            var sql = Builder.SelectByKey(typeof(Dummy));
             Assert.AreEqual($"SELECT \"Id\", \"Name\" FROM \"public\".\"{nameof(Dummy)}\" WHERE \"Id\" = @Id", sql);
         }
 
         [TestMethod]
         public void TestSelectCustom()
         {
-            var sql = _connection.GetBuilder().SelectByFilter(typeof(Dummy), nameof(Dummy.Id));
+            var sql = Builder.SelectByFilter(typeof(Dummy), nameof(Dummy.Id));
             Assert.AreEqual($"SELECT \"Id\", \"Name\" FROM \"public\".\"{nameof(Dummy)}\" WHERE \"Id\" = @Id", sql);
         }
 
         [TestMethod]
         public void TestInsertAutoKey()
         {
-            var sql = _connection.GetBuilder().InsertAutoKey(typeof(Dummy));
+            var sql = Builder.InsertAutoKey(typeof(Dummy));
             Assert.AreEqual(
                 $"INSERT INTO \"public\".\"{nameof(Dummy)}\" (\"Name\") VALUES (@Name) RETURNING \"{nameof(Dummy.Id)}\"",
                 sql);
@@ -129,28 +128,28 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         [TestMethod]
         public void TestInsertMultiple()
         {
-            var sql = _connection.GetBuilder().InsertAutoMultiple(typeof(Dummy));
+            var sql = Builder.InsertAutoMultiple(typeof(Dummy));
             Assert.AreEqual($"INSERT INTO \"public\".\"{nameof(Dummy)}\" (\"Name\") VALUES (@Name)", sql);
         }
 
         [TestMethod]
         public void TestUpdate()
         {
-            var sql = _connection.GetBuilder().Update(typeof(Dummy));
+            var sql = Builder.Update(typeof(Dummy));
             Assert.AreEqual($"UPDATE \"public\".\"{nameof(Dummy)}\" SET \"Name\" = @Name WHERE \"Id\" = @Id", sql);
         }
 
         [TestMethod]
         public void TestDelete()
         {
-            var sql = _connection.GetBuilder().Delete(typeof(Dummy));
+            var sql = Builder.Delete(typeof(Dummy));
             Assert.AreEqual($"DELETE FROM \"public\".\"{nameof(Dummy)}\" WHERE \"Id\" = @Id", sql);
         }
 
         [TestMethod]
         public void TestDeleteBy()
         {
-            var sql = _connection.GetBuilder().DeleteBy(typeof(Dummy), nameof(Dummy.Name));
+            var sql = Builder.DeleteBy(typeof(Dummy), nameof(Dummy.Name));
             Assert.AreEqual($"DELETE FROM \"public\".\"{nameof(Dummy)}\" WHERE \"Name\" = @Name", sql);
         }
     }

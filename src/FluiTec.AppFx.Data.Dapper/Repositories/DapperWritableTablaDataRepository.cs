@@ -80,11 +80,11 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
 
         if (IdentityKey)
         {
-            UnitOfWork.Connection.InsertAuto(entity, UnitOfWork.Transaction);
+            UnitOfWork.Connection.InsertAuto(SqlBuilder, entity, UnitOfWork.Transaction);
             return entity;
         }
 
-        UnitOfWork.Connection.Insert(entity, UnitOfWork.Transaction);
+        UnitOfWork.Connection.Insert(SqlBuilder, entity, UnitOfWork.Transaction);
         return entity;
     }
 
@@ -103,11 +103,11 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
 
         if (IdentityKey)
         {
-            await UnitOfWork.Connection.InsertAutoAsync(entity, UnitOfWork.Transaction, cancellationToken: ctx);
+            await UnitOfWork.Connection.InsertAutoAsync(SqlBuilder, entity, UnitOfWork.Transaction, cancellationToken: ctx);
             return entity;
         }
 
-        await UnitOfWork.Connection.InsertAsync(entity, UnitOfWork.Transaction, cancellationToken: ctx);
+        await UnitOfWork.Connection.InsertAsync(SqlBuilder, entity, UnitOfWork.Transaction, cancellationToken: ctx);
         return entity;
     }
 
@@ -124,9 +124,9 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
                 stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
         if (IdentityKey)
-            UnitOfWork.Connection.InsertAutoMultiple(keyEntities, UnitOfWork.Transaction);
+            UnitOfWork.Connection.InsertAutoMultiple(SqlBuilder, keyEntities, UnitOfWork.Transaction);
         else
-            UnitOfWork.Connection.InsertMultiple(keyEntities, UnitOfWork.Transaction);
+            UnitOfWork.Connection.InsertMultiple(SqlBuilder, keyEntities, UnitOfWork.Transaction);
     }
 
     /// <summary>
@@ -146,10 +146,10 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
                 stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
         if (IdentityKey)
-            await UnitOfWork.Connection.InsertAutoMultipleAsync(keyEntities, UnitOfWork.Transaction,
+            await UnitOfWork.Connection.InsertAutoMultipleAsync(SqlBuilder, keyEntities, UnitOfWork.Transaction,
                 cancellationToken: ctx);
         else
-            await UnitOfWork.Connection.InsertMultipleAsync(keyEntities, UnitOfWork.Transaction,
+            await UnitOfWork.Connection.InsertMultipleAsync(SqlBuilder, keyEntities, UnitOfWork.Transaction,
                 cancellationToken: ctx);
     }
 
@@ -168,12 +168,12 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
             var originalTimeStamp = stampedEntity.TimeStamp;
             stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
-            if (UnitOfWork.Connection.Update(entity, originalTimeStamp, UnitOfWork.Transaction))
+            if (UnitOfWork.Connection.Update(SqlBuilder, entity, originalTimeStamp, UnitOfWork.Transaction))
                 return entity;
             throw new UpdateException(entity);
         }
 
-        if (UnitOfWork.Connection.Update(entity, UnitOfWork.Transaction))
+        if (UnitOfWork.Connection.Update(SqlBuilder, entity, UnitOfWork.Transaction))
             return entity;
         throw new UpdateException(entity);
     }
@@ -194,12 +194,12 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
             var originalTimeStamp = stampedEntity.TimeStamp;
             stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
-            if (await UnitOfWork.Connection.UpdateAsync(entity, originalTimeStamp, UnitOfWork.Transaction))
+            if (await UnitOfWork.Connection.UpdateAsync(SqlBuilder, entity, originalTimeStamp, UnitOfWork.Transaction))
                 return entity;
             throw new UpdateException(entity);
         }
 
-        if (await UnitOfWork.Connection.UpdateAsync(entity, UnitOfWork.Transaction, cancellationToken: ctx))
+        if (await UnitOfWork.Connection.UpdateAsync(SqlBuilder, entity, UnitOfWork.Transaction, cancellationToken: ctx))
             return entity;
         throw new UpdateException(entity);
     }
@@ -213,7 +213,7 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual bool Delete(params object[] keys)
     {
-        return UnitOfWork.Connection.Delete<TEntity>(GetKey(keys), UnitOfWork.Transaction);
+        return UnitOfWork.Connection.Delete<TEntity>(SqlBuilder, GetKey(keys), UnitOfWork.Transaction);
     }
 
     /// <summary>
@@ -225,7 +225,7 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual bool Delete(TEntity entity)
     {
-        return UnitOfWork.Connection.Delete<TEntity>(GetKey(entity), UnitOfWork.Transaction);
+        return UnitOfWork.Connection.Delete<TEntity>(SqlBuilder, GetKey(entity), UnitOfWork.Transaction);
     }
 
     /// <summary>
@@ -238,7 +238,7 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual async Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default)
     {
-        return await UnitOfWork.Connection.DeleteAsync<TEntity>(GetKey(entity), UnitOfWork.Transaction,
+        return await UnitOfWork.Connection.DeleteAsync<TEntity>(SqlBuilder, GetKey(entity), UnitOfWork.Transaction,
             cancellationToken: ctx);
     }
 
@@ -252,7 +252,7 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual async Task<bool> DeleteAsync(object[] keys, CancellationToken ctx = default)
     {
-        return await UnitOfWork.Connection.DeleteAsync<TEntity>(GetKey(keys), UnitOfWork.Transaction,
+        return await UnitOfWork.Connection.DeleteAsync<TEntity>(SqlBuilder, GetKey(keys), UnitOfWork.Transaction,
             cancellationToken: ctx);
     }
 

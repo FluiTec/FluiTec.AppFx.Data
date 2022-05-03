@@ -9,7 +9,7 @@ using ImmediateReflection;
 namespace FluiTec.AppFx.Data.Sql;
 
 /// <summary>	A SQL builder. </summary>
-public class SqlBuilder
+public class SqlBuilder : ISqlBuilder
 {
     #region Constructors
 

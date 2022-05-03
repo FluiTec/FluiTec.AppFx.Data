@@ -17,12 +17,12 @@ public static class DefaultSqlBuilder
     /// <returns>
     ///     A SqlBuilder.
     /// </returns>
-    public delegate SqlBuilder GetSqlBuilderByDbDelegate(SqlType sqlType);
+    public delegate ISqlBuilder GetSqlBuilderByDbDelegate(SqlType sqlType);
 
     /// <summary>	Gets SQL builder delegate. </summary>
     /// <param name="connection">	The connection. </param>
     /// <returns>	A SqlBuilder. </returns>
-    public delegate SqlBuilder GetSqlBuilderDelegate(IDbConnection connection);
+    public delegate ISqlBuilder GetSqlBuilderDelegate(IDbConnection connection);
 
     /// <summary>
     ///     (Immutable) The padlock.
@@ -30,10 +30,10 @@ public static class DefaultSqlBuilder
     private static readonly object Padlock = new();
 
     /// <summary>	Dictionary of builders. </summary>
-    private static readonly ConcurrentDictionary<string, SqlBuilder> ConnectionBuilderDictionary;
+    private static readonly ConcurrentDictionary<string, ISqlBuilder> ConnectionBuilderDictionary;
 
     /// <summary>	Dictionary of builders. </summary>
-    private static readonly ConcurrentDictionary<SqlType, SqlBuilder> SqlTypeBuilderDictionary;
+    private static readonly ConcurrentDictionary<SqlType, ISqlBuilder> SqlTypeBuilderDictionary;
 
     /// <summary>	The get SQL builder. </summary>
     public static GetSqlBuilderDelegate GetSqlBuilder;
@@ -46,7 +46,7 @@ public static class DefaultSqlBuilder
     /// <summary>	Static constructor. </summary>
     static DefaultSqlBuilder()
     {
-        ConnectionBuilderDictionary = new ConcurrentDictionary<string, SqlBuilder>();
+        ConnectionBuilderDictionary = new ConcurrentDictionary<string, ISqlBuilder>();
         ConnectionBuilderDictionary.TryAdd("Microsoft.Data.SqlClient.SqlConnection",
             new SqlBuilder(new MicrosoftSqlAdapter(new AttributeEntityNameService())));
         ConnectionBuilderDictionary.TryAdd("System.Data.SqlClient.SqlConnection",
@@ -58,7 +58,7 @@ public static class DefaultSqlBuilder
         ConnectionBuilderDictionary.TryAdd("Microsoft.Data.Sqlite.SqliteConnection",
             new SqlBuilder(new SqLiteAdapter(new AttributeEntityNameService())));
 
-        SqlTypeBuilderDictionary = new ConcurrentDictionary<SqlType, SqlBuilder>();
+        SqlTypeBuilderDictionary = new ConcurrentDictionary<SqlType, ISqlBuilder>();
         SqlTypeBuilderDictionary.TryAdd(SqlType.Mssql,
             new SqlBuilder(new MicrosoftSqlAdapter(new AttributeEntityNameService())));
         SqlTypeBuilderDictionary.TryAdd(SqlType.Pgsql,
@@ -72,7 +72,7 @@ public static class DefaultSqlBuilder
     /// <summary>	An IDbConnection extension method that gets a builder. </summary>
     /// <param name="connection">	The connection to act on. </param>
     /// <returns>	The builder. </returns>
-    public static SqlBuilder GetBuilder(this IDbConnection connection)
+    public static ISqlBuilder GetBuilder(this IDbConnection connection)
     {
         if (connection == null) throw new ArgumentNullException(nameof(connection));
         lock (Padlock)
@@ -94,7 +94,7 @@ public static class DefaultSqlBuilder
     /// <returns>
     ///     The builder.
     /// </returns>
-    public static SqlBuilder GetBuilder(this SqlType dbType)
+    public static ISqlBuilder GetBuilder(this SqlType dbType)
     {
         lock (Padlock)
         {

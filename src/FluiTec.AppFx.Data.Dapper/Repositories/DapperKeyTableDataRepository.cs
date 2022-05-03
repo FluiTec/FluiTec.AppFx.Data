@@ -28,7 +28,7 @@ public abstract class DapperKeyTableDataRepository<TEntity, TKey> : DapperWritab
     /// <returns>   A TEntity. </returns>
     public virtual TEntity Get(TKey id)
     {
-        return UnitOfWork.Connection.Get<TEntity>(id, UnitOfWork.Transaction);
+        return UnitOfWork.Connection.Get<TEntity>(SqlBuilder, id, UnitOfWork.Transaction);
     }
 
     /// <summary>
@@ -41,6 +41,6 @@ public abstract class DapperKeyTableDataRepository<TEntity, TKey> : DapperWritab
     /// </returns>
     public virtual Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
-        return UnitOfWork.Connection.GetAsync<TEntity>(id, UnitOfWork.Transaction, cancellationToken: ctx);
+        return UnitOfWork.Connection.GetAsync<TEntity>(SqlBuilder, id, UnitOfWork.Transaction, cancellationToken: ctx);
     }
 }

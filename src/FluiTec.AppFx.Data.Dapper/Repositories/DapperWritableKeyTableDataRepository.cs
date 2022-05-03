@@ -34,7 +34,7 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
     /// <param name="id">   The Identifier to delete. </param>
     public virtual bool Delete(TKey id)
     {
-        return UnitOfWork.Connection.Delete<TEntity>(id, UnitOfWork.Transaction);
+        return UnitOfWork.Connection.Delete<TEntity>(SqlBuilder, id, UnitOfWork.Transaction);
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
     /// </returns>
     public virtual Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {
-        return UnitOfWork.Connection.DeleteAsync<TEntity>(id, UnitOfWork.Transaction, cancellationToken: ctx);
+        return UnitOfWork.Connection.DeleteAsync<TEntity>(SqlBuilder, id, UnitOfWork.Transaction, cancellationToken: ctx);
     }
 
     #endregion

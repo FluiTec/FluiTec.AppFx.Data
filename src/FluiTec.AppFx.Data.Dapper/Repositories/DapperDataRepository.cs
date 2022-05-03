@@ -79,7 +79,7 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
 
     /// <summary>	Gets the SQL builder. </summary>
     /// <value>	The SQL builder. </value>
-    protected SqlBuilder SqlBuilder { get; }
+    protected ISqlBuilder SqlBuilder { get; }
 
     #endregion
 
@@ -109,7 +109,7 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
     /// </returns>
     public virtual IEnumerable<TEntity> GetAll()
     {
-        return UnitOfWork.Connection.GetAll<TEntity>(UnitOfWork.Transaction);
+        return UnitOfWork.Connection.GetAll<TEntity>(SqlBuilder, UnitOfWork.Transaction);
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
     /// </returns>
     public virtual Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
     {
-        return UnitOfWork.Connection.GetAllAsync<TEntity>(UnitOfWork.Transaction, cancellationToken: ctx);
+        return UnitOfWork.Connection.GetAllAsync<TEntity>(SqlBuilder, UnitOfWork.Transaction, cancellationToken: ctx);
     }
 
     /// <summary>   Gets the count. </summary>

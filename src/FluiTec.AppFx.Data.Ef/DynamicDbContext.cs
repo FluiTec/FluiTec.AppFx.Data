@@ -14,8 +14,6 @@ namespace FluiTec.AppFx.Data.Ef;
 /// </summary>
 public class DynamicDbContext : DbContext, IDynamicDbContext
 {
-    private readonly Type[] _supportedIdentityTypes = {typeof(int), typeof(long)};
-
     /// <summary>
     ///     Constructor.
     /// </summary>
@@ -36,7 +34,7 @@ public class DynamicDbContext : DbContext, IDynamicDbContext
     /// <value>
     ///     The SQL builder.
     /// </value>
-    public SqlBuilder SqlBuilder { get; }
+    public ISqlBuilder SqlBuilder { get; }
 
     /// <summary>
     ///     Gets the name service.
@@ -62,6 +60,32 @@ public class DynamicDbContext : DbContext, IDynamicDbContext
     /// </value>
     public string ConnectionString { get; }
 
+    /// <summary>
+    /// <para>
+    ///                 Override this method to configure the database (and other options) to be used
+    ///                 for this context. This method is called for each instance of the context that
+    ///                 is created. The base implementation does nothing.
+    ///             </para>
+    /// <para>
+    ///                 In situations where an instance of <see cref="T:Microsoft.EntityFrameworkCore.DbContextOptions" />
+    ///                 may or may not have been passed to the constructor, you can use <see cref="P:Microsoft.EntityFrameworkCore.DbContextOptionsBuilder.IsConfigured" />
+    ///                 to determine if the options have already been set, and skip some or all of
+    ///                 the logic in
+    ///                 <see cref="M:Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)" />
+    ///                 .
+    ///             </para>
+    /// </summary>
+    ///
+    /// <remarks>
+    /// See <see href="https://aka.ms/efcore-docs-dbcontext">DbContext lifetime, configuration, and
+    /// initialization</see>
+    /// for more information.
+    /// </remarks>
+    ///
+    /// <param name="optionsBuilder">   A builder used to create or modify options for this context.
+    ///                                 Databases (and other extensions)
+    ///                                 typically define extension methods on this object that allow
+    ///                                 you to configure the context. </param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
 
@@ -90,7 +114,7 @@ public class DynamicDbContext : DbContext, IDynamicDbContext
         {
             var propBuilder = modelBuilder.Entity(entityType)
                 .Property(prop.Name);
-            if (prop == keys.Single().PropertyInfo && keys.Single().ExtendedData.IdentityKey)
+            if (prop.Equals(keys.Single().PropertyInfo) && keys.Single().ExtendedData.IdentityKey)
                 propBuilder.UseIdentityColumn();
         }
     }
