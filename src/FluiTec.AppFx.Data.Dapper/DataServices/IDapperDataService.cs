@@ -1,6 +1,7 @@
 ﻿using FluentMigrator.Runner.VersionTableInfo;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Migration;
+using FluiTec.AppFx.Data.Sql;
 
 namespace FluiTec.AppFx.Data.Dapper.DataServices;
 
@@ -29,4 +30,13 @@ public interface IDapperDataService : IDataService, ICommandCache
     /// <value> The type of the SQL. </value>
     // ReSharper disable once UnusedMemberInSuper.Global
     SqlType SqlType { get; }
+
+    /// <summary>
+    /// Gets the SQL builder.
+    /// </summary>
+    ///
+    /// <value>
+    /// The SQL builder.
+    /// </value>
+    ISqlBuilder SqlBuilder { get; }
 }

@@ -32,7 +32,7 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
         UnitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         Logger = logger; // we accept null here
 
-        SqlBuilder = unitOfWork.Connection.GetBuilder();
+        SqlBuilder = unitOfWork.DapperDataService.SqlBuilder;
         EntityType = typeof(TEntity);
         TableName = GetTableName();
     }

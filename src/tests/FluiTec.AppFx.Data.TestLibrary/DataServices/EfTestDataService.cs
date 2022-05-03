@@ -121,7 +121,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServices
         /// </returns>
         public override IDynamicDbContext GetContext()
         {
-            return new TestDbContext(SqlType, ConnectionString);
+            return new TestDbContext(this);
         }
 
         #endregion

@@ -17,7 +17,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         /// <summary>
         ///     Default constructor.
         /// </summary>
-        public MicrosoftSqlAdapterTest() : base(new MicrosoftSqlAdapter(new AttributeEntityNameService()))
+        public MicrosoftSqlAdapterTest() : base(new MicrosoftSqlAdapter(EntityNameService.GetDefault(), null))
         {
         }
 
@@ -257,7 +257,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
                 if (i > 0)
                     sb.Append(", ");
                 if (entityType != null)
-                    sb.Append($"[dbo].[{new AttributeEntityNameService().Name(entityType)}].");
+                    sb.Append($"[dbo].[{EntityNameService.GetDefault().Name(entityType)}].");
                 sb.Append($"[{props[i].Name}]");
             }
 

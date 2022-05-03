@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using FluiTec.AppFx.Data.Ef.DataServices;
 using FluiTec.AppFx.Data.Ef.Extensions;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.EntityNameServices;
@@ -15,26 +15,16 @@ namespace FluiTec.AppFx.Data.Ef;
 public class DynamicDbContext : DbContext, IDynamicDbContext
 {
     /// <summary>
-    ///     Constructor.
+    /// Constructor.
     /// </summary>
-    /// <param name="sqlType">          Type of the SQL. </param>
-    /// <param name="connectionString"> The connection string. </param>
-    public DynamicDbContext(SqlType sqlType, string connectionString)
-        : base(DbContextExtensions.GetOption(sqlType, connectionString))
+    ///
+    /// <param name="dataService">  The data service. </param>
+    public DynamicDbContext(IEfDataService dataService) : base(DbContextExtensions.GetOption(dataService.SqlType, dataService.ConnectionString))
     {
-        SqlType = sqlType;
-        ConnectionString = connectionString;
-        SqlBuilder = sqlType.GetBuilder();
-        NameService = SqlBuilder.Adapter.GetNameService();
+        SqlType = dataService.SqlType;
+        ConnectionString = dataService.ConnectionString;
+        NameService = dataService.NameService;
     }
-
-    /// <summary>
-    ///     Gets the SQL builder.
-    /// </summary>
-    /// <value>
-    ///     The SQL builder.
-    /// </value>
-    public ISqlBuilder SqlBuilder { get; }
 
     /// <summary>
     ///     Gets the name service.

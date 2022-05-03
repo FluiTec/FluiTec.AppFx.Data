@@ -1,13 +1,13 @@
 ﻿using EfSample.Data.Entities;
 using FluiTec.AppFx.Data.Ef;
-using FluiTec.AppFx.Data.Migration;
+using FluiTec.AppFx.Data.Ef.DataServices;
 using Microsoft.EntityFrameworkCore;
 
 namespace EfSample.Data.Context;
 
 public class TestDbContext : DynamicDbContext
 {
-    public TestDbContext(SqlType sqlType, string connectionString) : base(sqlType, connectionString)
+    public TestDbContext(IEfDataService dataService) : base(dataService)
     {
     }
 

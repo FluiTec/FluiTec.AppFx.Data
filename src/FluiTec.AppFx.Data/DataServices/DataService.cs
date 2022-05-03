@@ -1,4 +1,6 @@
-﻿using FluiTec.AppFx.Data.Migration;
+﻿using System;
+using FluiTec.AppFx.Data.EntityNameServices;
+using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 
@@ -9,11 +11,16 @@ namespace FluiTec.AppFx.Data.DataServices;
 public abstract class DataService<TUnitOfWork> : IDataService<TUnitOfWork>
     where TUnitOfWork : IUnitOfWork
 {
-    /// <summary>   Specialized constructor for use only by derived class. </summary>
+    /// <summary>
+    /// Specialized constructor for use only by derived class.
+    /// </summary>
+    ///
     /// <param name="loggerFactory">    The logger factory. </param>
-    protected DataService(ILoggerFactory loggerFactory)
+    /// <param name="nameService">      The name service. </param>
+    protected DataService(ILoggerFactory loggerFactory, IEntityNameService nameService)
     {
         LoggerFactory = loggerFactory; // we allow null here
+        NameService = nameService ?? throw new ArgumentNullException(nameof(nameService));
         Logger = LoggerFactory?.CreateLogger<DataService<TUnitOfWork>>();
     }
 
@@ -24,6 +31,15 @@ public abstract class DataService<TUnitOfWork> : IDataService<TUnitOfWork>
     /// <summary>Gets the logger factory.</summary>
     /// <value>The logger factory.</value>
     public ILoggerFactory LoggerFactory { get; }
+
+    /// <summary>
+    /// Gets the name service.
+    /// </summary>
+    ///
+    /// <value>
+    /// The name service.
+    /// </value>
+    public IEntityNameService NameService { get; }
 
     /// <summary>Gets the name.</summary>
     /// <value>The name.</value>

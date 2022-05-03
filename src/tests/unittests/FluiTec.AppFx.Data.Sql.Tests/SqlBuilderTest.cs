@@ -1,4 +1,5 @@
 using System.Data;
+using FluiTec.AppFx.Data.EntityNameServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Data.Sql.Tests
@@ -20,7 +21,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         protected SqlBuilderTest()
         {
             // ReSharper disable once VirtualMemberCallInConstructor
-            Builder = GetConnection().GetBuilder();
+            Builder = GetConnection().GetBuilder(EntityNameService.GetDefault(), null);
         }
 
         /// <summary>

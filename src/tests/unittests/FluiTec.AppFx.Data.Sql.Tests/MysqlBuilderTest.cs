@@ -30,8 +30,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         public void TestRenderTableName()
         {
             var tableName = Builder.Adapter.RenderTableName(typeof(Dummy));
-            var nameService = new AttributeEntityNameService();
-            Assert.AreEqual($"{nameService.Name(typeof(Dummy))}", tableName);
+            Assert.AreEqual($"{EntityNameService.GetDefault().Name(typeof(Dummy))}", tableName);
         }
 
         [TestMethod]

@@ -116,6 +116,6 @@ public class EfTestDataService : EfDataService<EfTestUnitOfWork>, ITestDataServi
     /// </returns>
     public override IDynamicDbContext GetContext()
     {
-        return new TestDbContext(SqlType, ConnectionString);
+        return new TestDbContext(this);
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using FluiTec.AppFx.Data.Sql.Adapters;
 using ImmediateReflection;
+using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Sql;
 
@@ -13,11 +14,16 @@ public class SqlBuilder : ISqlBuilder
 {
     #region Constructors
 
-    /// <summary>	Constructor. </summary>
-    /// <param name="adapter">	The adapter. </param>
-    public SqlBuilder(ISqlAdapter adapter)
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    ///
+    /// <param name="adapter">  The adapter. </param>
+    /// <param name="logger">   The logger. </param>
+    public SqlBuilder(ISqlAdapter adapter, ILogger<ISqlBuilder> logger)
     {
-        Adapter = adapter;
+        Adapter = adapter ?? throw new ArgumentNullException(nameof(adapter));
+        Logger = logger;
     }
 
     #endregion
@@ -26,6 +32,15 @@ public class SqlBuilder : ISqlBuilder
 
     /// <summary>	The adapter. </summary>
     public ISqlAdapter Adapter { get; }
+
+    /// <summary>
+    /// Gets the logger.
+    /// </summary>
+    ///
+    /// <value>
+    /// The logger.
+    /// </value>
+    public ILogger<ISqlBuilder> Logger { get; }
 
     #endregion
 
