@@ -4,6 +4,7 @@ using System.Reflection;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.VersionTableInfo;
 using FluiTec.AppFx.Data.Ef.UnitsOfWork;
+using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
@@ -38,10 +39,34 @@ public abstract class EfDataService<TUnitOfWork> : BaseEfDataService<TUnitOfWork
     /// <summary>
     ///     Specialized constructor for use only by derived class.
     /// </summary>
+    /// <param name="options">              Options for controlling the operation. </param>
+    /// <param name="loggerFactory">        The logger factory. </param>
+    /// <param name="entityNameService">    The entity name service. </param>
+    protected EfDataService(ISqlServiceOptions options, ILoggerFactory loggerFactory,
+        IEntityNameService entityNameService)
+        : base(options, loggerFactory, entityNameService)
+    {
+    }
+
+    /// <summary>
+    ///     Specialized constructor for use only by derived class.
+    /// </summary>
     /// <param name="options">          Options for controlling the operation. </param>
     /// <param name="loggerFactory">    The logger factory. </param>
-    protected EfDataService(IOptionsMonitor<ISqlServiceOptions> options, ILoggerFactory loggerFactory) : base(options,
-        loggerFactory)
+    protected EfDataService(IOptionsMonitor<ISqlServiceOptions> options, ILoggerFactory loggerFactory)
+        : base(options, loggerFactory)
+    {
+    }
+
+    /// <summary>
+    ///     Specialized constructor for use only by derived class.
+    /// </summary>
+    /// <param name="options">              Options for controlling the operation. </param>
+    /// <param name="loggerFactory">        The logger factory. </param>
+    /// <param name="entityNameService">    The entity name service. </param>
+    protected EfDataService(IOptionsMonitor<ISqlServiceOptions> options, ILoggerFactory loggerFactory,
+        IEntityNameService entityNameService)
+        : base(options, loggerFactory, entityNameService)
     {
     }
 
