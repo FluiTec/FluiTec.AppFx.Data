@@ -1,4 +1,5 @@
 ﻿using System;
+using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
@@ -11,6 +12,15 @@ public interface IDataService : IDisposable
     /// <summary>Gets the logger factory.</summary>
     /// <value>The logger factory.</value>
     ILoggerFactory LoggerFactory { get; }
+
+    /// <summary>
+    /// Gets the name service.
+    /// </summary>
+    ///
+    /// <value>
+    /// The name service.
+    /// </value>
+    IEntityNameService NameService { get; }
 
     /// <summary>	Gets the name. </summary>
     /// <value>	The name. </value>

@@ -1,9 +1,7 @@
-using System;
-
-namespace FluiTec.AppFx.Data.Sql;
+namespace FluiTec.AppFx.Data.Sql.EventArgs;
 
 /// <summary>	Additional information for SQL events. </summary>
-public class SqlEventArgs : EventArgs
+public class SqlEventArgs : System.EventArgs
 {
     /// <summary>	Constructor. </summary>
     /// <param name="statement">	The statement. </param>

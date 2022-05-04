@@ -32,7 +32,7 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
         UnitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         Logger = logger; // we accept null here
 
-        SqlBuilder = unitOfWork.Connection.GetBuilder();
+        SqlBuilder = unitOfWork.DapperDataService.SqlBuilder;
         EntityType = typeof(TEntity);
         TableName = GetTableName();
     }
@@ -79,7 +79,7 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
 
     /// <summary>	Gets the SQL builder. </summary>
     /// <value>	The SQL builder. </value>
-    protected SqlBuilder SqlBuilder { get; }
+    protected ISqlBuilder SqlBuilder { get; }
 
     #endregion
 
@@ -109,7 +109,8 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
     /// </returns>
     public virtual IEnumerable<TEntity> GetAll()
     {
-        return UnitOfWork.Connection.GetAll<TEntity>(UnitOfWork.Transaction);
+        Logger?.LogTrace("GetAll<{type}>", typeof(TEntity));
+        return UnitOfWork.Connection.GetAll<TEntity>(SqlBuilder, UnitOfWork.Transaction);
     }
 
     /// <summary>
@@ -121,13 +122,15 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
     /// </returns>
     public virtual Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
     {
-        return UnitOfWork.Connection.GetAllAsync<TEntity>(UnitOfWork.Transaction, cancellationToken: ctx);
+        Logger?.LogTrace("GetAllAsync<{type}>", typeof(TEntity));
+        return UnitOfWork.Connection.GetAllAsync<TEntity>(SqlBuilder, UnitOfWork.Transaction, cancellationToken: ctx);
     }
 
     /// <summary>   Gets the count. </summary>
     /// <returns>   An int. </returns>
     public virtual int Count()
     {
+        Logger?.LogTrace("Count<{type}>", typeof(TEntity));
         var command = GetFromCache(() => $"SELECT COUNT(*) FROM {TableName}");
         return UnitOfWork.Connection.ExecuteScalar<int>(command, null, UnitOfWork.Transaction);
     }
@@ -141,6 +144,7 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
     /// </returns>
     public virtual Task<int> CountAsync(CancellationToken ctx = default)
     {
+        Logger?.LogTrace("CountAsync<{type}>", typeof(TEntity));
         var command = GetFromCache(() => $"SELECT COUNT(*) FROM {TableName}", nameof(Count));
         return UnitOfWork.Connection.ExecuteScalarAsync<int>(new CommandDefinition(command, null,
             UnitOfWork.Transaction, cancellationToken: ctx));

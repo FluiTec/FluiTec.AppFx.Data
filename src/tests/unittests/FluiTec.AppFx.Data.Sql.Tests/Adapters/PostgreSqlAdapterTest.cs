@@ -14,7 +14,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         /// <summary>
         ///     Default constructor.
         /// </summary>
-        public PostgreSqlAdapterTest() : base(new PostgreSqlAdapter(new AttributeEntityNameService()))
+        public PostgreSqlAdapterTest() : base(new PostgreSqlAdapter(EntityNameService.GetDefault(), null))
         {
         }
 
@@ -268,7 +268,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
                 if (i > 0)
                     sb.Append(", ");
                 if (entityType != null)
-                    sb.Append($"\"public\".\"{new AttributeEntityNameService().Name(entityType)}\".");
+                    sb.Append($"\"public\".\"{EntityNameService.GetDefault().Name(entityType)}\".");
                 sb.Append($"\"{props[i].Name}\"");
             }
 

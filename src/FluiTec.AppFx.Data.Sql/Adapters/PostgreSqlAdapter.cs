@@ -1,15 +1,20 @@
 ﻿using System.Text;
 using FluiTec.AppFx.Data.EntityNameServices;
 using ImmediateReflection;
+using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters;
 
 /// <summary>	A postgre SQL adapter. </summary>
 public class PostgreSqlAdapter : SqlAdapter
 {
-    /// <summary>	Constructor. </summary>
-    /// <param name="entityNameService">	The entity name service. </param>
-    public PostgreSqlAdapter(IEntityNameService entityNameService) : base(entityNameService)
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    ///
+    /// <param name="entityNameService">    The entity name service. </param>
+    /// <param name="logger">               The logger. </param>
+    public PostgreSqlAdapter(IEntityNameService entityNameService, ILogger<ISqlAdapter> logger) : base(entityNameService, logger)
     {
     }
 

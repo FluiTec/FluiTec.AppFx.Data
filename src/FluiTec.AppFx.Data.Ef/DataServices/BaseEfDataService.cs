@@ -1,6 +1,7 @@
 ﻿using System;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Ef.UnitsOfWork;
+using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
@@ -50,15 +51,17 @@ public abstract class BaseEfDataService<TUnitOfWork> : DataService<TUnitOfWork>,
     #region Constructors
 
     /// <summary>
-    ///     Specialized constructor for use only by derived class.
+    /// Specialized constructor for use only by derived class.
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     Thrown when one or more required arguments are
-    ///     null.
-    /// </exception>
+    ///
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    ///
     /// <param name="options">          Options for controlling the operation. </param>
     /// <param name="loggerFactory">    The logger factory. </param>
-    protected BaseEfDataService(ISqlServiceOptions options, ILoggerFactory loggerFactory) : base(loggerFactory)
+    /// <param name="nameService">      The name service. </param>
+    protected BaseEfDataService(ISqlServiceOptions options, ILoggerFactory loggerFactory, IEntityNameService nameService) 
+        : base(loggerFactory, nameService)
     {
         if (options == null) throw new ArgumentNullException(nameof(options));
         _connectionString = options.ConnectionString;
@@ -66,21 +69,44 @@ public abstract class BaseEfDataService<TUnitOfWork> : DataService<TUnitOfWork>,
     }
 
     /// <summary>
-    ///     Specialized constructor for use only by derived class.
+    /// Specialized constructor for use only by derived class.
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     Thrown when one or more required arguments are
-    ///     null.
-    /// </exception>
+    ///
     /// <param name="options">          Options for controlling the operation. </param>
     /// <param name="loggerFactory">    The logger factory. </param>
-    protected BaseEfDataService(IOptionsMonitor<ISqlServiceOptions> options, ILoggerFactory loggerFactory) :
-        base(loggerFactory)
+    protected BaseEfDataService(ISqlServiceOptions options, ILoggerFactory loggerFactory)
+        : this(options, loggerFactory, EntityNameService.GetDefault())
+    {
+    }
+
+    /// <summary>
+    /// Specialized constructor for use only by derived class.
+    /// </summary>
+    ///
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    ///
+    /// <param name="options">          Options for controlling the operation. </param>
+    /// <param name="loggerFactory">    The logger factory. </param>
+    /// <param name="nameService">      The name service. </param>
+    protected BaseEfDataService(IOptionsMonitor<ISqlServiceOptions> options, ILoggerFactory loggerFactory, IEntityNameService nameService) :
+        base(loggerFactory, nameService)
     {
         if (options == null) throw new ArgumentNullException(nameof(options));
         if (options.CurrentValue == null)
             throw new ArgumentNullException(nameof(options));
         ServiceOptions = options;
+    }
+
+    /// <summary>
+    /// Specialized constructor for use only by derived class.
+    /// </summary>
+    ///
+    /// <param name="options">          Options for controlling the operation. </param>
+    /// <param name="loggerFactory">    The logger factory. </param>
+    protected BaseEfDataService(IOptionsMonitor<ISqlServiceOptions> options, ILoggerFactory loggerFactory) :
+        this(options, loggerFactory, EntityNameService.GetDefault())
+    {
     }
 
     #endregion

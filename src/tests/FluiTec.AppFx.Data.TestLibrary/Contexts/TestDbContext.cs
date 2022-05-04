@@ -1,4 +1,5 @@
 ﻿using FluiTec.AppFx.Data.Ef;
+using FluiTec.AppFx.Data.Ef.DataServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.TestLibrary.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +12,11 @@ namespace FluiTec.AppFx.Data.TestLibrary.Contexts
     public class TestDbContext : DynamicDbContext
     {
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
-        /// <param name="sqlType">          Type of the SQL. </param>
-        /// <param name="connectionString"> The connection string. </param>
-        public TestDbContext(SqlType sqlType, string connectionString) : base(sqlType, connectionString)
+        ///
+        /// <param name="dataService">  Type of the SQL. </param>
+        public TestDbContext(IEfDataService dataService) : base(dataService)
         {
         }
 

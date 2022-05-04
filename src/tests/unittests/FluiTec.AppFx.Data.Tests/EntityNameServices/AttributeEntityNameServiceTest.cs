@@ -11,16 +11,14 @@ namespace FluiTec.AppFx.Data.Tests.EntityNameServices
         [DataRow(typeof(Dummy))]
         public void CanNameEntityByClass(Type type)
         {
-            var nameService = new AttributeEntityNameService();
-            Assert.AreEqual(nameof(Dummy), nameService.Name(type));
+            Assert.AreEqual(nameof(Dummy), EntityNameService.GetDefault().Name(type));
         }
 
         [TestMethod]
         [DataRow("Test", typeof(AttributedDummy))]
         public void CanNameEntityByAttribute(string name, Type type)
         {
-            var nameService = new AttributeEntityNameService();
-            Assert.AreEqual(name, nameService.Name(type));
+            Assert.AreEqual(name, EntityNameService.GetDefault().Name(type));
         }
 
         public class Dummy

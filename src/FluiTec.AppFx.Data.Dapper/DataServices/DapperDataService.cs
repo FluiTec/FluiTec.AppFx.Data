@@ -4,6 +4,7 @@ using System.Reflection;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.VersionTableInfo;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
+using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
@@ -31,12 +32,36 @@ public abstract class DapperDataService<TUnitOfWork> : BaseDapperDataService<TUn
     {
     }
 
+    /// <summary>
+    ///     Specialized constructor for use only by derived class.
+    /// </summary>
+    /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
+    /// <param name="loggerFactory">        The logger factory. </param>
+    /// <param name="entityNameService">    The entity name service. </param>
+    protected DapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory,
+        IEntityNameService entityNameService)
+        : base(dapperServiceOptions, loggerFactory, entityNameService)
+    {
+    }
+
     /// <summary>   Specialized constructor for use only by derived class. </summary>
     /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
     /// <param name="loggerFactory">        The logger factory. </param>
     protected DapperDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
         ILoggerFactory loggerFactory)
         : base(dapperServiceOptions, loggerFactory)
+    {
+    }
+
+    /// <summary>
+    ///     Specialized constructor for use only by derived class.
+    /// </summary>
+    /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
+    /// <param name="loggerFactory">        The logger factory. </param>
+    /// <param name="entityNameService">    The entity name service. </param>
+    protected DapperDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
+        ILoggerFactory loggerFactory, IEntityNameService entityNameService)
+        : base(dapperServiceOptions, loggerFactory, entityNameService)
     {
     }
 
@@ -92,7 +117,13 @@ public abstract class DapperDataService<TUnitOfWork> : BaseDapperDataService<TUn
     /// </remarks>
     protected virtual IEnumerable<Assembly> GetMigrationAssemblies()
     {
-        return new[] {GetType().BaseType?.Assembly, GetType().Assembly};
+        var assemblies = new[] { GetType().BaseType?.Assembly, GetType().Assembly };
+
+        Logger?.LogInformation("GetMigrationAssemblies. ({count} items)", assemblies.Length);
+        foreach(var assembly in assemblies)
+            Logger?.LogDebug("MigrationAssembly: {assembly}", assembly.FullName);
+
+        return assemblies;
     }
 
     /// <summary>   Gets the migrator. </summary>

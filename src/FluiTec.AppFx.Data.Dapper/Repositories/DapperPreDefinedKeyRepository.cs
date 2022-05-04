@@ -46,9 +46,7 @@ public abstract class
             stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
         SetInsertKey(entity);
-
-        var builder = UnitOfWork.Connection.GetBuilder();
-        var sql = builder.InsertAutoMultiple(EntityType);
+        var sql = SqlBuilder.InsertAutoMultiple(EntityType);
 
         UnitOfWork.Connection.Execute(sql, entity, UnitOfWork.Transaction);
 

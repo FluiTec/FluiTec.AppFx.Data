@@ -1,14 +1,19 @@
 ﻿using FluiTec.AppFx.Data.EntityNameServices;
 using ImmediateReflection;
+using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters;
 
 /// <summary>   A sq lite adapter. </summary>
 public class SqLiteAdapter : SqlAdapter
 {
-    /// <summary>	Constructor. </summary>
-    /// <param name="entityNameService">	The entity name service. </param>
-    public SqLiteAdapter(IEntityNameService entityNameService) : base(entityNameService)
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    ///
+    /// <param name="entityNameService">    The entity name service. </param>
+    /// <param name="logger">               The logger. </param>
+    public SqLiteAdapter(IEntityNameService entityNameService, ILogger<ISqlAdapter> logger) : base(entityNameService, logger)
     {
     }
 

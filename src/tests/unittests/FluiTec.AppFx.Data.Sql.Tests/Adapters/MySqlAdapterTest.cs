@@ -17,7 +17,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         /// <summary>
         ///     Default constructor.
         /// </summary>
-        public MySqlAdapterTest() : base(new MySqlAdapter(new AttributeEntityNameService()))
+        public MySqlAdapterTest() : base(new MySqlAdapter(EntityNameService.GetDefault(), null))
         {
         }
 
@@ -248,7 +248,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
                 if (i > 0)
                     sb.Append(", ");
                 if (entityType != null)
-                    sb.Append($"{new AttributeEntityNameService().Name(entityType)}.");
+                    sb.Append($"{EntityNameService.GetDefault().Name(entityType)}.");
                 sb.Append($"{props[i].Name}");
             }
 

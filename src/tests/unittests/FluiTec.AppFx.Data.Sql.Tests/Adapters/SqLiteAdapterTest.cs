@@ -14,7 +14,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         /// <summary>
         ///     Default constructor.
         /// </summary>
-        public SqLiteAdapterTest() : base(new SqLiteAdapter(new AttributeEntityNameService()))
+        public SqLiteAdapterTest() : base(new SqLiteAdapter(EntityNameService.GetDefault(), null))
         {
         }
 
@@ -245,7 +245,7 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
                 if (i > 0)
                     sb.Append(", ");
                 if (entityType != null)
-                    sb.Append($"{new AttributeEntityNameService().Name(entityType)}.");
+                    sb.Append($"{EntityNameService.GetDefault().Name(entityType)}.");
                 sb.Append($"{props[i].Name}");
             }
 

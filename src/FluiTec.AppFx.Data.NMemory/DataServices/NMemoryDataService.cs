@@ -1,5 +1,6 @@
 ﻿using System;
 using FluiTec.AppFx.Data.DataServices;
+using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
 using FluiTec.AppFx.Data.UnitsOfWork;
@@ -20,13 +21,26 @@ public abstract class NMemoryDataService<TUnitOfWork> : DataService<TUnitOfWork>
     #region Constructors
 
     /// <summary>
-    ///     Specialized constructor for use only by derived class.
+    /// Specialized constructor for use only by derived class.
     /// </summary>
+    ///
     /// <param name="loggerFactory">    The logger factory. </param>
-    protected NMemoryDataService(ILoggerFactory loggerFactory) : base(loggerFactory)
+    /// <param name="nameService">      The name service. </param>
+    protected NMemoryDataService(ILoggerFactory loggerFactory, IEntityNameService nameService) 
+        : base(loggerFactory, nameService)
     {
         // ReSharper disable once VirtualMemberCallInConstructor
         Database = ConfigureDatabase(new Database());
+    }
+
+    /// <summary>
+    /// Specialized constructor for use only by derived class.
+    /// </summary>
+    ///
+    /// <param name="loggerFactory">    The logger factory. </param>
+    protected NMemoryDataService(ILoggerFactory loggerFactory)
+        : this(loggerFactory, EntityNameService.GetDefault())
+    {
     }
 
     #endregion

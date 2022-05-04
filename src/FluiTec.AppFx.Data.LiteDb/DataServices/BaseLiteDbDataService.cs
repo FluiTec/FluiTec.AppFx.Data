@@ -91,10 +91,6 @@ public abstract class BaseLiteDbDataService<TUnitOfWork> : DataService<TUnitOfWo
                 ? LiteDbDatabaseSingleton.GetDatabase(ServiceOptions.CurrentValue.FullDbFilePath)
                 : GetCachedDatabase(ServiceOptions.CurrentValue);
 
-    /// <summary>   Gets or sets the name service. </summary>
-    /// <value> The name service. </value>
-    public IEntityNameService NameService { get; }
-
     #endregion
 
     #region Constructors
@@ -118,7 +114,7 @@ public abstract class BaseLiteDbDataService<TUnitOfWork> : DataService<TUnitOfWo
     /// <param name="applicationFolder">        (Optional) Pathname of the application folder. </param>
     protected BaseLiteDbDataService(bool? useSingletonConnection, string dbFilePath, ILoggerFactory loggerFactory,
         string applicationFolder = null) :
-        this(useSingletonConnection, dbFilePath, loggerFactory, new AttributeEntityNameService(), applicationFolder)
+        this(useSingletonConnection, dbFilePath, loggerFactory, EntityNameService.GetDefault(), applicationFolder)
     {
     }
 
@@ -142,10 +138,8 @@ public abstract class BaseLiteDbDataService<TUnitOfWork> : DataService<TUnitOfWo
     /// <param name="applicationFolder">        (Optional) Pathname of the application folder. </param>
     protected BaseLiteDbDataService(bool? useSingletonConnection, string dbFilePath,
         ILoggerFactory loggerFactory, IEntityNameService nameService, string applicationFolder = null) :
-        base(loggerFactory)
+        base(loggerFactory, nameService)
     {
-        NameService = nameService ?? throw new ArgumentNullException();
-
         if (string.IsNullOrWhiteSpace(dbFilePath)) throw new ArgumentNullException(nameof(dbFilePath));
 
         var fullDbFilePath = applicationFolder != null ? Path.Combine(applicationFolder, dbFilePath) : dbFilePath;
@@ -209,7 +203,6 @@ public abstract class BaseLiteDbDataService<TUnitOfWork> : DataService<TUnitOfWo
             throw new ArgumentException("Invalid DbFileName.", nameof(options));
 
         ServiceOptions = options;
-        NameService = nameService ?? throw new ArgumentNullException();
     }
 
     #endregion
