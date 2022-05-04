@@ -34,7 +34,7 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
     /// <param name="id">   The Identifier to delete. </param>
     public virtual bool Delete(TKey id)
     {
-        Logger.LogTrace("Delete<{type}>({id})", typeof(TEntity), id);
+        Logger?.LogTrace("Delete<{type}>({id})", typeof(TEntity), id);
         return UnitOfWork.Connection.Delete<TEntity>(SqlBuilder, id, UnitOfWork.Transaction);
     }
 
@@ -48,7 +48,7 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
     /// </returns>
     public virtual Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {
-        Logger.LogTrace("DeleteAsync<{type}>({id})", typeof(TEntity), id);
+        Logger?.LogTrace("DeleteAsync<{type}>({id})", typeof(TEntity), id);
         return UnitOfWork.Connection.DeleteAsync<TEntity>(SqlBuilder, id, UnitOfWork.Transaction, cancellationToken: ctx);
     }
 
