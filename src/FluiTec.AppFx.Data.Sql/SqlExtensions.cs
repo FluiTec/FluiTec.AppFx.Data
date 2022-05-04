@@ -14,9 +14,6 @@ namespace FluiTec.AppFx.Data.Sql;
 /// <summary>	A SQL extensions. </summary>
 public static class SqlExtensions
 {
-    /// <summary>	Event queue for all listeners interested in SqlGenerated events. </summary>
-    public static event EventHandler<SqlEventArgs> SqlGenerated;
-
     /// <summary>
     /// Gets all items in this collection.
     /// </summary>
@@ -33,7 +30,6 @@ public static class SqlExtensions
     public static IEnumerable<TEntity> GetAll<TEntity>(this IDbConnection connection, ISqlBuilder builder, IDbTransaction transaction = null, int? commandTimeout = null)
     {
         var sql = builder.SelectAll(typeof(TEntity));
-        OnSqlGenerated(sql);
         return connection.Query<TEntity>(sql, null, transaction, commandTimeout: commandTimeout);
     }
 
@@ -56,7 +52,6 @@ public static class SqlExtensions
         IDbTransaction transaction = null, int? commandTimeout = null, CancellationToken cancellationToken = default)
     {
         var sql = builder.SelectAll(typeof(TEntity));
-        OnSqlGenerated(sql);
         return connection.QueryAsync<TEntity>(new CommandDefinition(sql, null, transaction, commandTimeout,
             cancellationToken: cancellationToken));
     }
@@ -83,7 +78,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.SelectByKey(type);
-        OnSqlGenerated(sql);
 
         var typeKeys = SqlCache.TypeKeyPropertiesCache(typeof(TEntity));
 
@@ -139,7 +133,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.SelectByKey(type);
-        OnSqlGenerated(sql);
 
         var typeKeys = SqlCache.TypeKeyPropertiesCache(typeof(TEntity));
 
@@ -187,7 +180,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.Insert(type);
-        OnSqlGenerated(sql);
 
         connection.Execute(sql, entity, transaction, commandTimeout);
     }
@@ -213,7 +205,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.Insert(type);
-        OnSqlGenerated(sql);
 
         await connection.ExecuteAsync(new CommandDefinition(sql, entity, transaction, commandTimeout,
             cancellationToken: cancellationToken));
@@ -235,7 +226,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.InsertAutoKey(type);
-        OnSqlGenerated(sql);
 
         var result = connection.ExecuteScalar<object>(sql, entity, transaction, commandTimeout);
         var cast = Convert.ChangeType(result,
@@ -268,7 +258,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.InsertAutoKey(type);
-        OnSqlGenerated(sql);
 
         var result = await connection.ExecuteScalarAsync<object>(new CommandDefinition(sql, entity, transaction,
             commandTimeout, cancellationToken: cancellationToken));
@@ -300,7 +289,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.InsertMultiple(type);
-        OnSqlGenerated(sql);
 
         // just return number of affected rows instead of the indivitual id's
         return connection.Execute(sql, entities, transaction, commandTimeout);
@@ -329,7 +317,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.InsertMultiple(type);
-        OnSqlGenerated(sql);
 
         // just return number of affected rows instead of the indivitual id's
         return connection.ExecuteAsync(new CommandDefinition(sql, entities, transaction, commandTimeout,
@@ -356,7 +343,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.InsertAutoMultiple(type);
-        OnSqlGenerated(sql);
 
         // just return number of affected rows instead of the indivitual id's
         return connection.Execute(sql, entities, transaction, commandTimeout);
@@ -385,7 +371,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.InsertAutoMultiple(type);
-        OnSqlGenerated(sql);
 
         // just return number of affected rows instead of the indivitual id's
         return connection.ExecuteAsync(new CommandDefinition(sql, entities, transaction, commandTimeout,
@@ -412,7 +397,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.Update(type);
-        OnSqlGenerated(sql);
 
         var parameters = new DynamicParameters();
         foreach (var p in builder.ParameterList(type))
@@ -443,7 +427,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.Update(type);
-        OnSqlGenerated(sql);
 
         var parameters = new DynamicParameters();
         foreach (var p in builder.ParameterList(type))
@@ -474,7 +457,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.Update(type, originalTimeStamp, nameof(ITimeStampedKeyEntity.TimeStamp));
-        OnSqlGenerated(sql);
 
         var parameters = new DynamicParameters();
         foreach (var p in builder.ParameterList(type))
@@ -520,7 +502,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.Update(type, originalTimeStamp, nameof(ITimeStampedKeyEntity.TimeStamp));
-        OnSqlGenerated(sql);
 
         var parameters = new DynamicParameters();
         foreach (var p in builder.ParameterList(type))
@@ -561,7 +542,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.Delete(type);
-        OnSqlGenerated(sql);
 
         var typeKeys = SqlCache.TypeKeyPropertiesCache(typeof(TEntity));
 
@@ -617,7 +597,6 @@ public static class SqlExtensions
     {
         var type = typeof(TEntity);
         var sql = builder.Delete(type);
-        OnSqlGenerated(sql);
 
         var typeKeys = SqlCache.TypeKeyPropertiesCache(typeof(TEntity));
 
@@ -648,12 +627,5 @@ public static class SqlExtensions
             return await connection.ExecuteAsync(new CommandDefinition(sql, parameters, transaction, commandTimeout,
                 cancellationToken: cancellationToken)) > 0;
         }
-    }
-
-    /// <summary>	Executes the SQL generated action. </summary>
-    /// <param name="sql">	The SQL. </param>
-    private static void OnSqlGenerated(string sql)
-    {
-        SqlGenerated?.Invoke(null, new SqlEventArgs(sql));
     }
 }

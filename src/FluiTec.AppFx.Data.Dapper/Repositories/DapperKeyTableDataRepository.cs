@@ -28,6 +28,7 @@ public abstract class DapperKeyTableDataRepository<TEntity, TKey> : DapperWritab
     /// <returns>   A TEntity. </returns>
     public virtual TEntity Get(TKey id)
     {
+        Logger?.LogTrace("Get<{type}>({id})", typeof(TEntity), id);
         return UnitOfWork.Connection.Get<TEntity>(SqlBuilder, id, UnitOfWork.Transaction);
     }
 
@@ -41,6 +42,7 @@ public abstract class DapperKeyTableDataRepository<TEntity, TKey> : DapperWritab
     /// </returns>
     public virtual Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
+        Logger?.LogTrace("GetAsync<{type}>({id})", typeof(TEntity), id);
         return UnitOfWork.Connection.GetAsync<TEntity>(SqlBuilder, id, UnitOfWork.Transaction, cancellationToken: ctx);
     }
 }

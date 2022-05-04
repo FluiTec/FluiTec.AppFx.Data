@@ -79,6 +79,7 @@ public abstract class DapperTableDataRepository<TEntity> : DapperDataRepository<
     /// </returns>
     public virtual TEntity Get(params object[] keys)
     {
+        Logger?.LogTrace("Get<{type}>({keys})", typeof(TEntity), keys);
         return UnitOfWork.Connection.Get<TEntity>(SqlBuilder, GetKey(keys), UnitOfWork.Transaction);
     }
 
@@ -92,7 +93,8 @@ public abstract class DapperTableDataRepository<TEntity> : DapperDataRepository<
     /// </returns>
     public virtual Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
     {
-        return UnitOfWork.Connection.GetAsync<TEntity>(SqlBuilder, GetKey(keys), UnitOfWork.Transaction);
+        Logger?.LogTrace("GetAsync<{type}>({keys})", typeof(TEntity), keys);
+        return UnitOfWork.Connection.GetAsync<TEntity>(SqlBuilder, GetKey(keys), UnitOfWork.Transaction, cancellationToken: ctx);
     }
 
     #endregion

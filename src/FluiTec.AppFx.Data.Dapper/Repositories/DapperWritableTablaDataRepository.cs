@@ -75,6 +75,8 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual TEntity Add(TEntity entity)
     {
+        Logger?.LogTrace("Add<{type}>({entity})", typeof(TEntity), entity);
+
         if (entity is ITimeStampedKeyEntity stampedEntity)
             stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
@@ -98,6 +100,8 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default)
     {
+        Logger?.LogTrace("AddAsync<{type}>({entity})", typeof(TEntity), entity);
+
         if (entity is ITimeStampedKeyEntity stampedEntity)
             stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
 
@@ -117,6 +121,8 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
     public virtual void AddRange(IEnumerable<TEntity> entities)
     {
+        Logger?.LogTrace("AddRange<{type}>", typeof(TEntity));
+
         var keyEntities = entities as TEntity[] ?? entities.ToArray();
 
         foreach (var entity in keyEntities)
@@ -139,6 +145,8 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default)
     {
+        Logger?.LogTrace("AddRangeAsync<{type}>", typeof(TEntity));
+
         var keyEntities = entities as TEntity[] ?? entities.ToArray();
 
         foreach (var entity in keyEntities)
@@ -163,6 +171,8 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual TEntity Update(TEntity entity)
     {
+        Logger?.LogTrace("Update<{type}>({entity})", typeof(TEntity), entity);
+
         if (entity is ITimeStampedKeyEntity stampedEntity)
         {
             var originalTimeStamp = stampedEntity.TimeStamp;
@@ -189,6 +199,8 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default)
     {
+        Logger?.LogTrace("UpdateAsync<{type}>({entity})", typeof(TEntity), entity);
+
         if (entity is ITimeStampedKeyEntity stampedEntity)
         {
             var originalTimeStamp = stampedEntity.TimeStamp;
@@ -213,6 +225,7 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual bool Delete(params object[] keys)
     {
+        Logger?.LogTrace("Delete<{type}>({keys})", typeof(TEntity), keys);
         return UnitOfWork.Connection.Delete<TEntity>(SqlBuilder, GetKey(keys), UnitOfWork.Transaction);
     }
 
@@ -225,6 +238,7 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual bool Delete(TEntity entity)
     {
+        Logger?.LogTrace("Delete<{type}>({entity})", typeof(TEntity), entity);
         return UnitOfWork.Connection.Delete<TEntity>(SqlBuilder, GetKey(entity), UnitOfWork.Transaction);
     }
 
@@ -238,6 +252,7 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual async Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default)
     {
+        Logger?.LogTrace("DeleteAsync<{type}>({entity})", typeof(TEntity), entity);
         return await UnitOfWork.Connection.DeleteAsync<TEntity>(SqlBuilder, GetKey(entity), UnitOfWork.Transaction,
             cancellationToken: ctx);
     }
@@ -252,6 +267,7 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
     /// </returns>
     public virtual async Task<bool> DeleteAsync(object[] keys, CancellationToken ctx = default)
     {
+        Logger?.LogTrace("DeleteAsync<{type}>({keys})", typeof(TEntity), keys);
         return await UnitOfWork.Connection.DeleteAsync<TEntity>(SqlBuilder, GetKey(keys), UnitOfWork.Transaction,
             cancellationToken: ctx);
     }

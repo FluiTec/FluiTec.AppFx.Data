@@ -117,7 +117,13 @@ public abstract class DapperDataService<TUnitOfWork> : BaseDapperDataService<TUn
     /// </remarks>
     protected virtual IEnumerable<Assembly> GetMigrationAssemblies()
     {
-        return new[] {GetType().BaseType?.Assembly, GetType().Assembly};
+        var assemblies = new[] { GetType().BaseType?.Assembly, GetType().Assembly };
+
+        Logger?.LogInformation("GetMigrationAssemblies. ({count} items)", assemblies.Length);
+        foreach(var assembly in assemblies)
+            Logger?.LogDebug("MigrationAssembly: {assembly}", assembly.FullName);
+
+        return assemblies;
     }
 
     /// <summary>   Gets the migrator. </summary>

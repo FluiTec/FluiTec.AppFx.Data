@@ -7,6 +7,7 @@ using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.Sql;
+using FluiTec.AppFx.Data.Sql.EventArgs;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -20,7 +21,15 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
 {
     private readonly IConnectionFactory _connectionFactory;
     private readonly string _connectionString;
-    private readonly ISqlBuilder _sqlBuilder;
+
+    #region Events
+
+    /// <summary>
+    /// Event queue for all listeners interested in SqlGenerated events.
+    /// </summary>
+    public event EventHandler<SqlGeneratedEventArgs> SqlGenerated;
+
+    #endregion
 
     #region ICommandCache
 
@@ -31,6 +40,7 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
     /// <returns>   The data that was read from the cache.</returns>
     public string GetFromCache(Type repositoryType, string memberName, Func<string> commandFunc)
     {
+        Logger?.LogTrace("ICommandCache.GetFromCache({type}, {member})", repositoryType, memberName);
         var key = $"{repositoryType.FullName}.{memberName}";
 
         if (CommandCache.TryGetValue(key, out var result))
@@ -78,13 +88,16 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
         // ReSharper disable once VirtualMemberCallInConstructor
         if (SqlType.NeedsDateTimeMapping())
             DapperExtensions.InstallDateTimeOffsetMapper();
-
         if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
+
         _connectionString = dapperServiceOptions.ConnectionString;
         _connectionFactory = dapperServiceOptions.ConnectionFactory;
+        Logger?.LogDebug("Initialized using static options.");
+
         CommandCache = new ConcurrentDictionary<string, string>();
         // ReSharper disable once VirtualMemberCallInConstructor
-        _sqlBuilder = SqlType.GetBuilder(nameService, loggerFactory);
+        SqlBuilder = SqlType.GetBuilder(nameService, loggerFactory);
+        SqlBuilder.SqlGenerated += (sender, args) => OnSqlGenerated(args);
     }
 
     /// <summary>
@@ -118,10 +131,14 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
         if (dapperServiceOptions == null) throw new ArgumentNullException(nameof(dapperServiceOptions));
         if (dapperServiceOptions.CurrentValue == null)
             throw new ArgumentNullException(nameof(dapperServiceOptions));
+
         DapperServiceOptions = dapperServiceOptions;
         CommandCache = new ConcurrentDictionary<string, string>();
+        Logger?.LogDebug("Initialized using dynamic options/IOptionsMonitor.");
+
         // ReSharper disable once VirtualMemberCallInConstructor
-        _sqlBuilder = SqlType.GetBuilder(nameService, loggerFactory);
+        SqlBuilder = SqlType.GetBuilder(nameService, loggerFactory);
+        SqlBuilder.SqlGenerated += (sender, args) => OnSqlGenerated(args);
     }
 
     /// <summary>
@@ -143,7 +160,7 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
     /// <summary>   Gets options for controlling the dapper service. </summary>
     /// <value> Options that control the dapper service. </value>
     protected IOptionsMonitor<IDapperServiceOptions> DapperServiceOptions { get; }
-
+    
     /// <summary>   Gets the connection factory. </summary>
     /// <value> The connection factory. </value>
     public IConnectionFactory ConnectionFactory =>
@@ -169,7 +186,29 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
     /// <value> The type of the SQL. </value>
     public abstract SqlType SqlType { get; }
 
-    public ISqlBuilder SqlBuilder => _sqlBuilder;
+    /// <summary>
+    /// Gets the SQL builder.
+    /// </summary>
+    ///
+    /// <value>
+    /// The SQL builder.
+    /// </value>
+    public ISqlBuilder SqlBuilder { get; }
+
+    #endregion
+
+    #region EventHandlers
+
+    /// <summary>
+    /// Raises the SQL generated event.
+    /// </summary>
+    ///
+    /// <param name="args"> Event information to send to registered event handlers. </param>
+    protected virtual void OnSqlGenerated(SqlGeneratedEventArgs args)
+    {
+        Logger?.LogDebug("SqlBuilder generated statement for type '{type}': '{statement}'", args.Type, args.SqlStatement);
+        SqlGenerated?.Invoke(this, args);
+    }
 
     #endregion
 }

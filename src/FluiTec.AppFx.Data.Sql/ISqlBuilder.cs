@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluiTec.AppFx.Data.Sql.Adapters;
+using FluiTec.AppFx.Data.Sql.EventArgs;
 using ImmediateReflection;
 
 namespace FluiTec.AppFx.Data.Sql;
@@ -10,6 +11,11 @@ namespace FluiTec.AppFx.Data.Sql;
 /// </summary>
 public interface ISqlBuilder
 {
+    /// <summary>
+    /// Event queue for all listeners interested in SqlGenerated events.
+    /// </summary>
+    public event EventHandler<SqlGeneratedEventArgs> SqlGenerated;
+
     /// <summary>	The adapter. </summary>
     ISqlAdapter Adapter { get; }
 

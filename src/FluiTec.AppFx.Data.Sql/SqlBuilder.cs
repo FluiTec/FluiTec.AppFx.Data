@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FluiTec.AppFx.Data.Sql.Adapters;
+using FluiTec.AppFx.Data.Sql.EventArgs;
 using ImmediateReflection;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +13,15 @@ namespace FluiTec.AppFx.Data.Sql;
 /// <summary>	A SQL builder. </summary>
 public class SqlBuilder : ISqlBuilder
 {
+    #region Events
+
+    /// <summary>
+    /// Event queue for all listeners interested in SqlGenerated events.
+    /// </summary>
+    public event EventHandler<SqlGeneratedEventArgs> SqlGenerated;
+
+    #endregion
+
     #region Constructors
 
     /// <summary>
@@ -29,7 +39,7 @@ public class SqlBuilder : ISqlBuilder
     #endregion
 
     #region Properties
-
+    
     /// <summary>	The adapter. </summary>
     public ISqlAdapter Adapter { get; }
 
@@ -118,6 +128,7 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.SelectAllStatement(type);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _selectAllQueries.TryAdd(type.TypeHandle, sql);
@@ -136,6 +147,7 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.GetByKeyStatement(type);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _selectByKeyQueries.TryAdd(type.TypeHandle, sql);
@@ -159,6 +171,7 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.GetByFilterStatement(type, filterProperty, selectFields);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _selectByFilterQueries.TryAdd(new KeyValuePair<RuntimeTypeHandle, string>(type.TypeHandle, sqlKey), sql);
@@ -185,6 +198,7 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.GetByFilterInStatement(type, filterProperty, collectionName, selectFields);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _selectByInFilterQueries.TryAdd(new KeyValuePair<RuntimeTypeHandle, string>(type.TypeHandle, sqlKey), sql);
@@ -207,6 +221,7 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.GetByFilterStatement(type, filterProperties, selectFields);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _selectByFilterQueries.TryAdd(new KeyValuePair<RuntimeTypeHandle, string>(type.TypeHandle, sqlKey), sql);
@@ -225,6 +240,7 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.GetInsertStatement(type);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _insertQueries.TryAdd(type.TypeHandle, sql);
@@ -243,6 +259,7 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.GetInsertAutoKeyStatement(type);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _insertAutoKeyQueries.TryAdd(type.TypeHandle, sql);
@@ -261,6 +278,7 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.GetInsertMultipleStatement(type);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _insertMultipleQueries.TryAdd(type.TypeHandle, sql);
@@ -279,6 +297,7 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.GetInsertAutoKeyMultipleStatement(type);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _insertAutoMultipleQueries.TryAdd(type.TypeHandle, sql);
@@ -297,6 +316,7 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.GetUpdateStatement(type);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _updateQueries.TryAdd(type.TypeHandle, sql);
@@ -314,6 +334,7 @@ public class SqlBuilder : ISqlBuilder
     {
         // generate statement
         var sql = Adapter.GetUpdateStatement(type, timestamp, timestampFieldname);
+        OnSqlGenerated(type, sql);
 
         // return statement
         return sql;
@@ -329,6 +350,7 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.GetDeleteStatememt(type);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _deleteQueries.TryAdd(type.TypeHandle, sql);
@@ -351,12 +373,28 @@ public class SqlBuilder : ISqlBuilder
 
         // generate statement
         sql = Adapter.GetDeleteByStatememt(type, filterProperty);
+        OnSqlGenerated(type, sql);
 
         // add statement to cache
         _deleteByFilterQueries.TryAdd(new KeyValuePair<RuntimeTypeHandle, string>(type.TypeHandle, sqlKey), sql);
 
         // return statement
         return sql;
+    }
+
+    #endregion
+
+    #region EventHandlers
+
+    /// <summary>
+    /// Executes the 'sql generated' action.
+    /// </summary>
+    ///
+    /// <param name="type">         The type. </param>
+    /// <param name="statement">    The statement. </param>
+    protected virtual void OnSqlGenerated(Type type, string statement)
+    {
+        SqlGenerated?.Invoke(this, new SqlGeneratedEventArgs(type, statement));
     }
 
     #endregion

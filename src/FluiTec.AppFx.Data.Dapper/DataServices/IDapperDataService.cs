@@ -1,13 +1,20 @@
-﻿using FluentMigrator.Runner.VersionTableInfo;
+﻿using System;
+using FluentMigrator.Runner.VersionTableInfo;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.Sql;
+using FluiTec.AppFx.Data.Sql.EventArgs;
 
 namespace FluiTec.AppFx.Data.Dapper.DataServices;
 
 /// <summary>   Interface for dapper data service. </summary>
 public interface IDapperDataService : IDataService, ICommandCache
 {
+    /// <summary>
+    /// Event queue for all listeners interested in SqlGenerated events.
+    /// </summary>
+    public event EventHandler<SqlGeneratedEventArgs> SqlGenerated;
+
     /// <summary>   Gets the connection factory. </summary>
     /// <value> The connection factory. </value>
     IConnectionFactory ConnectionFactory { get; }
