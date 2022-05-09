@@ -33,8 +33,15 @@
 	  <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.4" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(Configuration)'=='Debug'">
+		<ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)'=='Release'">
+		<PackageReference Include="FluiTec.AppFx.Options" Version="1.1.81"></PackageReference>
+	</ItemGroup>
+
 	<ItemGroup>
-		<ProjectReference Include="..\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj" />
 		<ProjectReference Include="..\FluiTec.AppFx.Data.Migration\FluiTec.AppFx.Data.Migration.csproj" />
 		<ProjectReference Include="..\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj" />
 		<ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
