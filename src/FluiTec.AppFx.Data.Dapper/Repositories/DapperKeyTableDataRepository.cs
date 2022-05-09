@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
@@ -44,5 +45,27 @@ public abstract class DapperKeyTableDataRepository<TEntity, TKey> : DapperWritab
     {
         Logger?.LogTrace("GetAsync<{type}>({id})", typeof(TEntity), id);
         return UnitOfWork.Connection.GetAsync<TEntity>(SqlBuilder, id, UnitOfWork.Transaction, cancellationToken: ctx);
+    }
+
+    /// <summary>
+    ///     Map by identifier.
+    /// </summary>
+    /// <typeparam name="TPEntity"> Type of the TP entity. </typeparam>
+    /// <typeparam name="TPKey">    Type of the TP key. </typeparam>
+    /// <param name="dictionary">   The dictionary. </param>
+    /// <param name="entity">       The entity. </param>
+    /// <returns>
+    ///     A TPEntity.
+    /// </returns>
+    // ReSharper disable once UnusedMember.Global
+    public static TPEntity MapById<TPEntity, TPKey>(IDictionary<TPKey, TPEntity> dictionary, TPEntity entity)
+        where TPEntity : class, IKeyEntity<TPKey>, new()
+    {
+        if (dictionary.TryGetValue(entity.Id, out var entry)) return entry;
+
+        entry = entity;
+        dictionary.Add(entity.Id, entity);
+
+        return entry;
     }
 }
