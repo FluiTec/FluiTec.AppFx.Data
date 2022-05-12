@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ImmediateReflection;
 using System.Text;
 using FluiTec.AppFx.Data.EntityNameServices;
+using ImmediateReflection;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters;
@@ -11,25 +11,16 @@ namespace FluiTec.AppFx.Data.Sql.Adapters;
 /// <summary>	A SQL adapter. </summary>
 public abstract class SqlAdapter : ISqlAdapter
 {
-    /// <summary>
-    /// Gets the logger.
-    /// </summary>
-    ///
-    /// <value>
-    /// The logger.
-    /// </value>
-    public ILogger<ISqlAdapter> Logger { get; }
-
     /// <summary>	The entity name mapper. </summary>
     protected readonly IEntityNameService EntityNameService;
 
     /// <summary>
-    /// Specialised constructor for use only by derived class.
+    ///     Specialised constructor for use only by derived class.
     /// </summary>
-    ///
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
-    ///
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="entityNameService">    The entity name service. </param>
     /// <param name="logger">               The logger. </param>
     protected SqlAdapter(IEntityNameService entityNameService, ILogger<ISqlAdapter> logger)
@@ -37,6 +28,14 @@ public abstract class SqlAdapter : ISqlAdapter
         Logger = logger;
         EntityNameService = entityNameService ?? throw new ArgumentNullException(nameof(entityNameService));
     }
+
+    /// <summary>
+    ///     Gets the logger.
+    /// </summary>
+    /// <value>
+    ///     The logger.
+    /// </value>
+    public ILogger<ISqlAdapter> Logger { get; }
 
     /// <summary>   Gets a value indicating whether the supports date time offset. </summary>
     /// <value> True if supports date time offset, false if not. </value>

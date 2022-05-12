@@ -12,13 +12,15 @@ namespace FluiTec.AppFx.Data.Sql.Tests
     public class MssqlBuilderTest : SqlBuilderTest
     {
         /// <summary>
-        /// Gets the connection.
+        ///     Gets the connection.
         /// </summary>
-        ///
         /// <returns>
-        /// The connection.
+        ///     The connection.
         /// </returns>
-        protected override IDbConnection GetConnection() => new SqlConnection();
+        protected override IDbConnection GetConnection()
+        {
+            return new SqlConnection();
+        }
 
         [TestMethod]
         public void TestGetBuilder()

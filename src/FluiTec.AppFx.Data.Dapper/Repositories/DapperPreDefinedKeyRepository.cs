@@ -3,7 +3,6 @@ using Dapper;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
-using FluiTec.AppFx.Data.Sql;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Dapper.Repositories;

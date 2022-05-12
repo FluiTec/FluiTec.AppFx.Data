@@ -5,18 +5,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Data.Sql.Tests
 {
     /// <summary>
-    /// A SQL builder test.
+    ///     A SQL builder test.
     /// </summary>
     [TestClass]
     public abstract class SqlBuilderTest
     {
         /// <summary>
-        /// (Immutable) the builder.
+        ///     (Immutable) the builder.
         /// </summary>
         protected readonly ISqlBuilder Builder;
-        
+
         /// <summary>
-        /// Specialized default constructor for use only by derived class.
+        ///     Specialized default constructor for use only by derived class.
         /// </summary>
         protected SqlBuilderTest()
         {
@@ -25,11 +25,10 @@ namespace FluiTec.AppFx.Data.Sql.Tests
         }
 
         /// <summary>
-        /// Gets the connection.
+        ///     Gets the connection.
         /// </summary>
-        ///
         /// <returns>
-        /// The connection.
+        ///     The connection.
         /// </returns>
         protected abstract IDbConnection GetConnection();
     }

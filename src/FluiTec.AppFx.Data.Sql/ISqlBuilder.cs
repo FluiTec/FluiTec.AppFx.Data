@@ -7,17 +7,17 @@ using ImmediateReflection;
 namespace FluiTec.AppFx.Data.Sql;
 
 /// <summary>
-/// Interface for SQL builder.
+///     Interface for SQL builder.
 /// </summary>
 public interface ISqlBuilder
 {
-    /// <summary>
-    /// Event queue for all listeners interested in SqlGenerated events.
-    /// </summary>
-    public event EventHandler<SqlGeneratedEventArgs> SqlGenerated;
-
     /// <summary>	The adapter. </summary>
     ISqlAdapter Adapter { get; }
+
+    /// <summary>
+    ///     Event queue for all listeners interested in SqlGenerated events.
+    /// </summary>
+    public event EventHandler<SqlGeneratedEventArgs> SqlGenerated;
 
     /// <summary>	Select all. </summary>
     /// <param name="type">	The type. </param>

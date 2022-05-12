@@ -1,6 +1,5 @@
 ﻿using System;
 using FluiTec.AppFx.Data.Dapper.Mssql;
-using FluiTec.AppFx.Data.Dapper.Pgsql;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Ef;
 using FluiTec.AppFx.Data.Migration;

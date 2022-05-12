@@ -13,21 +13,11 @@ namespace FluiTec.AppFx.Data.Sql;
 /// <summary>	A SQL builder. </summary>
 public class SqlBuilder : ISqlBuilder
 {
-    #region Events
-
-    /// <summary>
-    /// Event queue for all listeners interested in SqlGenerated events.
-    /// </summary>
-    public event EventHandler<SqlGeneratedEventArgs> SqlGenerated;
-
-    #endregion
-
     #region Constructors
 
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///
     /// <param name="adapter">  The adapter. </param>
     /// <param name="logger">   The logger. </param>
     public SqlBuilder(ISqlAdapter adapter, ILogger<ISqlBuilder> logger)
@@ -38,17 +28,39 @@ public class SqlBuilder : ISqlBuilder
 
     #endregion
 
+    #region Events
+
+    /// <summary>
+    ///     Event queue for all listeners interested in SqlGenerated events.
+    /// </summary>
+    public event EventHandler<SqlGeneratedEventArgs> SqlGenerated;
+
+    #endregion
+
+    #region EventHandlers
+
+    /// <summary>
+    ///     Executes the 'sql generated' action.
+    /// </summary>
+    /// <param name="type">         The type. </param>
+    /// <param name="statement">    The statement. </param>
+    protected virtual void OnSqlGenerated(Type type, string statement)
+    {
+        SqlGenerated?.Invoke(this, new SqlGeneratedEventArgs(type, statement));
+    }
+
+    #endregion
+
     #region Properties
-    
+
     /// <summary>	The adapter. </summary>
     public ISqlAdapter Adapter { get; }
 
     /// <summary>
-    /// Gets the logger.
+    ///     Gets the logger.
     /// </summary>
-    ///
     /// <value>
-    /// The logger.
+    ///     The logger.
     /// </value>
     public ILogger<ISqlBuilder> Logger { get; }
 
@@ -380,21 +392,6 @@ public class SqlBuilder : ISqlBuilder
 
         // return statement
         return sql;
-    }
-
-    #endregion
-
-    #region EventHandlers
-
-    /// <summary>
-    /// Executes the 'sql generated' action.
-    /// </summary>
-    ///
-    /// <param name="type">         The type. </param>
-    /// <param name="statement">    The statement. </param>
-    protected virtual void OnSqlGenerated(Type type, string statement)
-    {
-        SqlGenerated?.Invoke(this, new SqlGeneratedEventArgs(type, statement));
     }
 
     #endregion

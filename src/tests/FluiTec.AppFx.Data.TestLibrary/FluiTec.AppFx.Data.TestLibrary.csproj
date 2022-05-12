@@ -1,27 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6</TargetFramework>
-    <LangVersion>8</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6</TargetFramework>
+        <LangVersion>8</LangVersion>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
-    <PackageReference Include="coverlet.collector" Version="3.1.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0"/>
+        <PackageReference Include="MSTest.TestFramework" Version="2.2.10"/>
+        <PackageReference Include="coverlet.collector" Version="3.1.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\FluiTec.AppFx.Data.Dynamic\FluiTec.AppFx.Data.Dynamic.csproj" />
-    <ProjectReference Include="..\..\FluiTec.AppFx.Data.NMemory\FluiTec.AppFx.Data.NMemory.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\FluiTec.AppFx.Data.Dynamic\FluiTec.AppFx.Data.Dynamic.csproj"/>
+        <ProjectReference Include="..\..\FluiTec.AppFx.Data.NMemory\FluiTec.AppFx.Data.NMemory.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataTests\" />
-    <Folder Include="Contexts\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="DataTests\"/>
+        <Folder Include="Contexts\"/>
+    </ItemGroup>
 
 </Project>

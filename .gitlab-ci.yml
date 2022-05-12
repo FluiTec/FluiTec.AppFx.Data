@@ -1,86 +1,86 @@
 image: mcr.microsoft.com/dotnet/sdk:6.0
 
 stages:
-    - build
-    - unittest
-    - integrationtest
-    - publish
+  - build
+  - unittest
+  - integrationtest
+  - publish
 
 # alias = hostname
 services:
-    - name: postgres:latest
-      alias: postgres
-    - name: postgres:latest
-      alias: postgres2
-    - name: mcr.microsoft.com/mssql/server:latest
-      alias: mssql
-    - name: mcr.microsoft.com/mssql/server:latest
-      alias: mssql2
-    - name: mysql:latest
-      alias: mysql
-    - name: mysql:latest
-      alias: mysql2
+  - name: postgres:latest
+    alias: postgres
+  - name: postgres:latest
+    alias: postgres2
+  - name: mcr.microsoft.com/mssql/server:latest
+    alias: mssql
+  - name: mcr.microsoft.com/mssql/server:latest
+    alias: mssql2
+  - name: mysql:latest
+    alias: mysql
+  - name: mysql:latest
+    alias: mysql2
 
 variables:
-    srcDir: "src"
-    projectName: "FluiTec.AppFx.Data"
-    testfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests"
-    integrationfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.IntegrationTests"
-    GIT_SUBMODULE_STRATEGY: recursive
-    # PGSQL-Service
-    POSTGRES_DB: appfxdata
-    POSTGRES_USER: appfx
-    POSTGRES_PASSWORD: ""
-    POSTGRES_HOST_AUTH_METHOD: trust
-    # MSSQL-Service
-    ACCEPT_EULA: Y
-    SA_PASSWORD: "[[e(/?5$UcaWF[(X"
-    # MYSQL-Service
-    MYSQL_DATABASE: appfxdata
-    MYSQL_ROOT_PASSWORD: "[[e(/?5$UcaWF[(X"
-    
+  srcDir: "src"
+  projectName: "FluiTec.AppFx.Data"
+  testfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests"
+  integrationfilter: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.IntegrationTests"
+  GIT_SUBMODULE_STRATEGY: recursive
+  # PGSQL-Service
+  POSTGRES_DB: appfxdata
+  POSTGRES_USER: appfx
+  POSTGRES_PASSWORD: ""
+  POSTGRES_HOST_AUTH_METHOD: trust
+  # MSSQL-Service
+  ACCEPT_EULA: Y
+  SA_PASSWORD: "[[e(/?5$UcaWF[(X"
+  # MYSQL-Service
+  MYSQL_DATABASE: appfxdata
+  MYSQL_ROOT_PASSWORD: "[[e(/?5$UcaWF[(X"
+
 before_script:
-    - git submodule sync --recursive
-    - git submodule update --init --recursive
-    - cd $srcDir
-    - dotnet restore --verbosity minimal
+  - git submodule sync --recursive
+  - git submodule update --init --recursive
+  - cd $srcDir
+  - dotnet restore --verbosity minimal
 
 build:
-    stage: build
-    script:
-        - dotnet build --no-restore
-        
+  stage: build
+  script:
+    - dotnet build --no-restore
+
 unittest:
-    stage: unittest
-    script:
-        - dotnet test --no-restore --verbosity minimal --filter $testfilter
+  stage: unittest
+  script:
+    - dotnet test --no-restore --verbosity minimal --filter $testfilter
 
 integrationtest:
-    stage: integrationtest
-    script:
-        - dotnet test --no-restore --verbosity minimal --filter $integrationfilter
+  stage: integrationtest
+  script:
+    - dotnet test --no-restore --verbosity minimal --filter $integrationfilter
 
 publish-baget:
-    stage: publish
-    only:
-        refs:
-            - master
-    script:
-        - cd ..
-        - NUGET_VERSION=$(cat .version)
-        - cd $srcDir
-        - dotnet nuget add source "$BAGET_URL"
-        - dotnet build -c Release /p:Version="$NUGET_VERSION"
-        - dotnet nuget push -s "$BAGET_URL" -k "$BAGET_KEY" **/*.nupkg --skip-duplicate
+  stage: publish
+  only:
+    refs:
+      - master
+  script:
+    - cd ..
+    - NUGET_VERSION=$(cat .version)
+    - cd $srcDir
+    - dotnet nuget add source "$BAGET_URL"
+    - dotnet build -c Release /p:Version="$NUGET_VERSION"
+    - dotnet nuget push -s "$BAGET_URL" -k "$BAGET_KEY" **/*.nupkg --skip-duplicate
 
 publish-nuget:
-    stage: publish
-    only:
-        refs:
-            - master
-    script:
-        - cd ..
-        - NUGET_VERSION=$(cat .version)
-        - cd $srcDir
-        - dotnet build -c Release /p:Version="$NUGET_VERSION"
-        - dotnet nuget push -s "$NUGET_URL" -k "$NUGET_KEY" **/*.nupkg --skip-duplicate
+  stage: publish
+  only:
+    refs:
+      - master
+  script:
+    - cd ..
+    - NUGET_VERSION=$(cat .version)
+    - cd $srcDir
+    - dotnet build -c Release /p:Version="$NUGET_VERSION"
+    - dotnet nuget push -s "$NUGET_URL" -k "$NUGET_KEY" **/*.nupkg --skip-duplicate

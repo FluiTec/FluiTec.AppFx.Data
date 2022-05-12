@@ -9,12 +9,12 @@ namespace FluiTec.AppFx.Data.Sql.Adapters;
 public class PostgreSqlAdapter : SqlAdapter
 {
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///
     /// <param name="entityNameService">    The entity name service. </param>
     /// <param name="logger">               The logger. </param>
-    public PostgreSqlAdapter(IEntityNameService entityNameService, ILogger<ISqlAdapter> logger) : base(entityNameService, logger)
+    public PostgreSqlAdapter(IEntityNameService entityNameService, ILogger<ISqlAdapter> logger) : base(
+        entityNameService, logger)
     {
     }
 

@@ -25,7 +25,7 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
     #region Events
 
     /// <summary>
-    /// Event queue for all listeners interested in SqlGenerated events.
+    ///     Event queue for all listeners interested in SqlGenerated events.
     /// </summary>
     public event EventHandler<SqlGeneratedEventArgs> SqlGenerated;
 
@@ -70,19 +70,35 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
 
     #endregion
 
+    #region EventHandlers
+
+    /// <summary>
+    ///     Raises the SQL generated event.
+    /// </summary>
+    /// <param name="args"> Event information to send to registered event handlers. </param>
+    protected virtual void OnSqlGenerated(SqlGeneratedEventArgs args)
+    {
+        Logger?.LogDebug("SqlBuilder generated statement for type '{type}': '{statement}'", args.Type,
+            args.SqlStatement);
+        SqlGenerated?.Invoke(this, args);
+    }
+
+    #endregion
+
     #region Constructors
 
     /// <summary>
-    /// Specialized constructor for use only by derived class.
+    ///     Specialized constructor for use only by derived class.
     /// </summary>
-    ///
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
-    ///
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
     /// <param name="loggerFactory">        The logger factory. </param>
     /// <param name="nameService">          The name service. </param>
-    protected BaseDapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory, IEntityNameService nameService) :
+    protected BaseDapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory,
+        IEntityNameService nameService) :
         base(loggerFactory, nameService)
     {
         // ReSharper disable once VirtualMemberCallInConstructor
@@ -101,9 +117,8 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
     }
 
     /// <summary>
-    /// Specialized constructor for use only by derived class.
+    ///     Specialized constructor for use only by derived class.
     /// </summary>
-    ///
     /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
     /// <param name="loggerFactory">        The logger factory. </param>
     protected BaseDapperDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) :
@@ -112,12 +127,12 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
     }
 
     /// <summary>
-    /// Specialized constructor for use only by derived class.
+    ///     Specialized constructor for use only by derived class.
     /// </summary>
-    ///
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
-    ///
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
     /// <param name="loggerFactory">        The logger factory. </param>
     /// <param name="nameService">          The name service. </param>
@@ -142,9 +157,8 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
     }
 
     /// <summary>
-    /// Specialized constructor for use only by derived class.
+    ///     Specialized constructor for use only by derived class.
     /// </summary>
-    ///
     /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
     /// <param name="loggerFactory">        The logger factory. </param>
     protected BaseDapperDataService(IOptionsMonitor<IDapperServiceOptions> dapperServiceOptions,
@@ -160,7 +174,7 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
     /// <summary>   Gets options for controlling the dapper service. </summary>
     /// <value> Options that control the dapper service. </value>
     protected IOptionsMonitor<IDapperServiceOptions> DapperServiceOptions { get; }
-    
+
     /// <summary>   Gets the connection factory. </summary>
     /// <value> The connection factory. </value>
     public IConnectionFactory ConnectionFactory =>
@@ -187,28 +201,12 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
     public abstract SqlType SqlType { get; }
 
     /// <summary>
-    /// Gets the SQL builder.
+    ///     Gets the SQL builder.
     /// </summary>
-    ///
     /// <value>
-    /// The SQL builder.
+    ///     The SQL builder.
     /// </value>
     public ISqlBuilder SqlBuilder { get; }
-
-    #endregion
-
-    #region EventHandlers
-
-    /// <summary>
-    /// Raises the SQL generated event.
-    /// </summary>
-    ///
-    /// <param name="args"> Event information to send to registered event handlers. </param>
-    protected virtual void OnSqlGenerated(SqlGeneratedEventArgs args)
-    {
-        Logger?.LogDebug("SqlBuilder generated statement for type '{type}': '{statement}'", args.Type, args.SqlStatement);
-        SqlGenerated?.Invoke(this, args);
-    }
 
     #endregion
 }

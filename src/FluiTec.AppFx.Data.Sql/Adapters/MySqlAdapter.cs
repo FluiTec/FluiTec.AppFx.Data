@@ -8,12 +8,12 @@ namespace FluiTec.AppFx.Data.Sql.Adapters;
 public class MySqlAdapter : SqlAdapter
 {
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///
     /// <param name="entityNameService">    The entity name service. </param>
     /// <param name="logger">               The logger. </param>
-    public MySqlAdapter(IEntityNameService entityNameService, ILogger<ISqlAdapter> logger) : base(entityNameService, logger)
+    public MySqlAdapter(IEntityNameService entityNameService, ILogger<ISqlAdapter> logger) : base(entityNameService,
+        logger)
     {
     }
 

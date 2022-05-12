@@ -12,9 +12,8 @@ public abstract class DataService<TUnitOfWork> : IDataService<TUnitOfWork>
     where TUnitOfWork : IUnitOfWork
 {
     /// <summary>
-    /// Specialized constructor for use only by derived class.
+    ///     Specialized constructor for use only by derived class.
     /// </summary>
-    ///
     /// <param name="loggerFactory">    The logger factory. </param>
     /// <param name="nameService">      The name service. </param>
     protected DataService(ILoggerFactory loggerFactory, IEntityNameService nameService)
@@ -33,11 +32,10 @@ public abstract class DataService<TUnitOfWork> : IDataService<TUnitOfWork>
     public ILoggerFactory LoggerFactory { get; }
 
     /// <summary>
-    /// Gets the name service.
+    ///     Gets the name service.
     /// </summary>
-    ///
     /// <value>
-    /// The name service.
+    ///     The name service.
     /// </value>
     public IEntityNameService NameService { get; }
 

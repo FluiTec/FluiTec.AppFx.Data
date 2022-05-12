@@ -94,7 +94,8 @@ public abstract class DapperTableDataRepository<TEntity> : DapperDataRepository<
     public virtual Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
     {
         Logger?.LogTrace("GetAsync<{type}>({keys})", typeof(TEntity), keys);
-        return UnitOfWork.Connection.GetAsync<TEntity>(SqlBuilder, GetKey(keys), UnitOfWork.Transaction, cancellationToken: ctx);
+        return UnitOfWork.Connection.GetAsync<TEntity>(SqlBuilder, GetKey(keys), UnitOfWork.Transaction,
+            cancellationToken: ctx);
     }
 
     #endregion

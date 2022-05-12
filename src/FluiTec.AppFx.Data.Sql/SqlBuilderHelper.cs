@@ -11,18 +11,17 @@ namespace FluiTec.AppFx.Data.Sql;
 public static class SqlBuilderHelper
 {
     /// <summary>
-    /// An IDbConnection extension method that gets a builder.
+    ///     An IDbConnection extension method that gets a builder.
     /// </summary>
-    ///
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
-    ///
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="connection">       The connection to act on. </param>
     /// <param name="nameService">      The name service. </param>
     /// <param name="loggerFactory">    The logger. </param>
-    ///
     /// <returns>
-    /// The builder.
+    ///     The builder.
     /// </returns>
     public static ISqlBuilder GetBuilder(this IDbConnection connection, IEntityNameService nameService,
         ILoggerFactory loggerFactory)
@@ -43,18 +42,17 @@ public static class SqlBuilderHelper
     }
 
     /// <summary>
-    /// An IDbConnection extension method that gets a builder.
+    ///     An IDbConnection extension method that gets a builder.
     /// </summary>
-    ///
-    /// <exception cref="ArgumentOutOfRangeException">  Thrown when one or more arguments are outside
-    ///                                                 the required range. </exception>
-    ///
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown when one or more arguments are outside
+    ///     the required range.
+    /// </exception>
     /// <param name="dbType">           The dbType to act on. </param>
     /// <param name="nameService">      The name service. </param>
     /// <param name="loggerFactory">    The logger. </param>
-    ///
     /// <returns>
-    /// The builder.
+    ///     The builder.
     /// </returns>
     public static ISqlBuilder GetBuilder(this SqlType dbType, IEntityNameService nameService,
         ILoggerFactory loggerFactory)

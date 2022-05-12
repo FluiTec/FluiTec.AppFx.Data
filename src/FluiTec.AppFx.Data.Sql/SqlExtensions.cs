@@ -15,38 +15,37 @@ namespace FluiTec.AppFx.Data.Sql;
 public static class SqlExtensions
 {
     /// <summary>
-    /// Gets all items in this collection.
+    ///     Gets all items in this collection.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">       The connection to act on. </param>
     /// <param name="builder">          The builder. </param>
     /// <param name="transaction">      (Optional) The transaction. </param>
     /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    ///
     /// <returns>
-    /// An enumerator that allows foreach to be used to process all items in this collection.
+    ///     An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
-    public static IEnumerable<TEntity> GetAll<TEntity>(this IDbConnection connection, ISqlBuilder builder, IDbTransaction transaction = null, int? commandTimeout = null)
+    public static IEnumerable<TEntity> GetAll<TEntity>(this IDbConnection connection, ISqlBuilder builder,
+        IDbTransaction transaction = null, int? commandTimeout = null)
     {
         var sql = builder.SelectAll(typeof(TEntity));
         return connection.Query<TEntity>(sql, null, transaction, commandTimeout: commandTimeout);
     }
 
     /// <summary>
-    /// An IDbConnection extension method that gets all asynchronous.
+    ///     An IDbConnection extension method that gets all asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="builder">              The builder. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// all async&lt; t entity&gt;
+    ///     all async&lt; t entity&gt;
     /// </returns>
     public static Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(this IDbConnection connection, ISqlBuilder builder,
         IDbTransaction transaction = null, int? commandTimeout = null, CancellationToken cancellationToken = default)
@@ -57,23 +56,23 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that gets.
+    ///     An IDbConnection extension method that gets.
     /// </summary>
-    ///
-    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-    ///                                                 invalid. </exception>
-    ///
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the requested operation is
+    ///     invalid.
+    /// </exception>
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">       The connection to act on. </param>
     /// <param name="builder">          The builder. </param>
     /// <param name="id">               The identifier. </param>
     /// <param name="transaction">      (Optional) The transaction. </param>
     /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    ///
     /// <returns>
-    /// A TEntity.
+    ///     A TEntity.
     /// </returns>
-    public static TEntity Get<TEntity>(this IDbConnection connection, ISqlBuilder builder, dynamic id, IDbTransaction transaction = null,
+    public static TEntity Get<TEntity>(this IDbConnection connection, ISqlBuilder builder, dynamic id,
+        IDbTransaction transaction = null,
         int? commandTimeout = null) where TEntity : class
     {
         var type = typeof(TEntity);
@@ -109,23 +108,24 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that gets an asynchronous.
+    ///     An IDbConnection extension method that gets an asynchronous.
     /// </summary>
-    ///
-    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-    ///                                                 invalid. </exception>
-    ///
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the requested operation is
+    ///     invalid.
+    /// </exception>
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="builder">              The builder. </param>
     /// <param name="id">                   The identifier. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// The async&lt; t entity&gt;
+    ///     The async&lt; t entity&gt;
     /// </returns>
     public static Task<TEntity> GetAsync<TEntity>(this IDbConnection connection, ISqlBuilder builder, dynamic id,
         IDbTransaction transaction = null,
@@ -166,9 +166,8 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts.
+    ///     An IDbConnection extension method that inserts.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">       The connection to act on. </param>
     /// <param name="builder">          The builder. </param>
@@ -185,20 +184,20 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts an asynchronous.
+    ///     An IDbConnection extension method that inserts an asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="builder">              The builder. </param>
     /// <param name="entity">               The entity. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// An asynchronous result.
+    ///     An asynchronous result.
     /// </returns>
     public static async Task InsertAsync<TEntity>(this IDbConnection connection, ISqlBuilder builder, TEntity entity,
         IDbTransaction transaction = null, int? commandTimeout = null, CancellationToken cancellationToken = default)
@@ -211,9 +210,8 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts an automatic.
+    ///     An IDbConnection extension method that inserts an automatic.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">       The connection to act on. </param>
     /// <param name="builder">          The builder. </param>
@@ -237,22 +235,23 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts an automatic asynchronous.
+    ///     An IDbConnection extension method that inserts an automatic asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="builder">              The builder. </param>
     /// <param name="entity">               The entity. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// A long.
+    ///     A long.
     /// </returns>
-    public static async Task InsertAutoAsync<TEntity>(this IDbConnection connection, ISqlBuilder builder, TEntity entity,
+    public static async Task InsertAutoAsync<TEntity>(this IDbConnection connection, ISqlBuilder builder,
+        TEntity entity,
         IDbTransaction transaction = null,
         int? commandTimeout = null, CancellationToken cancellationToken = default)
     {
@@ -270,20 +269,19 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts a multiple.
+    ///     An IDbConnection extension method that inserts a multiple.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">       The connection to act on. </param>
     /// <param name="builder">          The builder. </param>
     /// <param name="entities">         The entities. </param>
     /// <param name="transaction">      (Optional) The transaction. </param>
     /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    ///
     /// <returns>
-    /// A long.
+    ///     A long.
     /// </returns>
-    public static long InsertMultiple<TEntity>(this IDbConnection connection, ISqlBuilder builder, IEnumerable<TEntity> entities,
+    public static long InsertMultiple<TEntity>(this IDbConnection connection, ISqlBuilder builder,
+        IEnumerable<TEntity> entities,
         IDbTransaction transaction = null,
         int? commandTimeout = null)
     {
@@ -295,20 +293,20 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts a multiple asynchronous.
+    ///     An IDbConnection extension method that inserts a multiple asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="entities">             The entities. </param>
     /// <param name="builder">              The builder. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// A long.
+    ///     A long.
     /// </returns>
     public static Task<int> InsertMultipleAsync<TEntity>(this IDbConnection connection,
         ISqlBuilder builder, IEnumerable<TEntity> entities,
@@ -324,20 +322,19 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts an automatic multiple.
+    ///     An IDbConnection extension method that inserts an automatic multiple.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">       The connection to act on. </param>
     /// <param name="builder">          The builder. </param>
     /// <param name="entities">         The entities. </param>
     /// <param name="transaction">      (Optional) The transaction. </param>
     /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    ///
     /// <returns>
-    /// A long.
+    ///     A long.
     /// </returns>
-    public static long InsertAutoMultiple<TEntity>(this IDbConnection connection, ISqlBuilder builder, IEnumerable<TEntity> entities,
+    public static long InsertAutoMultiple<TEntity>(this IDbConnection connection, ISqlBuilder builder,
+        IEnumerable<TEntity> entities,
         IDbTransaction transaction = null,
         int? commandTimeout = null)
     {
@@ -349,20 +346,20 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that inserts an automatic multiple asynchronous.
+    ///     An IDbConnection extension method that inserts an automatic multiple asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="entities">             The entities. </param>
     /// <param name="builder">              The builder. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// A long.
+    ///     A long.
     /// </returns>
     public static Task<int> InsertAutoMultipleAsync<TEntity>(this IDbConnection connection,
         ISqlBuilder builder, IEnumerable<TEntity> entities,
@@ -378,18 +375,16 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that updates this object.
+    ///     An IDbConnection extension method that updates this object.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">       The connection to act on. </param>
     /// <param name="builder">          The builder. </param>
     /// <param name="entity">           The entity. </param>
     /// <param name="transaction">      (Optional) The transaction. </param>
     /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    ///
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
     public static bool Update<TEntity>(this IDbConnection connection, ISqlBuilder builder, TEntity entity,
         IDbTransaction transaction = null,
@@ -406,22 +401,23 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that updates the asynchronous.
+    ///     An IDbConnection extension method that updates the asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="builder">              The builder. </param>
     /// <param name="entity">               The entity. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
-    public static async Task<bool> UpdateAsync<TEntity>(this IDbConnection connection, ISqlBuilder builder, TEntity entity,
+    public static async Task<bool> UpdateAsync<TEntity>(this IDbConnection connection, ISqlBuilder builder,
+        TEntity entity,
         IDbTransaction transaction = null,
         int? commandTimeout = null, CancellationToken cancellationToken = default)
     {
@@ -437,9 +433,8 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that updates this object.
+    ///     An IDbConnection extension method that updates this object.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="builder">              The builder. </param>
@@ -447,9 +442,8 @@ public static class SqlExtensions
     /// <param name="originalTimeStamp">    The original time stamp. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    ///
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
     public static bool Update<TEntity>(this IDbConnection connection, ISqlBuilder builder, TEntity entity,
         DateTimeOffset originalTimeStamp,
@@ -482,9 +476,8 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that updates the asynchronous.
+    ///     An IDbConnection extension method that updates the asynchronous.
     /// </summary>
-    ///
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="builder">              The builder. </param>
@@ -492,11 +485,11 @@ public static class SqlExtensions
     /// <param name="originalTimeStamp">    The original time stamp. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    ///
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
-    public static async Task<bool> UpdateAsync<TEntity>(this IDbConnection connection, ISqlBuilder builder, TEntity entity,
+    public static async Task<bool> UpdateAsync<TEntity>(this IDbConnection connection, ISqlBuilder builder,
+        TEntity entity,
         DateTimeOffset originalTimeStamp,
         IDbTransaction transaction = null, int? commandTimeout = null)
     {
@@ -521,23 +514,23 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that deletes this object.
+    ///     An IDbConnection extension method that deletes this object.
     /// </summary>
-    ///
-    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-    ///                                                 invalid. </exception>
-    ///
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the requested operation is
+    ///     invalid.
+    /// </exception>
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">       The connection to act on. </param>
     /// <param name="builder">          The builder. </param>
     /// <param name="id">               The identifier. </param>
     /// <param name="transaction">      (Optional) The transaction. </param>
     /// <param name="commandTimeout">   (Optional) The command timeout. </param>
-    ///
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
-    public static bool Delete<TEntity>(this IDbConnection connection, ISqlBuilder builder, dynamic id, IDbTransaction transaction = null,
+    public static bool Delete<TEntity>(this IDbConnection connection, ISqlBuilder builder, dynamic id,
+        IDbTransaction transaction = null,
         int? commandTimeout = null)
     {
         var type = typeof(TEntity);
@@ -573,23 +566,24 @@ public static class SqlExtensions
     }
 
     /// <summary>
-    /// An IDbConnection extension method that deletes the asynchronous.
+    ///     An IDbConnection extension method that deletes the asynchronous.
     /// </summary>
-    ///
-    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-    ///                                                 invalid. </exception>
-    ///
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the requested operation is
+    ///     invalid.
+    /// </exception>
     /// <typeparam name="TEntity">  Type of the entity. </typeparam>
     /// <param name="connection">           The connection to act on. </param>
     /// <param name="builder">              The builder. </param>
     /// <param name="id">                   The identifier. </param>
     /// <param name="transaction">          (Optional) The transaction. </param>
     /// <param name="commandTimeout">       (Optional) The command timeout. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    ///
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
     public static async Task<bool> DeleteAsync<TEntity>(this IDbConnection connection, ISqlBuilder builder, dynamic id,
         IDbTransaction transaction = null,

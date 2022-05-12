@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
-using ImmediateReflection;
 using FluiTec.AppFx.Data.EntityNameServices;
+using ImmediateReflection;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters;
 

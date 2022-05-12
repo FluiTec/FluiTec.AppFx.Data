@@ -1,6 +1,6 @@
-﻿using ImmediateReflection;
-using System.Text;
+﻿using System.Text;
 using FluiTec.AppFx.Data.EntityNameServices;
+using ImmediateReflection;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Sql.Adapters;
@@ -9,12 +9,12 @@ namespace FluiTec.AppFx.Data.Sql.Adapters;
 public class MicrosoftSqlAdapter : SqlAdapter
 {
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///
     /// <param name="entityNameService">    The entity name service. </param>
     /// <param name="logger">               The logger. </param>
-    public MicrosoftSqlAdapter(IEntityNameService entityNameService, ILogger<ISqlAdapter> logger) : base(entityNameService, logger)
+    public MicrosoftSqlAdapter(IEntityNameService entityNameService, ILogger<ISqlAdapter> logger) : base(
+        entityNameService, logger)
     {
     }
 

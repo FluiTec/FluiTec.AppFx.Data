@@ -49,7 +49,8 @@ public abstract class DapperWritableKeyTableDataRepository<TEntity, TKey> :
     public virtual Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {
         Logger?.LogTrace("DeleteAsync<{type}>({id})", typeof(TEntity), id);
-        return UnitOfWork.Connection.DeleteAsync<TEntity>(SqlBuilder, id, UnitOfWork.Transaction, cancellationToken: ctx);
+        return UnitOfWork.Connection.DeleteAsync<TEntity>(SqlBuilder, id, UnitOfWork.Transaction,
+            cancellationToken: ctx);
     }
 
     #endregion

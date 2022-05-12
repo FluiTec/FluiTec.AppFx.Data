@@ -52,17 +52,16 @@ public static class DbContextExtensions
     }
 
     /// <summary>
-    /// An EntityTypeBuilder&lt;TEntity&gt; extension method that converts this object to a table.
+    ///     An EntityTypeBuilder&lt;TEntity&gt; extension method that converts this object to a table.
     /// </summary>
-    ///
     /// <param name="entityTypeBuilder">    The entityTypeBuilder to act on. </param>
     /// <param name="nameService">          The name service. </param>
     /// <param name="type">                 The type. </param>
-    ///
     /// <returns>
-    /// The given data converted to an EntityTypeBuilder&lt;TEntity&gt;
+    ///     The given data converted to an EntityTypeBuilder&lt;TEntity&gt;
     /// </returns>
-    public static EntityTypeBuilder ToTable(this EntityTypeBuilder entityTypeBuilder, IEntityNameService nameService, SqlType type)
+    public static EntityTypeBuilder ToTable(this EntityTypeBuilder entityTypeBuilder, IEntityNameService nameService,
+        SqlType type)
     {
         if (type.SupportsSchema())
         {
@@ -78,16 +77,15 @@ public static class DbContextExtensions
     }
 
     /// <summary>
-    /// A SqlType extension method that supports schema.
+    ///     A SqlType extension method that supports schema.
     /// </summary>
-    ///
-    /// <exception cref="ArgumentOutOfRangeException">  Thrown when one or more arguments are outside
-    ///                                                 the required range. </exception>
-    ///
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown when one or more arguments are outside
+    ///     the required range.
+    /// </exception>
     /// <param name="type"> The type. </param>
-    ///
     /// <returns>
-    /// True if it succeeds, false if it fails.
+    ///     True if it succeeds, false if it fails.
     /// </returns>
     public static bool SupportsSchema(this SqlType type)
     {

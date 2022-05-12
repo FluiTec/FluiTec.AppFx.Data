@@ -107,7 +107,8 @@ public abstract class DapperWritableTablaDataRepository<TEntity> : DapperTableDa
 
         if (IdentityKey)
         {
-            await UnitOfWork.Connection.InsertAutoAsync(SqlBuilder, entity, UnitOfWork.Transaction, cancellationToken: ctx);
+            await UnitOfWork.Connection.InsertAutoAsync(SqlBuilder, entity, UnitOfWork.Transaction,
+                cancellationToken: ctx);
             return entity;
         }
 

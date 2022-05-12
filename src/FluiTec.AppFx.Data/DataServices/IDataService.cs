@@ -14,11 +14,10 @@ public interface IDataService : IDisposable
     ILoggerFactory LoggerFactory { get; }
 
     /// <summary>
-    /// Gets the name service.
+    ///     Gets the name service.
     /// </summary>
-    ///
     /// <value>
-    /// The name service.
+    ///     The name service.
     /// </value>
     IEntityNameService NameService { get; }
 

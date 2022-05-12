@@ -1,16 +1,18 @@
 ﻿namespace FluiTec.AppFx.Data.EntityNameServices;
 
 /// <summary>
-/// A service for accessing entity names information.
+///     A service for accessing entity names information.
 /// </summary>
 public static class EntityNameService
 {
     /// <summary>
-    /// Gets the default.
+    ///     Gets the default.
     /// </summary>
-    ///
     /// <returns>
-    /// The default.
+    ///     The default.
     /// </returns>
-    public static IEntityNameService GetDefault() => new AttributeEntityNameService();
+    public static IEntityNameService GetDefault()
+    {
+        return new AttributeEntityNameService();
+    }
 }

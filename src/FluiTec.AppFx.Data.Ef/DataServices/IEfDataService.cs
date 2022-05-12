@@ -9,20 +9,18 @@ namespace FluiTec.AppFx.Data.Ef.DataServices;
 public interface IEfDataService : IDataService
 {
     /// <summary>
-    /// Gets the type of the SQL.
+    ///     Gets the type of the SQL.
     /// </summary>
-    ///
     /// <value>
-    /// The type of the SQL.
+    ///     The type of the SQL.
     /// </value>
     public SqlType SqlType { get; }
 
     /// <summary>
-    /// Gets the connection string.
+    ///     Gets the connection string.
     /// </summary>
-    ///
     /// <value>
-    /// The connection string.
+    ///     The connection string.
     /// </value>
     string ConnectionString { get; }
 

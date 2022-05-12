@@ -27,7 +27,16 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Adapters
         /// <value>
         ///     The adapter.
         /// </value>
-        public ISqlAdapter Adapter { get; }
+        private ISqlAdapter Adapter { get; }
+
+        /// <summary>
+        ///     Gets the default result.
+        /// </summary>
+        /// <returns>An empty string.</returns>
+        protected string GetDefaultResult()
+        {
+            return string.Empty;
+        }
 
         protected abstract string GetExpectedKeyParameters(Type entityType);
 

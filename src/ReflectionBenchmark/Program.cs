@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using FastMember;
 using ImmediateReflection;
+using TypeAccessor = FastMember.TypeAccessor;
 
 namespace ReflectionBenchmark;
 
@@ -22,14 +24,18 @@ public class TestType
 
 public class TypeBenchmark
 {
-    private readonly Type _type = typeof(TestType);
-    private readonly ImmediateType _typeAccessor = TypeAccessor.Get<TestType>();
-    private readonly FastMember.TypeAccessor _fastTypeAccessor = FastMember.TypeAccessor.Create(typeof(TestType));
+    private readonly Member _fastPropertyAccessor =
+        TypeAccessor.Create(typeof(TestType)).GetMembers().Single(m => m.Name == "Id");
+
+    private readonly TypeAccessor _fastTypeAccessor = TypeAccessor.Create(typeof(TestType));
+
+    private readonly ImmediateProperty _propertyAccessor =
+        ImmediateReflection.TypeAccessor.Get<TestType>().GetProperty("Id")!;
 
     private readonly PropertyInfo _propertyInfo = typeof(TestType).GetProperty("Id");
-    private readonly ImmediateProperty _propertyAccessor = TypeAccessor.Get<TestType>().GetProperty("Id")!;
-    private readonly FastMember.Member _fastPropertyAccessor = FastMember.TypeAccessor.Create(typeof(TestType)).GetMembers().Single(m => m.Name == "Id");
-    private readonly TestType _testInstance = new TestType {Id = 100, Name = "Test"};
+    private readonly TestType _testInstance = new() {Id = 100, Name = "Test"};
+    private readonly Type _type = typeof(TestType);
+    private readonly ImmediateType _typeAccessor = ImmediateReflection.TypeAccessor.Get<TestType>();
 
     [Benchmark]
     public PropertyInfo[] GetReflectionProperties()
@@ -44,7 +50,7 @@ public class TypeBenchmark
     }
 
     [Benchmark]
-    public FastMember.Member[] GetFastMemberProperties()
+    public Member[] GetFastMemberProperties()
     {
         return _fastTypeAccessor.GetMembers().ToArray();
     }
@@ -82,6 +88,6 @@ public class TypeBenchmark
     [Benchmark]
     public void WriteFastIntProperty()
     {
-        _fastTypeAccessor[_testInstance, "Id"] = 200; 
+        _fastTypeAccessor[_testInstance, "Id"] = 200;
     }
 }

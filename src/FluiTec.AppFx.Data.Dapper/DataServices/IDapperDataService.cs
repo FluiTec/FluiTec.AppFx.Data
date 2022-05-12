@@ -10,11 +10,6 @@ namespace FluiTec.AppFx.Data.Dapper.DataServices;
 /// <summary>   Interface for dapper data service. </summary>
 public interface IDapperDataService : IDataService, ICommandCache
 {
-    /// <summary>
-    /// Event queue for all listeners interested in SqlGenerated events.
-    /// </summary>
-    public event EventHandler<SqlGeneratedEventArgs> SqlGenerated;
-
     /// <summary>   Gets the connection factory. </summary>
     /// <value> The connection factory. </value>
     IConnectionFactory ConnectionFactory { get; }
@@ -39,11 +34,15 @@ public interface IDapperDataService : IDataService, ICommandCache
     SqlType SqlType { get; }
 
     /// <summary>
-    /// Gets the SQL builder.
+    ///     Gets the SQL builder.
     /// </summary>
-    ///
     /// <value>
-    /// The SQL builder.
+    ///     The SQL builder.
     /// </value>
     ISqlBuilder SqlBuilder { get; }
+
+    /// <summary>
+    ///     Event queue for all listeners interested in SqlGenerated events.
+    /// </summary>
+    public event EventHandler<SqlGeneratedEventArgs> SqlGenerated;
 }

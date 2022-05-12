@@ -12,13 +12,15 @@ namespace FluiTec.AppFx.Data.Sql.Tests
     public class PgsqlBuilderTest : SqlBuilderTest
     {
         /// <summary>
-        /// Gets the connection.
+        ///     Gets the connection.
         /// </summary>
-        ///
         /// <returns>
-        /// The connection.
+        ///     The connection.
         /// </returns>
-        protected override IDbConnection GetConnection() => new NpgsqlConnection();
+        protected override IDbConnection GetConnection()
+        {
+            return new NpgsqlConnection();
+        }
 
         [TestMethod]
         public void TestGetBuilder()

@@ -1,36 +1,36 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<PackageProjectUrl>https://www.nuget.org/packages/FluiTec.AppFx.Data/</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/FluiTec/FluiTec.AppFx.Data</RepositoryUrl>
-		<NeutralLanguage>en</NeutralLanguage>
-		<PostBuildEvent></PostBuildEvent>
-		<PreBuildEvent></PreBuildEvent>
-		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-		<LangVersion>latest</LangVersion>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageProjectUrl>https://www.nuget.org/packages/FluiTec.AppFx.Data/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/FluiTec/FluiTec.AppFx.Data</RepositoryUrl>
+        <NeutralLanguage>en</NeutralLanguage>
+        <PostBuildEvent></PostBuildEvent>
+        <PreBuildEvent></PreBuildEvent>
+        <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<None Include="..\..\LICENSE.md" Link="LICENSE.md">
-			<PackagePath></PackagePath>
-			<Pack>True</Pack>
-		</None>
-		<None Include="..\..\THIRD_PARTY_LICENSES.md" Link="THIRD_PARTY_LICENSES.md">
-			<PackagePath></PackagePath>
-			<Pack>True</Pack>
-		</None>
-	</ItemGroup>
+    <ItemGroup>
+        <None Include="..\..\LICENSE.md" Link="LICENSE.md">
+            <PackagePath></PackagePath>
+            <Pack>True</Pack>
+        </None>
+        <None Include="..\..\THIRD_PARTY_LICENSES.md" Link="THIRD_PARTY_LICENSES.md">
+            <PackagePath></PackagePath>
+            <Pack>True</Pack>
+        </None>
+    </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="NMemory" Version="3.1.4" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="NMemory" Version="3.1.4"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj" />
-		<ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj"/>
+        <ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj"/>
+    </ItemGroup>
 
 </Project>
