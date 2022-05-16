@@ -1,27 +1,27 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using FluiTec.AppFx.Console.ConsoleItems;
 using FluiTec.AppFx.Data.Dynamic.Extensions;
 using FluiTec.AppFx.Data.Migration;
-using Spectre.Console;
 
 namespace FluiTec.AppFx.Data.Dynamic.Console;
 
 /// <summary>
-///     A data migration rollback console item.
+///     Export rollback migration console item
 /// </summary>
-public class DataMigrationRollbackConsoleItem : ConsoleItem
+public class DataMigrationExportRollbackMigrationConsoleItem : ConsoleItem
 {
     /// <summary>
     ///     Constructor.
     /// </summary>
-    /// <param name="info">     The information. </param>
-    /// <param name="migrator"> The migrator. </param>
-    public DataMigrationRollbackConsoleItem(MigrationInfo info, IDataMigrator migrator) : base("Rollback migration")
+    public DataMigrationExportRollbackMigrationConsoleItem(MigrationInfo info, IDataMigrator migrator) 
+        : base("Export rollback migration")
     {
         Info = info;
         Migrator = migrator;
     }
-
+    
     /// <summary>
     ///     Gets the information.
     /// </summary>
@@ -37,17 +37,20 @@ public class DataMigrationRollbackConsoleItem : ConsoleItem
     ///     The migrator.
     /// </value>
     private IDataMigrator Migrator { get; }
-
+    
     /// <summary>
-    ///     Displays this.
+    ///     Displays the Item.
     /// </summary>
-    /// <param name="parent">   The parent. </param>
+    /// <param name="parent"></param>
+    /// <remarks>
+    ///     Exports the item to the desktop.
+    /// </remarks>
     public override void Display(IConsoleItem parent)
     {
         base.Display(parent);
-
-        Presenter.PresentHeader($"Rollback migration {Name}");
-
+        
+        Presenter.PresentHeader($"Export rollback migration {Info.Version}");
+        
         var migrations = Migrator.GetMigrations()
             .OrderBy(m => m.Version)
             .ToDictionary(m => m.Version, m => m.Name);
@@ -55,14 +58,13 @@ public class DataMigrationRollbackConsoleItem : ConsoleItem
         var prevIndex = curIndex - 1;
         var prevVersion = prevIndex >= 0 ? migrations.ElementAt(prevIndex).Key : 0;
 
-        AnsiConsole.MarkupLine(
-            $">> Rolling back this migration will decrease the db version to {Presenter.HighlightText(prevVersion.ToString())}");
-        AnsiConsole.MarkupLine(
-            $">> {Presenter.ErrorText("This will probably cause a loss of data.")} [darkorange]Please make sure you have a backup![/]");
 
-        if (AnsiConsole.Confirm("Are you sure?", false))
-            Migrator.Migrate(prevVersion);
-
+        var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        var fileName = $"rollback_migration_v{prevVersion}.sql";
+        var output = Migrator.GetMigrationInstructions(prevVersion);
+        
+        File.WriteAllText(Path.Combine(desktopFolder,fileName), output, System.Text.Encoding.Default);
+        
         Parent?.Display(null);
     }
 }

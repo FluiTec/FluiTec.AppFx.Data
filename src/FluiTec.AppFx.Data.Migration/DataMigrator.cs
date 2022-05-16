@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using FluentMigrator.Infrastructure;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Exceptions;
 using FluentMigrator.Runner.Initialization;
+using FluentMigrator.Runner.Logging;
 using FluentMigrator.Runner.VersionTableInfo;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Migration;
 
@@ -17,15 +21,23 @@ public class DataMigrator : IDataMigrator
     /// <summary>
     ///     (Immutable) the loader.
     /// </summary>
-    private readonly IVersionLoader _loader;
+    private IVersionLoader _loader;
+
+    /// <summary>
+    ///     The stringWriter to use to preview migrations.
+    /// </summary>
+    private StringWriter _stringWriter;
 
     /// <summary>
     ///     The migrations.
     /// </summary>
-    private readonly IOrderedEnumerable<KeyValuePair<long, IMigrationInfo>> _migrations;
+    private IOrderedEnumerable<KeyValuePair<long, IMigrationInfo>> _migrations;
 
     /// <summary>   The runner. </summary>
-    private readonly IMigrationRunner _runner;
+    private IMigrationRunner _runner;
+
+    /// <summary>   The preview runner. </summary>
+    private IMigrationRunner _previewRunner;
 
     /// <summary>   Constructor. </summary>
     /// <param name="connectionString">     The connection string. </param>
@@ -38,6 +50,21 @@ public class DataMigrator : IDataMigrator
         if (scanAssemblies == null)
             throw new ArgumentNullException(nameof(scanAssemblies));
 
+        var assemblies = scanAssemblies as Assembly[] ?? scanAssemblies.ToArray();
+        InitializeRunner(connectionString, assemblies, metaData, configureSqlProvider);
+        InitializePreviewRunner(connectionString, assemblies, metaData, configureSqlProvider);
+    }
+
+    /// <summary>
+    /// Initializes the MigrationRunner to be used to apply migrations.
+    /// </summary>
+    /// <param name="connectionString">     The connectionstring.</param>
+    /// <param name="scanAssemblies">       The scanAssemblies.</param>
+    /// <param name="metaData">             The metaData.</param>
+    /// <param name="configureSqlProvider"> The sqlProvider-configuration.</param>
+    private void InitializeRunner(string connectionString, IEnumerable<Assembly> scanAssemblies,
+        IVersionTableMetaData metaData, Action<IMigrationRunnerBuilder> configureSqlProvider)
+    {
         var services = new ServiceCollection()
             .AddFluentMigratorCore()
             .Configure<RunnerOptions>(opt => opt.Profile = "Development")
@@ -52,20 +79,17 @@ public class DataMigrator : IDataMigrator
             // Enable logging to console in the FluentMigrator way
             .AddLogging(lb => lb.AddFluentMigratorConsole());
 
-        var sp = services.BuildServiceProvider(false);
+        IServiceProvider serviceProvider = services.BuildServiceProvider(false);
 
-        _runner = sp.GetRequiredService<IMigrationRunner>();
+        _runner = serviceProvider.GetRequiredService<IMigrationRunner>();
 
         try
         {
             _migrations = _runner.MigrationLoader
                 .LoadMigrations()
                 .OrderByDescending(m => m.Value.Version);
-
-
             MaximumVersion = _migrations.First().Value.Version;
-
-            _loader = sp.GetRequiredService<IVersionLoader>();
+            _loader = serviceProvider.GetRequiredService<IVersionLoader>();
         }
 #pragma warning disable CA1031 // Do not catch general exception types
         catch (MissingMigrationsException)
@@ -75,13 +99,48 @@ public class DataMigrator : IDataMigrator
 #pragma warning restore CA1031 // Do not catch general exception types
     }
 
+    /// <summary>
+    /// Initializes the MigrationRunner to be used to preview migrations.
+    /// </summary>
+    /// <param name="connectionString">     The connectionstring.</param>
+    /// <param name="scanAssemblies">       The scanAssemblies.</param>
+    /// <param name="metaData">             The metaData.</param>
+    /// <param name="configureSqlProvider"> The sqlProvider-configuration.</param>
+    private void InitializePreviewRunner(string connectionString, IEnumerable<Assembly> scanAssemblies,
+        IVersionTableMetaData metaData, Action<IMigrationRunnerBuilder> configureSqlProvider)
+    {
+        _stringWriter = new StringWriter();
+        var services = new ServiceCollection()
+            .AddFluentMigratorCore()
+            .Configure<RunnerOptions>(opt => opt.Profile = "Development")
+            .ConfigureRunner(rb => rb
+                // Set the connection string
+                .WithGlobalConnectionString(connectionString)
+                // Set version meta-data
+                .WithVersionTable(metaData)
+                // disable execution of operations
+                .ConfigureGlobalProcessorOptions(options => options.PreviewOnly = true)
+                // Define the assembly containing the migrations
+                .ScanIn(scanAssemblies.ToArray()).For.Migrations())
+            .ConfigureRunner(configureSqlProvider)
+            // Enable logging to console in the FluentMigrator way
+            .AddLogging(lb =>
+            {
+                lb.AddProvider(new SqlScriptFluentMigratorLoggerProvider(_stringWriter));
+            });
+
+        IServiceProvider serviceProvider = services.BuildServiceProvider(false);
+
+        _previewRunner = serviceProvider.GetRequiredService<IMigrationRunner>();
+    }
+
     /// <summary>   Gets the current version. </summary>
     /// <value> The current version. </value>
     public long CurrentVersion => _loader.VersionInfo.Latest();
 
     /// <summary>   Gets the maximum version. </summary>
     /// <value> The maximum version. </value>
-    public long MaximumVersion { get; }
+    public long MaximumVersion { get; private set; }
 
     /// <summary>
     ///     Gets the migrations in this collection.
@@ -120,5 +179,39 @@ public class DataMigrator : IDataMigrator
         if (version > CurrentVersion)
             _runner.MigrateUp(version);
         else if (version < CurrentVersion) _runner.MigrateDown(version);
+    }
+
+    /// <summary>
+    ///     Gets the migration instructions in text-format.
+    /// </summary>
+    /// /// <returns>Instructions to be executed by applying the latest migration.</returns>
+    public string GetMigrationInstructions()
+    {
+        if (CurrentVersion < MaximumVersion)
+            _previewRunner.MigrateUp();
+        
+        var res = _stringWriter.GetStringBuilder().ToString();
+        _stringWriter.GetStringBuilder().Clear();
+        return res;
+    }
+    
+    /// <summary>
+    ///     Gets the migration instructions in text-format.
+    /// </summary>
+    /// <param name="version">  The version.</param>
+    /// <returns>Instructions to be exectuted by applying this migration-version.</returns>
+    public string GetMigrationInstructions(long version)
+    {
+        if (version > MaximumVersion)
+            throw new InvalidOperationException(
+                $"Invalid version for migration. Maximum version found: {MaximumVersion}, Current version: {CurrentVersion}");
+
+        if (version > CurrentVersion)
+            _previewRunner.MigrateUp(version);
+        else if (version < CurrentVersion) _previewRunner.MigrateDown(version);
+        
+        var res = _stringWriter.GetStringBuilder().ToString();
+        _stringWriter.GetStringBuilder().Clear();
+        return res;
     }
 }

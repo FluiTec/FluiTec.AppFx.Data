@@ -60,7 +60,8 @@ public class DataMigrationVersionConsoleItem : DataSelectConsoleItem
         Info = info;
         Migrator = migrator;
         DataService = dataService;
-        DisplayName = $"{Info.Version} | {Info.Name}";
+        var isCurrentVersion = Migrator.CurrentVersion == Info.Version;
+        DisplayName = isCurrentVersion ? $"{info.Version} | {info.Name} | <current>" : $"{info.Version} | {info.Name}";
     }
 
     /// <summary>
@@ -71,9 +72,17 @@ public class DataMigrationVersionConsoleItem : DataSelectConsoleItem
         Items.Clear();
 
         if (Info.Version != Migrator.CurrentVersion)
+        {
             Items.Add(new DataMigrationApplyConsoleItem(Info, Migrator));
+            Items.Add(new DataMigrationExportApplyMigrationConsoleItem(Info, Migrator));
+        }
+
+        // ReSharper disable once InvertIf // reason: readability
         if (Migrator.CurrentVersion >= Info.Version)
+        {
             Items.Add(new DataMigrationRollbackConsoleItem(Info, Migrator));
+            Items.Add(new DataMigrationExportRollbackMigrationConsoleItem(Info, Migrator));
+        }
     }
 
     /// <summary>

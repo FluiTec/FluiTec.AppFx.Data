@@ -30,4 +30,17 @@ public interface IDataMigrator
     /// <param name="version">  The version. </param>
     // ReSharper disable once UnusedMember.Global
     void Migrate(long version);
+
+    /// <summary>
+    ///     Gets the migration instructions in text-format.
+    /// </summary>
+    /// /// <returns>Instructions to be executed by applying the latest migration.</returns>
+    string GetMigrationInstructions();
+    
+    /// <summary>
+    ///     Gets the migration instructions in text-format.
+    /// </summary>
+    /// <param name="version">  The version.</param>
+    /// <returns>Instructions to be exectuted by applying this migration-version.</returns>
+    string GetMigrationInstructions(long version);
 }
