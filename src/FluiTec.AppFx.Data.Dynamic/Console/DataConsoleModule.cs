@@ -165,10 +165,11 @@ public class DataConsoleModule : ModuleConsoleItem
         {
             new Argument<string>("service", "Name of the service to migrate."),
             new Argument<long>("migration", "Version of the migration to use."),
-            new Argument<MigrationOption>("option", "MigrationOption to use.")
+            new Argument<MigrationOption>("option", "MigrationOption to use."),
+            new Argument<bool>("preview", "Determines to use preview-mode or not.")
         };
         migrateCommand.Handler =
-            CommandHandler.Create(new Func<string, long, MigrationOption, int>(ProcessMigrateCommand));
+            CommandHandler.Create(new Func<string, long, MigrationOption, bool, int>(ProcessMigrateCommand));
 
         cmd.AddCommand(listCmd);
         cmd.AddCommand(migrateCommand);
@@ -183,12 +184,13 @@ public class DataConsoleModule : ModuleConsoleItem
     ///     the required range.
     /// </exception>
     /// <param name="service">      Name of the service. </param>
-    /// <param name="migration"> The migration version. </param>
-    /// <param name="option">           The option. </param>
+    /// <param name="migration">    The migration version. </param>
+    /// <param name="option">       The option. </param>
+    /// <param name="preview">      Determines if using preview.</param>
     /// <returns>
     ///     An int.
     /// </returns>
-    private int ProcessMigrateCommand(string service, long migration, MigrationOption option)
+    private int ProcessMigrateCommand(string service, long migration, MigrationOption option, bool preview)
     {
         var dataService = DataServices.SingleOrDefault(d => d.Name == service);
         if (dataService == null)
@@ -214,7 +216,10 @@ public class DataConsoleModule : ModuleConsoleItem
         switch (option)
         {
             case MigrationOption.Apply:
-                migrator.Migrate(currentMigration.Version);
+                if (!preview)
+                    migrator.Migrate(currentMigration.Version);
+                else
+                    throw new NotImplementedException();
                 break;
             case MigrationOption.Rollback:
                 var migrations = migrator.GetMigrations()
@@ -223,7 +228,10 @@ public class DataConsoleModule : ModuleConsoleItem
                 var curIndex = migrations.IndexOfKey(currentMigration.Version);
                 var prevIndex = curIndex - 1;
                 var prevVersion = prevIndex >= 0 ? migrations.ElementAt(prevIndex).Key : 0;
-                migrator.Migrate(prevVersion);
+                if (!preview)
+                    migrator.Migrate(prevVersion);
+                else
+                    throw new NotImplementedException();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(option), option, null);
