@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using FluiTec.AppFx.Console.ConsoleItems;
 using FluiTec.AppFx.Data.Dynamic.Extensions;
 using FluiTec.AppFx.Data.Migration;
@@ -15,13 +16,13 @@ public class DataMigrationExportRollbackMigrationConsoleItem : ConsoleItem
     /// <summary>
     ///     Constructor.
     /// </summary>
-    public DataMigrationExportRollbackMigrationConsoleItem(MigrationInfo info, IDataMigrator migrator) 
+    public DataMigrationExportRollbackMigrationConsoleItem(MigrationInfo info, IDataMigrator migrator)
         : base("Export rollback migration")
     {
         Info = info;
         Migrator = migrator;
     }
-    
+
     /// <summary>
     ///     Gets the information.
     /// </summary>
@@ -37,7 +38,7 @@ public class DataMigrationExportRollbackMigrationConsoleItem : ConsoleItem
     ///     The migrator.
     /// </value>
     private IDataMigrator Migrator { get; }
-    
+
     /// <summary>
     ///     Displays the Item.
     /// </summary>
@@ -48,9 +49,9 @@ public class DataMigrationExportRollbackMigrationConsoleItem : ConsoleItem
     public override void Display(IConsoleItem parent)
     {
         base.Display(parent);
-        
+
         Presenter.PresentHeader($"Export rollback migration {Info.Version}");
-        
+
         var migrations = Migrator.GetMigrations()
             .OrderBy(m => m.Version)
             .ToDictionary(m => m.Version, m => m.Name);
@@ -62,9 +63,9 @@ public class DataMigrationExportRollbackMigrationConsoleItem : ConsoleItem
         var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         var fileName = $"rollback_migration_v{prevVersion}.sql";
         var output = Migrator.GetMigrationInstructions(prevVersion);
-        
-        File.WriteAllText(Path.Combine(desktopFolder,fileName), output, System.Text.Encoding.Default);
-        
+
+        File.WriteAllText(Path.Combine(desktopFolder, fileName), output, Encoding.Default);
+
         Parent?.Display(null);
     }
 }

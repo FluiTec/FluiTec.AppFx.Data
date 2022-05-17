@@ -34,9 +34,10 @@ public interface IDataMigrator
     /// <summary>
     ///     Gets the migration instructions in text-format.
     /// </summary>
-    /// /// <returns>Instructions to be executed by applying the latest migration.</returns>
+    /// ///
+    /// <returns>Instructions to be executed by applying the latest migration.</returns>
     string GetMigrationInstructions();
-    
+
     /// <summary>
     ///     Gets the migration instructions in text-format.
     /// </summary>

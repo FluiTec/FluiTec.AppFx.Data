@@ -25,13 +25,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentMigrator" Version="3.3.2" />
-        <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
-        <PackageReference Include="FluentMigrator.Runner.Core" Version="3.3.2" />
+        <PackageReference Include="FluentMigrator" Version="3.3.2"/>
+        <PackageReference Include="FluentMigrator.Runner" Version="3.3.2"/>
+        <PackageReference Include="FluentMigrator.Runner.Core" Version="3.3.2"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
+        <ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj"/>
     </ItemGroup>
 
 </Project>

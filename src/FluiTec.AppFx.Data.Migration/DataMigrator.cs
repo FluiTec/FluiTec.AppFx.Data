@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -24,20 +23,20 @@ public class DataMigrator : IDataMigrator
     private IVersionLoader _loader;
 
     /// <summary>
-    ///     The stringWriter to use to preview migrations.
-    /// </summary>
-    private StringWriter _stringWriter;
-
-    /// <summary>
     ///     The migrations.
     /// </summary>
     private IOrderedEnumerable<KeyValuePair<long, IMigrationInfo>> _migrations;
 
+    /// <summary>   The preview runner. </summary>
+    private IMigrationRunner _previewRunner;
+
     /// <summary>   The runner. </summary>
     private IMigrationRunner _runner;
 
-    /// <summary>   The preview runner. </summary>
-    private IMigrationRunner _previewRunner;
+    /// <summary>
+    ///     The stringWriter to use to preview migrations.
+    /// </summary>
+    private StringWriter _stringWriter;
 
     /// <summary>   Constructor. </summary>
     /// <param name="connectionString">     The connection string. </param>
@@ -53,85 +52,6 @@ public class DataMigrator : IDataMigrator
         var assemblies = scanAssemblies as Assembly[] ?? scanAssemblies.ToArray();
         InitializeRunner(connectionString, assemblies, metaData, configureSqlProvider);
         InitializePreviewRunner(connectionString, assemblies, metaData, configureSqlProvider);
-    }
-
-    /// <summary>
-    /// Initializes the MigrationRunner to be used to apply migrations.
-    /// </summary>
-    /// <param name="connectionString">     The connectionstring.</param>
-    /// <param name="scanAssemblies">       The scanAssemblies.</param>
-    /// <param name="metaData">             The metaData.</param>
-    /// <param name="configureSqlProvider"> The sqlProvider-configuration.</param>
-    private void InitializeRunner(string connectionString, IEnumerable<Assembly> scanAssemblies,
-        IVersionTableMetaData metaData, Action<IMigrationRunnerBuilder> configureSqlProvider)
-    {
-        var services = new ServiceCollection()
-            .AddFluentMigratorCore()
-            .Configure<RunnerOptions>(opt => opt.Profile = "Development")
-            .ConfigureRunner(rb => rb
-                // Set the connection string
-                .WithGlobalConnectionString(connectionString)
-                // Set version meta-data
-                .WithVersionTable(metaData)
-                // Define the assembly containing the migrations
-                .ScanIn(scanAssemblies.ToArray()).For.Migrations())
-            .ConfigureRunner(configureSqlProvider)
-            // Enable logging to console in the FluentMigrator way
-            .AddLogging(lb => lb.AddFluentMigratorConsole());
-
-        IServiceProvider serviceProvider = services.BuildServiceProvider(false);
-
-        _runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-
-        try
-        {
-            _migrations = _runner.MigrationLoader
-                .LoadMigrations()
-                .OrderByDescending(m => m.Value.Version);
-            MaximumVersion = _migrations.First().Value.Version;
-            _loader = serviceProvider.GetRequiredService<IVersionLoader>();
-        }
-#pragma warning disable CA1031 // Do not catch general exception types
-        catch (MissingMigrationsException)
-        {
-            MaximumVersion = 0;
-        }
-#pragma warning restore CA1031 // Do not catch general exception types
-    }
-
-    /// <summary>
-    /// Initializes the MigrationRunner to be used to preview migrations.
-    /// </summary>
-    /// <param name="connectionString">     The connectionstring.</param>
-    /// <param name="scanAssemblies">       The scanAssemblies.</param>
-    /// <param name="metaData">             The metaData.</param>
-    /// <param name="configureSqlProvider"> The sqlProvider-configuration.</param>
-    private void InitializePreviewRunner(string connectionString, IEnumerable<Assembly> scanAssemblies,
-        IVersionTableMetaData metaData, Action<IMigrationRunnerBuilder> configureSqlProvider)
-    {
-        _stringWriter = new StringWriter();
-        var services = new ServiceCollection()
-            .AddFluentMigratorCore()
-            .Configure<RunnerOptions>(opt => opt.Profile = "Development")
-            .ConfigureRunner(rb => rb
-                // Set the connection string
-                .WithGlobalConnectionString(connectionString)
-                // Set version meta-data
-                .WithVersionTable(metaData)
-                // disable execution of operations
-                .ConfigureGlobalProcessorOptions(options => options.PreviewOnly = true)
-                // Define the assembly containing the migrations
-                .ScanIn(scanAssemblies.ToArray()).For.Migrations())
-            .ConfigureRunner(configureSqlProvider)
-            // Enable logging to console in the FluentMigrator way
-            .AddLogging(lb =>
-            {
-                lb.AddProvider(new SqlScriptFluentMigratorLoggerProvider(_stringWriter));
-            });
-
-        IServiceProvider serviceProvider = services.BuildServiceProvider(false);
-
-        _previewRunner = serviceProvider.GetRequiredService<IMigrationRunner>();
     }
 
     /// <summary>   Gets the current version. </summary>
@@ -184,17 +104,18 @@ public class DataMigrator : IDataMigrator
     /// <summary>
     ///     Gets the migration instructions in text-format.
     /// </summary>
-    /// /// <returns>Instructions to be executed by applying the latest migration.</returns>
+    /// ///
+    /// <returns>Instructions to be executed by applying the latest migration.</returns>
     public string GetMigrationInstructions()
     {
         if (CurrentVersion < MaximumVersion)
             _previewRunner.MigrateUp();
-        
+
         var res = _stringWriter.GetStringBuilder().ToString();
         _stringWriter.GetStringBuilder().Clear();
         return res;
     }
-    
+
     /// <summary>
     ///     Gets the migration instructions in text-format.
     /// </summary>
@@ -209,9 +130,85 @@ public class DataMigrator : IDataMigrator
         if (version > CurrentVersion)
             _previewRunner.MigrateUp(version);
         else if (version < CurrentVersion) _previewRunner.MigrateDown(version);
-        
+
         var res = _stringWriter.GetStringBuilder().ToString();
         _stringWriter.GetStringBuilder().Clear();
         return res;
+    }
+
+    /// <summary>
+    ///     Initializes the MigrationRunner to be used to apply migrations.
+    /// </summary>
+    /// <param name="connectionString">     The connectionstring.</param>
+    /// <param name="scanAssemblies">       The scanAssemblies.</param>
+    /// <param name="metaData">             The metaData.</param>
+    /// <param name="configureSqlProvider"> The sqlProvider-configuration.</param>
+    private void InitializeRunner(string connectionString, IEnumerable<Assembly> scanAssemblies,
+        IVersionTableMetaData metaData, Action<IMigrationRunnerBuilder> configureSqlProvider)
+    {
+        var services = new ServiceCollection()
+            .AddFluentMigratorCore()
+            .Configure<RunnerOptions>(opt => opt.Profile = "Development")
+            .ConfigureRunner(rb => rb
+                // Set the connection string
+                .WithGlobalConnectionString(connectionString)
+                // Set version meta-data
+                .WithVersionTable(metaData)
+                // Define the assembly containing the migrations
+                .ScanIn(scanAssemblies.ToArray()).For.Migrations())
+            .ConfigureRunner(configureSqlProvider)
+            // Enable logging to console in the FluentMigrator way
+            .AddLogging(lb => lb.AddFluentMigratorConsole());
+
+        IServiceProvider serviceProvider = services.BuildServiceProvider(false);
+
+        _runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+
+        try
+        {
+            _migrations = _runner.MigrationLoader
+                .LoadMigrations()
+                .OrderByDescending(m => m.Value.Version);
+            MaximumVersion = _migrations.First().Value.Version;
+            _loader = serviceProvider.GetRequiredService<IVersionLoader>();
+        }
+#pragma warning disable CA1031 // Do not catch general exception types
+        catch (MissingMigrationsException)
+        {
+            MaximumVersion = 0;
+        }
+#pragma warning restore CA1031 // Do not catch general exception types
+    }
+
+    /// <summary>
+    ///     Initializes the MigrationRunner to be used to preview migrations.
+    /// </summary>
+    /// <param name="connectionString">     The connectionstring.</param>
+    /// <param name="scanAssemblies">       The scanAssemblies.</param>
+    /// <param name="metaData">             The metaData.</param>
+    /// <param name="configureSqlProvider"> The sqlProvider-configuration.</param>
+    private void InitializePreviewRunner(string connectionString, IEnumerable<Assembly> scanAssemblies,
+        IVersionTableMetaData metaData, Action<IMigrationRunnerBuilder> configureSqlProvider)
+    {
+        _stringWriter = new StringWriter();
+        var services = new ServiceCollection()
+            .AddFluentMigratorCore()
+            .Configure<RunnerOptions>(opt => opt.Profile = "Development")
+            .ConfigureRunner(rb => rb
+                // Set the connection string
+                .WithGlobalConnectionString(connectionString)
+                // Set version meta-data
+                .WithVersionTable(metaData)
+                // disable execution of operations
+                .ConfigureGlobalProcessorOptions(options => options.PreviewOnly = true)
+                // Define the assembly containing the migrations
+                .ScanIn(scanAssemblies.ToArray()).For.Migrations())
+            .ConfigureRunner(configureSqlProvider)
+            // Enable logging to console in the FluentMigrator way
+            .AddLogging(lb => { lb.AddProvider(new SqlScriptFluentMigratorLoggerProvider(_stringWriter)); });
+
+        IServiceProvider serviceProvider = services.BuildServiceProvider(false);
+
+        _previewRunner = serviceProvider.GetRequiredService<IMigrationRunner>();
     }
 }

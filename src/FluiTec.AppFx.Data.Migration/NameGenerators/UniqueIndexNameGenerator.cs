@@ -1,14 +1,14 @@
 ﻿namespace FluiTec.AppFx.Data.Migration.NameGenerators;
 
 /// <summary>
-/// Name generator for unique indexes.
+///     Name generator for unique indexes.
 /// </summary>
 public static class UniqueIndexNameGenerator
 {
     private const string Prefix = "UX";
-    
+
     /// <summary>
-    /// Creates a name for an unique index.
+    ///     Creates a name for an unique index.
     /// </summary>
     /// <param name="schema">   Schema to use.</param>
     /// <param name="table">    Table to use.</param>
