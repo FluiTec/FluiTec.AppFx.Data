@@ -6,6 +6,7 @@ using System.Linq;
 using FluiTec.AppFx.Console.ConsoleItems;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Dynamic.Extensions;
+using FluiTec.AppFx.Options.Console;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.EnvironmentVariables;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,6 +77,17 @@ public class DataConsoleModule : ModuleConsoleItem
         SaveEnabledProvider = saveEnabledProvider;
     }
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    ///
+    /// <param name="saveEnabledProvider">  The save enabled provider. </param>
+    /// <param name="optionsModule">        The options module. </param>
+    public DataConsoleModule(IConfigurationProvider saveEnabledProvider, OptionsConsoleModule optionsModule) : this(saveEnabledProvider)
+    {
+        OptionsModule = optionsModule;
+    }
+
     #endregion
 
     #region Properties
@@ -100,6 +112,15 @@ public class DataConsoleModule : ModuleConsoleItem
     ///     (Immutable) the configuration values.
     /// </summary>
     public IOrderedEnumerable<KeyValuePair<string, string>> ConfigValues { get; private set; }
+
+    /// <summary>
+    /// Gets the options module.
+    /// </summary>
+    ///
+    /// <value>
+    /// The options module.
+    /// </value>
+    public OptionsConsoleModule OptionsModule { get; }
 
     #endregion
 
@@ -131,6 +152,7 @@ public class DataConsoleModule : ModuleConsoleItem
     private void RecreateItems()
     {
         Items.Clear();
+
         DataServices = Application.HostServices.GetServices<IDataService>().ToList();
         Items.AddRange(DataServices.Select(s => new DataServiceConsoleItem(s, this)));
     }
@@ -142,6 +164,7 @@ public class DataConsoleModule : ModuleConsoleItem
     public override void Display(IConsoleItem parent)
     {
         RecreateItems();
+
         base.Display(parent);
     }
 
@@ -219,7 +242,12 @@ public class DataConsoleModule : ModuleConsoleItem
                 if (!preview)
                     migrator.Migrate(currentMigration.Version);
                 else
-                    throw new NotImplementedException();
+                {
+                    var instructions = migrator.GetMigrationInstructions(currentMigration.Version);
+                    System.Console.WriteLine();
+                    System.Console.Write(instructions);
+                    System.Console.WriteLine();
+                }
                 break;
             case MigrationOption.Rollback:
                 var migrations = migrator.GetMigrations()
@@ -231,7 +259,12 @@ public class DataConsoleModule : ModuleConsoleItem
                 if (!preview)
                     migrator.Migrate(prevVersion);
                 else
-                    throw new NotImplementedException();
+                {
+                    var instructions = migrator.GetMigrationInstructions(prevVersion);
+                    System.Console.WriteLine();
+                    System.Console.Write(instructions);
+                    System.Console.WriteLine();
+                }
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(option), option, null);
@@ -268,7 +301,6 @@ public class DataConsoleModule : ModuleConsoleItem
                     foreach (var migration in migrator.GetMigrations().OrderByDescending(m => m.Version))
                         System.Console.WriteLine($"-- {migration.Version} | {migration.Name}");
                 }
-
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(listType), listType, null);

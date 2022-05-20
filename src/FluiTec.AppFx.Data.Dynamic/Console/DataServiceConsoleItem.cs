@@ -1,4 +1,5 @@
 ﻿using FluiTec.AppFx.Data.DataServices;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FluiTec.AppFx.Data.Dynamic.Console;
 

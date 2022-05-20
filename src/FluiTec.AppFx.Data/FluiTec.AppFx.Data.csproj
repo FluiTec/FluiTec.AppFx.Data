@@ -6,8 +6,8 @@
         <PackageProjectUrl>https://www.nuget.org/packages/FluiTec.AppFx.Data/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/FluiTec/FluiTec.AppFx.Data</RepositoryUrl>
         <NeutralLanguage>en</NeutralLanguage>
-        <PostBuildEvent/>
-        <PreBuildEvent/>
+        <PostBuildEvent />
+        <PreBuildEvent />
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
         <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
         <LangVersion>latest</LangVersion>
@@ -16,17 +16,17 @@
     <ItemGroup>
         <None Include="..\..\LICENSE.md">
             <Pack>True</Pack>
-            <PackagePath/>
+            <PackagePath />
         </None>
         <None Include="..\..\THIRD_PARTY_LICENSES.md">
             <Pack>True</Pack>
-            <PackagePath/>
+            <PackagePath />
         </None>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ImmediateReflection" Version="1.6.0"/>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1"/>
+        <PackageReference Include="ImmediateReflection" Version="1.6.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
     </ItemGroup>
 
 </Project>

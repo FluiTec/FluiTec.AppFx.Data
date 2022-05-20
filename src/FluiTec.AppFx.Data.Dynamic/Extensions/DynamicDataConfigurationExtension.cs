@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluiTec.AppFx.Data.Dapper.Mssql;
 using FluiTec.AppFx.Data.Dapper.Mysql;
 using FluiTec.AppFx.Data.Dapper.Pgsql;
@@ -25,6 +26,8 @@ public static class DynamicDataConfigurationExtension
         ConfigurationManager configurationManager)
     {
         // provider-selection is required
+        // only do this of the registration doesnt contain it already
+        if (services.Any(s => s.ServiceType == typeof(DynamicDataOptions))) return services;
         services.Configure<DynamicDataOptions>(configurationManager, true);
 
         // provider-configurations are optional (at least here)
