@@ -72,6 +72,26 @@ public abstract class SqlAdapter : ISqlAdapter
             $"SELECT {RenderPropertyList(SqlCache.TypePropertiesChache(type).ToArray())} FROM {RenderTableName(type)}";
     }
 
+    /// <summary>
+    /// Select paged statement.
+    /// </summary>
+    ///
+    /// <param name="type">                         The type. </param>
+    /// <param name="skipRecordCountParameterName"> Name of the skip record count parameter. </param>
+    /// <param name="takeRecordCountParameterName"> Name of the take record count parameter. </param>
+    ///
+    /// <returns>
+    /// A string.
+    /// </returns>
+    public virtual string SelectPagedStatement(Type type, string skipRecordCountParameterName, string takeRecordCountParameterName)
+    {
+        return $"SELECT {RenderPropertyList(SqlCache.TypePropertiesChache(type).ToArray())} " +
+               $"FROM {RenderTableName(type)} " +
+               $"ORDER BY {RenderPropertyName(SqlCache.TypeKeyPropertiesCache(type).First().PropertyInfo)} " +
+               $"OFFSET {RenderParameterPropertyName(skipRecordCountParameterName)} ROWS " +
+               $"FETCH NEXT {RenderParameterPropertyName(takeRecordCountParameterName)} ROWS ONLY";
+    }
+
     /// <summary>	Gets by identifier statement. </summary>
     /// <param name="type">	The type. </param>
     /// <returns>	The by identifier statement. </returns>
@@ -364,7 +384,7 @@ public abstract class SqlAdapter : ISqlAdapter
     {
         return EntityNameService;
     }
-
+    
     /// <summary>	Renders the parameter property described by propertyInfo. </summary>
     /// <param name="propertyInfo">	Information describing the property. </param>
     /// <returns>	A string. </returns>

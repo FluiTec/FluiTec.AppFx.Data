@@ -103,6 +103,37 @@ public abstract class LiteDbDataRepository<TEntity> : IDataRepository<TEntity>
         return Task.FromResult(GetAll());
     }
 
+    /// <summary>
+    /// Gets the paged in this collection.
+    /// </summary>
+    ///
+    /// <param name="pageIndex">    Zero-based index of the page. </param>
+    /// <param name="pageSize">     Size of the page. </param>
+    ///
+    /// <returns>
+    /// An enumerator that allows foreach to be used to process the paged in this collection.
+    /// </returns>
+    public IEnumerable<TEntity> GetPaged(int pageIndex, int pageSize)
+    {
+        return Collection.Query().Limit(pageSize).Offset(pageIndex * pageSize).ToEnumerable();
+    }
+
+    /// <summary>
+    /// Gets paged asynchronous.
+    /// </summary>
+    ///
+    /// <param name="pageIndex">    Zero-based index of the page. </param>
+    /// <param name="pageSize">     Size of the page. </param>
+    /// <param name="ctx">          (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The paged.
+    /// </returns>
+    public Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize, CancellationToken ctx = default)
+    {
+        return Task.FromResult(GetPaged(pageIndex, pageSize));
+    }
+
     /// <summary>   Counts the number of records. </summary>
     /// <returns>   An int defining the total number of records. </returns>
     public virtual int Count()

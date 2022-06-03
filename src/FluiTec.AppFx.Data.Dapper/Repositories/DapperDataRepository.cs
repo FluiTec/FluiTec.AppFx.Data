@@ -126,6 +126,40 @@ public abstract class DapperDataRepository<TEntity> : IDataRepository<TEntity>, 
         return UnitOfWork.Connection.GetAllAsync<TEntity>(SqlBuilder, UnitOfWork.Transaction, cancellationToken: ctx);
     }
 
+    /// <summary>
+    /// Gets the paged in this collection.
+    /// </summary>
+    ///
+    /// <param name="pageIndex">    Zero-based index of the page. </param>
+    /// <param name="pageSize">     Size of the page. </param>
+    ///
+    /// <returns>
+    /// An enumerator that allows foreach to be used to process the paged in this collection.
+    /// </returns>
+    public virtual IEnumerable<TEntity> GetPaged(int pageIndex, int pageSize)
+    {
+        Logger?.LogTrace("GetPaged<{type}>(pageIndex: {pageIndex}, pageSize: {pageSize})", typeof(TEntity), pageIndex, pageSize);
+        return UnitOfWork.Connection.GetPaged<TEntity>(SqlBuilder, pageIndex, pageSize, UnitOfWork.Transaction);
+    }
+
+    /// <summary>
+    /// Gets paged asynchronous.
+    /// </summary>
+    ///
+    /// <param name="pageIndex">    Zero-based index of the page. </param>
+    /// <param name="pageSize">     Size of the page. </param>
+    /// <param name="ctx">          (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The paged.
+    /// </returns>
+    public virtual Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize,
+        CancellationToken ctx = default)
+    {
+        Logger?.LogTrace("GetPagedAsync<{type}>(pageIndex: {pageIndex}, pageSize: {pageSize})", typeof(TEntity), pageIndex, pageSize);
+        return UnitOfWork.Connection.GetPagedAsync<TEntity>(SqlBuilder, pageIndex, pageSize, UnitOfWork.Transaction, cancellationToken: ctx);
+    }
+
     /// <summary>   Gets the count. </summary>
     /// <returns>   An int. </returns>
     public virtual int Count()

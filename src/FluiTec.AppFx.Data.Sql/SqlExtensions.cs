@@ -56,6 +56,54 @@ public static class SqlExtensions
     }
 
     /// <summary>
+    /// Gets the paged in this collection.
+    /// </summary>
+    ///
+    /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+    /// <param name="connection">       The connection to act on. </param>
+    /// <param name="builder">          The builder. </param>
+    /// <param name="pageIndex">        Zero-based index of the page. </param>
+    /// <param name="pageSize">         Size of the page. </param>
+    /// <param name="transaction">      (Optional) The transaction. </param>
+    /// <param name="commandTimeout">   (Optional) The command timeout. </param>
+    ///
+    /// <returns>
+    /// An enumerator that allows foreach to be used to process the paged in this collection.
+    /// </returns>
+    public static IEnumerable<TEntity> GetPaged<TEntity>(this IDbConnection connection, ISqlBuilder builder, int pageIndex, int pageSize,
+        IDbTransaction transaction = null, int? commandTimeout = null)
+    {
+        var sql = builder.SelectPaged(typeof(TEntity), "skipRecordCount", "takeRecordCount");
+        return connection.Query<TEntity>(sql, new {skipRecordCount = pageIndex * pageSize, takeRecordCount = pageSize}, transaction, commandTimeout: commandTimeout);
+    }
+
+    /// <summary>
+    /// An IDbConnection extension method that gets paged asynchronous.
+    /// </summary>
+    ///
+    /// <typeparam name="TEntity">  Type of the entity. </typeparam>
+    /// <param name="connection">           The connection to act on. </param>
+    /// <param name="builder">              The builder. </param>
+    /// <param name="pageIndex">            Zero-based index of the page. </param>
+    /// <param name="pageSize">             Size of the page. </param>
+    /// <param name="transaction">          (Optional) The transaction. </param>
+    /// <param name="commandTimeout">       (Optional) The command timeout. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    ///
+    /// <returns>
+    /// The paged async&lt; t entity&gt;
+    /// </returns>
+    public static Task<IEnumerable<TEntity>> GetPagedAsync<TEntity>(this IDbConnection connection, ISqlBuilder builder,
+        int pageIndex, int pageSize,
+        IDbTransaction transaction = null, int? commandTimeout = null, CancellationToken cancellationToken = default)
+    {
+        var sql = builder.SelectPaged(typeof(TEntity), "skipRecordCount", "takeRecordCount");
+        return connection.QueryAsync<TEntity>(new CommandDefinition(sql, new { skipRecordCount = pageIndex * pageSize, takeRecordCount = pageSize }, transaction, commandTimeout,
+            cancellationToken: cancellationToken));
+    }
+
+    /// <summary>
     ///     An IDbConnection extension method that gets.
     /// </summary>
     /// <exception cref="InvalidOperationException">

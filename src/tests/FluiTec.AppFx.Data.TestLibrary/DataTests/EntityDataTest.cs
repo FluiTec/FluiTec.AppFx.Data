@@ -223,6 +223,26 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataTests
         }
 
         /// <summary>
+        /// (Unit Test Method) can get paged.
+        /// </summary>
+        [TestMethod]
+        public virtual void CanGetPaged()
+        {
+            var pageSize = 1;
+
+            using var uow = BeginUnitOfWork();
+
+            var entities = CreateEntities().ToList();
+            uow.GetWritableRepository<TEntity>().AddRange(entities);
+
+            var dbCount1 = uow.GetDataRepository<TEntity>().GetPaged(0,pageSize).Count();
+            var dbCount2 = uow.GetDataRepository<TEntity>().GetPaged(1, pageSize).Count();
+
+            Assert.AreEqual(pageSize, dbCount1);
+            Assert.AreEqual(pageSize, dbCount2);
+        }
+
+        /// <summary>
         ///     (Unit Test Method) can get all asynchronous.
         /// </summary>
         [TestMethod]

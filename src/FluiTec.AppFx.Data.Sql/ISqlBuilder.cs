@@ -104,4 +104,17 @@ public interface ISqlBuilder
     /// <param name="type">	The type. </param>
     /// <returns>	A List&lt;KeyValuePair&lt;PropertyInfo,string&gt;&gt; </returns>
     List<KeyValuePair<ImmediateProperty, string>> ParameterList(Type type);
+
+    /// <summary>
+    /// Select paged.
+    /// </summary>
+    ///
+    /// <param name="type">             The type. </param>
+    /// <param name="skiprecordcount">  The skiprecordcount. </param>
+    /// <param name="takerecordcount">  The takerecordcount. </param>
+    ///
+    /// <returns>
+    /// A string.
+    /// </returns>
+    string SelectPaged(Type type, string skiprecordcount, string takerecordcount);
 }

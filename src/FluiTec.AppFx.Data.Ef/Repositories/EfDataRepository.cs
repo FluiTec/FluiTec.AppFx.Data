@@ -130,6 +130,38 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     }
 
     /// <summary>
+    /// Gets the paged in this collection.
+    /// </summary>
+    ///
+    /// <param name="pageIndex">    Zero-based index of the page. </param>
+    /// <param name="pageSize">     Size of the page. </param>
+    ///
+    /// <returns>
+    /// An enumerator that allows foreach to be used to process the paged in this collection.
+    /// </returns>
+    public IEnumerable<TEntity> GetPaged(int pageIndex, int pageSize)
+    {
+        return Set.Skip(pageIndex*pageSize).Take(pageSize).ToList();
+    }
+
+    /// <summary>
+    /// Gets the paged asynchronous in this collection.
+    /// </summary>
+    ///
+    /// <param name="pageIndex">    Zero-based index of the page. </param>
+    /// <param name="pageSize">     Size of the page. </param>
+    /// <param name="ctx">          (Optional) A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// An enumerator that allows foreach to be used to process the paged asynchronous in this
+    /// collection.
+    /// </returns>
+    public async Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize, CancellationToken ctx = default)
+    {
+        return await Set.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync(ctx);
+    }
+
+    /// <summary>
     ///     Counts the number of records.
     /// </summary>
     /// <returns>

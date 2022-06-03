@@ -83,6 +83,12 @@ public class SqlBuilder : ISqlBuilder
     private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _selectAllQueries =
         new();
 
+    /// <summary>
+    /// (Immutable) the select paged queries.
+    /// </summary>
+    private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _selectPagedQueries =
+        new();
+
     /// <summary>	The select by key queries. </summary>
     private readonly ConcurrentDictionary<RuntimeTypeHandle, string> _selectByKeyQueries =
         new();
@@ -144,6 +150,33 @@ public class SqlBuilder : ISqlBuilder
 
         // add statement to cache
         _selectAllQueries.TryAdd(type.TypeHandle, sql);
+
+        // return statement
+        return sql;
+    }
+
+    /// <summary>
+    /// Select paged.
+    /// </summary>
+    ///
+    /// <param name="type">                         The type. </param>
+    /// <param name="skipRecordCountParameterName"> The skiprecordcount. </param>
+    /// <param name="takeRecordCountParameterName"> The takerecordcount. </param>
+    ///
+    /// <returns>
+    /// A string.
+    /// </returns>
+    public string SelectPaged(Type type, string skipRecordCountParameterName, string takeRecordCountParameterName)
+    {
+        // try to find statement in cache and return it
+        if (_selectPagedQueries.TryGetValue(type.TypeHandle, out var sql)) return sql;
+
+        // generate statement
+        sql = Adapter.SelectPagedStatement(type, skipRecordCountParameterName, takeRecordCountParameterName);
+        OnSqlGenerated(type, sql);
+
+        // add statement to cache
+        _selectPagedQueries.TryAdd(type.TypeHandle, sql);
 
         // return statement
         return sql;

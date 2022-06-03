@@ -136,4 +136,17 @@ public interface ISqlAdapter
     ///     The name service.
     /// </returns>
     IEntityNameService GetNameService();
+
+    /// <summary>
+    /// Select paged statement.
+    /// </summary>
+    ///
+    /// <param name="type">                         The type. </param>
+    /// <param name="skipRecordCountParameterName"> Name of the skip record count parameter. </param>
+    /// <param name="takeRecordCountParameterName"> Name of the take record count parameter. </param>
+    ///
+    /// <returns>
+    /// A string.
+    /// </returns>
+    string SelectPagedStatement(Type type, string skipRecordCountParameterName, string takeRecordCountParameterName);
 }

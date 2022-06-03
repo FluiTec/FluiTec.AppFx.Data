@@ -1,4 +1,6 @@
-﻿using FluiTec.AppFx.Data.EntityNameServices;
+﻿using System;
+using System.Linq;
+using FluiTec.AppFx.Data.EntityNameServices;
 using ImmediateReflection;
 using Microsoft.Extensions.Logging;
 
@@ -37,5 +39,24 @@ public class MySqlAdapter : SqlAdapter
     public override string GetAutoKeyStatement(ImmediateProperty propertyInfo)
     {
         return $";SELECT LAST_INSERT_ID() {RenderPropertyName(propertyInfo)}";
+    }
+
+    /// <summary>
+    /// Select paged statement.
+    /// </summary>
+    ///
+    /// <param name="type">                         The type. </param>
+    /// <param name="skipRecordCountParameterName"> Name of the skip record count parameter. </param>
+    /// <param name="takeRecordCountParameterName"> Name of the take record count parameter. </param>
+    ///
+    /// <returns>
+    /// A string.
+    /// </returns>
+    public override string SelectPagedStatement(Type type, string skipRecordCountParameterName, string takeRecordCountParameterName)
+    {
+        return $"SELECT {RenderPropertyList(SqlCache.TypePropertiesChache(type).ToArray())} " +
+               $"FROM {RenderTableName(type)} " +
+               $"ORDER BY {RenderPropertyName(SqlCache.TypeKeyPropertiesCache(type).First().PropertyInfo)} " +
+               $"LIMIT {RenderParameterPropertyName(skipRecordCountParameterName)}, {RenderParameterPropertyName(takeRecordCountParameterName)}";
     }
 }
