@@ -92,6 +92,25 @@ public abstract class SqlAdapter : ISqlAdapter
                $"FETCH NEXT {RenderParameterPropertyName(takeRecordCountParameterName)} ROWS ONLY";
     }
 
+    /// <summary>
+    /// Page ordered statement.
+    /// </summary>
+    ///
+    /// <param name="statement">                    The statement. </param>
+    /// <param name="skipRecordCountParameterName"> Name of the skip record count parameter. </param>
+    /// <param name="takeRecordCountParameterName"> Name of the take record count parameter. </param>
+    ///
+    /// <returns>
+    /// A string.
+    /// </returns>
+    public virtual string PageOrderedStatement(string statement, string skipRecordCountParameterName,
+        string takeRecordCountParameterName)
+    {
+        return $"{statement} " +
+               $"OFFSET {RenderParameterPropertyName(skipRecordCountParameterName)} ROWS " +
+               $"FETCH NEXT {RenderParameterPropertyName(takeRecordCountParameterName)} ROWS ONLY";
+    }
+
     /// <summary>	Gets by identifier statement. </summary>
     /// <param name="type">	The type. </param>
     /// <returns>	The by identifier statement. </returns>

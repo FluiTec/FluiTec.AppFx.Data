@@ -149,4 +149,17 @@ public interface ISqlAdapter
     /// A string.
     /// </returns>
     string SelectPagedStatement(Type type, string skipRecordCountParameterName, string takeRecordCountParameterName);
+
+    /// <summary>
+    /// Page ordered statement.
+    /// </summary>
+    ///
+    /// <param name="statement">                    The statement. </param>
+    /// <param name="skipRecordCountParameterName"> Name of the skip record count parameter. </param>
+    /// <param name="takeRecordCountParameterName"> Name of the take record count parameter. </param>
+    ///
+    /// <returns>
+    /// A string.
+    /// </returns>
+    string PageOrderedStatement(string statement, string skipRecordCountParameterName, string takeRecordCountParameterName);
 }

@@ -59,4 +59,21 @@ public class SqLiteAdapter : SqlAdapter
                $"ORDER BY {RenderPropertyName(SqlCache.TypeKeyPropertiesCache(type).First().PropertyInfo)} " +
                $"LIMIT {RenderParameterPropertyName(skipRecordCountParameterName)},{RenderParameterPropertyName(takeRecordCountParameterName)}";
     }
+
+    /// <summary>
+    /// Page ordered statement.
+    /// </summary>
+    ///
+    /// <param name="statement">                    The statement. </param>
+    /// <param name="skipRecordCountParameterName"> Name of the skip record count parameter. </param>
+    /// <param name="takeRecordCountParameterName"> Name of the take record count parameter. </param>
+    ///
+    /// <returns>
+    /// A string.
+    /// </returns>
+    public override string PageOrderedStatement(string statement, string skipRecordCountParameterName, string takeRecordCountParameterName)
+    {
+        return $"{statement} " +
+               $"LIMIT {RenderParameterPropertyName(skipRecordCountParameterName)},{RenderParameterPropertyName(takeRecordCountParameterName)}";
+    }
 }
