@@ -26,6 +26,8 @@ public abstract class NMemoryPreDefinedKeyRepository<TEntity, TKey> : NMemoryWri
     /// <param name="logger">       The logger. </param>
     protected NMemoryPreDefinedKeyRepository(NMemoryUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
     {
+        // ReSharper disable once VirtualMemberCallInConstructor
+        ExpectIdentityKey = false;
     }
 
     #region Methods

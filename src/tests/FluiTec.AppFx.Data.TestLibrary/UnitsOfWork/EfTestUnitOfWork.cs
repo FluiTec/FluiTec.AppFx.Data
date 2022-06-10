@@ -42,6 +42,11 @@ namespace FluiTec.AppFx.Data.TestLibrary.UnitsOfWork
         /// </value>
         public IDummyRepository DummyRepository => GetRepository<IDummyRepository>();
 
+        /// <summary> Gets the dummy 2 repository.</summary>
+        ///
+        /// <value> The dummy 2 repository.</value>
+        public IDummy2Repository Dummy2Repository => GetRepository<IDummy2Repository>();
+
         /// <summary>
         ///     Gets the date time dummy repository.
         /// </summary>
@@ -57,6 +62,8 @@ namespace FluiTec.AppFx.Data.TestLibrary.UnitsOfWork
         {
             RepositoryProviders.Add(typeof(IDummyRepository),
                 (uow, log) => new EfDummyRepository((EfTestUnitOfWork) uow, log));
+            RepositoryProviders.Add(typeof(IDummy2Repository),
+                (uow, log) => new EfDummy2Repository((EfTestUnitOfWork)uow, log));
             RepositoryProviders.Add(typeof(IDateTimeDummyRepository),
                 (uow, log) => new EfDateTimeDummyRepository((EfTestUnitOfWork) uow, log));
         }

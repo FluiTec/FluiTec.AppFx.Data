@@ -50,6 +50,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ConfigureModelForEntity<DummyEntity>(modelBuilder);
+            ConfigureModelForEntity<Dummy2Entity>(modelBuilder);
             ConfigureModelForEntity<DateTimeDummyEntity>(modelBuilder);
         }
     }

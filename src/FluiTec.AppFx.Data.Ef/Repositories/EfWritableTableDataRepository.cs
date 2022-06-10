@@ -8,6 +8,7 @@ using FluiTec.AppFx.Data.Ef.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Data.Sql;
+using ImmediateReflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -150,10 +151,20 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
         }
 
         Set.Attach(entity);
-        if (UnitOfWork.Context.Entry(entity).State == EntityState.Added)
+        var entry = UnitOfWork.Context.Entry(entity);
+        if (entry.State == EntityState.Added)
             throw new UpdateException(entity);
         UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
-        Context.SaveChanges();
+
+        try
+        {
+            Context.SaveChanges();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new UpdateException(entity);
+        }
+
         return entity;
     }
 
@@ -181,7 +192,16 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
         if (UnitOfWork.Context.Entry(entity).State == EntityState.Added)
             throw new UpdateException(entity);
         UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
-        Context.SaveChanges();
+
+        try
+        {
+            Context.SaveChanges();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new UpdateException(entity);
+        }
+
         return entity;
     }
 

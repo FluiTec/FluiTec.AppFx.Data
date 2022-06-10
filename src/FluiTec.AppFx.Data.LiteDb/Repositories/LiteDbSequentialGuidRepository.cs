@@ -2,6 +2,7 @@
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
+using LiteDB;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.LiteDb.Repositories;
@@ -39,6 +40,28 @@ public abstract class
     protected override void SetInsertKey(TEntity entity)
     {
         entity.Id = UnitOfWork.LiteDbDataService.GuidGenerator.GenerateSequentialGuid();
+    }
+
+    /// <summary> Gets bson key.</summary>
+    ///
+    /// <param name="key"> The key. </param>
+    ///
+    /// <returns> The bson key.</returns>
+
+    protected override BsonValue GetBsonKey(Guid key)
+    {
+        return key;
+    }
+
+    /// <summary> Gets a key.</summary>
+    ///
+    /// <param name="key"> The key. </param>
+    ///
+    /// <returns> The key.</returns>
+
+    protected override Guid GetKey(BsonValue key)
+    {
+        return key;
     }
 
     #endregion

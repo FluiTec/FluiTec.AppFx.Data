@@ -13,6 +13,15 @@ public class UpdateException : Exception
         Entity = entity;
     }
 
+    /// <summary> Constructor.</summary>
+    ///
+    /// <param name="entity">         The entity. </param>
+    /// <param name="innerException"> The inner exception. </param>
+    public UpdateException(IEntity entity, Exception innerException) : base("Update could not change entity. No entities affected by update.", innerException)
+    {
+        Entity = entity;
+    }
+
     /// <summary>   Gets the entity.</summary>
     /// <value> The entity.</value>
     public IEntity Entity { get; }
