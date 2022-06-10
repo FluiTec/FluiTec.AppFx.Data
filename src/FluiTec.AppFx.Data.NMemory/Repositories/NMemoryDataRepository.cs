@@ -94,7 +94,7 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
     /// <returns>
     ///     An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
-    public IEnumerable<TEntity> GetAll()
+    public virtual IEnumerable<TEntity> GetAll()
     {
         return Table.ToList();
     }
@@ -106,7 +106,7 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
     /// <returns>
     ///     An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
-    public Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
+    public virtual Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
     {
         return Task.FromResult(GetAll());
     }
@@ -121,7 +121,7 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
     /// <returns>
     /// An enumerator that allows foreach to be used to process the paged in this collection.
     /// </returns>
-    public IEnumerable<TEntity> GetPaged(int pageIndex, int pageSize)
+    public virtual IEnumerable<TEntity> GetPaged(int pageIndex, int pageSize)
     {
         return Table.Skip(pageIndex * pageSize).Take(pageSize);
     }
@@ -137,7 +137,7 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
     /// <returns>
     /// The paged.
     /// </returns>
-    public Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize, CancellationToken ctx = default)
+    public virtual Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize, CancellationToken ctx = default)
     {
         return Task.FromResult(GetPaged(pageIndex, pageSize));
     }
@@ -148,7 +148,7 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
     /// <returns>
     ///     An int defining the total number of records.
     /// </returns>
-    public int Count()
+    public virtual int Count()
     {
         return (int) Table.Count;
     }
@@ -160,7 +160,7 @@ public class NMemoryDataRepository<TEntity> : IDataRepository<TEntity>
     /// <returns>
     ///     The count.
     /// </returns>
-    public Task<int> CountAsync(CancellationToken ctx = default)
+    public virtual Task<int> CountAsync(CancellationToken ctx = default)
     {
         return Task.FromResult(Count());
     }

@@ -35,7 +35,7 @@ public class EfWritableKeyTableDataRepository<TEntity, TKey> : EfWritableTableDa
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public TEntity Get(TKey id)
+    public virtual TEntity Get(TKey id)
     {
         return Set.Find(id);
     }
@@ -48,7 +48,7 @@ public class EfWritableKeyTableDataRepository<TEntity, TKey> : EfWritableTableDa
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public async Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
+    public virtual async Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
         return await Set.FindAsync(new object[] {id}, ctx);
     }
@@ -64,7 +64,7 @@ public class EfWritableKeyTableDataRepository<TEntity, TKey> : EfWritableTableDa
     /// <returns>
     ///     True if it succeeds, false if it fails.
     /// </returns>
-    public bool Delete(TKey id)
+    public virtual bool Delete(TKey id)
     {
         var entity = Get(id);
         return Delete(entity);
@@ -78,7 +78,7 @@ public class EfWritableKeyTableDataRepository<TEntity, TKey> : EfWritableTableDa
     /// <returns>
     ///     The delete.
     /// </returns>
-    public async Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
+    public virtual async Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {
         var entity = await GetAsync(id, ctx);
         return await DeleteAsync(entity, ctx);

@@ -36,7 +36,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <value>
     ///     True if expect identity key, false if not.
     /// </value>
-    public bool ExpectIdentityKey { get; set; }
+    public virtual bool ExpectIdentityKey { get; set; }
 
     private readonly Type[] _supportedIdentityTypes = {typeof(int), typeof(long)};
 
@@ -51,7 +51,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public TEntity Add(TEntity entity)
+    public virtual TEntity Add(TEntity entity)
     {
         if (entity is ITimeStampedKeyEntity stampedEntity)
             stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
@@ -82,7 +82,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default)
+    public virtual Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default)
     {
         return Task.FromResult(Add(entity));
     }
@@ -91,7 +91,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     ///     Adds a range of entities.
     /// </summary>
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
-    public void AddRange(IEnumerable<TEntity> entities)
+    public virtual void AddRange(IEnumerable<TEntity> entities)
     {
         foreach (var e in entities)
             Add(e);
@@ -105,7 +105,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <returns>
     ///     An asynchronous result.
     /// </returns>
-    public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default)
+    public virtual Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default)
     {
         AddRange(entities);
         return Task.CompletedTask;
@@ -118,7 +118,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public TEntity Update(TEntity entity)
+    public virtual TEntity Update(TEntity entity)
     {
         var originalEntity = Get(entity.Id);
         if (originalEntity == null) throw new UpdateException(entity);
@@ -142,7 +142,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <returns>
     ///     The update.
     /// </returns>
-    public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default)
+    public virtual Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default)
     {
         return Task.FromResult(Update(entity));
     }
@@ -154,7 +154,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <returns>
     ///     True if it succeeds, false if it fails.
     /// </returns>
-    public bool Delete(params object[] keys)
+    public virtual bool Delete(params object[] keys)
     {
         return Delete(Get(keys));
     }
@@ -166,7 +166,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <returns>
     ///     True if it succeeds, false if it fails.
     /// </returns>
-    public bool Delete(TKey id)
+    public virtual bool Delete(TKey id)
     {
         return Delete(Get(id));
     }
@@ -179,7 +179,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <returns>
     ///     The delete.
     /// </returns>
-    public Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
+    public virtual Task<bool> DeleteAsync(TKey id, CancellationToken ctx = default)
     {
         return Task.FromResult(Delete(id));
     }
@@ -191,7 +191,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <returns>
     ///     True if it succeeds, false if it fails.
     /// </returns>
-    public bool Delete(TEntity entity)
+    public virtual bool Delete(TEntity entity)
     {
         var c1 = Table.Count;
         Table.Delete(entity);
@@ -207,7 +207,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <returns>
     ///     The delete.
     /// </returns>
-    public Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default)
+    public virtual Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default)
     {
         return Task.FromResult(Delete(entity));
     }
@@ -220,7 +220,7 @@ public abstract class NMemoryWritableKeyTableDataRepository<TEntity, TKey> :
     /// <returns>
     ///     The delete.
     /// </returns>
-    public async Task<bool> DeleteAsync(object[] keys, CancellationToken ctx = default)
+    public virtual async Task<bool> DeleteAsync(object[] keys, CancellationToken ctx = default)
     {
         var entity = await GetAsync(keys, ctx);
         return await DeleteAsync(entity, ctx);

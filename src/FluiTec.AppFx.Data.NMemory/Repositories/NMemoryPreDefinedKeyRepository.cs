@@ -2,31 +2,31 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Entities;
+using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace FluiTec.AppFx.Data.Dapper.Repositories;
+namespace FluiTec.AppFx.Data.NMemory.Repositories;
 
-/// <summary>   A dapper pre defined key repository. </summary>
+/// <summary>
+/// A memory pre defined key repository.
+/// </summary>
+///
 /// <typeparam name="TEntity">  Type of the entity. </typeparam>
 /// <typeparam name="TKey">     Type of the key. </typeparam>
-public abstract class
-    DapperPreDefinedKeyRepository<TEntity, TKey> : DapperWritableKeyTableDataRepository<TEntity, TKey>
+public abstract class NMemoryPreDefinedKeyRepository<TEntity, TKey> : NMemoryWritableKeyTableDataRepository<TEntity, TKey>
     where TEntity : class, IKeyEntity<TKey>, new()
 {
-    #region Constructors
-
-    /// <summary>   Constructor. </summary>
+    /// <summary>
+    /// Specialized constructor for use only by derived class.
+    /// </summary>
+    ///
     /// <param name="unitOfWork">   The unit of work. </param>
     /// <param name="logger">       The logger. </param>
-    protected DapperPreDefinedKeyRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(
-        unitOfWork, logger)
+    protected NMemoryPreDefinedKeyRepository(NMemoryUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
     {
     }
-
-    #endregion
 
     #region Methods
 
@@ -71,7 +71,7 @@ public abstract class
     public override void AddRange(IEnumerable<TEntity> entities)
     {
         var entries = entities.ToList();
-        foreach(var e in entries)
+        foreach (var e in entries)
             SetInsertKey(e);
 
         base.AddRange(entries);

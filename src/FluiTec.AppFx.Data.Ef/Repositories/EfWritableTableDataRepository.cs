@@ -66,7 +66,7 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public TEntity Add(TEntity entity)
+    public virtual TEntity Add(TEntity entity)
     {
         if (entity is ITimeStampedKeyEntity stampedEntity)
             stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
@@ -84,7 +84,7 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public async Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default)
+    public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken ctx = default)
     {
         if (entity is ITimeStampedKeyEntity stampedEntity)
             stampedEntity.TimeStamp = new DateTimeOffset(DateTime.UtcNow);
@@ -98,7 +98,7 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     ///     Adds a range of entities.
     /// </summary>
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this collection. </param>
-    public void AddRange(IEnumerable<TEntity> entities)
+    public virtual void AddRange(IEnumerable<TEntity> entities)
     {
         var keyEntities = entities as TEntity[] ?? entities.ToArray();
 
@@ -118,7 +118,7 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// <returns>
     ///     An asynchronous result.
     /// </returns>
-    public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default)
+    public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ctx = default)
     {
         var keyEntities = entities as TEntity[] ?? entities.ToArray();
 
@@ -137,7 +137,7 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public TEntity Update(TEntity entity)
+    public virtual TEntity Update(TEntity entity)
     {
         if (entity is ITimeStampedKeyEntity stampedEntity)
         {
@@ -165,7 +165,7 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// <returns>
     ///     The update.
     /// </returns>
-    public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default)
+    public virtual async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ctx = default)
     {
         if (entity is ITimeStampedKeyEntity stampedEntity)
         {
@@ -192,7 +192,7 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// <returns>
     ///     True if it succeeds, false if it fails.
     /// </returns>
-    public bool Delete(params object[] keys)
+    public virtual bool Delete(params object[] keys)
     {
         return Delete(Get(keys));
     }
@@ -204,7 +204,7 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// <returns>
     ///     True if it succeeds, false if it fails.
     /// </returns>
-    public bool Delete(TEntity entity)
+    public virtual bool Delete(TEntity entity)
     {
         var entry = Set.Remove(entity);
         Context.SaveChanges();
@@ -219,7 +219,7 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// <returns>
     ///     The delete.
     /// </returns>
-    public Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default)
+    public virtual Task<bool> DeleteAsync(TEntity entity, CancellationToken ctx = default)
     {
         var entry = Set.Remove(entity);
         Context.SaveChanges();
@@ -234,7 +234,7 @@ public class EfWritableTableDataRepository<TEntity> : EfDataRepository<TEntity>,
     /// <returns>
     ///     The delete.
     /// </returns>
-    public async Task<bool> DeleteAsync(object[] keys, CancellationToken ctx = default)
+    public virtual async Task<bool> DeleteAsync(object[] keys, CancellationToken ctx = default)
     {
         var entity = await GetAsync(keys, ctx);
         return await DeleteAsync(entity, ctx);

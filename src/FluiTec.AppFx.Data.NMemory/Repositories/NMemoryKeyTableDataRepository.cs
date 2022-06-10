@@ -42,7 +42,7 @@ public class NMemoryKeyTableDataRepository<TEntity, TKey> : NMemoryDataRepositor
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public TEntity Get(params object[] keys)
+    public virtual TEntity Get(params object[] keys)
     {
         return Table.SingleOrDefault(entity => KeysMatch(entity, keys));
     }
@@ -55,7 +55,7 @@ public class NMemoryKeyTableDataRepository<TEntity, TKey> : NMemoryDataRepositor
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
+    public virtual Task<TEntity> GetAsync(TKey id, CancellationToken ctx = default)
     {
         return Task.FromResult(Get(id));
     }
@@ -68,7 +68,7 @@ public class NMemoryKeyTableDataRepository<TEntity, TKey> : NMemoryDataRepositor
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
+    public virtual Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
     {
         return Task.FromResult(Table.SingleOrDefault(entity => KeysMatch(entity, keys)));
     }

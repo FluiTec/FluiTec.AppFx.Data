@@ -88,7 +88,7 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public TEntity Get(params object[] keys)
+    public virtual TEntity Get(params object[] keys)
     {
         return Set.Find(keys);
     }
@@ -101,7 +101,7 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     /// <returns>
     ///     A TEntity.
     /// </returns>
-    public async Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
+    public virtual async Task<TEntity> GetAsync(object[] keys, CancellationToken ctx = default)
     {
         return await Set.FindAsync(keys, ctx);
     }
@@ -112,7 +112,7 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     /// <returns>
     ///     An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
-    public IEnumerable<TEntity> GetAll()
+    public virtual IEnumerable<TEntity> GetAll()
     {
         return Set.ToList();
     }
@@ -124,7 +124,7 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     /// <returns>
     ///     An enumerator that allows foreach to be used to process all items in this collection.
     /// </returns>
-    public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ctx = default)
     {
         return await Set.ToListAsync(ctx);
     }
@@ -139,7 +139,7 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     /// <returns>
     /// An enumerator that allows foreach to be used to process the paged in this collection.
     /// </returns>
-    public IEnumerable<TEntity> GetPaged(int pageIndex, int pageSize)
+    public virtual IEnumerable<TEntity> GetPaged(int pageIndex, int pageSize)
     {
         return Set.Skip(pageIndex*pageSize).Take(pageSize).ToList();
     }
@@ -156,7 +156,7 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     /// An enumerator that allows foreach to be used to process the paged asynchronous in this
     /// collection.
     /// </returns>
-    public async Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize, CancellationToken ctx = default)
+    public virtual async Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize, CancellationToken ctx = default)
     {
         return await Set.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync(ctx);
     }
@@ -167,7 +167,7 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     /// <returns>
     ///     An int defining the total number of records.
     /// </returns>
-    public int Count()
+    public virtual int Count()
     {
         return Set.Count();
     }
@@ -195,7 +195,7 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     /// <returns>
     ///     An enumerator that allows foreach to be used to process the matched items.
     /// </returns>
-    public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression)
+    public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression)
     {
         return Set.Where(expression).ToList();
     }
@@ -208,7 +208,7 @@ public class EfDataRepository<TEntity> : ITableDataRepository<TEntity>, IExpress
     /// <returns>
     ///     An enumerator that allows foreach to be used to process the asynchronous in this collection.
     /// </returns>
-    public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> expression,
+    public virtual async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> expression,
         CancellationToken ctx = default)
     {
         return await Set.Where(expression).ToListAsync(ctx);

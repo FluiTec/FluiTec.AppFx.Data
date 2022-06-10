@@ -12,6 +12,15 @@ namespace FluiTec.AppFx.Data.TestLibrary.UnitsOfWork
         IDummyRepository DummyRepository { get; }
 
         /// <summary>
+        /// Gets the dummy 2 repository.
+        /// </summary>
+        ///
+        /// <value>
+        /// The dummy 2 repository.
+        /// </value>
+        IDummy2Repository Dummy2Repository { get; }
+
+        /// <summary>
         ///     Gets the date time dummy repository.
         /// </summary>
         /// <value>
