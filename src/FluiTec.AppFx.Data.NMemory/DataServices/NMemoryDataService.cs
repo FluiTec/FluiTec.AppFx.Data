@@ -3,6 +3,7 @@ using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
 using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
+using FluiTec.AppFx.Data.SequentialGuid;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 using NMemory;
@@ -57,6 +58,7 @@ public abstract class NMemoryDataService<TUnitOfWork> : DataService<TUnitOfWork>
     {
         // ReSharper disable once VirtualMemberCallInConstructor
         Database = ConfigureDatabase(new Database());
+        GuidGenerator = new CombSequentialGuidGenerator();
     }
 
     /// <summary>
@@ -92,6 +94,19 @@ public abstract class NMemoryDataService<TUnitOfWork> : DataService<TUnitOfWork>
     {
         return Database.Tables.FindTable<TEntity>();
     }
+
+    #endregion
+
+    #region Properties
+
+    /// <summary>
+    /// Gets the unique identifier generator.
+    /// </summary>
+    ///
+    /// <value>
+    /// The unique identifier generator.
+    /// </value>
+    public override ISequentialGuidGenerator GuidGenerator { get; }
 
     #endregion
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
+using FluiTec.AppFx.Data.SequentialGuid;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 
@@ -42,6 +43,15 @@ public abstract class DataService<TUnitOfWork> : IDataService<TUnitOfWork>
     /// <summary>Gets the name.</summary>
     /// <value>The name.</value>
     public abstract string Name { get; }
+
+    /// <summary>
+    /// Gets the unique identifier generator.
+    /// </summary>
+    ///
+    /// <value>
+    /// The unique identifier generator.
+    /// </value>
+    public abstract ISequentialGuidGenerator GuidGenerator { get; }
 
     /// <summary>   Gets a value indicating whether the supports migration. </summary>
     /// <value> True if supports migration, false if not. </value>

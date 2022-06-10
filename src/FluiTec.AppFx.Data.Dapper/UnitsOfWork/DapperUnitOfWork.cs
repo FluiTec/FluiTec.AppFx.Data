@@ -2,6 +2,7 @@
 using System.Data;
 using FluiTec.AppFx.Data.Dapper.DataServices;
 using FluiTec.AppFx.Data.DataServices;
+using FluiTec.AppFx.Data.SequentialGuid;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 
@@ -92,7 +93,7 @@ public class DapperUnitOfWork : UnitOfWork
     #endregion
 
     #region IUnitOfWork
-
+    
     /// <summary>   Gets or sets the logger factory. </summary>
     /// <summary>   Commits the UnitOfWork. </summary>
     /// <exception cref="InvalidOperationException">

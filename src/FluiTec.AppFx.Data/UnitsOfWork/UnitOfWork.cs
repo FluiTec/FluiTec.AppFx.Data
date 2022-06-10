@@ -4,6 +4,7 @@ using System.Linq;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.SequentialGuid;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.UnitsOfWork;

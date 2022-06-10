@@ -4,6 +4,7 @@ using System.IO;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
+using FluiTec.AppFx.Data.SequentialGuid;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using LiteDB;
 using Microsoft.Extensions.Logging;
@@ -91,6 +92,15 @@ public abstract class BaseLiteDbDataService<TUnitOfWork> : DataService<TUnitOfWo
                 ? LiteDbDatabaseSingleton.GetDatabase(ServiceOptions.CurrentValue.FullDbFilePath)
                 : GetCachedDatabase(ServiceOptions.CurrentValue);
 
+    /// <summary>
+    /// Gets the unique identifier generator.
+    /// </summary>
+    ///
+    /// <value>
+    /// The unique identifier generator.
+    /// </value>
+    public override ISequentialGuidGenerator GuidGenerator { get; }
+
     #endregion
 
     #region Constructors
@@ -148,6 +158,7 @@ public abstract class BaseLiteDbDataService<TUnitOfWork> : DataService<TUnitOfWo
         _database = _useSingletonConnection
             ? LiteDbDatabaseSingleton.GetDatabase(fullDbFilePath)
             : new LiteDatabase(fullDbFilePath);
+        GuidGenerator = new CombSequentialGuidGenerator();
     }
 
     /// <summary>   Specialized constructor for use only by derived class. </summary>
@@ -203,6 +214,7 @@ public abstract class BaseLiteDbDataService<TUnitOfWork> : DataService<TUnitOfWo
             throw new ArgumentException("Invalid DbFileName.", nameof(options));
 
         ServiceOptions = options;
+        GuidGenerator = new CombSequentialGuidGenerator();
     }
 
     #endregion

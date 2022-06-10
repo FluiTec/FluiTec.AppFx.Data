@@ -6,6 +6,7 @@ using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
+using FluiTec.AppFx.Data.SequentialGuid;
 using FluiTec.AppFx.Data.Sql;
 using FluiTec.AppFx.Data.Sql.EventArgs;
 using FluiTec.AppFx.Data.UnitsOfWork;
@@ -114,6 +115,8 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
         // ReSharper disable once VirtualMemberCallInConstructor
         SqlBuilder = SqlType.GetBuilder(nameService, loggerFactory);
         SqlBuilder.SqlGenerated += (sender, args) => OnSqlGenerated(args);
+        // ReSharper disable once VirtualMemberCallInConstructor
+        GuidGenerator = new CombSequentialGuidGenerator(SqlType);
     }
 
     /// <summary>
@@ -154,6 +157,8 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
         // ReSharper disable once VirtualMemberCallInConstructor
         SqlBuilder = SqlType.GetBuilder(nameService, loggerFactory);
         SqlBuilder.SqlGenerated += (sender, args) => OnSqlGenerated(args);
+        // ReSharper disable once VirtualMemberCallInConstructor
+        GuidGenerator = new CombSequentialGuidGenerator(SqlType);
     }
 
     /// <summary>
@@ -207,6 +212,15 @@ public abstract class BaseDapperDataService<TUnitOfWork> : DataService<TUnitOfWo
     ///     The SQL builder.
     /// </value>
     public ISqlBuilder SqlBuilder { get; }
+
+    /// <summary>
+    /// Gets the unique identifier generator.
+    /// </summary>
+    ///
+    /// <value>
+    /// The unique identifier generator.
+    /// </value>
+    public override ISequentialGuidGenerator GuidGenerator { get; }
 
     #endregion
 }

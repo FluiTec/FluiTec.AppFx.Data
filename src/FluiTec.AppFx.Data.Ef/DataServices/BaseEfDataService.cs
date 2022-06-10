@@ -3,6 +3,7 @@ using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Ef.UnitsOfWork;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Data.Migration;
+using FluiTec.AppFx.Data.SequentialGuid;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -67,6 +68,7 @@ public abstract class BaseEfDataService<TUnitOfWork> : DataService<TUnitOfWork>,
         if (options == null) throw new ArgumentNullException(nameof(options));
         _connectionString = options.ConnectionString;
         _sqlType = options.SqlType;
+        GuidGenerator = new CombSequentialGuidGenerator(SqlType);
     }
 
     /// <summary>
@@ -97,6 +99,7 @@ public abstract class BaseEfDataService<TUnitOfWork> : DataService<TUnitOfWork>,
         if (options.CurrentValue == null)
             throw new ArgumentNullException(nameof(options));
         ServiceOptions = options;
+        GuidGenerator = new CombSequentialGuidGenerator(SqlType);
     }
 
     /// <summary>
@@ -126,6 +129,15 @@ public abstract class BaseEfDataService<TUnitOfWork> : DataService<TUnitOfWork>,
     /// <summary>   Gets the schema. </summary>
     /// <value> The schema. </value>
     public abstract string Schema { get; }
+
+    /// <summary>
+    /// Gets the unique identifier generator.
+    /// </summary>
+    ///
+    /// <value>
+    /// The unique identifier generator.
+    /// </value>
+    public override ISequentialGuidGenerator GuidGenerator { get; }
 
     #endregion
 }

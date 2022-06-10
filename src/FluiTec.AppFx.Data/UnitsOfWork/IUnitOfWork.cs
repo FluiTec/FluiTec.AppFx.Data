@@ -2,6 +2,7 @@
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.SequentialGuid;
 
 namespace FluiTec.AppFx.Data.UnitsOfWork;
 
