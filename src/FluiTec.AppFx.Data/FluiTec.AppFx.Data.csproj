@@ -25,9 +25,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ImmediateReflection" Version="1.6.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
-        <PackageReference Include="RT.Comb" Version="3.0.0" />
+        <PackageReference Include="ImmediateReflection" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+        <PackageReference Include="RT.Comb" />
     </ItemGroup>
 
     <ItemGroup>

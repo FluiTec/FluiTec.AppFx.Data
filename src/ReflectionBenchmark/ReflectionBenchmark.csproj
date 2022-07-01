@@ -8,9 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BenchmarkDotNet" Version="0.13.1"/>
-        <PackageReference Include="FastMember" Version="1.5.0"/>
-        <PackageReference Include="ImmediateReflection" Version="1.6.0"/>
+        <PackageReference Include="BenchmarkDotNet" />
+        <PackageReference Include="FastMember" />
+        <PackageReference Include="ImmediateReflection" />
     </ItemGroup>
 
 </Project>

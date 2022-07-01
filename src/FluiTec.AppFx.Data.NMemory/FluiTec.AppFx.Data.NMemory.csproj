@@ -25,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="NMemory" Version="3.1.4"/>
+        <PackageReference Include="NMemory" />
     </ItemGroup>
 
     <ItemGroup>

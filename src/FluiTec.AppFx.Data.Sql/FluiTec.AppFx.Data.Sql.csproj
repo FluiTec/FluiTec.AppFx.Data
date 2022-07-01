@@ -25,11 +25,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Dapper" Version="2.0.123"/>
-        <PackageReference Include="ImmediateReflection" Version="1.6.0"/>
-        <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
-        <PackageReference Include="System.Data.Common" Version="4.3.0"/>
-        <PackageReference Include="System.Reflection.TypeExtensions" Version="4.7.0"/>
+        <PackageReference Include="Dapper" />
+        <PackageReference Include="ImmediateReflection" />
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="System.Data.Common" />
+        <PackageReference Include="System.Reflection.TypeExtensions" />
     </ItemGroup>
 
     <ItemGroup>
