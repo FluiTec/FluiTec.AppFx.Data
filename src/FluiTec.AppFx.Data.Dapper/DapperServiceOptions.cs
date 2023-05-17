@@ -1,11 +1,9 @@
 ﻿using System;
 using FluiTec.AppFx.Data.Migration;
-using FluiTec.AppFx.Options.Attributes;
 
 namespace FluiTec.AppFx.Data.Dapper;
 
 /// <summary>   A dapper service options. </summary>
-[ConfigurationKey("Dapper")]
 public abstract class DapperServiceOptions : IDapperServiceOptions
 {
     /// <summary>   Specialized default constructor for use only by derived class. </summary>
@@ -33,7 +31,6 @@ public abstract class DapperServiceOptions : IDapperServiceOptions
 
     /// <summary>   Gets the connection string. </summary>
     /// <value> The connection string. </value>
-    [ConfigurationSecret]
     public string ConnectionString { get; set; }
 
     /// <summary>

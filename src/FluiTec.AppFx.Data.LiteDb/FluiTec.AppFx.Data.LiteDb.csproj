@@ -24,14 +24,6 @@
         </None>
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)'=='Debug'">
-        <ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(Configuration)'=='Release'">
-        <PackageReference Include="FluiTec.AppFx.Options" />
-    </ItemGroup>
-
     <ItemGroup>
         <PackageReference Include="FluentMigrator" />
         <PackageReference Include="FluentMigrator.Runner" />

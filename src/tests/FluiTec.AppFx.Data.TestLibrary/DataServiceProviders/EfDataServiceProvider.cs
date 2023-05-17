@@ -1,10 +1,8 @@
 ﻿using System.IO;
-using FluiTec.AppFx.Console.Helpers;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.TestLibrary.Configuration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Configuration;
-using ConfigurationManager = FluiTec.AppFx.Options.Managers.ConfigurationManager;
 
 namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
 {

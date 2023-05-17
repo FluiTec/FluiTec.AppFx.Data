@@ -1,10 +1,8 @@
 ﻿using FluiTec.AppFx.Data.Migration;
-using FluiTec.AppFx.Options.Attributes;
 
 namespace FluiTec.AppFx.Data.Dapper.Mysql;
 
 /// <summary>   A mysql dapper service options. </summary>
-[ConfigurationKey("Dapper.Mysql")]
 public class MysqlDapperServiceOptions : DapperServiceOptions
 {
     /// <summary>   Default constructor. </summary>

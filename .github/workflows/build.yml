@@ -1,0 +1,22 @@
+name: build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
+    steps:
+    - uses: actions/checkout@v3
+    - name: setup
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: restore
+      run: dotnet restore
+    - name: build
+      run: dotnet build --no-restore
+    - name: test
+      run: dotnet test --no-build --verbosity normal

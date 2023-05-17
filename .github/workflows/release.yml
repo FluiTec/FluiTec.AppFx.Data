@@ -1,0 +1,41 @@
+name: release
+
+on:
+  workflow_run:
+    workflows: ["bump"]
+    types:
+      - completed
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
+    steps:
+    - uses: actions/checkout@v3
+    - name: setup
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: read-version
+      id: version
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ./current.version
+        trim: true
+    - name: restore
+      run: dotnet restore
+    - name: build
+      run: dotnet build -c Release /p:Version="${{ steps.version.outputs.content }}" --no-restore
+    - name: test
+      id: test
+      run: dotnet test --no-build --verbosity normal
+    - name: publish@baget
+      if: steps.test.conclusion == 'success'
+      run: dotnet nuget push -s https://baget.wtschnell.de/v3/index.json -k ${{ secrets.baget_apikey }} **/*.nupkg --skip-duplicate
+    - name: publish@github
+      if: steps.test.conclusion == 'success'
+      run: dotnet nuget push -s https://nuget.pkg.github.com/fluitec/index.json -k ${{ secrets.package_pat }} **/*.nupkg --skip-duplicate
+    - name: publish@nuget
+      if: steps.test.conclusion == 'success'
+      run: dotnet nuget push -s https://api.nuget.org/v3/index.json -k ${{ secrets.nuget_apikey }} **/*.nupkg --skip-duplicate

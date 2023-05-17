@@ -1,0 +1,43 @@
+name: bump
+
+on:
+  workflow_dispatch:
+    inputs:
+      version-fragment:
+        description: 'Version-Fragment to increment'
+        default: 'bug'
+        required: true
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: read-current
+      id: package
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ./current.version
+        trim: true
+    - name: echo-current
+      run: echo "${{ steps.package.outputs.content }}"
+    - name: increment
+      id: bump
+      uses: christian-draeger/increment-semantic-version@1.0.3
+      with:
+        current-version: "${{ steps.package.outputs.content }}"
+        version-fragment: ${{ github.event.inputs.version-fragment }}
+    - name: echo-new
+      run: echo ${{ steps.bump.outputs.next-version }}
+    - name: write-current
+      uses: DamianReeves/write-file-action@master
+      with:
+        path: ./current.version
+        contents: ${{ steps.bump.outputs.next-version }}
+        write-mode: overwrite
+    - name: commit
+      run: |
+          git config --global user.name ${{ secrets.org_name }}
+          git config --global user.email ${{ secrets.org_email }}
+          git commit -am "bump version"
+          git push

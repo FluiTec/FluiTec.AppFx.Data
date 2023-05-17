@@ -1,11 +1,9 @@
 ﻿using System.IO;
-using FluiTec.AppFx.Console.Helpers;
 using FluiTec.AppFx.Data.Dapper;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.TestLibrary.Configuration;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Configuration;
-using ConfigurationManager = FluiTec.AppFx.Options.Managers.ConfigurationManager;
 
 namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
 {
@@ -33,7 +31,6 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
                 .AddJsonFile("appsettings.integration.json", false, false)
                 .AddJsonFile("appsettings.integration.secret.json", true, false)
                 .Build();
-            ConfigurationManager = new ConfigurationManager(config);
 
             // ReSharper disable VirtualMemberCallInConstructor
             ServiceOptions = ConfigureOptions();
@@ -60,15 +57,7 @@ namespace FluiTec.AppFx.Data.TestLibrary.DataServiceProviders
         ///     Options that control the admin.
         /// </value>
         public DbAdminOptions AdminOptions { get; protected set; }
-
-        /// <summary>
-        ///     Gets the manager for configuration.
-        /// </summary>
-        /// <value>
-        ///     The configuration manager.
-        /// </value>
-        protected ConfigurationManager ConfigurationManager { get; }
-
+        
         /// <summary>
         ///     Gets a value indicating whether the database is available.
         /// </summary>

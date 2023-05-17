@@ -1,13 +1,11 @@
 ﻿using System;
 using FluiTec.AppFx.Data.Migration;
-using FluiTec.AppFx.Options.Attributes;
 
 namespace FluiTec.AppFx.Data.Ef;
 
 /// <summary>
 ///     An ef SQL service options.
 /// </summary>
-[ConfigurationKey("FluiTec.EntityFramework")]
 public class EfSqlServiceOptions : ISqlServiceOptions
 {
     /// <summary>
@@ -37,7 +35,6 @@ public class EfSqlServiceOptions : ISqlServiceOptions
 
     /// <summary>   Gets the connection string. </summary>
     /// <value> The connection string. </value>
-    [ConfigurationSecret]
     public string ConnectionString { get; set; }
 
     /// <summary>

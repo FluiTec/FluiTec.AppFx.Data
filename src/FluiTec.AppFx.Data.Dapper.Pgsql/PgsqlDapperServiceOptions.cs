@@ -1,10 +1,7 @@
 ﻿using FluiTec.AppFx.Data.Migration;
-using FluiTec.AppFx.Options.Attributes;
-
 namespace FluiTec.AppFx.Data.Dapper.Pgsql;
 
 /// <summary>   A pgsql dapper service options. </summary>
-[ConfigurationKey("Dapper.Pgsql")]
 public class PgsqlDapperServiceOptions : DapperServiceOptions
 {
     /// <summary>   Default constructor. </summary>

@@ -1,9 +1,7 @@
 ﻿using System.IO;
-using FluiTec.AppFx.Options.Attributes;
 
 namespace FluiTec.AppFx.Data.LiteDb;
 
-[ConfigurationKey("LiteDb")]
 public class LiteDbServiceOptions
 {
     /// <summary>	Gets or sets the filename of the database file. </summary>

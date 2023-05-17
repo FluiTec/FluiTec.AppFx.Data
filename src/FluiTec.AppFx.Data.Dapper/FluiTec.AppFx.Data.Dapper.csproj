@@ -24,24 +24,17 @@
         </None>
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)'=='Debug'">
-        <ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(Configuration)'=='Release'">
-        <PackageReference Include="FluiTec.AppFx.Options" />
-    </ItemGroup>
-
     <ItemGroup>
         <PackageReference Include="FluentMigrator" />
         <PackageReference Include="FluentMigrator.Runner" />
         <PackageReference Include="FluentMigrator.Runner.Core" />
+        <PackageReference Include="FluentValidation" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FluiTec.AppFx.Data.Migration\FluiTec.AppFx.Data.Migration.csproj"/>
-        <ProjectReference Include="..\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj"/>
-        <ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj"/>
+        <ProjectReference Include="..\FluiTec.AppFx.Data.Migration\FluiTec.AppFx.Data.Migration.csproj" />
+        <ProjectReference Include="..\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj" />
+        <ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
     </ItemGroup>
 
 </Project>
