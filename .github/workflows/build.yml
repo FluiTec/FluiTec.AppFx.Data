@@ -3,7 +3,7 @@ name: build
 on: [push]
 
 env:
-  -TEST_FILTER: FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests
+  -TEST_FILTER: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests"
 
 jobs:
   build:
@@ -24,4 +24,4 @@ jobs:
     - name: build
       run: dotnet build --no-restore
     - name: test
-      run: dotnet test --no-build --verbosity normal --filter ${TEST_FILTER}
+      run: dotnet test --no-build --verbosity normal --filter $TEST_FILTER
