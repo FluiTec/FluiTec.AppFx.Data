@@ -3,7 +3,7 @@ name: build
 on: [push]
 
 env:
-  -TEST_FILTER: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests"
+  TEST_FILTER: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests"
 
 jobs:
   build:
