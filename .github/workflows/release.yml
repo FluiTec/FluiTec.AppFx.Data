@@ -13,11 +13,12 @@ jobs:
         working-directory: ./src
     steps:
     - uses: actions/checkout@v3
+      with:	
+        submodules: true
     - name: setup
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-        submodules: recursive
     - name: read-version
       id: version
       uses: juliangruber/read-file-action@v1
