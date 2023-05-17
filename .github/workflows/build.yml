@@ -4,6 +4,7 @@ on: [push]
 
 env:
   TEST_FILTER: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests"
+  INTEGRATION_FILTER: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.IntegrationTests"
 
 jobs:
   build:
@@ -23,5 +24,9 @@ jobs:
       run: dotnet restore
     - name: build
       run: dotnet build --no-restore
-    - name: test
+    - name: unit test
+      id: test
       run: dotnet test --no-build --verbosity normal --filter $TEST_FILTER
+    - name: integration test
+      if: (steps.test.conclusion == 'success')
+      run: dotnet test --no-build --verbosity normal --filter $INTEGRATION_FILTER

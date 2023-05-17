@@ -5,6 +5,10 @@ on:
     workflows: ["bump"]
     types:
       - completed
+env:
+  TEST_FILTER: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.Tests"
+  INTEGRATION_FILTER: "FullyQualifiedName~FluiTec.AppFx.Data&FullyQualifiedName~.IntegrationTests"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,12 +36,19 @@ jobs:
     - name: test
       id: test
       run: dotnet test --no-build --verbosity normal
+    - name: unit test
+      id: test1
+      run: dotnet test --no-build --verbosity normal --filter $TEST_FILTER
+    - name: integration test
+      id: test2
+      if: (steps.test1.conclusion == 'success')
+      run: dotnet test --no-build --verbosity normal --filter $INTEGRATION_FILTER
     - name: publish@baget
-      if: steps.test.conclusion == 'success'
+      if: (steps.test1.conclusion == 'success' && steps.test2.conclusion == 'success')
       run: dotnet nuget push -s https://baget.wtschnell.de/v3/index.json -k ${{ secrets.baget_apikey }} **/*.nupkg --skip-duplicate
     - name: publish@github
-      if: steps.test.conclusion == 'success'
+      if: (steps.test1.conclusion == 'success' && steps.test2.conclusion == 'success')
       run: dotnet nuget push -s https://nuget.pkg.github.com/fluitec/index.json -k ${{ secrets.package_pat }} **/*.nupkg --skip-duplicate
     - name: publish@nuget
-      if: steps.test.conclusion == 'success'
+      if: (steps.test1.conclusion == 'success' && steps.test2.conclusion == 'success')
       run: dotnet nuget push -s https://api.nuget.org/v3/index.json -k ${{ secrets.nuget_apikey }} **/*.nupkg --skip-duplicate
