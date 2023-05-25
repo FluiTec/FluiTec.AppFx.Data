@@ -1,25 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
 
-        <IsPackable>false</IsPackable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
 
-        <LangVersion>8.0</LangVersion>
-    </PropertyGroup>
-
-    <ItemGroup>
-	    <PackageReference Include="Microsoft.NET.Test.Sdk" />
-	    <PackageReference Include="MSTest.TestAdapter" />
-	    <PackageReference Include="MSTest.TestFramework" />
-	    <PackageReference Include="coverlet.collector" />
-        <PackageReference Include="MySql.Data" />
-        <PackageReference Include="Npgsql" />
-        <PackageReference Include="System.Data.SqlClient" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
 </Project>

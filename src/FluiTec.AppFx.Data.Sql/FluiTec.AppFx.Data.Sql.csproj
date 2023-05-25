@@ -1,39 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <PackageProjectUrl>https://www.nuget.org/packages/FluiTec.AppFx.Data/</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/FluiTec/FluiTec.AppFx.Data</RepositoryUrl>
-        <NeutralLanguage>en</NeutralLanguage>
-        <PostBuildEvent></PostBuildEvent>
-        <PreBuildEvent></PreBuildEvent>
-        <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-        <LangVersion>latest</LangVersion>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<NeutralLanguage>en</NeutralLanguage>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <None Include="..\..\LICENSE.md">
-            <Pack>True</Pack>
-            <PackagePath></PackagePath>
-        </None>
-        <None Include="..\..\THIRD_PARTY_LICENSES.md">
-            <Pack>True</Pack>
-            <PackagePath></PackagePath>
-        </None>
-    </ItemGroup>
+	<PropertyGroup>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageProjectUrl>https://www.nuget.org/packages/FluiTec.AppFx.Data/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/FluiTec/FluiTec.AppFx.Data</RepositoryUrl>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Dapper" />
-        <PackageReference Include="ImmediateReflection" />
-        <PackageReference Include="Microsoft.CSharp" />
-        <PackageReference Include="System.Data.Common" />
-        <PackageReference Include="System.Reflection.TypeExtensions" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj"/>
-    </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\LICENSE.md">
+			<Pack>True</Pack>
+			<PackagePath />
+		</None>
+		<None Include="..\..\THIRD_PARTY_LICENSES.md">
+			<Pack>True</Pack>
+			<PackagePath />
+		</None>
+	</ItemGroup>
 
 </Project>

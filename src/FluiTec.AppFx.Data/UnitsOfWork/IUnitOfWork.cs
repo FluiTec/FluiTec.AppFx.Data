@@ -1,61 +1,41 @@
-﻿using System;
-using FluiTec.AppFx.Data.DataServices;
-using FluiTec.AppFx.Data.Entities;
-using FluiTec.AppFx.Data.Repositories;
-using FluiTec.AppFx.Data.SequentialGuid;
+﻿using Microsoft.Extensions.Logging;
+using System;
+using System.Transactions;
 
 namespace FluiTec.AppFx.Data.UnitsOfWork;
 
-/// <summary>	Interface for a unit of work. </summary>
-public interface IUnitOfWork : IDisposable
+/// <summary>   Interface for unit of work. </summary>
+public interface IUnitOfWork
 {
-    /// <summary>Gets the data service.</summary>
-    /// <value>The data service.</value>
-    // ReSharper disable once UnusedMemberInSuper.Global
-    IDataService DataService { get; }
+    /// <summary>   Event queue for all listeners interested in BeforeCommit events. </summary>
+    event EventHandler<CancelUnitOfWorkEventArgs>? BeforeCommit;
 
-    /// <summary>	Commits this unit of work. </summary>
-    // ReSharper disable once UnusedMemberInSuper.Global
+    /// <summary>   Event queue for all listeners interested in Commited events. </summary>
+    event EventHandler<UnitOfWorkEventArgs>? Commited;
+
+    /// <summary>   Event queue for all listeners interested in BeforeRollback events. </summary>
+    event EventHandler<CancelUnitOfWorkEventArgs>? BeforeRollback;
+
+    /// <summary>   Event queue for all listeners interested in Rolledback events. </summary>
+    event EventHandler<UnitOfWorkEventArgs>? Rolledback;
+
+    /// <summary>   Gets options for controlling the transaction. </summary>
+    /// <value> Options that control the transaction. </value>
+    TransactionOptions TransactionOptions { get; }
+
+    public ILogger<IUnitOfWork>? Logger { get; }
+
+    /// <summary>   Gets a value indicating whether we can commit. </summary>
+    /// <value> True if we can commit, false if not. </value>
+    bool CanCommit { get; }
+
+    /// <summary>   Gets a value indicating whether this object is finished. </summary>
+    /// <value> True if this object is finished, false if not. </value>
+    bool IsFinished { get; }
+
+    /// <summary>   Commits this object. </summary>
     void Commit();
 
-    /// <summary>	Rolls back this unit of work. </summary>
-    // ReSharper disable once UnusedMemberInSuper.Global
+    /// <summary>   Rollbacks this object. </summary>
     void Rollback();
-
-    /// <summary>	Gets the repository. </summary>
-    /// <typeparam name="TRepository">	Type of the repository. </typeparam>
-    /// <returns>	The repository. </returns>
-    // ReSharper disable once UnusedMemberInSuper.Global
-    TRepository GetRepository<TRepository>() where TRepository : class, IRepository;
-
-    /// <summary>
-    ///     Gets the repository.
-    /// </summary>
-    /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    /// <typeparam name="TKey">     Type of the key. </typeparam>
-    /// <returns>
-    ///     The repository.
-    /// </returns>
-    IDataRepository<TEntity> GetDataRepository<TEntity>() where TEntity : class, IEntity, new();
-
-    /// <summary>
-    ///     Gets writeable repository.
-    /// </summary>
-    /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    /// <returns>
-    ///     The writeable repository.
-    /// </returns>
-    IWritableTableDataRepository<TEntity> GetWritableRepository<TEntity>()
-        where TEntity : class, IEntity, new();
-
-    /// <summary>
-    ///     Gets writable repository.
-    /// </summary>
-    /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-    /// <typeparam name="TKey">     Type of the key. </typeparam>
-    /// <returns>
-    ///     The writable repository.
-    /// </returns>
-    IWritableKeyTableDataRepository<TEntity, TKey> GetKeyWritableRepository<TEntity, TKey>()
-        where TEntity : class, IKeyEntity<TKey>, new();
 }
