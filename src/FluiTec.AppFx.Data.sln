@@ -49,8 +49,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Dapper.M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Dapper.Pgsql", "FluiTec.AppFx.Data.Dapper.Pgsql\FluiTec.AppFx.Data.Dapper.Pgsql.csproj", "{7DCB5F71-AC49-4AD8-B3CD-36704B50B7FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Dapper.Sqlite", "FluiTec.AppFx.Data.Dapper.Sqlite\FluiTec.AppFx.Data.Dapper.Sqlite.csproj", "{A7DA51B3-5855-4AFD-AF6A-DDD5CE13CE83}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.LiteDb", "FluiTec.AppFx.Data.LiteDb\FluiTec.AppFx.Data.LiteDb.csproj", "{786DD345-409B-4E4C-A2F1-2DEA04BC50A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.NMemory", "FluiTec.AppFx.Data.NMemory\FluiTec.AppFx.Data.NMemory.csproj", "{B7D01545-CE3B-443C-BB43-464E351B40AD}"
@@ -74,6 +72,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.NMemory.Tests", "tests\unittests\FluiTec.AppFx.Data.NMemory.Tests\FluiTec.AppFx.Data.NMemory.Tests.csproj", "{8EF7A36C-C5AA-41D0-9593-3C20604765B9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Sql.Tests", "tests\unittests\FluiTec.AppFx.Data.Sql.Tests\FluiTec.AppFx.Data.Sql.Tests.csproj", "{A6AFDF3A-60A5-4DEE-8CA7-0A674D935AC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.Dapper.Sqlite", "FluiTec.AppFx.Data.Dapper.Sqlite\FluiTec.AppFx.Data.Dapper.Sqlite.csproj", "{C74D357C-D5DE-469B-9B7A-814E8ABF64E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,10 +105,6 @@ Global
 		{7DCB5F71-AC49-4AD8-B3CD-36704B50B7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DCB5F71-AC49-4AD8-B3CD-36704B50B7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DCB5F71-AC49-4AD8-B3CD-36704B50B7FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A7DA51B3-5855-4AFD-AF6A-DDD5CE13CE83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7DA51B3-5855-4AFD-AF6A-DDD5CE13CE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7DA51B3-5855-4AFD-AF6A-DDD5CE13CE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7DA51B3-5855-4AFD-AF6A-DDD5CE13CE83}.Release|Any CPU.Build.0 = Release|Any CPU
 		{786DD345-409B-4E4C-A2F1-2DEA04BC50A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{786DD345-409B-4E4C-A2F1-2DEA04BC50A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{786DD345-409B-4E4C-A2F1-2DEA04BC50A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -157,6 +153,10 @@ Global
 		{A6AFDF3A-60A5-4DEE-8CA7-0A674D935AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6AFDF3A-60A5-4DEE-8CA7-0A674D935AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6AFDF3A-60A5-4DEE-8CA7-0A674D935AC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C74D357C-D5DE-469B-9B7A-814E8ABF64E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C74D357C-D5DE-469B-9B7A-814E8ABF64E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C74D357C-D5DE-469B-9B7A-814E8ABF64E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C74D357C-D5DE-469B-9B7A-814E8ABF64E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
