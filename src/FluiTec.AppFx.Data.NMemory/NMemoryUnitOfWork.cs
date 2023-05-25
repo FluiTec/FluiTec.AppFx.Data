@@ -16,7 +16,7 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     public NMemoryUnitOfWork(ILogger<IUnitOfWork>? logger, TransactionOptions transactionOptions)
         : base(logger, transactionOptions)
     {
-        Transaction = new TransactionScope(TransactionScopeOption.Required, transactionOptions);
+        Transaction = new TransactionScope(TransactionScopeOption.RequiresNew, transactionOptions);
         _ownsConnection = true;
     }
 
@@ -32,7 +32,8 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
         }
         else
         {
-            Transaction = new TransactionScope(TransactionScopeOption.Required, parentUnitOfWork.TransactionOptions);
+            Transaction = new TransactionScope(TransactionScopeOption.RequiresNew, parentUnitOfWork.TransactionOptions);
+            ControlledByParent = false;
             _ownsConnection = true;
         }
     }
@@ -40,19 +41,7 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     /// <summary>   Gets or sets the transaction. </summary>
     /// <value> The transaction. </value>
     public TransactionScope? Transaction { get; private set; }
-
-    /// <summary>   Gets a value indicating whether we can commit. </summary>
-    /// <value> True if we can commit, false if not. </value>
-    public override bool CanCommit
-    {
-        get
-        {
-            if (ParentUnitOfWork != null)
-                return ParentUnitOfWork.CanCommit;
-            return Transaction != null;
-        }
-    }
-
+    
     /// <summary>   Commits no cancel. </summary>
     /// <exception cref="T:System.InvalidOperationException">   Thrown when the requested operation
     ///                                                         is invalid. </exception>

@@ -27,7 +27,9 @@ public abstract class ParentAwareUnitOfWork : BaseUnitOfWork
         ParentUnitOfWork.BeforeRollback += ParentUnitOfWork_BeforeRollback;
     }
 
-    public override bool CanCommit => !ControlledByParent && !IsFinished;
+    /// <summary>   Gets a value indicating whether we can commit. </summary>
+    /// <value> True if we can commit, false if not. </value>
+    public override bool CanCommit => ControlledByParent ? false : !IsFinished;
 
     /// <summary>   Event handler. Called by ParentUnitOfWork for before commit events. </summary>
     /// <param name="sender">   Source of the event. </param>

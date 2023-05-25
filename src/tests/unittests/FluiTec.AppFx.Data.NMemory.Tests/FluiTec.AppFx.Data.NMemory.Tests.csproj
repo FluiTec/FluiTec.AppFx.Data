@@ -19,4 +19,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\FluiTec.AppFx.Data.NMemory\FluiTec.AppFx.Data.NMemory.csproj" />
+    <ProjectReference Include="..\FluiTec.AppFx.Data.Tests\FluiTec.AppFx.Data.Tests.csproj" />
+  </ItemGroup>
+
 </Project>
