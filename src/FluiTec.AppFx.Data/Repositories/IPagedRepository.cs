@@ -20,8 +20,11 @@ public interface IPagedRepository<TEntity> : IRepository<TEntity>
     /// <summary>   Gets paged asynchronous. </summary>
     /// <param name="pageIndex">            Zero-based index of the page. </param>
     /// <param name="pageSize">             Size of the page. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The paged. </returns>
-    Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default);
+    Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize,
+        CancellationToken cancellationToken = default);
 }

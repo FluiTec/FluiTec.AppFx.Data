@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\FluiTec.AppFx.Data.NMemory\FluiTec.AppFx.Data.NMemory.csproj" />
+    <ProjectReference Include="..\Samples.TestData\Samples.TestData.csproj" />
+  </ItemGroup>
+
+</Project>

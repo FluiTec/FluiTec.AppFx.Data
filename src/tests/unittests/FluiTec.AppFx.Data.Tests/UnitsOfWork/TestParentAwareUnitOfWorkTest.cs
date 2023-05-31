@@ -8,13 +8,16 @@ namespace FluiTec.AppFx.Data.Tests.UnitsOfWork;
 
 /// <summary>   A test parent aware unit of work test. </summary>
 [TestClass]
-public class TestParentAwareUnitOfWorkTest : ParentAwareUnitOfWorkTest<TestParentAwareUnitOfWork>
+public class
+    TestParentAwareUnitOfWorkTest : ParentAwareUnitOfWorkTest<TestParentAwareUnitOfWork, TestParentAwareUnitOfWork>
 {
     /// <summary>   Constructs the given logger. </summary>
     /// <param name="logger">   (Optional) The logger. </param>
     /// <returns>   A TUnitOfWork. </returns>
-    protected override TestParentAwareUnitOfWork Construct(ILogger<IUnitOfWork>? logger = null) =>
-        new(logger, new TransactionOptions());
+    protected override TestParentAwareUnitOfWork Construct(ILogger<IUnitOfWork>? logger = null)
+    {
+        return new(logger, new TransactionOptions());
+    }
 
     /// <summary>   Construct child. </summary>
     /// <param name="parentAwareUnitOfWork">    The parent aware unit of work. </param>
@@ -22,5 +25,7 @@ public class TestParentAwareUnitOfWorkTest : ParentAwareUnitOfWorkTest<TestParen
     /// <returns>   A TestParentAwareUnitOfWork. </returns>
     protected override TestParentAwareUnitOfWork ConstructChild(TestParentAwareUnitOfWork parentAwareUnitOfWork,
         ILogger<IUnitOfWork>? logger = null)
-        => new(logger, parentAwareUnitOfWork);
+    {
+        return new(logger, parentAwareUnitOfWork);
+    }
 }

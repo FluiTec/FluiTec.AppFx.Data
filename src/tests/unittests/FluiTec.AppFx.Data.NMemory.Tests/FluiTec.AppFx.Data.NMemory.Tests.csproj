@@ -24,4 +24,9 @@
     <ProjectReference Include="..\FluiTec.AppFx.Data.Tests\FluiTec.AppFx.Data.Tests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Providers\Fixtures\" />
+    <Folder Include="Repositories\Fixtures\" />
+  </ItemGroup>
+
 </Project>

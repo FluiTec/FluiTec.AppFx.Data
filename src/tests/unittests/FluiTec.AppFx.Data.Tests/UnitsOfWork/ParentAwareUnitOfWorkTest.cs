@@ -6,10 +6,12 @@ using Moq;
 namespace FluiTec.AppFx.Data.Tests.UnitsOfWork;
 
 /// <summary>   (Unit Test Class) a parent aware unit of work test. </summary>
-/// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
+/// <typeparam name="TParentUnitOfWork">    Type of the parent unit of work. </typeparam>
+/// <typeparam name="TUnitOfWork">          Type of the unit of work. </typeparam>
 [TestClass]
-public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTest<TUnitOfWork>
+public abstract class ParentAwareUnitOfWorkTest<TParentUnitOfWork, TUnitOfWork> : BaseUnitOfWorkTest<TParentUnitOfWork>
     where TUnitOfWork : ParentAwareUnitOfWork
+    where TParentUnitOfWork : BaseUnitOfWork
 {
     /// <summary>   (Unit Test Method) can construct child. </summary>
     [TestMethod]
@@ -19,6 +21,7 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
         var child = ConstructChild(parent);
         Assert.IsNotNull(child);
     }
+
     /// <summary>   (Unit Test Method) child can not commit by default. </summary>
     [TestMethod]
     public void ChildCanNotCommitByDefault()
@@ -31,7 +34,7 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
         else
             Assert.IsTrue(child.CanCommit);
     }
-    
+
     /// <summary>   (Unit Test Method) child is not finished by default. </summary>
     [TestMethod]
     public void ChildIsNotFinishedByDefault()
@@ -40,7 +43,7 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
         var child = ConstructChild(parent);
         Assert.IsFalse(child.IsFinished);
     }
-    
+
     /// <summary>   (Unit Test Method) child returns null logger. </summary>
     [TestMethod]
     public void ChildReturnsNullLogger()
@@ -49,7 +52,7 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
         var child = ConstructChild(parent);
         Assert.IsNull(child.Logger);
     }
-    
+
     /// <summary>   (Unit Test Method) child returns logger. </summary>
     [TestMethod]
     public void ChildReturnsLogger()
@@ -59,7 +62,7 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
         var child = ConstructChild(parent, logger.Object);
         Assert.IsNotNull(child.Logger);
     }
-    
+
     /// <summary>   (Unit Test Method) child can commit. </summary>
     [TestMethod]
     public void ChildCanCommit()
@@ -79,6 +82,7 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
                 parent.Commit();
                 passed = child is { CanCommit: false, IsFinished: true };
             }
+
             Assert.IsTrue(passed);
         }
         else
@@ -88,7 +92,7 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
             Assert.IsFalse(child.CanCommit);
         }
     }
-    
+
     /// <summary>   (Unit Test Method) child can cancel commit. </summary>
     [TestMethod]
     public void ChildCanCancelCommit()
@@ -112,7 +116,7 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
             Assert.IsTrue(child.CanCommit);
         }
     }
-    
+
     /// <summary>   (Unit Test Method) child notifies committed. </summary>
     [TestMethod]
     public void ChildNotifiesCommitted()
@@ -137,7 +141,7 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
             Assert.IsTrue(notified);
         }
     }
-    
+
     /// <summary>   (Unit Test Method) child can rollback. </summary>
     [TestMethod]
     public void ChildCanRollback()
@@ -157,6 +161,7 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
                 parent.Rollback();
                 passed = child is { CanCommit: false, IsFinished: true };
             }
+
             Assert.IsTrue(passed);
         }
         else
@@ -166,7 +171,7 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
             Assert.IsFalse(child.CanCommit);
         }
     }
-    
+
     /// <summary>   (Unit Test Method) child can cancel rollback. </summary>
     [TestMethod]
     public void ChildCanCancelRollback()
@@ -216,9 +221,25 @@ public abstract class ParentAwareUnitOfWorkTest<TUnitOfWork> : BaseUnitOfWorkTes
         }
     }
 
+    [TestMethod]
+    public void ChildRollsBackOnDispose()
+    {
+        var notified = false;
+        var parent = Construct();
+        var child = ConstructChild(parent);
+        child.Rolledback += (sender, args) => notified = true;
+
+        child.Dispose();
+
+        Assert.IsTrue(child.IsFinished);
+        Assert.IsFalse(child.CanCommit);
+        Assert.IsTrue(notified);
+    }
+
     /// <summary>   Construct child. </summary>
     /// <param name="parentAwareUnitOfWork">    The parent aware unit of work. </param>
     /// <param name="logger">                   (Optional) The logger. </param>
     /// <returns>   A TUnitOfWork. </returns>
-    protected abstract TUnitOfWork ConstructChild(TUnitOfWork parentAwareUnitOfWork, ILogger<IUnitOfWork>? logger = null);
+    protected abstract TUnitOfWork ConstructChild(TParentUnitOfWork parentAwareUnitOfWork,
+        ILogger<IUnitOfWork>? logger = null);
 }

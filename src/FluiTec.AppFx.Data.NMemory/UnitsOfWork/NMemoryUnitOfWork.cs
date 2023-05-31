@@ -1,15 +1,16 @@
-﻿using System.Transactions;
+﻿using System;
+using System.Transactions;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 
-namespace FluiTec.AppFx.Data.NMemory;
+namespace FluiTec.AppFx.Data.NMemory.UnitsOfWork;
 
 /// <summary>   A memory unit of work. </summary>
 public class NMemoryUnitOfWork : ParentAwareUnitOfWork
 {
     /// <summary>   (Immutable) true to owns connection. </summary>
     private readonly bool _ownsConnection;
-    
+
     /// <summary>   Constructor. </summary>
     /// <param name="logger">               The logger. </param>
     /// <param name="transactionOptions">   Options for controlling the transaction. </param>
@@ -23,7 +24,8 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     /// <summary>   Constructor. </summary>
     /// <param name="logger">           The logger. </param>
     /// <param name="parentUnitOfWork"> The parent unit of work. </param>
-    public NMemoryUnitOfWork(ILogger<IUnitOfWork>? logger, IUnitOfWork parentUnitOfWork) : base(logger, parentUnitOfWork.TransactionOptions)
+    public NMemoryUnitOfWork(ILogger<IUnitOfWork>? logger, IUnitOfWork parentUnitOfWork) : base(logger,
+        parentUnitOfWork.TransactionOptions)
     {
         if (parentUnitOfWork is NMemoryUnitOfWork nmUnitOfWork)
         {
@@ -41,10 +43,12 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     /// <summary>   Gets or sets the transaction. </summary>
     /// <value> The transaction. </value>
     public TransactionScope? Transaction { get; private set; }
-    
+
     /// <summary>   Commits no cancel. </summary>
-    /// <exception cref="T:System.InvalidOperationException">   Thrown when the requested operation
-    ///                                                         is invalid. </exception>
+    /// <exception cref="T:System.InvalidOperationException">
+    ///     Thrown when the requested operation
+    ///     is invalid.
+    /// </exception>
     protected override void CommitNoCancel()
     {
         if (!CanCommit || !_ownsConnection) return;
@@ -56,12 +60,14 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     /// <summary>   Commits by parent no cancel. </summary>
     protected override void CommitByParentNoCancel()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     /// <summary>   Rolls back a no cancel. </summary>
-    /// <exception cref="T:System.InvalidOperationException">   Thrown when the requested operation
-    ///                                                         is invalid. </exception>
+    /// <exception cref="T:System.InvalidOperationException">
+    ///     Thrown when the requested operation
+    ///     is invalid.
+    /// </exception>
     protected override void RollbackNoCancel()
     {
         if (!CanCommit || !_ownsConnection) return;
@@ -72,6 +78,6 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     /// <summary>   Rolls back a by parent no cancel. </summary>
     protected override void RollbackByParentNoCancel()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }

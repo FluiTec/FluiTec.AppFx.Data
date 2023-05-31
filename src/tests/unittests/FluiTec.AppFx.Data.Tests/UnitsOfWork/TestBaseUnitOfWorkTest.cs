@@ -13,5 +13,8 @@ public class TestBaseUnitOfWorkTest : BaseUnitOfWorkTest<TestBaseUnitOfWork>
     /// <summary>   Constructs the given logger. </summary>
     /// <param name="logger">   (Optional) The logger. </param>
     /// <returns>   A TUnitOfWork. </returns>
-    protected override TestBaseUnitOfWork Construct(ILogger<IUnitOfWork>? logger = null) => new TestBaseUnitOfWork(logger, new TransactionOptions());
+    protected override TestBaseUnitOfWork Construct(ILogger<IUnitOfWork>? logger = null)
+    {
+        return new(logger, new TransactionOptions());
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FluiTec.AppFx.Data.EntityNames;
+using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.DataServices;
 
@@ -12,4 +13,8 @@ public interface IDataService
     /// <summary>   Gets the name. </summary>
     /// <value> The name. </value>
     string Name { get; }
+
+    /// <summary>   Gets the name service. </summary>
+    /// <value> The name service. </value>
+    IEntityNameService NameService { get; }
 }

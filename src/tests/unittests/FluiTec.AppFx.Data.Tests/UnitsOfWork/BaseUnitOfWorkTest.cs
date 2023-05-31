@@ -8,7 +8,7 @@ namespace FluiTec.AppFx.Data.Tests.UnitsOfWork;
 /// <summary>   (Unit Test Class) a base unit of work test. </summary>
 /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
 [TestClass]
-public abstract class BaseUnitOfWorkTest<TUnitOfWork> 
+public abstract class BaseUnitOfWorkTest<TUnitOfWork>
     where TUnitOfWork : BaseUnitOfWork
 {
     /// <summary>   (Unit Test Method) can construct. </summary>
@@ -115,6 +115,18 @@ public abstract class BaseUnitOfWorkTest<TUnitOfWork>
         var uow = Construct();
         uow.Rolledback += (sender, args) => notified = true;
         uow.Rollback();
+        Assert.IsTrue(uow.IsFinished);
+        Assert.IsFalse(uow.CanCommit);
+        Assert.IsTrue(notified);
+    }
+
+    [TestMethod]
+    public void RollsBackOnDispose()
+    {
+        var notified = false;
+        var uow = Construct();
+        uow.Rolledback += (sender, args) => notified = true;
+        uow.Dispose();
         Assert.IsTrue(uow.IsFinished);
         Assert.IsFalse(uow.CanCommit);
         Assert.IsTrue(notified);

@@ -7,6 +7,12 @@ namespace FluiTec.AppFx.Data.UnitsOfWork;
 /// <summary>   A base unit of work. </summary>
 public abstract class BaseUnitOfWork : IUnitOfWork
 {
+    protected BaseUnitOfWork(ILogger<IUnitOfWork>? logger, TransactionOptions transactionOptions)
+    {
+        Logger = logger;
+        TransactionOptions = transactionOptions;
+    }
+
     /// <summary>   Event queue for all listeners interested in BeforeCommit events. </summary>
     public event EventHandler<CancelUnitOfWorkEventArgs>? BeforeCommit;
 
@@ -18,12 +24,6 @@ public abstract class BaseUnitOfWork : IUnitOfWork
 
     /// <summary>   Event queue for all listeners interested in Rolledback events. </summary>
     public event EventHandler<UnitOfWorkEventArgs>? Rolledback;
-    
-    protected BaseUnitOfWork(ILogger<IUnitOfWork>? logger, TransactionOptions transactionOptions)
-    {
-        Logger = logger;
-        TransactionOptions = transactionOptions;
-    }
 
     /// <summary>   Gets options for controlling the transaction. </summary>
     /// <value> Options that control the transaction. </value>
@@ -40,6 +40,46 @@ public abstract class BaseUnitOfWork : IUnitOfWork
     /// <summary>   Gets or sets a value indicating whether this object is finished. </summary>
     /// <value> True if this object is finished, false if not. </value>
     public bool IsFinished { get; protected set; }
+
+    /// <summary>   Commits this object. </summary>
+    public void Commit()
+    {
+        if (IsFinished)
+            throw new InvalidOperationException(Messages.UnitOfWorkFinished);
+
+        var args = new CancelUnitOfWorkEventArgs(this);
+        OnBeforeCommit(args);
+
+        if (args.Cancel) return;
+        IsFinished = true;
+        CommitNoCancel();
+        OnCommit(args);
+    }
+
+    /// <summary>   Rollbacks this object. </summary>
+    public void Rollback()
+    {
+        if (IsFinished)
+            throw new InvalidOperationException(Messages.UnitOfWorkFinished);
+
+        var args = new CancelUnitOfWorkEventArgs(this);
+        OnBeforeRollback(args);
+
+        if (args.Cancel) return;
+        IsFinished = true;
+        RollbackNoCancel();
+        OnRollback(args);
+    }
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing, releasing, or resetting
+    ///     unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
     /// <summary>   Raises the cancel unit of work event. </summary>
     /// <param name="e">    Event information to send to registered event handlers. </param>
@@ -69,39 +109,22 @@ public abstract class BaseUnitOfWork : IUnitOfWork
         Rolledback?.Invoke(this, e);
     }
 
-    /// <summary>   Commits this object. </summary>
-    public void Commit()
-    {
-        if (IsFinished) 
-            throw new InvalidOperationException(Messages.UnitOfWorkFinished);
-
-        var args = new CancelUnitOfWorkEventArgs(this);
-        OnBeforeCommit(args);
-
-        if (args.Cancel) return;
-        IsFinished = true;
-        CommitNoCancel();
-        OnCommit(args);
-    }
-
     /// <summary>   Commits no cancel. </summary>
     protected abstract void CommitNoCancel();
 
-    /// <summary>   Rollbacks this object. </summary>
-    public void Rollback()
-    {
-        if (IsFinished)
-            throw new InvalidOperationException(Messages.UnitOfWorkFinished);
-
-        var args = new CancelUnitOfWorkEventArgs(this);
-        OnBeforeRollback(args);
-
-        if (args.Cancel) return;
-        IsFinished = true;
-        RollbackNoCancel();
-        OnRollback(args);
-    }
-
     /// <summary>   Rolls back a no cancel. </summary>
     protected abstract void RollbackNoCancel();
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing, releasing, or resetting
+    ///     unmanaged resources.
+    /// </summary>
+    /// <param name="disposing">
+    ///     True to release both managed and unmanaged resources; false to
+    ///     release only unmanaged resources.
+    /// </param>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing && !IsFinished) Rollback();
+    }
 }

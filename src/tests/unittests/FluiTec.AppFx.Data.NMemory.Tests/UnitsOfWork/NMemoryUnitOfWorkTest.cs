@@ -1,4 +1,5 @@
 ﻿using System.Transactions;
+using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
 using FluiTec.AppFx.Data.Tests.UnitsOfWork;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
@@ -8,14 +9,14 @@ namespace FluiTec.AppFx.Data.NMemory.Tests.UnitsOfWork;
 
 /// <summary>   (Unit Test Class) a memory unit of work test. </summary>
 [TestClass]
-public class NMemoryUnitOfWorkTest : ParentAwareUnitOfWorkTest<NMemoryUnitOfWork>
+public class NMemoryUnitOfWorkTest : ParentAwareUnitOfWorkTest<NMemoryUnitOfWork, NMemoryUnitOfWork>
 {
     /// <summary>   Constructs the given logger. </summary>
     /// <param name="logger">   (Optional) The logger. </param>
     /// <returns>   A TUnitOfWork. </returns>
     protected override NMemoryUnitOfWork Construct(ILogger<IUnitOfWork>? logger = null)
     {
-        return new(logger, new TransactionOptions());
+        return new NMemoryUnitOfWork(logger, new TransactionOptions());
     }
 
     /// <summary>   Construct child. </summary>
@@ -25,6 +26,6 @@ public class NMemoryUnitOfWorkTest : ParentAwareUnitOfWorkTest<NMemoryUnitOfWork
     protected override NMemoryUnitOfWork ConstructChild(NMemoryUnitOfWork parentAwareUnitOfWork,
         ILogger<IUnitOfWork>? logger = null)
     {
-        return new(logger, parentAwareUnitOfWork);
+        return new NMemoryUnitOfWork(logger, parentAwareUnitOfWork);
     }
 }

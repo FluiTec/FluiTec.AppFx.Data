@@ -10,7 +10,7 @@ public abstract class ParentAwareUnitOfWork : BaseUnitOfWork
     /// <summary>   Specialized constructor for use only by derived class. </summary>
     /// <param name="logger">               The logger. </param>
     /// <param name="transactionOptions">   Options for controlling the transaction. </param>
-    protected ParentAwareUnitOfWork(ILogger<IUnitOfWork>? logger, TransactionOptions transactionOptions) 
+    protected ParentAwareUnitOfWork(ILogger<IUnitOfWork>? logger, TransactionOptions transactionOptions)
         : base(logger, transactionOptions)
     {
     }
@@ -29,7 +29,14 @@ public abstract class ParentAwareUnitOfWork : BaseUnitOfWork
 
     /// <summary>   Gets a value indicating whether we can commit. </summary>
     /// <value> True if we can commit, false if not. </value>
-    public override bool CanCommit => ControlledByParent ? false : !IsFinished;
+    public override bool CanCommit => !ControlledByParent && !IsFinished;
+
+    /// <summary>   True to controlled by parent. </summary>
+    public bool ControlledByParent { get; protected set; }
+
+    /// <summary>   Gets the parent unit of work. </summary>
+    /// <value> The parent unit of work. </value>
+    public IUnitOfWork? ParentUnitOfWork { get; }
 
     /// <summary>   Event handler. Called by ParentUnitOfWork for before commit events. </summary>
     /// <param name="sender">   Source of the event. </param>
@@ -48,6 +55,7 @@ public abstract class ParentAwareUnitOfWork : BaseUnitOfWork
 
         CommitByParent(args);
     }
+
     /// <summary>   Event handler. Called by ParentUnitOfWork for before rollback events. </summary>
     /// <param name="sender">   Source of the event. </param>
     /// <param name="e">        Cancel unit of work event information. </param>
@@ -66,16 +74,11 @@ public abstract class ParentAwareUnitOfWork : BaseUnitOfWork
         RollbackByParent(args);
     }
 
-    /// <summary>   True to controlled by parent. </summary>
-    public bool ControlledByParent { get; protected set; } = false;
-
-    /// <summary>   Gets the parent unit of work. </summary>
-    /// <value> The parent unit of work. </value>
-    public IUnitOfWork? ParentUnitOfWork { get; }
-
     /// <summary>   Commits no cancel. </summary>
-    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-    ///                                                 invalid. </exception>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the requested operation is
+    ///     invalid.
+    /// </exception>
     protected override void CommitNoCancel()
     {
         if (ControlledByParent)
@@ -94,8 +97,10 @@ public abstract class ParentAwareUnitOfWork : BaseUnitOfWork
     protected abstract void CommitByParentNoCancel();
 
     /// <summary>   Rolls back a no cancel. </summary>
-    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-    ///                                                 invalid. </exception>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the requested operation is
+    ///     invalid.
+    /// </exception>
     protected override void RollbackNoCancel()
     {
         if (ControlledByParent)
@@ -112,4 +117,20 @@ public abstract class ParentAwareUnitOfWork : BaseUnitOfWork
 
     /// <summary>   Rolls back a by parent no cancel. </summary>
     protected abstract void RollbackByParentNoCancel();
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing, releasing, or resetting
+    ///     unmanaged resources.
+    /// </summary>
+    /// <param name="disposing">
+    ///     True to release both managed and unmanaged resources; false to
+    ///     release only unmanaged resources.
+    /// </param>
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing && ControlledByParent && !IsFinished)
+            ParentUnitOfWork!.Rollback();
+        else
+            base.Dispose(disposing);
+    }
 }

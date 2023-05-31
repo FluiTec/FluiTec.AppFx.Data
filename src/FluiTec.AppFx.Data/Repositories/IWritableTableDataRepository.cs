@@ -16,8 +16,10 @@ public interface IWritableTableDataRepository<TEntity> : ITableRepository<TEntit
 
     /// <summary>   Adds an asynchronous to 'cancellationToken'. </summary>
     /// <param name="entity">               The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The add. </returns>
     Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
 
@@ -27,8 +29,10 @@ public interface IWritableTableDataRepository<TEntity> : ITableRepository<TEntit
 
     /// <summary>   Adds a range asynchronous to 'cancellationToken'. </summary>
     /// <param name="entities">             An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   A Task. </returns>
     Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
@@ -39,8 +43,10 @@ public interface IWritableTableDataRepository<TEntity> : ITableRepository<TEntit
 
     /// <summary>   Updates the asynchronous. </summary>
     /// <param name="entity">               The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The update. </returns>
     Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
 
@@ -51,8 +57,10 @@ public interface IWritableTableDataRepository<TEntity> : ITableRepository<TEntit
 
     /// <summary>   Deletes the asynchronous. </summary>
     /// <param name="keys">                 A variable-length parameters list containing keys. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The delete. </returns>
     Task<bool> DeleteAsync(object[] keys, CancellationToken cancellationToken = default);
 
@@ -63,8 +71,10 @@ public interface IWritableTableDataRepository<TEntity> : ITableRepository<TEntit
 
     /// <summary>   Deletes the asynchronous. </summary>
     /// <param name="entity">               The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The delete. </returns>
     Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default);
 }
