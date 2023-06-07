@@ -1,4 +1,5 @@
 ﻿using FluiTec.AppFx.Data.EntityNames;
+using FluiTec.AppFx.Data.Schemas;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.DataServices;
@@ -17,4 +18,8 @@ public interface IDataService
     /// <summary>   Gets the name service. </summary>
     /// <value> The name service. </value>
     IEntityNameService NameService { get; }
+
+    /// <summary>   Gets the schema. </summary>
+    /// <value> The schema. </value>
+    ISchema Schema { get; }
 }

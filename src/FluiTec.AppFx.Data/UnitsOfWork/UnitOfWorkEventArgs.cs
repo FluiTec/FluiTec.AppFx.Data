@@ -9,7 +9,7 @@ public class UnitOfWorkEventArgs : EventArgs
     /// <param name="unitOfWork">   The unit of work. </param>
     public UnitOfWorkEventArgs(IUnitOfWork unitOfWork)
     {
-        UnitOfWork = unitOfWork;
+        UnitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
     /// <summary>   Gets the unit of work. </summary>

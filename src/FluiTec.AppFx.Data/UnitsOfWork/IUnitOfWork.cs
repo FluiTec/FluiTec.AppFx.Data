@@ -26,7 +26,7 @@ public interface IUnitOfWork : IDisposable
     event EventHandler<CancelUnitOfWorkEventArgs>? BeforeCommit;
 
     /// <summary>   Event queue for all listeners interested in Commited events. </summary>
-    event EventHandler<UnitOfWorkEventArgs>? Commited;
+    event EventHandler<UnitOfWorkEventArgs>? Committed;
 
     /// <summary>   Event queue for all listeners interested in BeforeRollback events. </summary>
     event EventHandler<CancelUnitOfWorkEventArgs>? BeforeRollback;

@@ -1,7 +1,9 @@
-﻿using FluiTec.AppFx.Data.NMemory.Providers;
-using FluiTec.AppFx.Data.UnitsOfWork;
-using System.Transactions;
+﻿using System.Transactions;
+using FluiTec.AppFx.Data.NMemory.Providers;
+using FluiTec.AppFx.Data.Options;
 using FluiTec.AppFx.Data.Tests.Repositories.Fixtures;
+using FluiTec.AppFx.Data.UnitsOfWork;
+using Microsoft.Extensions.Options;
 using NMemory;
 using NMemory.Tables;
 using NMemory.Utilities;
@@ -13,7 +15,16 @@ public class NMemoryTestDataProvider : NMemoryDataProvider<ITestDataService, ITe
 {
     /// <summary>   Constructor. </summary>
     /// <param name="dataService">  The data service. </param>
-    public NMemoryTestDataProvider(ITestDataService dataService) : base(dataService)
+    /// <param name="options">      Options for controlling the operation. </param>
+    public NMemoryTestDataProvider(ITestDataService dataService, DataOptions options) : base(dataService, options)
+    {
+    }
+
+    /// <summary>   Constructor. </summary>
+    /// <param name="dataService">      The data service. </param>
+    /// <param name="optionsMonitor">   The options monitor. </param>
+    public NMemoryTestDataProvider(ITestDataService dataService, IOptionsMonitor<DataOptions> optionsMonitor) : base(
+        dataService, optionsMonitor)
     {
     }
 

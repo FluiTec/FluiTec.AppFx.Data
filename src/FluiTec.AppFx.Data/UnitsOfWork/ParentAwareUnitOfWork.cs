@@ -43,7 +43,9 @@ public abstract class ParentAwareUnitOfWork : BaseUnitOfWork
     /// <param name="e">        Cancel unit of work event information. </param>
     private void ParentUnitOfWork_BeforeCommit(object sender, CancelUnitOfWorkEventArgs e)
     {
-        if (!ControlledByParent) return;
+        if (!ControlledByParent)
+            return;
+
         var args = new CancelUnitOfWorkEventArgs(this);
         OnBeforeCommit(args);
 
@@ -61,7 +63,9 @@ public abstract class ParentAwareUnitOfWork : BaseUnitOfWork
     /// <param name="e">        Cancel unit of work event information. </param>
     private void ParentUnitOfWork_BeforeRollback(object sender, CancelUnitOfWorkEventArgs e)
     {
-        if (!ControlledByParent) return;
+        if (!ControlledByParent)
+            return;
+
         var args = new CancelUnitOfWorkEventArgs(this);
         OnBeforeRollback(args);
 
@@ -88,8 +92,8 @@ public abstract class ParentAwareUnitOfWork : BaseUnitOfWork
     /// <summary>   Commits by parent. </summary>
     protected void CommitByParent(UnitOfWorkEventArgs args)
     {
-        IsFinished = true;
         CommitByParentNoCancel();
+        IsFinished = true;
         OnCommit(args);
     }
 
@@ -110,8 +114,8 @@ public abstract class ParentAwareUnitOfWork : BaseUnitOfWork
     /// <summary>   Rolls back a by parent. </summary>
     protected void RollbackByParent(UnitOfWorkEventArgs args)
     {
-        IsFinished = true;
         RollbackByParentNoCancel();
+        IsFinished = true;
         OnRollback(args);
     }
 

@@ -1,4 +1,5 @@
 ﻿using FluiTec.AppFx.Data.EntityNames;
+using FluiTec.AppFx.Data.Schemas;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Tests.Fixtures;
@@ -23,4 +24,8 @@ public class TestDataService : ITestDataService
     /// <summary>   Gets the name service. </summary>
     /// <value> The name service. </value>
     public IEntityNameService NameService => new AttributeEntityNameService();
+
+    /// <summary>   Gets the schema. </summary>
+    /// <value> The schema. </value>
+    public ISchema Schema { get; } = new TestSchema();
 }

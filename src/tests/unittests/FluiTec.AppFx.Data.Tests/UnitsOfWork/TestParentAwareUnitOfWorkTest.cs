@@ -16,7 +16,7 @@ public class
     /// <returns>   A TUnitOfWork. </returns>
     protected override TestParentAwareUnitOfWork Construct(ILogger<IUnitOfWork>? logger = null)
     {
-        return new(logger, new TransactionOptions());
+        return new TestParentAwareUnitOfWork(logger, new TransactionOptions());
     }
 
     /// <summary>   Construct child. </summary>
@@ -26,6 +26,6 @@ public class
     protected override TestParentAwareUnitOfWork ConstructChild(TestParentAwareUnitOfWork parentAwareUnitOfWork,
         ILogger<IUnitOfWork>? logger = null)
     {
-        return new(logger, parentAwareUnitOfWork);
+        return new TestParentAwareUnitOfWork(logger, parentAwareUnitOfWork);
     }
 }

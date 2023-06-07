@@ -1,7 +1,7 @@
-﻿using FluiTec.AppFx.Data.EntityNames.NameStrategies;
-using FluiTec.AppFx.Data.EntityNames;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluiTec.AppFx.Data.EntityNames;
+using FluiTec.AppFx.Data.EntityNames.NameStrategies;
 using FluiTec.AppFx.Data.Tests.EntityNames.Fixtures;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace FluiTec.AppFx.Data.Tests.EntityNames.NameStrategies;

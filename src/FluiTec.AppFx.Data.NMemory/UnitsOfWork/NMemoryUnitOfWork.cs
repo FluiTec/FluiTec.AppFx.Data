@@ -25,17 +25,18 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     /// <param name="logger">           The logger. </param>
     /// <param name="parentUnitOfWork"> The parent unit of work. </param>
     public NMemoryUnitOfWork(ILogger<IUnitOfWork>? logger, IUnitOfWork parentUnitOfWork) : base(logger,
-        parentUnitOfWork.TransactionOptions)
+        parentUnitOfWork)
     {
         if (parentUnitOfWork is NMemoryUnitOfWork nmUnitOfWork)
         {
             Transaction = nmUnitOfWork.Transaction;
+            ControlledByParent = false;
             _ownsConnection = false;
         }
         else
         {
             Transaction = new TransactionScope(TransactionScopeOption.RequiresNew, parentUnitOfWork.TransactionOptions);
-            ControlledByParent = false;
+            ControlledByParent = true;
             _ownsConnection = true;
         }
     }
@@ -51,16 +52,29 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     /// </exception>
     protected override void CommitNoCancel()
     {
-        if (!CanCommit || !_ownsConnection) return;
-        Transaction!.Complete();
-        Transaction!.Dispose();
-        Transaction = null;
+        base.CommitNoCancel();
+
+        if (!CanCommit || !_ownsConnection)
+            return;
+
+        CommitInternal();
     }
 
     /// <summary>   Commits by parent no cancel. </summary>
     protected override void CommitByParentNoCancel()
     {
-        throw new NotImplementedException();
+        if (IsFinished || !_ownsConnection)
+            throw new InvalidOperationException(Messages.UnitOfWorkFinished);
+
+        CommitInternal();
+    }
+
+    /// <summary>   Commits an internal. </summary>
+    protected virtual void CommitInternal()
+    {
+        Transaction!.Complete();
+        Transaction!.Dispose();
+        Transaction = null;
     }
 
     /// <summary>   Rolls back a no cancel. </summary>
@@ -70,14 +84,27 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     /// </exception>
     protected override void RollbackNoCancel()
     {
-        if (!CanCommit || !_ownsConnection) return;
-        Transaction!.Dispose();
-        Transaction = null;
+        base.RollbackNoCancel();
+
+        if (!CanCommit || !_ownsConnection)
+            return;
+
+        RollbackInternal();
     }
 
     /// <summary>   Rolls back a by parent no cancel. </summary>
     protected override void RollbackByParentNoCancel()
     {
-        throw new NotImplementedException();
+        if (IsFinished || !_ownsConnection)
+            throw new InvalidOperationException(Messages.UnitOfWorkFinished);
+
+        RollbackInternal();
+    }
+
+    /// <summary>   Rolls back an internal. </summary>
+    protected virtual void RollbackInternal()
+    {
+        Transaction!.Dispose();
+        Transaction = null;
     }
 }

@@ -24,6 +24,7 @@
   <ItemGroup>
     <Folder Include="EntityNames\Fixtures\" />
     <Folder Include="Fixtures\" />
+    <Folder Include="Paging\" />
     <Folder Include="Repositories\Fixtures\" />
     <Folder Include="UnitsOfWork\Fixtures\" />
     <Folder Include="UnitsOfWork\" />

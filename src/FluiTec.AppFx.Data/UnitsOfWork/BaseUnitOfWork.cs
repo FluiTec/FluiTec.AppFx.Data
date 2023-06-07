@@ -16,13 +16,13 @@ public abstract class BaseUnitOfWork : IUnitOfWork
     /// <summary>   Event queue for all listeners interested in BeforeCommit events. </summary>
     public event EventHandler<CancelUnitOfWorkEventArgs>? BeforeCommit;
 
-    /// <summary>   Event queue for all listeners interested in Commited events. </summary>
-    public event EventHandler<UnitOfWorkEventArgs>? Commited;
+    /// <summary>   Event queue for all listeners interested in Committed events. </summary>
+    public event EventHandler<UnitOfWorkEventArgs>? Committed;
 
     /// <summary>   Event queue for all listeners interested in BeforeRollback events. </summary>
     public event EventHandler<CancelUnitOfWorkEventArgs>? BeforeRollback;
 
-    /// <summary>   Event queue for all listeners interested in Rolledback events. </summary>
+    /// <summary>   Event queue for all listeners interested in Rolled back events. </summary>
     public event EventHandler<UnitOfWorkEventArgs>? Rolledback;
 
     /// <summary>   Gets options for controlling the transaction. </summary>
@@ -51,8 +51,8 @@ public abstract class BaseUnitOfWork : IUnitOfWork
         OnBeforeCommit(args);
 
         if (args.Cancel) return;
-        IsFinished = true;
         CommitNoCancel();
+        IsFinished = true;
         OnCommit(args);
     }
 
@@ -66,8 +66,8 @@ public abstract class BaseUnitOfWork : IUnitOfWork
         OnBeforeRollback(args);
 
         if (args.Cancel) return;
-        IsFinished = true;
         RollbackNoCancel();
+        IsFinished = true;
         OnRollback(args);
     }
 
@@ -92,7 +92,7 @@ public abstract class BaseUnitOfWork : IUnitOfWork
     /// <param name="e">    Event information to send to registered event handlers. </param>
     protected void OnCommit(UnitOfWorkEventArgs e)
     {
-        Commited?.Invoke(this, e);
+        Committed?.Invoke(this, e);
     }
 
     /// <summary>   Raises the cancel unit of work event. </summary>

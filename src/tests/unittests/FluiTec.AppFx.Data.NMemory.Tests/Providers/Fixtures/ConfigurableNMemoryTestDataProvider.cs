@@ -1,17 +1,33 @@
 ﻿using System.Transactions;
 using FluiTec.AppFx.Data.NMemory.Providers;
+using FluiTec.AppFx.Data.Options;
 using FluiTec.AppFx.Data.UnitsOfWork;
+using Microsoft.Extensions.Options;
 using NMemory;
 
 namespace FluiTec.AppFx.Data.NMemory.Tests.Providers.Fixtures;
 
 /// <summary>   A configurable n memory test data provider. </summary>
-public class ConfigurableNMemoryTestDataProvider : ConfigurableNMemoryDataProvider<ITestDataService, ITestUnitOfWork>, ITestDataProvider
+public class ConfigurableNMemoryTestDataProvider : ConfigurableNMemoryDataProvider<ITestDataService, ITestUnitOfWork>,
+    ITestDataProvider
 {
     /// <summary>   Constructor. </summary>
     /// <param name="configureDelegate">    The configure delegate. </param>
     /// <param name="dataService">          The data service. </param>
-    public ConfigurableNMemoryTestDataProvider(Func<Database> configureDelegate, ITestDataService dataService) : base(configureDelegate, dataService)
+    /// <param name="options">              Options for controlling the operation. </param>
+    public ConfigurableNMemoryTestDataProvider(Func<Database> configureDelegate, ITestDataService dataService,
+        DataOptions options)
+        : base(configureDelegate, dataService, options)
+    {
+    }
+
+    /// <summary>   Constructor. </summary>
+    /// <param name="configureDelegate">    The configure delegate. </param>
+    /// <param name="dataService">          The data service. </param>
+    /// <param name="optionsMonitor">       The options monitor. </param>
+    public ConfigurableNMemoryTestDataProvider(Func<Database> configureDelegate, ITestDataService dataService,
+        IOptionsMonitor<DataOptions> optionsMonitor)
+        : base(configureDelegate, dataService, optionsMonitor)
     {
     }
 

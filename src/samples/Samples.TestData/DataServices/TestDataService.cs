@@ -1,13 +1,9 @@
-﻿using FluiTec.AppFx.Data.DataServices;
-using FluiTec.AppFx.Data.EntityNames;
+﻿using FluiTec.AppFx.Data.EntityNames;
+using FluiTec.AppFx.Data.Schemas;
 using Microsoft.Extensions.Logging;
+using Samples.TestData.Schemas;
 
-namespace Samples.TestData;
-
-/// <summary>   Interface for test data service. </summary>
-public interface ITestDataService : IDataService
-{
-}
+namespace Samples.TestData.DataServices;
 
 /// <summary>   A service for accessing test data information. </summary>
 public class TestDataService : ITestDataService
@@ -25,9 +21,13 @@ public class TestDataService : ITestDataService
 
     /// <summary>   Gets the name. </summary>
     /// <value> The name. </value>
-    public string Name => nameof(TestDataService);
+    public string Name => nameof(ITestDataService);
 
     /// <summary>   Gets the name service. </summary>
     /// <value> The name service. </value>
     public IEntityNameService NameService => new AttributeEntityNameService();
+
+    /// <summary>   Gets the schema. </summary>
+    /// <value> The schema. </value>
+    public ISchema Schema { get; } = new TestSchema();
 }

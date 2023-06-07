@@ -1,19 +1,35 @@
 ﻿using System.Transactions;
+using FluiTec.AppFx.Data.DataProviders;
 using FluiTec.AppFx.Data.NMemory.Providers;
+using FluiTec.AppFx.Data.Options;
 using FluiTec.AppFx.Data.UnitsOfWork;
+using Microsoft.Extensions.Options;
 using NMemory;
 using NMemory.Tables;
 using NMemory.Utilities;
+using Samples.TestData.DataServices;
 using Samples.TestData.Entities;
+using Samples.TestData.UnitsOfWork;
 
 namespace Samples.TestData.NMemory;
 
 /// <summary>   A memory test data provider. </summary>
-public class NMemoryTestDataProvider : NMemoryDataProvider<ITestDataService, ITestUnitOfWork>, ITestDataProvider
+public class NMemoryTestDataProvider : NMemoryDataProvider<ITestDataService, ITestUnitOfWork>,
+    IDataProvider<ITestDataService, ITestUnitOfWork>
 {
     /// <summary>   Constructor. </summary>
     /// <param name="dataService">  The data service. </param>
-    public NMemoryTestDataProvider(ITestDataService dataService) : base(dataService)
+    /// <param name="options">      Options for controlling the operation. </param>
+    public NMemoryTestDataProvider(ITestDataService dataService, DataOptions options) : base(dataService, options)
+    {
+    }
+
+    /// <summary>   Constructor. </summary>
+    /// <param name="dataService">      The data service. </param>
+    /// <param name="optionsMonitor">   The options monitor. </param>
+    public NMemoryTestDataProvider(ITestDataService dataService,
+        IOptionsMonitor<DataOptions<ITestDataService>> optionsMonitor) : base(
+        dataService, optionsMonitor)
     {
     }
 
@@ -45,7 +61,7 @@ public class NMemoryTestDataProvider : NMemoryDataProvider<ITestDataService, ITe
     protected override Database ConfigureDatabase()
     {
         var db = new Database();
-        
+
         db.Tables.Create(e => e.Id, new IdentitySpecification<DummyEntity>(e => e.Id));
 
         var t = db.Tables.FindTable<DummyEntity>();

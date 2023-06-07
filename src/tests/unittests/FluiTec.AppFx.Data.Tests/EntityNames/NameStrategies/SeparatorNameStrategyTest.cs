@@ -10,7 +10,7 @@ namespace FluiTec.AppFx.Data.Tests.EntityNames.NameStrategies;
 public class SeparatorNameStrategyTest
 {
     [TestMethod]
-    [DataRow("Schema.Name", ".", "Schema", "Name" )]
+    [DataRow("Schema.Name", ".", "Schema", "Name")]
     [DataRow("Schema_Name", "_", "Schema", "Name")]
     [DataRow("Schema-Name", "-", "Schema", "Name")]
     [DataRow("Name", ".", "", "Name")]
@@ -42,7 +42,7 @@ public class SeparatorNameStrategyTest
     }
 
     [TestMethod]
-    [DataRow("Schema.TestEntity1", "." ,typeof(TestEntity1))]
+    [DataRow("Schema.TestEntity1", ".", typeof(TestEntity1))]
     [DataRow("Schema.TestEntity2", ".", typeof(TestEntity2))]
     [DataRow("Schema.TestEntity3", ".", typeof(TestEntity3))]
     [DataRow("Schema_TestEntity1", "_", typeof(TestEntity1))]

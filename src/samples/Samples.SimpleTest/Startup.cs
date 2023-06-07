@@ -2,8 +2,9 @@
 using FluiTec.AppFx.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Samples.TestData;
+using Samples.TestData.DataServices;
 using Samples.TestData.NMemory;
+using Samples.TestData.UnitsOfWork;
 
 namespace Samples.SimpleConsole;
 
@@ -21,8 +22,8 @@ public class Startup : DefaultStartup
     {
         services.AddHostedService<HostedProgram>();
 
+        services.AddDataOptions<ITestDataService>(context.Configuration);
         services.AddDataService<ITestDataService, TestDataService>();
-
-        services.AddSingleton<ITestDataProvider, NMemoryTestDataProvider>();
+        services.AddDataProvider<ITestDataService, ITestUnitOfWork, NMemoryTestDataProvider>();
     }
 }

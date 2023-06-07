@@ -79,7 +79,7 @@ public abstract class BaseUnitOfWorkTest<TUnitOfWork>
     {
         var notified = false;
         var uow = Construct();
-        uow.Commited += (sender, args) => notified = true;
+        uow.Committed += (sender, args) => notified = true;
         uow.Commit();
         Assert.IsTrue(uow.IsFinished);
         Assert.IsFalse(uow.CanCommit);

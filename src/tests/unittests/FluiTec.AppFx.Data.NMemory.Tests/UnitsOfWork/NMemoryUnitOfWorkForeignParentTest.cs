@@ -17,7 +17,7 @@ public class NMemoryUnitOfWorkForeignParentTest : ParentAwareUnitOfWorkTest<Test
     /// <returns>   A TUnitOfWork. </returns>
     protected override TestBaseUnitOfWork Construct(ILogger<IUnitOfWork>? logger = null)
     {
-        return new(logger, new TransactionOptions());
+        return new TestBaseUnitOfWork(logger, new TransactionOptions());
     }
 
     /// <summary>   Construct child. </summary>
@@ -27,6 +27,6 @@ public class NMemoryUnitOfWorkForeignParentTest : ParentAwareUnitOfWorkTest<Test
     protected override NMemoryUnitOfWork ConstructChild(TestBaseUnitOfWork parentAwareUnitOfWork,
         ILogger<IUnitOfWork>? logger = null)
     {
-        return new(logger, parentAwareUnitOfWork);
+        return new NMemoryUnitOfWork(logger, parentAwareUnitOfWork);
     }
 }

@@ -15,11 +15,11 @@ public interface ITableRepository<TEntity> : IPagedRepository<TEntity>
     /// <summary>   Gets a t entity using the given keys. </summary>
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
     /// <returns>   A TEntity. </returns>
-    TEntity Get(params object[] keys);
+    TEntity? Get(params object[] keys);
 
     /// <summary>   Gets an asynchronous. </summary>
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
     /// <param name="cancellationToken">  (Optional) A token that allows processing to be cancelled. </param>
     /// <returns>   The asynchronous. </returns>
-    Task<TEntity> GetAsync(object[] keys, CancellationToken cancellationToken = default);
+    Task<TEntity?> GetAsync(object[] keys, CancellationToken cancellationToken = default);
 }

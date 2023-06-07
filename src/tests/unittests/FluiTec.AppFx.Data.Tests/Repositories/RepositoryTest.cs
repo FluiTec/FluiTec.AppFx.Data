@@ -7,6 +7,7 @@ using FluiTec.AppFx.Data.Tests.Repositories.Fixtures;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+
 // ReSharper disable ObjectCreationAsStatement
 
 namespace FluiTec.AppFx.Data.Tests.Repositories;

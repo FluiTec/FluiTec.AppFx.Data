@@ -87,6 +87,7 @@ public abstract class ParentAwareUnitOfWorkTest<TParentUnitOfWork, TUnitOfWork> 
         }
         else
         {
+            parent.Commit();
             child.Commit();
             Assert.IsTrue(child.IsFinished);
             Assert.IsFalse(child.CanCommit);
@@ -124,7 +125,7 @@ public abstract class ParentAwareUnitOfWorkTest<TParentUnitOfWork, TUnitOfWork> 
         var notified = false;
         var parent = Construct();
         var child = ConstructChild(parent);
-        child.Commited += (sender, args) => notified = true;
+        child.Committed += (sender, args) => notified = true;
 
         if (child.ControlledByParent)
         {
@@ -166,6 +167,7 @@ public abstract class ParentAwareUnitOfWorkTest<TParentUnitOfWork, TUnitOfWork> 
         }
         else
         {
+            parent.Rollback();
             child.Rollback();
             Assert.IsTrue(child.IsFinished);
             Assert.IsFalse(child.CanCommit);

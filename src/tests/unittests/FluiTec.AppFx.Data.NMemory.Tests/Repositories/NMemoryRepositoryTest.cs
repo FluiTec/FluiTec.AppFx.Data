@@ -1,13 +1,13 @@
 ﻿using FluiTec.AppFx.Data.DataServices;
-using FluiTec.AppFx.Data.EntityNames.NameStrategies;
 using FluiTec.AppFx.Data.EntityNames;
+using FluiTec.AppFx.Data.EntityNames.NameStrategies;
 using FluiTec.AppFx.Data.NMemory.Providers;
 using FluiTec.AppFx.Data.NMemory.Tests.Repositories.Fixtures;
+using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Data.Tests.Repositories.Fixtures;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using FluiTec.AppFx.Data.Repositories;
-using Microsoft.Extensions.Logging;
 using NMemory.Tables;
 
 namespace FluiTec.AppFx.Data.NMemory.Tests.Repositories;
@@ -283,6 +283,6 @@ public class NMemoryRepositoryTest
             .Returns(tableName);
 
         var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object);
-        Assert.AreEqual(count,  repo.CountAsync().Result);
+        Assert.AreEqual(count, repo.CountAsync().Result);
     }
 }

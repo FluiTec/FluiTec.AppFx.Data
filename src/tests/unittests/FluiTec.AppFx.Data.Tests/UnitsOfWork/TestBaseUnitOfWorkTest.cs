@@ -15,6 +15,6 @@ public class TestBaseUnitOfWorkTest : BaseUnitOfWorkTest<TestBaseUnitOfWork>
     /// <returns>   A TUnitOfWork. </returns>
     protected override TestBaseUnitOfWork Construct(ILogger<IUnitOfWork>? logger = null)
     {
-        return new(logger, new TransactionOptions());
+        return new TestBaseUnitOfWork(logger, new TransactionOptions());
     }
 }
