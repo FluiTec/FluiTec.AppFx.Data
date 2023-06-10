@@ -132,6 +132,24 @@ public abstract class BaseUnitOfWorkTest<TUnitOfWork>
         Assert.IsTrue(notified);
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void ThrowsOnDoubleCommit()
+    {
+        var uow = Construct();
+        uow.Commit();
+        uow.Commit();
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void ThrowsOnDoubleRollback()
+    {
+        var uow = Construct();
+        uow.Rollback();
+        uow.Rollback();
+    }
+
     /// <summary>   Constructs the given logger. </summary>
     /// <param name="logger">   (Optional) The logger. </param>
     /// <returns>   A TUnitOfWork. </returns>

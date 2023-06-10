@@ -27,7 +27,7 @@
 	<ItemGroup>
 	  <Folder Include="DataServices\" />
 	  <Folder Include="DataProviders\" />
-	  <Folder Include="Schemas\" />
+	  <Folder Include="Schemata\" />
 	  <Folder Include="UnitsOfWork\" />
 	  <Folder Include="Repositories\" />
 	</ItemGroup>

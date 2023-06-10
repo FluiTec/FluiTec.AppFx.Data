@@ -26,6 +26,24 @@ public class PagedResultTest
     }
 
     [TestMethod]
+    [DataRow(1)]
+    [DataRow(100)]
+    public void CanSetRecords(int numRecords)
+    {
+        var result = new PagedResult<DummyEntity>(0, 1, numRecords, CreateDummies(numRecords));
+        Assert.AreEqual(numRecords, result.Records.Count());
+    }
+
+    [TestMethod]
+    [DataRow(1)]
+    [DataRow(100)]
+    public void CanGetHasResults(int numRecords)
+    {
+        var result = new PagedResult<DummyEntity>(0, 1, numRecords, CreateDummies(numRecords));
+        Assert.IsTrue(result.HasResults == numRecords > 0);
+    }
+
+    [TestMethod]
     [DataRow(false, 0, 1)]
     [DataRow(true, 0, 2)]
     [DataRow(false, 1, 2)]

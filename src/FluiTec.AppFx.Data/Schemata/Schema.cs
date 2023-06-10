@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluiTec.AppFx.Data.Reflection;
 
-namespace FluiTec.AppFx.Data.Schemas;
+namespace FluiTec.AppFx.Data.Schemata;
 
 /// <summary>   A schema. </summary>
 public abstract class Schema : ISchema
@@ -29,8 +29,12 @@ public abstract class Schema : ISchema
     {
         get
         {
+            if (entityType == null)
+                throw new ArgumentNullException(nameof(entityType));
+
             if (!_schemata.ContainsKey(entityType))
-                throw new InvalidOperationException(string.Format(Messages.MissingSchema, entityType));
+                throw new MissingEntitySchemaException(this, entityType);
+
             return _schemata.TryGetValue(entityType, out var schema) ? schema.Value : new TypeSchema(entityType);
         }
     }

@@ -1,4 +1,4 @@
-﻿using FluiTec.AppFx.Data.Schemas;
+﻿using FluiTec.AppFx.Data.Schemata;
 
 namespace Samples.TestData.Schemas;
 

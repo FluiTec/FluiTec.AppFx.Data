@@ -1,4 +1,4 @@
-﻿using FluiTec.AppFx.Data.Schemas;
+﻿using FluiTec.AppFx.Data.Schemata;
 
 namespace FluiTec.AppFx.Data.Tests.Fixtures;
 

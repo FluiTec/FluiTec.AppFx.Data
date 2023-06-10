@@ -1,6 +1,7 @@
 ﻿using FluiTec.AppFx.Data.EntityNames;
 using FluiTec.AppFx.Data.EntityNames.NameStrategies;
 using FluiTec.AppFx.Data.Tests.EntityNames.Fixtures;
+using FluiTec.AppFx.Data.Tests.Repositories.Fixtures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -61,5 +62,49 @@ public class SeparatorNameStrategyTest
 
         var strategy = new SeparatorNameStrategy(separator);
         Assert.AreEqual(expectedOutput, strategy.ToString(type, mockNameService.Object));
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void ThrowsOnNullEntity()
+    {
+        const string schema = "Schema";
+        const string separator = ".";
+        var type = typeof(DummyEntity);
+        var mockNameService = new Mock<IEntityNameService>();
+        mockNameService
+            .Setup(m => m.GetName(It.IsAny<Type>()))
+            .Returns(() => new EntityName(schema, type.Name));
+
+        var strategy = new SeparatorNameStrategy(separator);
+
+        var _ = strategy.ToString(null!, mockNameService.Object);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void ThrowsOnNullNameservice()
+    {
+        const string schema = "Schema";
+        const string separator = ".";
+        var type = typeof(DummyEntity);
+        var mockNameService = new Mock<IEntityNameService>();
+        mockNameService
+            .Setup(m => m.GetName(It.IsAny<Type>()))
+            .Returns(() => new EntityName(schema, type.Name));
+
+        var strategy = new SeparatorNameStrategy(separator);
+
+        var _ = strategy.ToString(type, null!);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void ThrowsOnNullEntityName()
+    {
+        const string separator = ".";
+        var strategy = new SeparatorNameStrategy(separator);
+
+        var _ = strategy.ToString(null!);
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using FluiTec.AppFx.Data.Reflection;
 
-namespace FluiTec.AppFx.Data.Schemas;
+namespace FluiTec.AppFx.Data.Schemata;
 
 /// <summary>   Interface for schema. </summary>
 public interface ISchema : IEnumerable<ITypeSchema>

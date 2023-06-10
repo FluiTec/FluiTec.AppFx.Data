@@ -49,6 +49,44 @@ public class RepositoryTest
     }
 
     [TestMethod]
+    public void SetsDataService()
+    {
+        var serviceMock = new Mock<IDataService>();
+        var nameServiceMock = new Mock<IEntityNameService>();
+        serviceMock
+            .SetupGet(s => s.NameService)
+            .Returns(nameServiceMock.Object);
+        var providerMock = new Mock<IDataProvider>();
+        var strategyMock = new Mock<INameStrategy>();
+        providerMock
+            .SetupGet(p => p.NameStrategy)
+            .Returns(strategyMock.Object);
+
+        var repo = new TestRepository(serviceMock.Object, providerMock.Object);
+
+        Assert.AreEqual(serviceMock.Object, repo.DataService);
+    }
+
+    [TestMethod]
+    public void SetsDataProvider()
+    {
+        var serviceMock = new Mock<IDataService>();
+        var nameServiceMock = new Mock<IEntityNameService>();
+        serviceMock
+            .SetupGet(s => s.NameService)
+            .Returns(nameServiceMock.Object);
+        var providerMock = new Mock<IDataProvider>();
+        var strategyMock = new Mock<INameStrategy>();
+        providerMock
+            .SetupGet(p => p.NameStrategy)
+            .Returns(strategyMock.Object);
+
+        var repo = new TestRepository(serviceMock.Object, providerMock.Object);
+
+        Assert.AreEqual(providerMock.Object, repo.DataProvider);
+    }
+
+    [TestMethod]
     public void SetsTableName()
     {
         var tableName = nameof(DummyEntity);

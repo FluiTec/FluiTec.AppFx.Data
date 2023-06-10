@@ -1,5 +1,5 @@
 ﻿using FluiTec.AppFx.Data.EntityNames;
-using FluiTec.AppFx.Data.Schemas;
+using FluiTec.AppFx.Data.Schemata;
 using Microsoft.Extensions.Logging;
 using Samples.TestData.Schemas;
 
