@@ -17,7 +17,7 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     public NMemoryUnitOfWork(ILogger<IUnitOfWork>? logger, TransactionOptions transactionOptions)
         : base(logger, transactionOptions)
     {
-        Transaction = new TransactionScope(TransactionScopeOption.RequiresNew, transactionOptions);
+        TransactionScope = new TransactionScope(TransactionScopeOption.RequiresNew, transactionOptions);
         _ownsConnection = true;
     }
 
@@ -29,13 +29,13 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     {
         if (parentUnitOfWork is NMemoryUnitOfWork nmUnitOfWork)
         {
-            Transaction = nmUnitOfWork.Transaction;
+            TransactionScope = nmUnitOfWork.TransactionScope;
             ControlledByParent = false;
             _ownsConnection = false;
         }
         else
         {
-            Transaction = new TransactionScope(TransactionScopeOption.RequiresNew, parentUnitOfWork.TransactionOptions);
+            TransactionScope = new TransactionScope(TransactionScopeOption.RequiresNew, parentUnitOfWork.TransactionOptions);
             ControlledByParent = true;
             _ownsConnection = true;
         }
@@ -43,7 +43,7 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
 
     /// <summary>   Gets or sets the transaction. </summary>
     /// <value> The transaction. </value>
-    public TransactionScope? Transaction { get; private set; }
+    public TransactionScope? TransactionScope { get; private set; }
 
     /// <summary>   Commits no cancel. </summary>
     /// <exception cref="T:System.InvalidOperationException">
@@ -72,9 +72,9 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     /// <summary>   Commits an internal. </summary>
     protected virtual void CommitInternal()
     {
-        Transaction!.Complete();
-        Transaction!.Dispose();
-        Transaction = null;
+        TransactionScope!.Complete();
+        TransactionScope!.Dispose();
+        TransactionScope = null;
     }
 
     /// <summary>   Rolls back a no cancel. </summary>
@@ -104,7 +104,7 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
     /// <summary>   Rolls back an internal. </summary>
     protected virtual void RollbackInternal()
     {
-        Transaction!.Dispose();
-        Transaction = null;
+        TransactionScope!.Dispose();
+        TransactionScope = null;
     }
 }

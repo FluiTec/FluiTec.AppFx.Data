@@ -85,6 +85,10 @@ public abstract class NMemoryDataProvider<TDataService, TUnitOfWork> : INMemoryD
     /// <value> The page settings. </value>
     public PageSettings PageSettings { get; private set; }
 
+    /// <summary>   Gets the type of the provider. </summary>
+    /// <value> The type of the provider. </value>
+    public ProviderType ProviderType => ProviderType.NMemory;
+
     /// <summary>   Gets the database. </summary>
     /// <value> The database. </value>
     public virtual Database Database

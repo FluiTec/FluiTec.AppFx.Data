@@ -1,0 +1,59 @@
+﻿<ui:UiPage
+    x:Class="FluiTec.AppFx.Data.SchemaDesigner.Wpfui.Views.Pages.PropertyPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:FluiTec.AppFx.Data.SchemaDesigner.Wpfui.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:FluiTec.AppFx.Data.SchemaDesigner.Wpfui.Models"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:editorModels="clr-namespace:FluiTec.AppFx.Data.SchemaDesigner.EditorModels;assembly=FluiTec.AppFx.Data.SchemaDesigner"
+    xmlns:converters="clr-namespace:FluiTec.AppFx.Data.SchemaDesigner.Wpfui.Converters"
+    Title="DataPage"
+    d:DataContext="{d:DesignInstance local:PropertyPage,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    d:Background="{DynamicResource ApplicationBackgroundBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d">
+    <ui:UiPage.Resources>
+        <converters:NullableIntConverter x:Key="NullableIntConverter" />
+    </ui:UiPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Header="Actions">
+            <StackPanel Orientation="Horizontal">
+                <ui:Button Icon="Save20" Content="Save project" Command="{Binding ViewModel.SaveSchemaCommand}" />
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Header="Properties">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <Label MinWidth="100" Margin="5,0,0,0" VerticalAlignment="Center" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">Name:</Label>
+                    <TextBox Margin="5,0,0,0" Text="{Binding ViewModel.PropertyService.CurrentProperty.Name, Mode=TwoWay}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label MinWidth="100" Margin="5,0,0,0" VerticalAlignment="Center" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">Type:</Label>
+                    <ComboBox ItemsSource="{Binding ViewModel.PropertyTypes}"
+                              Margin="5,0,0,0"
+                              DisplayMemberPath="Name"
+                              SelectedValue="{Binding ViewModel.PropertyService.CurrentProperty.Type, Mode=TwoWay}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label MinWidth="100" Margin="5,0,0,0" VerticalAlignment="Center" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">Nullable:</Label>
+                    <CheckBox Margin="5,0,0,0" IsChecked="{Binding ViewModel.PropertyService.CurrentProperty.Nullable, Mode=TwoWay}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label MinWidth="100" Margin="5,0,0,0" VerticalAlignment="Center" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">KeyOrder:</Label>
+                    <ui:NumberBox Margin="5,0,0,0"  Value="{Binding Path=ViewModel.PropertyService.CurrentProperty.KeyOrder, Converter={StaticResource NullableIntConverter}, Mode=TwoWay}" DecimalPlaces="0" IntegersOnly="True" Min="-1" ClearButtonEnabled="False" />
+                    <TextBlock Margin="5,0,0,0" VerticalAlignment="Center">(-1 equals zero)</TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</ui:UiPage>

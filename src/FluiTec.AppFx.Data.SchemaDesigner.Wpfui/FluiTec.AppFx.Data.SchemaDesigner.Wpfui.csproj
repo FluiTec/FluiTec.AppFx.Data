@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>10.0</LangVersion>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WPF-UI" Version="2.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\apple-touch-icon.png" />
+    <None Remove="Assets\applicationIcon-1024.png" />
+    <None Remove="Assets\applicationIcon-256.png" />
+    <None Remove="Assets\favicon.ico" />
+    <None Remove="Assets\favicon_32.png" />
+    <None Remove="Assets\favicon_96.png" />
+    <None Remove="Assets\icon.png" />
+    <None Remove="Assets\icon_lg_bg.png" />
+    <None Remove="Assets\mstile-144x144.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\apple-touch-icon.png" />
+    <Resource Include="Assets\applicationIcon-1024.png" />
+    <Resource Include="Assets\applicationIcon-256.png" />
+    <Resource Include="Assets\favicon.ico" />
+    <Resource Include="Assets\favicon_32.png" />
+    <Resource Include="Assets\favicon_96.png" />
+    <Resource Include="Assets\icon.png" />
+    <Resource Include="Assets\icon_lg_bg.png" />
+    <Resource Include="Assets\mstile-144x144.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Options\" />
+    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FluiTec.AppFx.Data.SchemaDesigner\FluiTec.AppFx.Data.SchemaDesigner.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

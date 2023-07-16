@@ -4,6 +4,7 @@ using NMemory.Tables;
 
 namespace FluiTec.AppFx.Data.NMemory.Providers;
 
+/// <summary>   Interface for in memory data provider. </summary>
 public interface INMemoryDataProvider : IDataProvider
 {
     /// <summary>   Gets the database. </summary>

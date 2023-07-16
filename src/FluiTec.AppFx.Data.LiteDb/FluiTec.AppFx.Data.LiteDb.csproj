@@ -24,4 +24,14 @@
 		</None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="UnitsOfWork\" />
+	  <Folder Include="Repositories\" />
+	  <Folder Include="Providers\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
+	</ItemGroup>
+
 </Project>

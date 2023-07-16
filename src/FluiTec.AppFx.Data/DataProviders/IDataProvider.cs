@@ -15,6 +15,10 @@ public interface IDataProvider
     /// <summary>   Gets the page settings. </summary>
     /// <value> The page settings. </value>
     PageSettings PageSettings { get; }
+
+    /// <summary>   Gets the type of the provider. </summary>
+    /// <value> The type of the provider. </value>
+    ProviderType ProviderType { get; }
 }
 
 /// <summary>   Interface for data provider. </summary>
