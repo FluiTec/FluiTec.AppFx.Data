@@ -26,7 +26,7 @@ jobs:
       run: dotnet build --no-restore
     - name: unit test
       id: test
-      run: dotnet test --no-build --verbosity normal --filter $TEST_FILTER
+      run: dotnet test --no-build --verbosity normal --filter $env:TEST_FILTER
     - name: integration test
       if: (steps.test.conclusion == 'success')
-      run: dotnet test --no-build --verbosity normal --filter $INTEGRATION_FILTER
+      run: dotnet test --no-build --verbosity normal --filter $env:INTEGRATION_FILTER

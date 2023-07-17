@@ -38,11 +38,11 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: unit test
       id: test1
-      run: dotnet test --no-build --verbosity normal --filter $TEST_FILTER
+      run: dotnet test --no-build --verbosity normal --filter $env:TEST_FILTER
     - name: integration test
       id: test2
       if: (steps.test1.conclusion == 'success')
-      run: dotnet test --no-build --verbosity normal --filter $INTEGRATION_FILTER
+      run: dotnet test --no-build --verbosity normal --filter $env:INTEGRATION_FILTER
     - name: publish@baget
       if: (steps.test1.conclusion == 'success' && steps.test2.conclusion == 'success')
       run: dotnet nuget push -s https://baget.wtschnell.de/v3/index.json -k ${{ secrets.baget_apikey }} **/*.nupkg --skip-duplicate
