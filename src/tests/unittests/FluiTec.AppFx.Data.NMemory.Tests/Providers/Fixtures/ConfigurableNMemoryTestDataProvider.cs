@@ -49,7 +49,7 @@ public class ConfigurableNMemoryTestDataProvider : ConfigurableNMemoryDataProvid
     /// <summary>   Begins unit of work. </summary>
     /// <param name="parentUnitOfWork"> The parent unit of work. </param>
     /// <returns>   A TUnitOfWork. </returns>
-    public override ITestUnitOfWork BeginUnitofWork(IUnitOfWork parentUnitOfWork)
+    public override ITestUnitOfWork BeginUnitOfWork(IUnitOfWork parentUnitOfWork)
     {
         return new NMemoryTestUnitOfWork(DataService, this, parentUnitOfWork);
     }

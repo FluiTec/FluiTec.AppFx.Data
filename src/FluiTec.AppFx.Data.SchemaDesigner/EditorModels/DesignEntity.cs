@@ -22,6 +22,6 @@ public class DesignEntity : CollectionSaveChangesAware
     public ObservableCollectionWithItemNotify<DesignProperty> Properties
     {
         get => _properties;
-        set => SetCollection(ref _properties, value);
+        set => SetCollection(ref _properties!, value);
     }
 }

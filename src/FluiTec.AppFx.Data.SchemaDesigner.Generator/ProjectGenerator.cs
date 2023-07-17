@@ -16,6 +16,8 @@ public class ProjectGenerator
     /// <summary>   Creates or update. </summary>
     public void CreateOrUpdate(ProjectInformation information)
     {
+        if (information.Directory == null) 
+            throw new ArgumentNullException(nameof(information.Directory));
         if (!Directory.Exists(information.Directory))
             Directory.CreateDirectory(information.Directory);
     }

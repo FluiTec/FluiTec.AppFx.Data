@@ -37,9 +37,17 @@ public interface IDataProvider<out TDataService, out TUnitOfWork> : IDataProvide
     /// <value> The data service. </value>
     TDataService DataService { get; }
 
+    /// <summary> Begins unit of work.</summary>
+    /// <returns> A TUnitOfWork.</returns>
     TUnitOfWork BeginUnitOfWork();
 
+    /// <summary> Begins unit of work.</summary>
+    /// <param name="transactionOptions"> Options for controlling the transaction. </param>
+    /// <returns> A TUnitOfWork.</returns>
     TUnitOfWork BeginUnitOfWork(TransactionOptions transactionOptions);
 
-    TUnitOfWork BeginUnitofWork(IUnitOfWork parentUnitOfWork);
+    /// <summary> Begins unit of work.</summary>
+    /// <param name="parentUnitOfWork"> The parent unit of work. </param>
+    /// <returns> A TUnitOfWork.</returns>
+    TUnitOfWork BeginUnitOfWork(IUnitOfWork parentUnitOfWork);
 }

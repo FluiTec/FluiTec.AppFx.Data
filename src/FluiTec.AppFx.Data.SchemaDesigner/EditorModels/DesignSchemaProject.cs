@@ -11,6 +11,6 @@ public class DesignSchemaProject : CollectionSaveChangesAware
     public ObservableCollectionWithItemNotify<DesignSchema> Schemata
     {
         get => _schemata;
-        set => SetCollection(ref _schemata, value);
+        set => SetCollection(ref _schemata!, value);
     }
 }

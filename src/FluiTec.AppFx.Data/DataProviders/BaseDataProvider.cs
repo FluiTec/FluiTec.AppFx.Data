@@ -81,10 +81,10 @@ public abstract class BaseDataProvider<TDataService, TUnitOfWork> : IDataProvide
     /// <returns>   A TUnitOfWork. </returns>
     public abstract TUnitOfWork BeginUnitOfWork(TransactionOptions transactionOptions);
 
-    /// <summary>   Begins unitof work. </summary>
+    /// <summary>   Begins unit of work. </summary>
     /// <param name="parentUnitOfWork"> The parent unit of work. </param>
     /// <returns>   A TUnitOfWork. </returns>
-    public abstract TUnitOfWork BeginUnitofWork(IUnitOfWork parentUnitOfWork);
+    public abstract TUnitOfWork BeginUnitOfWork(IUnitOfWork parentUnitOfWork);
 
     /// <summary>   Executes the 'options changed' action. </summary>
     /// <param name="args"> The options argument. </param>
