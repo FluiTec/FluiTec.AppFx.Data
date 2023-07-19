@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ public class LiteDbTableRepository<TEntity> : LiteDbPagedRepository<TEntity>, IT
     /// <summary> Gets the keys in this collection.</summary>
     /// <param name="entity"> The entity. </param>
     /// <returns>An enumerator that allows foreach to be used to process the keys in this collection.</returns>
-    protected IEnumerable<object> GetKeys(TEntity entity)
+    protected IReadOnlyList<object> GetKeys(TEntity entity)
     {
         var schema = DataService.Schema[EntityType];
 
@@ -49,14 +50,14 @@ public class LiteDbTableRepository<TEntity> : LiteDbPagedRepository<TEntity>, IT
             .OrderBy(p => p.Order)
             .ToList();
 
-        return typeKeys.Select(k => k.GetValue(entity));
+        return typeKeys.Select(k => k.GetValue(entity)).ToList().AsReadOnly();
     }
 
     /// <summary> Keys match.</summary>
     /// <param name="entity"> The entity. </param>
     /// <param name="keys">   The keys. </param>
     /// <returns> True if it succeeds, false if it fails.</returns>
-    protected bool KeysMatch(TEntity entity, IEnumerable<object> keys)
+    protected bool KeysMatch(TEntity entity, IReadOnlyList<object> keys)
     {
         var schema = DataService.Schema[EntityType];
 

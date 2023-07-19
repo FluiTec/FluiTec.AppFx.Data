@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -20,7 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Providers\Fixtures\" />
+    <ProjectReference Include="..\..\..\FluiTec.AppFx.Data.LiteDb\FluiTec.AppFx.Data.LiteDb.csproj" />
+    <ProjectReference Include="..\FluiTec.AppFx.Data.Tests\FluiTec.AppFx.Data.Tests.csproj" />
   </ItemGroup>
 
 </Project>
