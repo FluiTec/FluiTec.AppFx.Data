@@ -16,16 +16,10 @@
 	<ItemGroup>
 	  <Compile Remove="DataProviders\**" />
 	  <Compile Remove="DataServices\**" />
-	  <Compile Remove="Repositories\**" />
-	  <Compile Remove="UnitsOfWork\**" />
 	  <EmbeddedResource Remove="DataProviders\**" />
 	  <EmbeddedResource Remove="DataServices\**" />
-	  <EmbeddedResource Remove="Repositories\**" />
-	  <EmbeddedResource Remove="UnitsOfWork\**" />
 	  <None Remove="DataProviders\**" />
 	  <None Remove="DataServices\**" />
-	  <None Remove="Repositories\**" />
-	  <None Remove="UnitsOfWork\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -37,6 +31,17 @@
 			<Pack>True</Pack>
 			<PackagePath />
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Repositories\" />
+	  <Folder Include="UnitsOfWork\" />
+	  <Folder Include="Providers\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj" />
+	  <ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
 	</ItemGroup>
 
 </Project>

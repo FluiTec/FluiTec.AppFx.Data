@@ -24,4 +24,14 @@
 		</None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Enums\" />
+	  <Folder Include="SqlBuilders\" />
+	  <Folder Include="StatementBuilders\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
+	</ItemGroup>
+
 </Project>
