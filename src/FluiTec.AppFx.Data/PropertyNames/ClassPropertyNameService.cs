@@ -23,7 +23,7 @@ public class ClassPropertyNameService : IPropertyNameService
         if (_propertyMap.TryGetValue(property, out var name1))
             return name1;
 
-        var name = new PropertyName(property.Name);
+        var name = new PropertyName(property.Name, property.Name);
         _propertyMap.TryAdd(property, name);
         return name;
     }

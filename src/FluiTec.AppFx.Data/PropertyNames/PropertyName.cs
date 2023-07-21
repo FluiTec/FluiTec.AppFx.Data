@@ -6,26 +6,37 @@ namespace FluiTec.AppFx.Data.PropertyNames;
 public class PropertyName : IEquatable<string>
 {
     /// <summary>   Constructor. </summary>
-    /// <param name="name">     The name. </param>
-    public PropertyName(string name)
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    /// <param name="columnName">   The name. </param>
+    /// <param name="propertyName"> The name of the property. </param>
+    public PropertyName(string columnName, string propertyName)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentNullException(nameof(name));
-        Name = name;
+        if (string.IsNullOrWhiteSpace(columnName))
+            throw new ArgumentNullException(nameof(columnName));
+        ColumnName = columnName;
+
+        if (string.IsNullOrWhiteSpace(propertyName))
+            throw new ArgumentNullException(nameof(propertyName));
+        Name = propertyName;
     }
 
     /// <summary>   Gets the name. </summary>
     /// <value> The name. </value>
+    public string ColumnName { get; }
+
+    /// <summary>   Gets the name of the property. </summary>
+    /// <value> The name of the property. </value>
     public string Name { get; }
 
     protected bool Equals(PropertyName other)
     {
-        return Name == other.Name;
+        return ColumnName == other.ColumnName;
     }
 
     public bool Equals(string other)
     {
-        return Name == other;
+        return ColumnName == other;
     }
 
     public override bool Equals(object? obj)
@@ -78,6 +89,6 @@ public class PropertyName : IEquatable<string>
     /// <returns>   A hash code for the current object. </returns>
     public override int GetHashCode()
     {
-        return Name.GetHashCode();
+        return ColumnName.GetHashCode();
     }
 }

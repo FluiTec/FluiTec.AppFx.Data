@@ -28,7 +28,7 @@ public class AttributePropertyNameService : ClassPropertyNameService
             return name1;
 
         var name = property.GetAttributes<PropertyNameAttribute>().SingleOrDefault() is { } attribute
-            ? attribute.Name
+            ? new PropertyName(attribute.ColumnName, property.Name)
             : base.GetName(property);
         _propertyMap.TryAdd(property, name);
         return name;

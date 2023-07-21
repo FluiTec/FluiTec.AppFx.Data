@@ -19,4 +19,13 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Fixtures\Entities\" />
+    <Folder Include="SqlBuilders\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj" />
+  </ItemGroup>
+
 </Project>

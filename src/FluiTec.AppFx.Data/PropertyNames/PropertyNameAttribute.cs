@@ -7,13 +7,12 @@ namespace FluiTec.AppFx.Data.PropertyNames;
 public class PropertyNameAttribute : Attribute
 {
     /// <summary>   Constructor. </summary>
-    /// <param name="name"> The name. </param>
-    public PropertyNameAttribute(string name)
+    public PropertyNameAttribute(string columnName)
     {
-        Name = new PropertyName(name);
+        ColumnName = columnName;
     }
 
-    /// <summary>   Gets the name. </summary>
-    /// <value> The name. </value>
-    public PropertyName Name { get; }
+    /// <summary>   Gets the name of the column. </summary>
+    /// <value> The name of the column. </value>
+    public string ColumnName { get; }
 }
