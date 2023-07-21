@@ -1,4 +1,4 @@
-﻿using System;
+﻿using ImmediateReflection;
 
 namespace FluiTec.AppFx.Data.PropertyNames;
 
@@ -6,7 +6,7 @@ namespace FluiTec.AppFx.Data.PropertyNames;
 public interface IPropertyNameService
 {
     /// <summary>   Gets a name. </summary>
-    /// <param name="type"> The type. </param>
+    /// <param name="property"> The property. </param>
     /// <returns>   The name. </returns>
-    PropertyName GetName(Type type);
+    PropertyName GetName(ImmediateProperty property);
 }

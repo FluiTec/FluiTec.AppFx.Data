@@ -35,7 +35,7 @@ public class RepositoryTest
         var serviceMock = new Mock<IDataService>();
         var nameServiceMock = new Mock<IEntityNameService>();
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<IDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -54,7 +54,7 @@ public class RepositoryTest
         var serviceMock = new Mock<IDataService>();
         var nameServiceMock = new Mock<IEntityNameService>();
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<IDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -73,7 +73,7 @@ public class RepositoryTest
         var serviceMock = new Mock<IDataService>();
         var nameServiceMock = new Mock<IEntityNameService>();
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<IDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -96,7 +96,7 @@ public class RepositoryTest
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<IDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -118,7 +118,7 @@ public class RepositoryTest
         var serviceMock = new Mock<IDataService>();
         var nameServiceMock = new Mock<IEntityNameService>();
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<IDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -144,7 +144,7 @@ public class RepositoryTest
             .Returns(new Mock<ILogger<Repository<DummyEntity>>>().Object);
         var nameServiceMock = new Mock<IEntityNameService>();
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<IDataProvider>();
         var strategyMock = new Mock<INameStrategy>();

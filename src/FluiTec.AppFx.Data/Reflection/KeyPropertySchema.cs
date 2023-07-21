@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluiTec.AppFx.Data.PropertyNames;
+using System;
 
 namespace FluiTec.AppFx.Data.Reflection;
 
@@ -12,7 +13,7 @@ public class KeyPropertySchema : PropertySchema, IKeyPropertySchema
     /// <param name="name">             The name. </param>
     /// <param name="order">            The order. </param>
     /// <param name="valueAccessor">    The value accessor. </param>
-    public KeyPropertySchema(Type propertyType, string name, int order, Func<object, object> valueAccessor) : base(
+    public KeyPropertySchema(Type propertyType, PropertyName name, int order, Func<object, object> valueAccessor) : base(
         propertyType, name)
     {
         _valueAccessor = valueAccessor;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluiTec.AppFx.Data.EntityNames;
 
 namespace FluiTec.AppFx.Data.Reflection;
 
@@ -9,6 +10,10 @@ public interface ITypeSchema
     /// <summary>   Gets the type. </summary>
     /// <value> The type. </value>
     Type Type { get; }
+
+    /// <summary>   Gets the name. </summary>
+    /// <value> The name. </value>
+    EntityName Name { get; }
 
     /// <summary>   Gets the properties. </summary>
     /// <value> The properties. </value>

@@ -10,15 +10,7 @@ public class PropertyNameAttribute : Attribute
     /// <param name="name"> The name. </param>
     public PropertyNameAttribute(string name)
     {
-        Name = new PropertyName(null, name);
-    }
-
-    /// <summary>   Constructor. </summary>
-    /// <param name="schema">   The schema. </param>
-    /// <param name="name">     The name. </param>
-    public PropertyNameAttribute(string schema, string name)
-    {
-        Name = new PropertyName(schema, name);
+        Name = new PropertyName(name);
     }
 
     /// <summary>   Gets the name. </summary>

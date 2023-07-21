@@ -1,4 +1,5 @@
 ﻿using System;
+using FluiTec.AppFx.Data.PropertyNames;
 
 namespace FluiTec.AppFx.Data.Reflection;
 
@@ -11,5 +12,5 @@ public interface IPropertySchema : IEquatable<IPropertySchema>
 
     /// <summary>   Gets the name. </summary>
     /// <value> The name. </value>
-    string Name { get; }
+    PropertyName Name { get; }
 }

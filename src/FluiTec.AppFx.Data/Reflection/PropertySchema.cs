@@ -1,4 +1,5 @@
 ﻿using System;
+using FluiTec.AppFx.Data.PropertyNames;
 
 namespace FluiTec.AppFx.Data.Reflection;
 
@@ -8,7 +9,7 @@ public class PropertySchema : IPropertySchema
     /// <summary>   Constructor. </summary>
     /// <param name="propertyType"> Type of the property. </param>
     /// <param name="name">         The name. </param>
-    public PropertySchema(Type propertyType, string name)
+    public PropertySchema(Type propertyType, PropertyName name)
     {
         PropertyType = propertyType ?? throw new ArgumentNullException(nameof(propertyType));
         Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -20,7 +21,7 @@ public class PropertySchema : IPropertySchema
 
     /// <summary>   Gets the name. </summary>
     /// <value> The name. </value>
-    public string Name { get; }
+    public PropertyName Name { get; }
 
     /// <summary>
     ///     Indicates whether the current object is equal to another object of the same type.

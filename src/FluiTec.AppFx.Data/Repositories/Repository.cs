@@ -22,7 +22,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
         DataProvider = dataProvider ?? throw new ArgumentNullException(nameof(dataProvider));
 
         EntityType = typeof(TEntity);
-        TableName = dataProvider.NameStrategy.ToString(EntityType, dataService.NameService);
+        TableName = dataProvider.NameStrategy.ToString(EntityType, dataService.EntityNameService);
         Logger = dataService.LoggerFactory?.CreateLogger<IRepository<TEntity>>();
     }
 

@@ -35,7 +35,7 @@ public class LiteDbRepositoryTest
         var serviceMock = new Mock<IDataService>();
         var nameServiceMock = new Mock<IEntityNameService>();
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<ILiteDbDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -61,7 +61,7 @@ public class LiteDbRepositoryTest
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<ILiteDbDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -86,7 +86,7 @@ public class LiteDbRepositoryTest
         var serviceMock = new Mock<IDataService>();
         var nameServiceMock = new Mock<IEntityNameService>();
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<ILiteDbDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -114,7 +114,7 @@ public class LiteDbRepositoryTest
             .Returns(new Mock<ILogger<Repository<DummyEntity>>>().Object);
         var nameServiceMock = new Mock<IEntityNameService>();
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<ILiteDbDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -143,7 +143,7 @@ public class LiteDbRepositoryTest
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<ILiteDbDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -175,7 +175,7 @@ public class LiteDbRepositoryTest
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<ILiteDbDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -206,7 +206,7 @@ public class LiteDbRepositoryTest
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<ILiteDbDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -235,7 +235,7 @@ public class LiteDbRepositoryTest
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<ILiteDbDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
@@ -264,7 +264,7 @@ public class LiteDbRepositoryTest
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
         serviceMock
-            .SetupGet(s => s.NameService)
+            .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
         var providerMock = new Mock<ILiteDbDataProvider>();
         var strategyMock = new Mock<INameStrategy>();

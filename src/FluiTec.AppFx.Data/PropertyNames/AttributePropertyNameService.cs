@@ -11,25 +11,26 @@ public class AttributePropertyNameService : ClassPropertyNameService
     /// <summary>   (Immutable) the type map. </summary>
     private readonly ConcurrentDictionary<Type, PropertyName> _typeMap = new();
 
+    /// <summary>   (Immutable) the property map. </summary>
+    private readonly ConcurrentDictionary<ImmediateProperty, PropertyName> _propertyMap = new();
+    
     /// <summary>   Gets a name. </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     Thrown when one or more required arguments are
-    ///     null.
-    /// </exception>
-    /// <param name="type"> The type. </param>
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    /// <param name="property"> The property. </param>
     /// <returns>   The name. </returns>
-    public override PropertyName GetName(Type type)
+    public override PropertyName GetName(ImmediateProperty property)
     {
-        if (type == null)
-            throw new ArgumentNullException(nameof(type));
+        if (property == null)
+            throw new ArgumentNullException(nameof(property));
 
-        if (_typeMap.ContainsKey(type))
-            return _typeMap[type];
+        if (_propertyMap.TryGetValue(property, out var name1))
+            return name1;
 
-        var name = type.GetImmediateType().GetAttributes<PropertyNameAttribute>().SingleOrDefault() is { } attribute
+        var name = property.GetAttributes<PropertyNameAttribute>().SingleOrDefault() is { } attribute
             ? attribute.Name
-            : base.GetName(type);
-        _typeMap.TryAdd(type, name);
+            : base.GetName(property);
+        _propertyMap.TryAdd(property, name);
         return name;
     }
 }
