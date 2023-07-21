@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.LiteDb.Providers;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.UnitsOfWork;
 
 namespace FluiTec.AppFx.Data.LiteDb.Repositories;
 
@@ -13,10 +14,13 @@ public class LiteDbWritableTableRepository<TEntity> : LiteDbTableRepository<TEnt
     IWritableTableDataRepository<TEntity>
     where TEntity : class, new()
 {
-    /// <summary> Constructor.</summary>
+    /// <summary>   Constructor. </summary>
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
-    public LiteDbWritableTableRepository(IDataService dataService, ILiteDbDataProvider dataProvider) : base(dataService, dataProvider)
+    /// <param name="unitOfWork">   The unit of work. </param>
+    public LiteDbWritableTableRepository(IDataService dataService, ILiteDbDataProvider dataProvider,
+        IUnitOfWork unitOfWork)
+        : base(dataService, dataProvider, unitOfWork)
     {
     }
 
@@ -31,8 +35,10 @@ public class LiteDbWritableTableRepository<TEntity> : LiteDbTableRepository<TEnt
 
     /// <summary> Adds an asynchronous to 'cancellationToken'.</summary>
     /// <param name="entity">            The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The add.</returns>
     public Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
@@ -49,8 +55,10 @@ public class LiteDbWritableTableRepository<TEntity> : LiteDbTableRepository<TEnt
 
     /// <summary> Adds a range asynchronous to 'cancellationToken'.</summary>
     /// <param name="entities">             An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> A Task.</returns>
     public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
@@ -69,8 +77,10 @@ public class LiteDbWritableTableRepository<TEntity> : LiteDbTableRepository<TEnt
 
     /// <summary> Updates the asynchronous.</summary>
     /// <param name="entity">            The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The update.</returns>
     public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
@@ -88,8 +98,10 @@ public class LiteDbWritableTableRepository<TEntity> : LiteDbTableRepository<TEnt
 
     /// <summary> Deletes the asynchronous.</summary>
     /// <param name="keys">              A variable-length parameters list containing keys. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The delete.</returns>
     public Task<bool> DeleteAsync(object[] keys, CancellationToken cancellationToken = default)
     {
@@ -107,8 +119,10 @@ public class LiteDbWritableTableRepository<TEntity> : LiteDbTableRepository<TEnt
 
     /// <summary> Deletes the asynchronous.</summary>
     /// <param name="entity">            The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The delete.</returns>
     public Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {

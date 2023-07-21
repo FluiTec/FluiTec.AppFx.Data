@@ -12,6 +12,24 @@ namespace FluiTec.AppFx.Data.SchemaDesigner.Wpfui.ViewModels;
 /// <summary>   A ViewModel for the schema. </summary>
 public partial class SchemaViewModel : ObservableObject, INavigationAware
 {
+    /// <summary>   Constructor. </summary>
+    /// <param name="schemaService">        The schema service. </param>
+    /// <param name="projectService">       The project service. </param>
+    /// <param name="entityService">        The entity service. </param>
+    /// <param name="navigationService">    The navigation service. </param>
+    /// <param name="snackbarService">      The snack bar service. </param>
+    /// <param name="confirmService">       The confirm service. </param>
+    public SchemaViewModel(ISchemaService schemaService, IProjectService projectService, IEntityService entityService,
+        INavigationService navigationService, ISnackbarService snackbarService, IConfirmService confirmService)
+    {
+        SchemaService = schemaService;
+        ProjectService = projectService;
+        EntityService = entityService;
+        NavigationService = navigationService;
+        SnackbarService = snackbarService;
+        ConfirmService = confirmService;
+    }
+
     /// <summary>   Gets the schema service. </summary>
     /// <value> The schema service. </value>
     public ISchemaService SchemaService { get; }
@@ -36,23 +54,6 @@ public partial class SchemaViewModel : ObservableObject, INavigationAware
     /// <value> The confirm service. </value>
     public IConfirmService ConfirmService { get; }
 
-    /// <summary>   Constructor. </summary>
-    /// <param name="schemaService">        The schema service. </param>
-    /// <param name="projectService">       The project service. </param>
-    /// <param name="entityService">        The entity service. </param>
-    /// <param name="navigationService">    The navigation service. </param>
-    /// <param name="snackbarService">      The snack bar service. </param>
-    /// <param name="confirmService">       The confirm service. </param>
-    public SchemaViewModel(ISchemaService schemaService, IProjectService projectService, IEntityService entityService, INavigationService navigationService, ISnackbarService snackbarService, IConfirmService confirmService)
-    {
-        SchemaService = schemaService;
-        ProjectService = projectService;
-        EntityService = entityService;
-        NavigationService = navigationService;
-        SnackbarService = snackbarService;
-        ConfirmService = confirmService;
-    }
-
     public void OnNavigatedTo()
     {
     }
@@ -65,7 +66,8 @@ public partial class SchemaViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     public void OnCreateEntity()
     {
-        SchemaService.CurrentSchema!.Entities.Add(new DesignEntity { Name = "EntityName", Properties = new ObservableCollectionWithItemNotify<DesignProperty>()});
+        SchemaService.CurrentSchema!.Entities.Add(new DesignEntity
+            { Name = "EntityName", Properties = new ObservableCollectionWithItemNotify<DesignProperty>() });
     }
 
     /// <summary>   Executes the 'save schema' action. </summary>

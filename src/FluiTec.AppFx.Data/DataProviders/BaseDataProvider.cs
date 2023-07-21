@@ -18,8 +18,10 @@ public abstract class BaseDataProvider<TDataService, TUnitOfWork> : IDataProvide
     where TUnitOfWork : IUnitOfWork
 {
     /// <summary>   Specialized constructor for use only by derived class. </summary>
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="dataService">  The data service. </param>
     /// <param name="options">      Options for controlling the operation. </param>
     protected BaseDataProvider(TDataService dataService, DataOptions options)
@@ -32,8 +34,10 @@ public abstract class BaseDataProvider<TDataService, TUnitOfWork> : IDataProvide
     }
 
     /// <summary>   Specialized constructor for use only by derived class. </summary>
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="dataService">      The data service. </param>
     /// <param name="optionsMonitor">   The options monitor. </param>
     protected BaseDataProvider(TDataService dataService, IOptionsMonitor<DataOptions> optionsMonitor)

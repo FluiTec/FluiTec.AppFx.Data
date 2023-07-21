@@ -18,8 +18,8 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <GroupBox Grid.Row="0" Header="Actions">
@@ -30,16 +30,19 @@
         </GroupBox>
         <GroupBox Grid.Row="1" Header="Properties">
             <StackPanel Orientation="Horizontal">
-                <Label Margin="5,0,0,0" VerticalAlignment="Center" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">Name:</Label>
-                <TextBox Margin="5,0,0,0" Text="{Binding ViewModel.EntityService.CurrentEntity.Name, Mode=TwoWay}"></TextBox>
+                <Label Margin="5,0,0,0" VerticalAlignment="Center"
+                       Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">
+                    Name:
+                </Label>
+                <TextBox Margin="5,0,0,0" Text="{Binding ViewModel.EntityService.CurrentEntity.Name, Mode=TwoWay}" />
             </StackPanel>
         </GroupBox>
         <GroupBox Grid.Row="2" Header="Entities">
             <ListView
-                  x:Name="ListView"
-                  ItemsSource="{Binding ViewModel.EntityService.CurrentEntity.Properties, Mode=TwoWay}"
-                  SelectedIndex="1"
-                  SelectionMode="Single">
+                x:Name="ListView"
+                ItemsSource="{Binding ViewModel.EntityService.CurrentEntity.Properties, Mode=TwoWay}"
+                SelectedIndex="1"
+                SelectionMode="Single">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type editorModels:DesignProperty}">
                         <Grid Margin="8,0">
@@ -52,40 +55,38 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <ui:SymbolIcon Symbol="Tag20" FontSize="32" VerticalAlignment="Center"/>
+                            <ui:SymbolIcon Symbol="Tag20" FontSize="32" VerticalAlignment="Center" />
                             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                                 <TextBlock
                                     Margin="12,6,0,0"
                                     ToolTip="Property:Name"
                                     FontWeight="Bold"
                                     Text="{Binding Name, Mode=OneWay}" />
-                                <TextBlock 
+                                <TextBlock
                                     Margin="12,6,0,0"
                                     ToolTip="Property:Type"
                                     Text="{Binding Type, Mode=OneWay}" />
-                                <TextBlock 
-                                    Margin="12,6,0,0" 
+                                <TextBlock
+                                    Margin="12,6,0,0"
                                     ToolTip="Property:Nullable"
                                     Text="{Binding Nullable, Mode=OneWay}" />
-                                <TextBlock 
+                                <TextBlock
                                     Margin="12,6,0,0"
                                     ToolTip="Property:KeyOrder"
                                     Text="{Binding KeyOrder, Mode=OneWay}" />
                             </StackPanel>
                             <TextBlock
-                                            Grid.Row="1"
-                                            Grid.Column="1"
-                                            Margin="12,0,0,6"
-                                            Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                            Text="Property [Name, Type, Nullable, KeyOrder]" />
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="12,0,0,6"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="Property [Name, Type, Nullable, KeyOrder]" />
                             <ui:Button Grid.Column="2" Grid.Row="0" Icon="Edit20" Content="Edit"
-                                       Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.EditPropertyCommand}" 
-                                       CommandParameter="{Binding}"
-                                   />
+                                       Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.EditPropertyCommand}"
+                                       CommandParameter="{Binding}" />
                             <ui:Button Grid.Column="2" Grid.Row="1" Icon="Delete20" Content="Delete"
-                                       Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.DeletePropertyCommand}" 
-                                       CommandParameter="{Binding}"
-                            />
+                                       Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.DeletePropertyCommand}"
+                                       CommandParameter="{Binding}" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

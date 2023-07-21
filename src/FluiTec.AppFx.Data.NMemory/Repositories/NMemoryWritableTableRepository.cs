@@ -3,28 +3,26 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.NMemory.Providers;
-using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.UnitsOfWork;
 
 namespace FluiTec.AppFx.Data.NMemory.Repositories;
 
 /// <summary>   A memory writable repository. </summary>
 /// <typeparam name="TEntity">  Type of the entity. </typeparam>
-public class NMemoryWritableTableRepository<TEntity> : NMemoryTableRepository<TEntity>, IWritableTableDataRepository<TEntity>
+public class NMemoryWritableTableRepository<TEntity> : NMemoryTableRepository<TEntity>,
+    IWritableTableDataRepository<TEntity>
     where TEntity : class, new()
 {
     /// <summary>   Constructor. </summary>
     /// <param name="unitOfWork">   The unit of work. </param>
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
-    public NMemoryWritableTableRepository(NMemoryUnitOfWork unitOfWork, IDataService dataService, INMemoryDataProvider dataProvider) : base(dataService, dataProvider)
+    public NMemoryWritableTableRepository(IDataService dataService, INMemoryDataProvider dataProvider,
+        IUnitOfWork unitOfWork)
+        : base(dataService, dataProvider, unitOfWork)
     {
-        UnitOfWork = unitOfWork;
     }
-
-    /// <summary>   Gets the unit of work. </summary>
-    /// <value> The unit of work. </value>
-    public NMemoryUnitOfWork UnitOfWork { get; }
 
     /// <summary>   Adds entity. </summary>
     /// <param name="entity">   The entity to add. </param>
@@ -37,8 +35,10 @@ public class NMemoryWritableTableRepository<TEntity> : NMemoryTableRepository<TE
 
     /// <summary>   Adds an asynchronous to 'cancellationToken'. </summary>
     /// <param name="entity">               The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The add. </returns>
     public Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
@@ -55,8 +55,10 @@ public class NMemoryWritableTableRepository<TEntity> : NMemoryTableRepository<TE
 
     /// <summary>   Adds a range asynchronous to 'cancellationToken'. </summary>
     /// <param name="entities">             An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   A Task. </returns>
     public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
@@ -75,8 +77,10 @@ public class NMemoryWritableTableRepository<TEntity> : NMemoryTableRepository<TE
 
     /// <summary>   Updates the asynchronous. </summary>
     /// <param name="entity">               The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The update. </returns>
     public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
@@ -94,8 +98,10 @@ public class NMemoryWritableTableRepository<TEntity> : NMemoryTableRepository<TE
 
     /// <summary>   Deletes the asynchronous. </summary>
     /// <param name="keys">                 A variable-length parameters list containing keys. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The delete. </returns>
     public Task<bool> DeleteAsync(object[] keys, CancellationToken cancellationToken = default)
     {
@@ -115,8 +121,10 @@ public class NMemoryWritableTableRepository<TEntity> : NMemoryTableRepository<TE
 
     /// <summary>   Deletes the asynchronous. </summary>
     /// <param name="entity">               The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The delete. </returns>
     public Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {

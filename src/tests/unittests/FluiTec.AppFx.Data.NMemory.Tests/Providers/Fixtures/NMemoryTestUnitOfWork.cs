@@ -39,7 +39,7 @@ public class NMemoryTestUnitOfWork : NMemoryUnitOfWork, ITestUnitOfWork
         {
             if (_dummyRepository != null)
                 return _dummyRepository!;
-            _dummyRepository = new NMemoryRepository<DummyEntity>(DataService, DataProvider);
+            _dummyRepository = new NMemoryRepository<DummyEntity>(DataService, DataProvider, this);
             return _dummyRepository;
         }
     }

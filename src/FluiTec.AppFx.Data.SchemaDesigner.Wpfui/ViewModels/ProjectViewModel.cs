@@ -20,7 +20,8 @@ public partial class ProjectViewModel : ObservableObject, INavigationAware
     /// <param name="schemaService">        The schema service. </param>
     /// <param name="navigationService">    The navigation service. </param>
     public ProjectViewModel(IProjectService projectService, ISnackbarService snackbarService,
-        IDialogService dialogService, IConfirmService confirmService, ISchemaService schemaService, INavigationService navigationService)
+        IDialogService dialogService, IConfirmService confirmService, ISchemaService schemaService,
+        INavigationService navigationService)
     {
         ProjectService = projectService;
         SnackbarService = snackbarService;
@@ -45,9 +46,11 @@ public partial class ProjectViewModel : ObservableObject, INavigationAware
     /// <summary>   Gets the confirm service. </summary>
     /// <value> The confirm service. </value>
     public IConfirmService ConfirmService { get; }
+
     /// <summary>   Gets the schema service. </summary>
     /// <value> The schema service. </value>
     public ISchemaService SchemaService { get; }
+
     /// <summary>   Gets the navigation service. </summary>
     /// <value> The navigation service. </value>
     public INavigationService NavigationService { get; }
@@ -66,7 +69,8 @@ public partial class ProjectViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     public void OnCreateSchema()
     {
-        var schema = new DesignSchema { Name = "SchemaName", Entities = new ObservableCollectionWithItemNotify<DesignEntity>()};
+        var schema = new DesignSchema
+            { Name = "SchemaName", Entities = new ObservableCollectionWithItemNotify<DesignEntity>() };
         ProjectService.CurrentProject!.Schemata.Add(schema);
         SchemaService.CurrentSchema = schema;
         NavigationService.Navigate(typeof(SchemaPage));

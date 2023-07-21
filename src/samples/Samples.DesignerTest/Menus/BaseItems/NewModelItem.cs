@@ -10,10 +10,6 @@ public class NewModelItem<TModel> : CommandConsoleItem
     /// <summary>   (Immutable) the new model function. </summary>
     private readonly Func<TModel> _newModelFunc;
 
-    /// <summary>   Gets the models. </summary>
-    /// <value> The models. </value>
-    public IList<TModel> Models { get; }
-
     /// <summary>   Constructor. </summary>
     /// <param name="models">       The models. </param>
     /// <param name="newModelFunc"> The new model function. </param>
@@ -22,6 +18,10 @@ public class NewModelItem<TModel> : CommandConsoleItem
         _newModelFunc = newModelFunc;
         Models = models;
     }
+
+    /// <summary>   Gets the models. </summary>
+    /// <value> The models. </value>
+    public IList<TModel> Models { get; }
 
     /// <summary>   Displays the given parent. </summary>
     /// <param name="parent">   The parent. </param>

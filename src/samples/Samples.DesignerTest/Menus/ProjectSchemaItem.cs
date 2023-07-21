@@ -8,16 +8,17 @@ namespace Samples.DesignerTest.Menus;
 /// <summary>   A project schema item. </summary>
 public class ProjectSchemaItem : ListEditItem<DesignSchema>
 {
-    /// <summary>   Gets the project. </summary>
-    /// <value> The project. </value>
-    public DesignSchemaProject Project { get; }
-
     /// <summary>   Constructor. </summary>
     /// <param name="project">  The project. </param>
-    public ProjectSchemaItem(DesignSchemaProject project) : base("ProjectSchema", nameof(project.Schemata), project.Schemata, NewModelFunc)
+    public ProjectSchemaItem(DesignSchemaProject project) : base("ProjectSchema", nameof(project.Schemata),
+        project.Schemata, NewModelFunc)
     {
         Project = project;
     }
+
+    /// <summary>   Gets the project. </summary>
+    /// <value> The project. </value>
+    public DesignSchemaProject Project { get; }
 
     /// <summary>   Creates a new model function. </summary>
     /// <returns>   A DesignSchema. </returns>

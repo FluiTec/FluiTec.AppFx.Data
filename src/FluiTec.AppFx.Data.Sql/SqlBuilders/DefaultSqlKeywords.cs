@@ -17,5 +17,4 @@ public class DefaultSqlKeywords : ISqlKeywords
 /// <summary>   A microsoft SQL keywords. </summary>
 public class MicrosoftSqlKeywords : DefaultSqlKeywords
 {
-
 }

@@ -16,7 +16,8 @@ public class LiteDbUnitOfWork : ParentAwareUnitOfWork
     /// <param name="logger">             The logger. </param>
     /// <param name="transactionOptions"> Options for controlling the transaction. </param>
     /// <param name="database">           The database. </param>
-    public LiteDbUnitOfWork(ILogger<IUnitOfWork>? logger, TransactionOptions transactionOptions, LiteDatabase database) : base(logger, transactionOptions)
+    public LiteDbUnitOfWork(ILogger<IUnitOfWork>? logger, TransactionOptions transactionOptions, LiteDatabase database)
+        : base(logger, transactionOptions)
     {
         Database = database;
         _ownsConnection = true;
@@ -26,7 +27,8 @@ public class LiteDbUnitOfWork : ParentAwareUnitOfWork
     /// <param name="logger">           The logger. </param>
     /// <param name="parentUnitOfWork"> The parent unit of work. </param>
     /// <param name="database">         The database. </param>
-    public LiteDbUnitOfWork(ILogger<IUnitOfWork>? logger, IUnitOfWork parentUnitOfWork, LiteDatabase database) : base(logger, parentUnitOfWork)
+    public LiteDbUnitOfWork(ILogger<IUnitOfWork>? logger, IUnitOfWork parentUnitOfWork, LiteDatabase database) : base(
+        logger, parentUnitOfWork)
     {
         if (parentUnitOfWork is LiteDbUnitOfWork ldbUnitOfWork)
         {

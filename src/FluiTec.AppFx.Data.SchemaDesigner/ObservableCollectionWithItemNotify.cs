@@ -27,7 +27,7 @@ public sealed class ObservableCollectionWithItemNotify<T> : ObservableCollection
         foreach (var item in collection)
             item.ModelChanged += Item_ModelChanged;
     }
-    
+
     /// <summary>   Event handler. Called by Items for collection changed events. </summary>
     /// <param name="sender">   Source of the event. </param>
     /// <param name="e">        Notify collection changed event information. </param>

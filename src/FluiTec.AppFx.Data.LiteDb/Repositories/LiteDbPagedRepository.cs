@@ -5,6 +5,7 @@ using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.LiteDb.Providers;
 using FluiTec.AppFx.Data.Paging;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.UnitsOfWork;
 
 namespace FluiTec.AppFx.Data.LiteDb.Repositories;
 
@@ -13,10 +14,12 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories;
 public class LiteDbPagedRepository<TEntity> : LiteDbRepository<TEntity>, IPagedRepository<TEntity>
     where TEntity : class, new()
 {
-    /// <summary> Constructor.</summary>
+    /// <summary>   Constructor. </summary>
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
-    public LiteDbPagedRepository(IDataService dataService, ILiteDbDataProvider dataProvider) : base(dataService, dataProvider)
+    /// <param name="unitOfWork">   The unit of work. </param>
+    public LiteDbPagedRepository(IDataService dataService, ILiteDbDataProvider dataProvider, IUnitOfWork unitOfWork)
+        : base(dataService, dataProvider, unitOfWork)
     {
     }
 
@@ -63,8 +66,10 @@ public class LiteDbPagedRepository<TEntity> : LiteDbRepository<TEntity>, IPagedR
 
     /// <summary> Gets paged asynchronous.</summary>
     /// <param name="pageIndex">         Zero-based index of the page. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The paged.</returns>
     public Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, CancellationToken cancellationToken = default)
     {
@@ -74,18 +79,23 @@ public class LiteDbPagedRepository<TEntity> : LiteDbRepository<TEntity>, IPagedR
     /// <summary> Gets paged asynchronous.</summary>
     /// <param name="pageIndex">         Zero-based index of the page. </param>
     /// <param name="pageSize">          Size of the page. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The paged.</returns>
-    public Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+    public Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize,
+        CancellationToken cancellationToken = default)
     {
         return Task.FromResult(GetPaged(pageIndex, pageSize));
     }
 
     /// <summary> Gets paged result asynchronous.</summary>
     /// <param name="pageIndex">         Zero-based index of the page. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The paged result.</returns>
     public Task<IPagedResult<TEntity>> GetPagedResultAsync(int pageIndex, CancellationToken cancellationToken = default)
     {
@@ -95,10 +105,13 @@ public class LiteDbPagedRepository<TEntity> : LiteDbRepository<TEntity>, IPagedR
     /// <summary> Gets paged result asynchronous.</summary>
     /// <param name="pageIndex">         Zero-based index of the page. </param>
     /// <param name="pageSize">          Size of the page. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The paged result.</returns>
-    public Task<IPagedResult<TEntity>> GetPagedResultAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+    public Task<IPagedResult<TEntity>> GetPagedResultAsync(int pageIndex, int pageSize,
+        CancellationToken cancellationToken = default)
     {
         return Task.FromResult(GetPagedResult(pageIndex, pageSize));
     }

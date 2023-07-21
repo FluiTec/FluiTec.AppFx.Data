@@ -2,12 +2,14 @@
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Paging;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.UnitsOfWork;
 
 namespace FluiTec.AppFx.Data.Tests.Repositories.Fixtures;
 
 public class TestPagedRepository : PagedRepository<DummyEntity>
 {
-    public TestPagedRepository(IDataService dataService, IDataProvider dataProvider) : base(dataService, dataProvider)
+    public TestPagedRepository(IDataService dataService, IDataProvider dataProvider, IUnitOfWork unitOfWork)
+        : base(dataService, dataProvider, unitOfWork)
     {
     }
 

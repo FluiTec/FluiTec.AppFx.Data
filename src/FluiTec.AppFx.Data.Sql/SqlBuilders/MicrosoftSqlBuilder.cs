@@ -6,7 +6,7 @@ namespace FluiTec.AppFx.Data.Sql.SqlBuilders;
 public class MicrosoftSqlBuilder : SqlBuilder
 {
     /// <summary>   Constructor. </summary>
-    public MicrosoftSqlBuilder() 
+    public MicrosoftSqlBuilder()
         : base(SqlType.Mssql, new MicrosoftSqlKeywords())
     {
     }

@@ -10,13 +10,12 @@ public class ProjectGenerator
     /// <param name="project">  The project. </param>
     public ProjectGenerator(DataSchemaProject project)
     {
-
     }
 
     /// <summary>   Creates or update. </summary>
     public void CreateOrUpdate(ProjectInformation information)
     {
-        if (information.Directory == null) 
+        if (information.Directory == null)
             throw new ArgumentNullException(nameof(information.Directory));
         if (!Directory.Exists(information.Directory))
             Directory.CreateDirectory(information.Directory);
@@ -28,7 +27,7 @@ public class ProjectGenerator
     /// <returns>   A ProjectGenerator. </returns>
     public static ProjectGenerator FromJsonSource(string filePath)
     {
-        if  (!File.Exists(filePath)) { throw new FileNotFoundException(); }
+        if (!File.Exists(filePath)) throw new FileNotFoundException();
 
         using var file = File.OpenText(filePath);
         using var reader = new JsonTextReader(file);

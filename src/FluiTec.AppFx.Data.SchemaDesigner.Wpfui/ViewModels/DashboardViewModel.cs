@@ -13,6 +13,22 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware
 {
     [ObservableProperty] private Visibility _projectVisible = Visibility.Hidden;
 
+    /// <summary>   Constructor. </summary>
+    /// <param name="selectFileService">    The select file service. </param>
+    /// <param name="projectFileService">   The project file service. </param>
+    /// <param name="navigationService">    The navigation service. </param>
+    /// <param name="createFileService">    The create file service. </param>
+    /// <param name="projectService">       The project service. </param>
+    public DashboardViewModel(ISelectFileService selectFileService, IProjectFileService projectFileService,
+        INavigationService navigationService, ICreateFileService createFileService, IProjectService projectService)
+    {
+        SelectFileService = selectFileService;
+        ProjectFileService = projectFileService;
+        NavigationService = navigationService;
+        CreateFileService = createFileService;
+        ProjectService = projectService;
+    }
+
     /// <summary>   Gets the select file service. </summary>
     /// <value> The select file service. </value>
     public ISelectFileService SelectFileService { get; }
@@ -33,28 +49,12 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware
     /// <value> The project service. </value>
     public IProjectService ProjectService { get; }
 
-    /// <summary>   Constructor. </summary>
-    /// <param name="selectFileService">    The select file service. </param>
-    /// <param name="projectFileService">   The project file service. </param>
-    /// <param name="navigationService">    The navigation service. </param>
-    /// <param name="createFileService">    The create file service. </param>
-    /// <param name="projectService">       The project service. </param>
-    public DashboardViewModel(ISelectFileService selectFileService, IProjectFileService projectFileService, INavigationService navigationService, ICreateFileService createFileService, IProjectService projectService)
-    {
-        SelectFileService = selectFileService;
-        ProjectFileService = projectFileService;
-        NavigationService = navigationService;
-        CreateFileService = createFileService;
-        ProjectService = projectService;
-    }
-
     public void OnNavigatedTo()
     {
     }
 
     public void OnNavigatedFrom()
     {
-        
     }
 
     [RelayCommand]
@@ -65,7 +65,7 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware
         var source = new JsonDataDesignSource(fileName);
         var newProject = source.Load();
         source.Save(newProject);
-        
+
         ProjectVisible = Visibility.Visible;
         ProjectFileService.CurrentFile = fileName;
         NavigationService.Navigate(typeof(ProjectPage));

@@ -1,7 +1,7 @@
 ﻿using System.Transactions;
-using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.LiteDb.Providers;
 using FluiTec.AppFx.Data.LiteDb.Repositories;
+using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Data.Tests.Repositories.Fixtures;
 using FluiTec.AppFx.Data.UnitsOfWork;
@@ -17,8 +17,10 @@ public class LiteDbTestUnitOfWork : LiteDbUnitOfWork, ITestUnitOfWork
     private IRepository<DummyEntity>? _dummyRepository;
 
     /// <summary>   Constructor. </summary>
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="dataService">          The data service. </param>
     /// <param name="dataProvider">         The data provider. </param>
     /// <param name="transactionOptions">   Options for controlling the transaction. </param>
@@ -32,8 +34,10 @@ public class LiteDbTestUnitOfWork : LiteDbUnitOfWork, ITestUnitOfWork
     }
 
     /// <summary>   Constructor. </summary>
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="dataService">      The data service. </param>
     /// <param name="dataProvider">     The data provider. </param>
     /// <param name="parentUnitOfWork"> The parent unit of work. </param>
@@ -62,7 +66,7 @@ public class LiteDbTestUnitOfWork : LiteDbUnitOfWork, ITestUnitOfWork
         {
             if (_dummyRepository != null)
                 return _dummyRepository!;
-            _dummyRepository = new LiteDbRepository<DummyEntity>(DataService, DataProvider);
+            _dummyRepository = new LiteDbRepository<DummyEntity>(DataService, DataProvider, this);
             return _dummyRepository;
         }
     }

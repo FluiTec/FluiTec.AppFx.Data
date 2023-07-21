@@ -18,7 +18,8 @@ public partial class MainWindow : INavigationWindow
     /// <param name="navigationService">    The navigation service. </param>
     /// <param name="snackbarService">      The snack bar service. </param>
     /// <param name="dialogService">        The dialog service. </param>
-    public MainWindow(MainWindowViewModel viewModel, IPageService pageService, INavigationService navigationService, ISnackbarService snackbarService, IDialogService dialogService)
+    public MainWindow(MainWindowViewModel viewModel, IPageService pageService, INavigationService navigationService,
+        ISnackbarService snackbarService, IDialogService dialogService)
     {
         ViewModel = viewModel;
         DialogService = dialogService;

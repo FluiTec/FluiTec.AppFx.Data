@@ -11,6 +11,22 @@ public abstract class ListEditItem<TModel> : SelectConsoleItem
     /// <summary>   (Immutable) the new model function. </summary>
     private readonly Func<TModel> _newModelFunc;
 
+    /// <summary>   Constructor. </summary>
+    /// <param name="name">         The name. </param>
+    /// <param name="listName">     Name of the list. </param>
+    /// <param name="models">       The models. </param>
+    /// <param name="newModelFunc"> The new model function. </param>
+    protected ListEditItem(string name, string listName, ObservableCollection<TModel> models,
+        Func<TModel> newModelFunc) : base(name)
+    {
+        _newModelFunc = newModelFunc;
+        ListName = listName;
+        Models = models;
+        Models.CollectionChanged += (sender, args) => AddItems();
+        // ReSharper disable once VirtualMemberCallInConstructor
+        AddItems();
+    }
+
     /// <summary>   Gets the name of the list. </summary>
     /// <value> The name of the list. </value>
     public string ListName { get; }
@@ -22,21 +38,6 @@ public abstract class ListEditItem<TModel> : SelectConsoleItem
     /// <summary>   Gets the prompt title. </summary>
     /// <value> The prompt title. </value>
     public override string PromptTitle => $"[gold3]{Name}[/], {ListName}:";
-
-    /// <summary>   Constructor. </summary>
-    /// <param name="name">         The name. </param>
-    /// <param name="listName">     Name of the list. </param>
-    /// <param name="models">       The models. </param>
-    /// <param name="newModelFunc"> The new model function. </param>
-    protected ListEditItem(string name, string listName, ObservableCollection<TModel> models, Func<TModel> newModelFunc) : base(name)
-    {
-        _newModelFunc = newModelFunc;
-        ListName = listName;
-        Models = models;
-        Models.CollectionChanged += (sender, args) => AddItems();
-        // ReSharper disable once VirtualMemberCallInConstructor
-        AddItems();
-    }
 
     /// <summary>   Adds items. </summary>
     protected virtual void AddItems()

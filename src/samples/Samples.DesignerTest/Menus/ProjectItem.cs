@@ -10,11 +10,11 @@ namespace Samples.DesignerTest.Menus;
 /// <summary>   A project item. </summary>
 public class ProjectItem : CommandConsoleItem, IInteractiveConsoleMenu
 {
-    /// <summary>   Source for the. </summary>
-    private IDataDesignSource? _source;
-
     /// <summary>   The project. </summary>
     private DesignSchemaProject? _project;
+
+    /// <summary>   Source for the. </summary>
+    private IDataDesignSource? _source;
 
     /// <summary>   Default constructor. </summary>
     public ProjectItem() : base("Create / Open project")
@@ -28,13 +28,11 @@ public class ProjectItem : CommandConsoleItem, IInteractiveConsoleMenu
         var defPath = Path.Combine(Directory.GetCurrentDirectory(), "data.design");
         var path = defPath;
         while (!AnsiConsole.Confirm($"Create / Open project @ '{path}' ?"))
-        {
             path = AnsiConsole.Ask<string>("Enter file name of the project:");
-        }
 
         _source = new JsonDataDesignSource(path);
         _project = _source.Load();
-        
+
         if (!File.Exists(path))
         {
             SaveDefault(_source, _project);
@@ -50,7 +48,7 @@ public class ProjectItem : CommandConsoleItem, IInteractiveConsoleMenu
     {
         _source!.Save(_project!);
     }
-    
+
     /// <summary>   Saves a default. </summary>
     /// <param name="dsource">   Source for the. </param>
     /// <param name="dproject">  The project. </param>
@@ -67,11 +65,12 @@ public class ProjectItem : CommandConsoleItem, IInteractiveConsoleMenu
         dproject.Schemata.Add(new DesignSchema
         {
             Name = "TestSchema",
-            Entities = new ObservableCollectionWithItemNotify<DesignEntity>(new[] {
+            Entities = new ObservableCollectionWithItemNotify<DesignEntity>(new[]
+            {
                 new DesignEntity
                 {
                     Name = "DummyEntity",
-                    Properties = new ObservableCollectionWithItemNotify<DesignProperty>(new []
+                    Properties = new ObservableCollectionWithItemNotify<DesignProperty>(new[]
                     {
                         new DesignProperty
                         {

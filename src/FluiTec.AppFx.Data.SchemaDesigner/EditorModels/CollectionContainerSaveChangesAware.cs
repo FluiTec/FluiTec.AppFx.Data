@@ -12,7 +12,8 @@ public class CollectionSaveChangesAware : SaveChangesAware
     /// <param name="collection">   [in,out] The collection. </param>
     /// <param name="value">        The value. </param>
     /// <param name="propertyName"> Name of the property. </param>
-    protected void SetCollection<TCollectionItem>(ref ObservableCollectionWithItemNotify<TCollectionItem>? collection, ObservableCollectionWithItemNotify<TCollectionItem> value, [CallerMemberName] string? propertyName = null) 
+    protected void SetCollection<TCollectionItem>(ref ObservableCollectionWithItemNotify<TCollectionItem>? collection,
+        ObservableCollectionWithItemNotify<TCollectionItem> value, [CallerMemberName] string? propertyName = null)
         where TCollectionItem : ISaveChangesAware
     {
         if (collection != null)

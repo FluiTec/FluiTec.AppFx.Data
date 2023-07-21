@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.NMemory.Providers;
+using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.UnitsOfWork;
 using NMemory.Tables;
 
 namespace FluiTec.AppFx.Data.NMemory.Repositories;
@@ -17,12 +20,16 @@ public class NMemoryRepository<TEntity> : Repository<TEntity>
     /// <summary>   Constructor. </summary>
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
-    public NMemoryRepository(IDataService dataService, INMemoryDataProvider dataProvider) : base(dataService,
-        dataProvider)
+    /// <param name="unitOfWork">   The unit of work. </param>
+    public NMemoryRepository(IDataService dataService, INMemoryDataProvider dataProvider, IUnitOfWork unitOfWork)
+        : base(dataService, dataProvider, unitOfWork)
     {
         DataProvider = dataProvider;
+        UnitOfWork = unitOfWork as NMemoryUnitOfWork ?? throw new InvalidOperationException();
         Table = dataProvider.GetTable<TEntity>();
     }
+
+    public new NMemoryUnitOfWork UnitOfWork { get; }
 
     /// <summary>   Gets the data provider. </summary>
     /// <value> The data provider. </value>

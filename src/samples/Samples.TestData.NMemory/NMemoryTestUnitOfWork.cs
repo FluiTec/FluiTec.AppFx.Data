@@ -70,6 +70,6 @@ public class NMemoryTestUnitOfWork : NMemoryUnitOfWork, ITestUnitOfWork
     {
         _dummyRepository =
             new Lazy<IPagedRepository<DummyEntity>>(() =>
-                new NMemoryPagedRepository<DummyEntity>(DataService, DataProvider));
+                new NMemoryPagedRepository<DummyEntity>(DataService, DataProvider, this));
     }
 }

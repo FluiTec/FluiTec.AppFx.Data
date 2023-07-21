@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Fixtures\Entities\" />
+    <Folder Include="StatementBuilders\" />
     <Folder Include="SqlBuilders\" />
   </ItemGroup>
 

@@ -5,6 +5,7 @@ using FluiTec.AppFx.Data.NMemory.Providers;
 using FluiTec.AppFx.Data.NMemory.Tests.Repositories.Fixtures;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Data.Tests.Repositories.Fixtures;
+using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -19,14 +20,21 @@ public class NMemoryRepositoryTest
     [ExpectedException(typeof(ArgumentNullException))]
     public void ThrowsOnMissingDataService()
     {
-        new NMemoryTestRepository(null!, new Mock<INMemoryDataProvider>().Object);
+        new NMemoryTestRepository(null!, new Mock<INMemoryDataProvider>().Object, new Mock<IUnitOfWork>().Object);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void ThrowsOnMissingDataProvider()
     {
-        new NMemoryTestRepository(new Mock<IDataService>().Object, null!);
+        new NMemoryTestRepository(new Mock<IDataService>().Object, null!, new Mock<IUnitOfWork>().Object);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void ThrowsOnMissingUnitOfWork()
+    {
+        new NMemoryTestRepository(new Mock<IDataService>().Object, new Mock<INMemoryDataProvider>().Object, null!);
     }
 
     [TestMethod]
@@ -43,7 +51,7 @@ public class NMemoryRepositoryTest
             .SetupGet(p => p.NameStrategy)
             .Returns(strategyMock.Object);
 
-        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
 
         Assert.AreEqual(typeof(DummyEntity), repo.EntityType);
     }
@@ -69,7 +77,7 @@ public class NMemoryRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
 
         Assert.AreEqual(tableName, repo.TableName);
     }
@@ -88,7 +96,7 @@ public class NMemoryRepositoryTest
             .SetupGet(p => p.NameStrategy)
             .Returns(strategyMock.Object);
 
-        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
 
         Assert.IsNull(repo.Logger);
     }
@@ -114,7 +122,7 @@ public class NMemoryRepositoryTest
             .SetupGet(p => p.NameStrategy)
             .Returns(strategyMock.Object);
 
-        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
 
         Assert.IsNotNull(repo.Logger);
     }
@@ -143,7 +151,7 @@ public class NMemoryRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
 
         Assert.IsNotNull(repo.Table);
     }
@@ -180,7 +188,7 @@ public class NMemoryRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
         var res = repo.GetAll();
     }
 
@@ -216,7 +224,7 @@ public class NMemoryRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
         var res = repo.GetAllAsync().Result;
     }
 
@@ -249,7 +257,7 @@ public class NMemoryRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
         Assert.AreEqual(count, repo.Count());
     }
 
@@ -282,7 +290,7 @@ public class NMemoryRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new NMemoryTestRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
         Assert.AreEqual(count, repo.CountAsync().Result);
     }
 }

@@ -35,7 +35,8 @@ public class NMemoryUnitOfWork : ParentAwareUnitOfWork
         }
         else
         {
-            TransactionScope = new TransactionScope(TransactionScopeOption.RequiresNew, parentUnitOfWork.TransactionOptions);
+            TransactionScope =
+                new TransactionScope(TransactionScopeOption.RequiresNew, parentUnitOfWork.TransactionOptions);
             ControlledByParent = true;
             _ownsConnection = true;
         }

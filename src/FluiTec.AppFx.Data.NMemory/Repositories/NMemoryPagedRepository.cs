@@ -6,6 +6,7 @@ using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.NMemory.Providers;
 using FluiTec.AppFx.Data.Paging;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.UnitsOfWork;
 
 namespace FluiTec.AppFx.Data.NMemory.Repositories;
 
@@ -17,8 +18,9 @@ public class NMemoryPagedRepository<TEntity> : NMemoryRepository<TEntity>, IPage
     /// <summary>   Constructor. </summary>
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
-    public NMemoryPagedRepository(IDataService dataService, INMemoryDataProvider dataProvider) : base(dataService,
-        dataProvider)
+    /// <param name="unitOfWork">   The unit of work. </param>
+    public NMemoryPagedRepository(IDataService dataService, INMemoryDataProvider dataProvider, IUnitOfWork unitOfWork)
+        : base(dataService, dataProvider, unitOfWork)
     {
     }
 

@@ -49,7 +49,9 @@ public abstract class Schema : ISchema
             if (!_schemata.ContainsKey(entityType))
                 throw new MissingEntitySchemaException(this, entityType);
 
-            return _schemata.TryGetValue(entityType, out var schema) ? schema.Value : new TypeSchema(entityType, EntityNameService, PropertyNameService);
+            return _schemata.TryGetValue(entityType, out var schema)
+                ? schema.Value
+                : new TypeSchema(entityType, EntityNameService, PropertyNameService);
         }
     }
 
@@ -75,6 +77,7 @@ public abstract class Schema : ISchema
     protected void AddEntity(Type entityType)
     {
         if (!_schemata.ContainsKey(entityType))
-            _schemata.TryAdd(entityType, new Lazy<ITypeSchema>(() => new TypeSchema(entityType, EntityNameService, PropertyNameService)));
+            _schemata.TryAdd(entityType,
+                new Lazy<ITypeSchema>(() => new TypeSchema(entityType, EntityNameService, PropertyNameService)));
     }
 }

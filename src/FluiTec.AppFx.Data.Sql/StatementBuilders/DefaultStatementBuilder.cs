@@ -9,8 +9,10 @@ namespace FluiTec.AppFx.Data.Sql.StatementBuilders;
 public abstract class DefaultStatementBuilder : IStatementBuilder
 {
     /// <summary>   Specialized constructor for use only by derived class. </summary>
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="sqlBuilder">   The SQL builder. </param>
     protected DefaultStatementBuilder(ISqlBuilder sqlBuilder)
     {
@@ -27,7 +29,7 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
     public virtual string GetAllStatement(ITypeSchema typeSchema)
     {
         return $"{SqlBuilder.Keywords.Select} " +
-               $"{SqlBuilder.RenderList(typeSchema.MappedProperties.Select(SqlBuilder.RenderProperty))}" +
+               $"{SqlBuilder.RenderList(typeSchema.MappedProperties.Select(SqlBuilder.RenderProperty))} " +
                $"{SqlBuilder.Keywords.From} " +
                $"{SqlBuilder.RenderTableName(typeSchema)}";
     }

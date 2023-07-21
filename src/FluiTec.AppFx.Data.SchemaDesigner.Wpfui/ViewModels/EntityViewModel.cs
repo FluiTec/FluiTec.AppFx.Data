@@ -12,6 +12,27 @@ namespace FluiTec.AppFx.Data.SchemaDesigner.Wpfui.ViewModels;
 /// <summary>   A ViewModel for the entity. </summary>
 public partial class EntityViewModel : ObservableObject, INavigationAware
 {
+    /// <summary>   Constructor. </summary>
+    /// <param name="schemaService">        The schema service. </param>
+    /// <param name="projectService">       The project service. </param>
+    /// <param name="entityService">        The entity service. </param>
+    /// <param name="propertyService">      The property service. </param>
+    /// <param name="navigationService">    The navigation service. </param>
+    /// <param name="snackbarService">      The snack bar service. </param>
+    /// <param name="confirmService">       The confirm service. </param>
+    public EntityViewModel(ISchemaService schemaService, IProjectService projectService, IEntityService entityService,
+        IPropertyService propertyService, INavigationService navigationService, ISnackbarService snackbarService,
+        IConfirmService confirmService)
+    {
+        SchemaService = schemaService;
+        ProjectService = projectService;
+        EntityService = entityService;
+        PropertyService = propertyService;
+        NavigationService = navigationService;
+        SnackbarService = snackbarService;
+        ConfirmService = confirmService;
+    }
+
     /// <summary>   Gets the schema service. </summary>
     /// <value> The schema service. </value>
     public ISchemaService SchemaService { get; }
@@ -40,30 +61,22 @@ public partial class EntityViewModel : ObservableObject, INavigationAware
     /// <value> The confirm service. </value>
     public IConfirmService ConfirmService { get; }
 
-    /// <summary>   Constructor. </summary>
-    /// <param name="schemaService">        The schema service. </param>
-    /// <param name="projectService">       The project service. </param>
-    /// <param name="entityService">        The entity service. </param>
-    /// <param name="propertyService">      The property service. </param>
-    /// <param name="navigationService">    The navigation service. </param>
-    /// <param name="snackbarService">      The snack bar service. </param>
-    /// <param name="confirmService">       The confirm service. </param>
-    public EntityViewModel(ISchemaService schemaService, IProjectService projectService, IEntityService entityService, IPropertyService propertyService, INavigationService navigationService, ISnackbarService snackbarService, IConfirmService confirmService)
+    /// <summary>   Method triggered when the class is navigated. </summary>
+    public void OnNavigatedTo()
     {
-        SchemaService = schemaService;
-        ProjectService = projectService;
-        EntityService = entityService;
-        PropertyService = propertyService;
-        NavigationService = navigationService;
-        SnackbarService = snackbarService;
-        ConfirmService = confirmService;
+    }
+
+    /// <summary>   Method triggered when the navigation leaves the current class. </summary>
+    public void OnNavigatedFrom()
+    {
     }
 
     /// <summary>   Executes the 'create property' action. </summary>
     [RelayCommand]
     public void OnCreateProperty()
     {
-        EntityService.CurrentEntity!.Properties.Add(new DesignProperty { Name = "PropertyName", Type = typeof(string)});
+        EntityService.CurrentEntity!.Properties.Add(new DesignProperty
+            { Name = "PropertyName", Type = typeof(string) });
     }
 
     /// <summary>   Executes the 'save schema' action. </summary>
@@ -91,15 +104,5 @@ public partial class EntityViewModel : ObservableObject, INavigationAware
     {
         if (ConfirmService.Confirm("Delete property?", $"Delete property '{property.Name}'?"))
             EntityService.CurrentEntity!.Properties.Remove(property);
-    }
-
-    /// <summary>   Method triggered when the class is navigated. </summary>
-    public void OnNavigatedTo()
-    {
-    }
-
-    /// <summary>   Method triggered when the navigation leaves the current class. </summary>
-    public void OnNavigatedFrom()
-    {
     }
 }

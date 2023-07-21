@@ -1,6 +1,5 @@
 ﻿using FluiTec.AppFx.Console.Hosting;
 using FluiTec.AppFx.Data.DataProviders;
-using FluiTec.AppFx.Data.SchemaDesigner.Generator;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Samples.TestData.DataServices;
@@ -34,6 +33,7 @@ public class HostedProgram : ConsoleHostedProgram
     /// <param name="args"> The arguments. </param>
     public override void Run(string[] args)
     {
-        var generator = ProjectGenerator.FromJsonSource(@"C:\Users\aschnell\Desktop\Design\default.design");
+        using var uow = DataProvider.BeginUnitOfWork();
+        uow.DummyRepository.GetAll();
     }
 }

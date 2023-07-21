@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.NMemory.Providers;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.UnitsOfWork;
 
 namespace FluiTec.AppFx.Data.NMemory.Repositories;
 
@@ -16,8 +17,9 @@ public class NMemoryTableRepository<TEntity> : NMemoryPagedRepository<TEntity>, 
     /// <summary>   Constructor. </summary>
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
-    public NMemoryTableRepository(IDataService dataService, INMemoryDataProvider dataProvider) : base(dataService,
-        dataProvider)
+    /// <param name="unitOfWork">   The unit of work. </param>
+    public NMemoryTableRepository(IDataService dataService, INMemoryDataProvider dataProvider, IUnitOfWork unitOfWork)
+        : base(dataService, dataProvider, unitOfWork)
     {
     }
 

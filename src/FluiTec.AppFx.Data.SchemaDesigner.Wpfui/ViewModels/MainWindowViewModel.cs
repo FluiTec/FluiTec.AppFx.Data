@@ -17,25 +17,57 @@ namespace FluiTec.AppFx.Data.SchemaDesigner.Wpfui.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject
 {
-    private bool _isInitialized;
-
-    private NavigationItem _homeItem = null!;
-    private NavigationItem _projectItem = null!;
-    private NavigationItem _schemaItem = null!;
-    private NavigationItem _entityItem = null!;
-    private NavigationItem _propertyItem = null!;
+    [ObservableProperty] private string _applicationSubTitle = string.Empty;
 
     [ObservableProperty] private string _applicationTitle = string.Empty;
 
-    [ObservableProperty] private string _applicationSubTitle = string.Empty;
-
     [ObservableProperty] private string? _currentFile = string.Empty;
+    private NavigationItem _entityItem = null!;
+
+    private NavigationItem _homeItem = null!;
+    private bool _isInitialized;
 
     [ObservableProperty] private ObservableCollection<INavigationControl> _navigationFooter = new();
 
     [ObservableProperty] private ObservableCollection<INavigationControl> _navigationItems = new();
+    private NavigationItem _projectItem = null!;
+    private NavigationItem _propertyItem = null!;
+    private NavigationItem _schemaItem = null!;
 
     [ObservableProperty] private ObservableCollection<MenuItem> _trayMenuItems = new();
+
+    /// <summary>   Constructor. </summary>
+    /// <param name="navigationService">    The navigation service. </param>
+    /// <param name="appOptions">           Options for controlling the application. </param>
+    /// <param name="projectFileService">   The project file service. </param>
+    /// <param name="projectService">       The project service. </param>
+    /// <param name="schemaService">        The schema service. </param>
+    /// <param name="entityService">        The entity service. </param>
+    /// <param name="propertyService">      The property service. </param>
+    public MainWindowViewModel(INavigationService navigationService, IOptions<ApplicationOptions> appOptions,
+        IProjectFileService projectFileService, IProjectService projectService, ISchemaService schemaService,
+        IEntityService entityService, IPropertyService propertyService)
+    {
+        NavigationService = navigationService;
+        ProjectFileService = projectFileService;
+        ProjectService = projectService;
+        SchemaService = schemaService;
+        EntityService = entityService;
+        PropertyService = propertyService;
+        ApplicationOptions = appOptions.Value;
+
+        ApplicationTitle = ApplicationOptions.Title;
+        ApplicationSubTitle = ApplicationOptions.SubTitle;
+
+        ProjectFileService.PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(ProjectFileService.CurrentFile))
+                CurrentFile = ProjectFileService.CurrentFile;
+        };
+
+        if (!_isInitialized)
+            InitializeViewModel();
+    }
 
     /// <summary>   Gets the navigation service. </summary>
     /// <value> The navigation service. </value>
@@ -64,37 +96,6 @@ public partial class MainWindowViewModel : ObservableObject
     /// <summary>   Gets options for controlling the application. </summary>
     /// <value> Options that control the application. </value>
     public ApplicationOptions ApplicationOptions { get; }
-    
-    /// <summary>   Constructor. </summary>
-    /// <param name="navigationService">    The navigation service. </param>
-    /// <param name="appOptions">           Options for controlling the application. </param>
-    /// <param name="projectFileService">   The project file service. </param>
-    /// <param name="projectService">       The project service. </param>
-    /// <param name="schemaService">        The schema service. </param>
-    /// <param name="entityService">        The entity service. </param>
-    /// <param name="propertyService">      The property service. </param>
-    public MainWindowViewModel(INavigationService navigationService, IOptions<ApplicationOptions> appOptions, IProjectFileService projectFileService, IProjectService projectService, ISchemaService schemaService, IEntityService entityService, IPropertyService propertyService)
-    {
-        NavigationService = navigationService;
-        ProjectFileService = projectFileService;
-        ProjectService = projectService;
-        SchemaService = schemaService;
-        EntityService = entityService;
-        PropertyService = propertyService;
-        ApplicationOptions = appOptions.Value;
-
-        ApplicationTitle = ApplicationOptions.Title;
-        ApplicationSubTitle = ApplicationOptions.SubTitle;
-
-        ProjectFileService.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(ProjectFileService.CurrentFile))
-                CurrentFile = ProjectFileService.CurrentFile;
-        };
-
-        if (!_isInitialized)
-            InitializeViewModel();
-    }
 
     /// <summary>   Initializes the view model. </summary>
     private void InitializeViewModel()
@@ -185,7 +186,8 @@ public partial class MainWindowViewModel : ObservableObject
     /// <param name="source">       Source for the. </param>
     /// <param name="propertyName"> Name of the property. </param>
     /// <param name="element">      The element. </param>
-    private void SetVisibilityToValueBinding(INotifyPropertyChanged source, string propertyName, FrameworkElement element)
+    private void SetVisibilityToValueBinding(INotifyPropertyChanged source, string propertyName,
+        FrameworkElement element)
     {
         var binding = new Binding(propertyName)
         {

@@ -10,7 +10,8 @@ using NMemory.Utilities;
 namespace FluiTec.AppFx.Data.NMemory.Providers;
 
 /// <summary>   A memory data provider. </summary>
-public abstract class NMemoryDataProvider<TDataService, TUnitOfWork> : BaseDataProvider<TDataService, TUnitOfWork>, INMemoryDataProvider
+public abstract class NMemoryDataProvider<TDataService, TUnitOfWork> : BaseDataProvider<TDataService, TUnitOfWork>,
+    INMemoryDataProvider
     where TDataService : IDataService
     where TUnitOfWork : IUnitOfWork
 {
@@ -27,14 +28,15 @@ public abstract class NMemoryDataProvider<TDataService, TUnitOfWork> : BaseDataP
     /// <summary>   Specialized constructor for use only by derived class. </summary>
     /// <param name="dataService">      The data service. </param>
     /// <param name="optionsMonitor">   The options monitor. </param>
-    protected NMemoryDataProvider(TDataService dataService, IOptionsMonitor<DataOptions> optionsMonitor) : base(dataService, optionsMonitor)
+    protected NMemoryDataProvider(TDataService dataService, IOptionsMonitor<DataOptions> optionsMonitor) : base(
+        dataService, optionsMonitor)
     {
     }
 
     /// <summary>   Gets the type of the provider. </summary>
     /// <value> The type of the provider. </value>
     public override ProviderType ProviderType => ProviderType.NMemory;
-    
+
     /// <summary>   Gets the database. </summary>
     /// <value> The database. </value>
     public virtual Database Database

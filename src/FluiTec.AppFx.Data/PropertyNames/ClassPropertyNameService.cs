@@ -9,10 +9,12 @@ public class ClassPropertyNameService : IPropertyNameService
 {
     /// <summary>   (Immutable) the property map. </summary>
     private readonly ConcurrentDictionary<ImmediateProperty, PropertyName> _propertyMap = new();
-    
+
     /// <summary>   Gets a name. </summary>
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="property"> The property. </param>
     /// <returns>   The name. </returns>
     public virtual PropertyName GetName(ImmediateProperty property)

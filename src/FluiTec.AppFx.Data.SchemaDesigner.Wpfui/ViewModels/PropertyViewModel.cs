@@ -14,7 +14,7 @@ namespace FluiTec.AppFx.Data.SchemaDesigner.Wpfui.ViewModels;
 public partial class PropertyViewModel : ObservableObject, INavigationAware
 {
     /// <summary>   (Immutable) list of types of the properties. </summary>
-    [ObservableProperty] private ReadOnlyCollection<Type> _propertyTypes = new ReadOnlyCollection<Type>(new List<Type>(new[]
+    [ObservableProperty] private ReadOnlyCollection<Type> _propertyTypes = new(new List<Type>(new[]
     {
         typeof(int),
         typeof(long),
@@ -24,8 +24,26 @@ public partial class PropertyViewModel : ObservableObject, INavigationAware
         typeof(string),
         typeof(bool),
         typeof(DateTime),
-        typeof(Guid),
+        typeof(Guid)
     }));
+
+    /// <summary>   Constructor. </summary>
+    /// <param name="schemaService">    The schema service. </param>
+    /// <param name="projectService">   The project service. </param>
+    /// <param name="entityService">    The entity service. </param>
+    /// <param name="propertyService">  The property service. </param>
+    /// <param name="snackbarService">  The snack bar service. </param>
+    /// <param name="confirmService">   The confirm service. </param>
+    public PropertyViewModel(ISchemaService schemaService, IProjectService projectService, IEntityService entityService,
+        IPropertyService propertyService, ISnackbarService snackbarService, IConfirmService confirmService)
+    {
+        SchemaService = schemaService;
+        ProjectService = projectService;
+        EntityService = entityService;
+        PropertyService = propertyService;
+        SnackbarService = snackbarService;
+        ConfirmService = confirmService;
+    }
 
     /// <summary>   Gets the schema service. </summary>
     /// <value> The schema service. </value>
@@ -51,21 +69,13 @@ public partial class PropertyViewModel : ObservableObject, INavigationAware
     /// <value> The confirm service. </value>
     public IConfirmService ConfirmService { get; }
 
-    /// <summary>   Constructor. </summary>
-    /// <param name="schemaService">    The schema service. </param>
-    /// <param name="projectService">   The project service. </param>
-    /// <param name="entityService">    The entity service. </param>
-    /// <param name="propertyService">  The property service. </param>
-    /// <param name="snackbarService">  The snack bar service. </param>
-    /// <param name="confirmService">   The confirm service. </param>
-    public PropertyViewModel(ISchemaService schemaService, IProjectService projectService, IEntityService entityService, IPropertyService propertyService, ISnackbarService snackbarService, IConfirmService confirmService)
+    public void OnNavigatedTo()
     {
-        SchemaService = schemaService;
-        ProjectService = projectService;
-        EntityService = entityService;
-        PropertyService = propertyService;
-        SnackbarService = snackbarService;
-        ConfirmService = confirmService;
+    }
+
+    /// <summary>   Method triggered when the navigation leaves the current class. </summary>
+    public void OnNavigatedFrom()
+    {
     }
 
     /// <summary>   Executes the 'save schema' action. </summary>
@@ -75,14 +85,5 @@ public partial class PropertyViewModel : ObservableObject, INavigationAware
         ProjectService.CurrentDesignSource!.Save(ProjectService.CurrentProject!);
         SnackbarService.Show("Project saved", "The project was successfully saved.", SymbolRegular.Save20,
             ControlAppearance.Success);
-    }
-
-    public void OnNavigatedTo()
-    {
-    }
-
-    /// <summary>   Method triggered when the navigation leaves the current class. </summary>
-    public void OnNavigatedFrom()
-    {
     }
 }

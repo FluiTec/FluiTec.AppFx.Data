@@ -2,8 +2,8 @@
 using FluiTec.AppFx.Data.LiteDb.Providers;
 using FluiTec.AppFx.Data.Options;
 using FluiTec.AppFx.Data.UnitsOfWork;
-using Microsoft.Extensions.Options;
 using LiteDB;
+using Microsoft.Extensions.Options;
 
 namespace FluiTec.AppFx.Data.LiteDb.Tests.Providers.Fixtures;
 

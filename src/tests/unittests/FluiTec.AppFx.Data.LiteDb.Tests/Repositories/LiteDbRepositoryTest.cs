@@ -1,10 +1,16 @@
-﻿using FluiTec.AppFx.Data.DataServices;
+﻿using System.Transactions;
+using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.EntityNames;
 using FluiTec.AppFx.Data.EntityNames.NameStrategies;
 using FluiTec.AppFx.Data.LiteDb.Providers;
 using FluiTec.AppFx.Data.LiteDb.Tests.Repositories.Fixtures;
+using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
+using FluiTec.AppFx.Data.PropertyNames;
+using FluiTec.AppFx.Data.Reflection;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.Schemata;
 using FluiTec.AppFx.Data.Tests.Repositories.Fixtures;
+using FluiTec.AppFx.Data.UnitsOfWork;
 using LiteDB;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,14 +25,26 @@ public class LiteDbRepositoryTest
     [ExpectedException(typeof(ArgumentNullException))]
     public void ThrowsOnMissingDataService()
     {
-        new LiteDbTestRepository(null!, new Mock<ILiteDbDataProvider>().Object);
+        new LiteDbTestRepository(null!, new Mock<ILiteDbDataProvider>().Object, new Mock<IUnitOfWork>().Object);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void ThrowsOnMissingDataProvider()
     {
-        new LiteDbTestRepository(new Mock<IDataService>().Object, null!);
+        new LiteDbTestRepository(new Mock<IDataService>().Object, null!, new Mock<IUnitOfWork>().Object);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void ThrowsOnMissingUnitOfWork()
+    {
+        var serviceMock = new Mock<IDataService>();
+        var nameServiceMock = new Mock<IEntityNameService>();
+        nameServiceMock
+            .Setup(n => n.GetName(It.IsAny<Type>()))
+            .Returns(new EntityName(null, ""));
+        new LiteDbTestRepository(serviceMock.Object, new Mock<ILiteDbDataProvider>().Object, null!);
     }
 
     [TestMethod]
@@ -37,6 +55,14 @@ public class LiteDbRepositoryTest
         serviceMock
             .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
+        var schemaMock = new Mock<ISchema>();
+        schemaMock
+            .SetupGet(p => p[It.IsAny<Type>()])
+            .Returns(new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
+                new AttributePropertyNameService()));
+        serviceMock
+            .SetupGet(s => s.Schema)
+            .Returns(schemaMock.Object);
         var providerMock = new Mock<ILiteDbDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
         providerMock
@@ -46,7 +72,7 @@ public class LiteDbRepositoryTest
             .SetupGet(p => p.Database)
             .Returns(new LiteDatabase(":memory:"));
 
-        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object, new LiteDbUnitOfWork(null, new TransactionOptions(), providerMock.Object.Database));
 
         Assert.AreEqual(typeof(DummyEntity), repo.EntityType);
     }
@@ -60,6 +86,14 @@ public class LiteDbRepositoryTest
         nameServiceMock
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
+        var schemaMock = new Mock<ISchema>();
+        schemaMock
+            .SetupGet(p => p[It.IsAny<Type>()])
+            .Returns(new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
+                new AttributePropertyNameService()));
+        serviceMock
+            .SetupGet(s => s.Schema)
+            .Returns(schemaMock.Object);
         serviceMock
             .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
@@ -75,7 +109,7 @@ public class LiteDbRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object, new LiteDbUnitOfWork(null, new TransactionOptions(), providerMock.Object.Database));
 
         Assert.AreEqual(tableName, repo.TableName);
     }
@@ -88,6 +122,14 @@ public class LiteDbRepositoryTest
         serviceMock
             .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
+        var schemaMock = new Mock<ISchema>();
+        schemaMock
+            .SetupGet(p => p[It.IsAny<Type>()])
+            .Returns(new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
+                new AttributePropertyNameService()));
+        serviceMock
+            .SetupGet(s => s.Schema)
+            .Returns(schemaMock.Object);
         var providerMock = new Mock<ILiteDbDataProvider>();
         var strategyMock = new Mock<INameStrategy>();
         providerMock
@@ -96,7 +138,7 @@ public class LiteDbRepositoryTest
         providerMock
             .SetupGet(p => p.Database)
             .Returns(new LiteDatabase(":memory:"));
-        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object, new LiteDbUnitOfWork(null, new TransactionOptions(), providerMock.Object.Database));
 
         Assert.IsNull(repo.Logger);
     }
@@ -113,6 +155,14 @@ public class LiteDbRepositoryTest
             .Setup(f => f.CreateLogger(It.IsAny<string>()))
             .Returns(new Mock<ILogger<Repository<DummyEntity>>>().Object);
         var nameServiceMock = new Mock<IEntityNameService>();
+        var schemaMock = new Mock<ISchema>();
+        schemaMock
+            .SetupGet(p => p[It.IsAny<Type>()])
+            .Returns(new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
+                new AttributePropertyNameService()));
+        serviceMock
+            .SetupGet(s => s.Schema)
+            .Returns(schemaMock.Object);
         serviceMock
             .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
@@ -128,7 +178,7 @@ public class LiteDbRepositoryTest
             .SetupGet(p => p.Database)
             .Returns(new LiteDatabase(":memory:"));
 
-        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object, new LiteDbUnitOfWork(null, new TransactionOptions(), providerMock.Object.Database));
 
         Assert.IsNotNull(repo.Logger);
     }
@@ -142,6 +192,14 @@ public class LiteDbRepositoryTest
         nameServiceMock
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
+        var schemaMock = new Mock<ISchema>();
+        schemaMock
+            .SetupGet(p => p[It.IsAny<Type>()])
+            .Returns(new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
+                new AttributePropertyNameService()));
+        serviceMock
+            .SetupGet(s => s.Schema)
+            .Returns(schemaMock.Object);
         serviceMock
             .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
@@ -157,7 +215,7 @@ public class LiteDbRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object, new LiteDbUnitOfWork(null, new TransactionOptions(), providerMock.Object.Database));
 
         Assert.IsNotNull(repo.Collection);
     }
@@ -174,6 +232,14 @@ public class LiteDbRepositoryTest
         nameServiceMock
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
+        var schemaMock = new Mock<ISchema>();
+        schemaMock
+            .SetupGet(p => p[It.IsAny<Type>()])
+            .Returns(new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
+                new AttributePropertyNameService()));
+        serviceMock
+            .SetupGet(s => s.Schema)
+            .Returns(schemaMock.Object);
         serviceMock
             .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
@@ -189,7 +255,7 @@ public class LiteDbRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object, new LiteDbUnitOfWork(null, new TransactionOptions(), providerMock.Object.Database));
         var res = repo.GetAll();
     }
 
@@ -205,6 +271,14 @@ public class LiteDbRepositoryTest
         nameServiceMock
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
+        var schemaMock = new Mock<ISchema>();
+        schemaMock
+            .SetupGet(p => p[It.IsAny<Type>()])
+            .Returns(new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
+                new AttributePropertyNameService()));
+        serviceMock
+            .SetupGet(s => s.Schema)
+            .Returns(schemaMock.Object);
         serviceMock
             .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
@@ -220,7 +294,7 @@ public class LiteDbRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object, new LiteDbUnitOfWork(null, new TransactionOptions(), providerMock.Object.Database));
         var res = repo.GetAllAsync().Result;
     }
 
@@ -234,6 +308,14 @@ public class LiteDbRepositoryTest
         nameServiceMock
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
+        var schemaMock = new Mock<ISchema>();
+        schemaMock
+            .SetupGet(p => p[It.IsAny<Type>()])
+            .Returns(new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
+                new AttributePropertyNameService()));
+        serviceMock
+            .SetupGet(s => s.Schema)
+            .Returns(schemaMock.Object);
         serviceMock
             .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
@@ -249,7 +331,7 @@ public class LiteDbRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object, new LiteDbUnitOfWork(null, new TransactionOptions(), providerMock.Object.Database));
         Assert.AreEqual(count, repo.Count());
     }
 
@@ -263,6 +345,14 @@ public class LiteDbRepositoryTest
         nameServiceMock
             .Setup(n => n.GetName(It.IsAny<Type>()))
             .Returns(new EntityName(null, tableName));
+        var schemaMock = new Mock<ISchema>();
+        schemaMock
+            .SetupGet(p => p[It.IsAny<Type>()])
+            .Returns(new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
+                new AttributePropertyNameService()));
+        serviceMock
+            .SetupGet(s => s.Schema)
+            .Returns(schemaMock.Object);
         serviceMock
             .SetupGet(s => s.EntityNameService)
             .Returns(nameServiceMock.Object);
@@ -278,7 +368,7 @@ public class LiteDbRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object);
+        var repo = new LiteDbTestRepository(serviceMock.Object, providerMock.Object, new LiteDbUnitOfWork(null, new TransactionOptions(), providerMock.Object.Database));
         Assert.AreEqual(count, repo.CountAsync().Result);
     }
 }

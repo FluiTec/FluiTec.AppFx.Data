@@ -4,6 +4,7 @@ using FluiTec.AppFx.Data.EntityNames;
 using FluiTec.AppFx.Data.EntityNames.NameStrategies;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Data.Tests.Repositories.Fixtures;
+using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -17,14 +18,21 @@ public class PagedRepositoryTest
     [ExpectedException(typeof(ArgumentNullException))]
     public void ThrowsOnMissingDataService()
     {
-        new TestPagedRepository(null!, new Mock<IDataProvider>().Object);
+        new TestPagedRepository(null!, new Mock<IDataProvider>().Object, new Mock<IUnitOfWork>().Object);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void ThrowsOnMissingDataProvider()
     {
-        new TestPagedRepository(new Mock<IDataService>().Object, null!);
+        new TestPagedRepository(new Mock<IDataService>().Object, null!, new Mock<IUnitOfWork>().Object);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void ThrowsOnMissingUnitOfWork()
+    {
+        new TestPagedRepository(new Mock<IDataService>().Object, new Mock<IDataProvider>().Object, null!);
     }
 
     [TestMethod]
@@ -41,7 +49,7 @@ public class PagedRepositoryTest
             .SetupGet(p => p.NameStrategy)
             .Returns(strategyMock.Object);
 
-        var repo = new TestPagedRepository(serviceMock.Object, providerMock.Object);
+        var repo = new TestPagedRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
 
         Assert.AreEqual(typeof(DummyEntity), repo.EntityType);
     }
@@ -67,7 +75,7 @@ public class PagedRepositoryTest
             .Setup(s => s.ToString(It.IsAny<Type>(), It.IsAny<IEntityNameService>()))
             .Returns(tableName);
 
-        var repo = new TestPagedRepository(serviceMock.Object, providerMock.Object);
+        var repo = new TestPagedRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
 
         Assert.AreEqual(tableName, repo.TableName);
     }
@@ -86,7 +94,7 @@ public class PagedRepositoryTest
             .SetupGet(p => p.NameStrategy)
             .Returns(strategyMock.Object);
 
-        var repo = new TestPagedRepository(serviceMock.Object, providerMock.Object);
+        var repo = new TestPagedRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
 
         Assert.IsNull(repo.Logger);
     }
@@ -112,7 +120,7 @@ public class PagedRepositoryTest
             .SetupGet(p => p.NameStrategy)
             .Returns(strategyMock.Object);
 
-        var repo = new TestPagedRepository(serviceMock.Object, providerMock.Object);
+        var repo = new TestPagedRepository(serviceMock.Object, providerMock.Object, new Mock<IUnitOfWork>().Object);
 
         Assert.IsNotNull(repo.Logger);
     }

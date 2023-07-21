@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:FluiTec.AppFx.Data.SchemaDesigner.Wpfui.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="clr-namespace:FluiTec.AppFx.Data.SchemaDesigner.Wpfui.Models"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:editorModels="clr-namespace:FluiTec.AppFx.Data.SchemaDesigner.EditorModels;assembly=FluiTec.AppFx.Data.SchemaDesigner"
     Title="DataPage"
@@ -19,8 +18,8 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <GroupBox Grid.Row="0" Header="Actions">
@@ -31,16 +30,19 @@
         </GroupBox>
         <GroupBox Grid.Row="1" Header="Properties">
             <StackPanel Orientation="Horizontal">
-                <Label Margin="5,0,0,0" VerticalAlignment="Center" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">Name:</Label>
-                <TextBox Margin="5,0,0,0" Text="{Binding ViewModel.SchemaService.CurrentSchema.Name, Mode=TwoWay}"></TextBox>
+                <Label Margin="5,0,0,0" VerticalAlignment="Center"
+                       Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">
+                    Name:
+                </Label>
+                <TextBox Margin="5,0,0,0" Text="{Binding ViewModel.SchemaService.CurrentSchema.Name, Mode=TwoWay}" />
             </StackPanel>
         </GroupBox>
         <GroupBox Grid.Row="2" Header="Entities">
             <ListView
-                  x:Name="ListView"
-                  ItemsSource="{Binding ViewModel.SchemaService.CurrentSchema.Entities, Mode=TwoWay}"
-                  SelectedIndex="1"
-                  SelectionMode="Single">
+                x:Name="ListView"
+                ItemsSource="{Binding ViewModel.SchemaService.CurrentSchema.Entities, Mode=TwoWay}"
+                SelectedIndex="1"
+                SelectionMode="Single">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type editorModels:DesignEntity}">
                         <Grid Margin="8,0">
@@ -53,27 +55,25 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <ui:SymbolIcon Symbol="Table20" FontSize="32" VerticalAlignment="Center"/>
+                            <ui:SymbolIcon Symbol="Table20" FontSize="32" VerticalAlignment="Center" />
                             <TextBlock
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            Margin="12,6,0,0"
-                                            FontWeight="Bold"
-                                            Text="{Binding Name, Mode=OneWay}" />
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="12,6,0,0"
+                                FontWeight="Bold"
+                                Text="{Binding Name, Mode=OneWay}" />
                             <TextBlock
-                                            Grid.Row="1"
-                                            Grid.Column="1"
-                                            Margin="12,0,0,6"
-                                            Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                            Text="Entity" />
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="12,0,0,6"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="Entity" />
                             <ui:Button Grid.Column="2" Grid.Row="0" Icon="Edit20" Content="Edit"
                                        Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.EditEntityCommand}"
-                                       CommandParameter="{Binding}"
-                                   />
-                            <ui:Button Grid.Column="2" Grid.Row="1" Icon="Delete20" Content="Delete" 
-                                       Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.DeleteEntityCommand}" 
-                                       CommandParameter="{Binding}"
-                            />
+                                       CommandParameter="{Binding}" />
+                            <ui:Button Grid.Column="2" Grid.Row="1" Icon="Delete20" Content="Delete"
+                                       Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.DeleteEntityCommand}"
+                                       CommandParameter="{Binding}" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

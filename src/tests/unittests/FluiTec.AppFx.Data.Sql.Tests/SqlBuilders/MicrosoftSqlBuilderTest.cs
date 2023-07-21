@@ -12,10 +12,15 @@ namespace FluiTec.AppFx.Data.Sql.Tests.SqlBuilders;
 [TestClass]
 public class MicrosoftSqlBuilderTest
 {
-    private static ISqlBuilder GetBuilder() => new MicrosoftSqlBuilder();
+    private static ISqlBuilder GetBuilder()
+    {
+        return new MicrosoftSqlBuilder();
+    }
 
-    private static ITypeSchema GetSchema(Type type) =>
-        new TypeSchema(type, new AttributeEntityNameService(), new AttributePropertyNameService());
+    private static ITypeSchema GetSchema(Type type)
+    {
+        return new TypeSchema(type, new AttributeEntityNameService(), new AttributePropertyNameService());
+    }
 
     [TestMethod]
     public void CanGetType()
@@ -44,7 +49,7 @@ public class MicrosoftSqlBuilderTest
         var builder = GetBuilder();
 
         Assert.AreEqual(
-            $"[{nameof(EmptyUndecoratedDummyEntity)}]", 
+            $"[{nameof(EmptyUndecoratedDummyEntity)}]",
             builder.RenderTableName(GetSchema(typeof(EmptyUndecoratedDummyEntity)))
         );
 
@@ -67,7 +72,7 @@ public class MicrosoftSqlBuilderTest
         Assert.AreEqual(
             "[Id]",
             builder.RenderProperty(GetSchema(typeof(DummyEntityWithProperty)).Properties.Single())
-            );
+        );
 
         Assert.AreEqual(
             "[ID]",
@@ -80,6 +85,6 @@ public class MicrosoftSqlBuilderTest
     {
         var builder = GetBuilder();
 
-        Assert.AreEqual("[Id], [Name]", builder.RenderList(new []{"[Id]", "[Name]"}));
+        Assert.AreEqual("[Id], [Name]", builder.RenderList(new[] { "[Id]", "[Name]" }));
     }
 }

@@ -26,8 +26,8 @@ public class ProjectFileService : IProjectFileService
             {
                 if (!string.IsNullOrEmpty(_currentFile) && !File.Exists(value))
                 {
-
                 }
+
                 _currentFile = value;
                 OnPropertyChanged();
             }

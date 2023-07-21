@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
+using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.DataProviders;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.UnitsOfWork;
 
 namespace FluiTec.AppFx.Data.Dapper.Repositories;
 
@@ -15,9 +19,16 @@ public class DapperRepository<TEntity> : Repository<TEntity>
     /// <summary>   Constructor. </summary>
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
-    public DapperRepository(IDataService dataService, IDataProvider dataProvider) : base(dataService, dataProvider)
+    /// <param name="unitOfWork">   The unit of work. </param>
+    public DapperRepository(IDataService dataService, IDataProvider dataProvider, IUnitOfWork unitOfWork)
+        : base(dataService, dataProvider, unitOfWork)
     {
+        UnitOfWork = unitOfWork as DapperUnitOfWork ?? throw new InvalidOperationException();
     }
+
+    /// <summary>   Gets the unit of work. </summary>
+    /// <value> The unit of work. </value>
+    public new DapperUnitOfWork UnitOfWork { get; }
 
     /// <summary>   Gets all items in this collection. </summary>
     /// <returns>
@@ -25,29 +36,37 @@ public class DapperRepository<TEntity> : Repository<TEntity>
     /// </returns>
     public override IEnumerable<TEntity> GetAll()
     {
-        throw new System.NotImplementedException();
+        var sql = UnitOfWork.StatementBuilder.GetAllStatement(TypeSchema);
+        return UnitOfWork.Connection.Query<TEntity>(sql, null, UnitOfWork.Transaction,
+            commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
     }
 
     /// <summary>   Gets all asynchronous. </summary>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   all. </returns>
     public override Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        throw new System.NotImplementedException();
+        var sql = UnitOfWork.StatementBuilder.GetAllStatement(TypeSchema);
+        var query = new CommandDefinition(sql, null, UnitOfWork.Transaction,
+            (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds,
+            cancellationToken: cancellationToken);
+        return UnitOfWork.Connection.QueryAsync<TEntity>(query);
     }
 
     /// <summary>   Gets the count. </summary>
     /// <returns>   A long. </returns>
     public override long Count()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     /// <summary>   Count asynchronous. </summary>
     /// <returns>   The count. </returns>
     public override Task<long> CountAsync()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.LiteDb.Providers;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.UnitsOfWork;
 
 namespace FluiTec.AppFx.Data.LiteDb.Repositories;
 
@@ -14,10 +14,12 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories;
 public class LiteDbTableRepository<TEntity> : LiteDbPagedRepository<TEntity>, ITableRepository<TEntity>
     where TEntity : class, new()
 {
-    /// <summary> Constructor.</summary>
+    /// <summary>   Constructor. </summary>
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
-    public LiteDbTableRepository(IDataService dataService, ILiteDbDataProvider dataProvider) : base(dataService, dataProvider)
+    /// <param name="unitOfWork">   The unit of work. </param>
+    public LiteDbTableRepository(IDataService dataService, ILiteDbDataProvider dataProvider, IUnitOfWork unitOfWork)
+        : base(dataService, dataProvider, unitOfWork)
     {
     }
 
@@ -31,8 +33,10 @@ public class LiteDbTableRepository<TEntity> : LiteDbPagedRepository<TEntity>, IT
 
     /// <summary> Gets an asynchronous.</summary>
     /// <param name="keys">              A variable-length parameters list containing keys. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The asynchronous.</returns>
     public Task<TEntity?> GetAsync(object[] keys, CancellationToken cancellationToken = default)
     {

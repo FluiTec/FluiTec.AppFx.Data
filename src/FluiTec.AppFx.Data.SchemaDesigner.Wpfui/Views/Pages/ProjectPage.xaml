@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:FluiTec.AppFx.Data.SchemaDesigner.Wpfui.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="clr-namespace:FluiTec.AppFx.Data.SchemaDesigner.Wpfui.Models"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:editorModels="clr-namespace:FluiTec.AppFx.Data.SchemaDesigner.EditorModels;assembly=FluiTec.AppFx.Data.SchemaDesigner"
     Title="DataPage"
@@ -19,8 +18,8 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <GroupBox Grid.Row="0" Header="Actions">
             <StackPanel Orientation="Horizontal">
@@ -30,11 +29,11 @@
         </GroupBox>
         <GroupBox Grid.Row="1" Header="Schemata">
             <!-- ReSharper disable once Xaml.PossibleNullReferenceException -->
-            <ListView Grid.Row="1"
-                  x:Name="ListView"
-                  ItemsSource="{Binding ViewModel.ProjectService.CurrentProject.Schemata, Mode=TwoWay}"
-                  SelectedIndex="1"
-                  SelectionMode="Single">
+            <ListView
+                x:Name="ListView"
+                ItemsSource="{Binding ViewModel.ProjectService.CurrentProject.Schemata, Mode=TwoWay}"
+                SelectedIndex="1"
+                SelectionMode="Single">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type editorModels:DesignSchema}">
                         <Grid Margin="8,0">
@@ -47,7 +46,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <ui:SymbolIcon Symbol="Apps20" FontSize="32" VerticalAlignment="Center"/>
+                            <ui:SymbolIcon Symbol="Apps20" FontSize="32" VerticalAlignment="Center" />
                             <TextBlock
                                 Grid.Row="0"
                                 Grid.Column="1"
@@ -55,19 +54,17 @@
                                 FontWeight="Bold"
                                 Text="{Binding Name, Mode=OneWay}" />
                             <TextBlock
-                                            Grid.Row="1"
-                                            Grid.Column="1"
-                                            Margin="12,0,0,6"
-                                            Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                            Text="Schema" />
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="12,0,0,6"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="Schema" />
                             <ui:Button Grid.Column="2" Grid.Row="0" Icon="Edit20" Content="Edit"
-                                   Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.EditSchemaCommand}"
-                                   CommandParameter="{Binding}"
-                                   />
-                            <ui:Button Grid.Column="2" Grid.Row="1" Icon="Delete20" Content="Delete" 
-                                   Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.DeleteSchemaCommand }" 
-                                   CommandParameter="{Binding}"
-                                   />
+                                       Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.EditSchemaCommand}"
+                                       CommandParameter="{Binding}" />
+                            <ui:Button Grid.Column="2" Grid.Row="1" Icon="Delete20" Content="Delete"
+                                       Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.DeleteSchemaCommand }"
+                                       CommandParameter="{Binding}" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

@@ -5,10 +5,6 @@ namespace FluiTec.AppFx.Data.Schemata;
 /// <summary>   Exception for signalling missing entity schema errors. </summary>
 public class MissingEntitySchemaException : SchemaException
 {
-    /// <summary>   Gets the type of the entity. </summary>
-    /// <value> The type of the entity. </value>
-    public Type EntityType { get; }
-
     /// <summary>   Constructor. </summary>
     /// <param name="schema">       The schema. </param>
     /// <param name="entityType">   The type of the entity. </param>
@@ -16,4 +12,8 @@ public class MissingEntitySchemaException : SchemaException
     {
         EntityType = entityType;
     }
+
+    /// <summary>   Gets the type of the entity. </summary>
+    /// <value> The type of the entity. </value>
+    public Type EntityType { get; }
 }

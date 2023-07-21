@@ -8,7 +8,7 @@ public class DesignSchema : CollectionSaveChangesAware
 
     /// <summary>   The name. </summary>
     private string _name = null!;
-    
+
     /// <summary>   Gets or sets the name. </summary>
     /// <value> The name. </value>
     public string Name

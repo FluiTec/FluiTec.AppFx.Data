@@ -28,11 +28,6 @@ public abstract class SqlBuilder : ISqlBuilder
     /// <value> The keywords. </value>
     public ISqlKeywords Keywords { get; }
 
-    /// <summary>   Wrap expression. </summary>
-    /// <param name="expression">   The expression. </param>
-    /// <returns>   A string. </returns>
-    public abstract string WrapExpression(string expression);
-
     /// <summary>   Renders the table name described by typeSchema. </summary>
     /// <param name="typeSchema">   The type schema. </param>
     /// <returns>   A string. </returns>
@@ -58,4 +53,9 @@ public abstract class SqlBuilder : ISqlBuilder
     {
         return string.Join($"{Keywords.ListSeparator} ", expressions);
     }
+
+    /// <summary>   Wrap expression. </summary>
+    /// <param name="expression">   The expression. </param>
+    /// <returns>   A string. </returns>
+    public abstract string WrapExpression(string expression);
 }

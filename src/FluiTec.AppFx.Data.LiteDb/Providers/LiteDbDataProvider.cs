@@ -10,7 +10,8 @@ namespace FluiTec.AppFx.Data.LiteDb.Providers;
 /// <summary>   A lite database data provider. </summary>
 /// <typeparam name="TDataService"> Type of the data service. </typeparam>
 /// <typeparam name="TUnitOfWork">  Type of the unit of work. </typeparam>
-public abstract class LiteDbDataProvider<TDataService, TUnitOfWork> : BaseDataProvider<TDataService, TUnitOfWork>, ILiteDbDataProvider
+public abstract class LiteDbDataProvider<TDataService, TUnitOfWork> : BaseDataProvider<TDataService, TUnitOfWork>,
+    ILiteDbDataProvider
     where TDataService : IDataService
     where TUnitOfWork : IUnitOfWork
 {
@@ -27,14 +28,15 @@ public abstract class LiteDbDataProvider<TDataService, TUnitOfWork> : BaseDataPr
     /// <summary> Constructor.</summary>
     /// <param name="dataService">    The data service. </param>
     /// <param name="optionsMonitor"> The options monitor. </param>
-    protected LiteDbDataProvider(TDataService dataService, IOptionsMonitor<DataOptions> optionsMonitor) : base(dataService, optionsMonitor)
+    protected LiteDbDataProvider(TDataService dataService, IOptionsMonitor<DataOptions> optionsMonitor) : base(
+        dataService, optionsMonitor)
     {
     }
 
     /// <summary>   Gets the type of the provider. </summary>
     /// <value> The type of the provider. </value>
     public override ProviderType ProviderType => ProviderType.NMemory;
-    
+
     /// <summary> Gets the database.</summary>
     /// <value> The database.</value>
     public virtual LiteDatabase Database

@@ -1,9 +1,9 @@
 ﻿using FluiTec.AppFx.Data.LiteDb.Tests.Providers.Fixtures;
 using FluiTec.AppFx.Data.Options;
+using LiteDB;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using LiteDB;
 
 // ReSharper disable ObjectCreationAsStatement
 
@@ -26,7 +26,8 @@ public class ConfigurableLiteDbDataProviderTest
     public void ThrowsOnMissingOptions()
     {
         var dataServiceMock = new Mock<ITestDataService>();
-        new ConfigurableLiteDbTestDataProvider(() => new LiteDatabase(Constr), dataServiceMock.Object, (DataOptions)null!);
+        new ConfigurableLiteDbTestDataProvider(() => new LiteDatabase(Constr), dataServiceMock.Object,
+            (DataOptions)null!);
     }
 
     [TestMethod]
@@ -43,7 +44,8 @@ public class ConfigurableLiteDbDataProviderTest
     {
         var dataServiceMock = new Mock<ITestDataService>();
         var provider =
-            new ConfigurableLiteDbTestDataProvider(() => new LiteDatabase(Constr), dataServiceMock.Object, new DataOptions());
+            new ConfigurableLiteDbTestDataProvider(() => new LiteDatabase(Constr), dataServiceMock.Object,
+                new DataOptions());
         Assert.IsNotNull(provider.DataService);
     }
 
@@ -52,7 +54,8 @@ public class ConfigurableLiteDbDataProviderTest
     {
         var dataServiceMock = new Mock<ITestDataService>();
         var provider =
-            new ConfigurableLiteDbTestDataProvider(() => new LiteDatabase(Constr), dataServiceMock.Object, new DataOptions());
+            new ConfigurableLiteDbTestDataProvider(() => new LiteDatabase(Constr), dataServiceMock.Object,
+                new DataOptions());
         Assert.IsNotNull(provider.Database);
     }
 
@@ -61,7 +64,8 @@ public class ConfigurableLiteDbDataProviderTest
     {
         var dataServiceMock = new Mock<ITestDataService>();
         var provider =
-            new ConfigurableLiteDbTestDataProvider(() => new LiteDatabase(Constr), dataServiceMock.Object, new DataOptions());
+            new ConfigurableLiteDbTestDataProvider(() => new LiteDatabase(Constr), dataServiceMock.Object,
+                new DataOptions());
         Assert.IsNotNull(provider.NameStrategy);
     }
 
@@ -70,7 +74,8 @@ public class ConfigurableLiteDbDataProviderTest
     {
         var dataServiceMock = new Mock<ITestDataService>();
         var provider =
-            new ConfigurableLiteDbTestDataProvider(() => new LiteDatabase(Constr), dataServiceMock.Object, new DataOptions());
+            new ConfigurableLiteDbTestDataProvider(() => new LiteDatabase(Constr), dataServiceMock.Object,
+                new DataOptions());
         Assert.IsNotNull(provider.PageSettings);
     }
 }

@@ -53,15 +53,12 @@ public class TypeSchema : ITypeSchema
             .AsReadOnly();
 
         KeyProperties = keys
-            .Select(t => new KeyPropertySchema(t.Item1.PropertyType, PropertyNameService.GetName(t.Item1), t.Item2.Order, t.Item1.GetValue))
+            .Select(t => new KeyPropertySchema(t.Item1.PropertyType, PropertyNameService.GetName(t.Item1),
+                t.Item2.Order, t.Item1.GetValue))
             .OrderBy(k => k.Order)
             .ToList()
             .AsReadOnly();
     }
-
-    /// <summary>   Gets the type. </summary>
-    /// <value> The type. </value>
-    public Type Type { get; }
 
     /// <summary>   Gets the entity name service. </summary>
     /// <value> The entity name service. </value>
@@ -70,6 +67,10 @@ public class TypeSchema : ITypeSchema
     /// <summary>   Gets the property name service. </summary>
     /// <value> The property name service. </value>
     public IPropertyNameService PropertyNameService { get; }
+
+    /// <summary>   Gets the type. </summary>
+    /// <value> The type. </value>
+    public Type Type { get; }
 
     /// <summary>   Gets the name. </summary>
     /// <value> The name. </value>

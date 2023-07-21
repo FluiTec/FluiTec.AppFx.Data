@@ -6,8 +6,10 @@ namespace FluiTec.AppFx.Data.PropertyNames;
 public class PropertyName : IEquatable<string>
 {
     /// <summary>   Constructor. </summary>
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="columnName">   The name. </param>
     /// <param name="propertyName"> The name of the property. </param>
     public PropertyName(string columnName, string propertyName)
@@ -29,14 +31,14 @@ public class PropertyName : IEquatable<string>
     /// <value> The name of the property. </value>
     public string Name { get; }
 
-    protected bool Equals(PropertyName other)
-    {
-        return ColumnName == other.ColumnName;
-    }
-
     public bool Equals(string other)
     {
         return ColumnName == other;
+    }
+
+    protected bool Equals(PropertyName other)
+    {
+        return ColumnName == other.ColumnName;
     }
 
     public override bool Equals(object? obj)
@@ -52,37 +54,55 @@ public class PropertyName : IEquatable<string>
     /// <param name="obj1"> The first instance to compare. </param>
     /// <param name="obj2"> The second instance to compare. </param>
     /// <returns>   The result of the operation. </returns>
-    public static bool operator ==(PropertyName obj1, PropertyName obj2) { return obj1.Equals(obj2); }
+    public static bool operator ==(PropertyName obj1, PropertyName obj2)
+    {
+        return obj1.Equals(obj2);
+    }
 
     /// <summary>   Inequality operator. </summary>
     /// <param name="obj1"> The first instance to compare. </param>
     /// <param name="obj2"> The second instance to compare. </param>
     /// <returns>   The result of the operation. </returns>
-    public static bool operator !=(PropertyName obj1, PropertyName obj2) { return !obj1.Equals(obj2); }
+    public static bool operator !=(PropertyName obj1, PropertyName obj2)
+    {
+        return !obj1.Equals(obj2);
+    }
 
     /// <summary>   Equality operator. </summary>
     /// <param name="obj1"> The first instance to compare. </param>
     /// <param name="obj2"> The second instance to compare. </param>
     /// <returns>   The result of the operation. </returns>
-    public static bool operator ==(PropertyName obj1, string obj2) { return obj1.Equals(obj2); }
+    public static bool operator ==(PropertyName obj1, string obj2)
+    {
+        return obj1.Equals(obj2);
+    }
 
     /// <summary>   Inequality operator. </summary>
     /// <param name="obj1"> The first instance to compare. </param>
     /// <param name="obj2"> The second instance to compare. </param>
     /// <returns>   The result of the operation. </returns>
-    public static bool operator !=(PropertyName obj1, string obj2) { return !obj1.Equals(obj2); }
+    public static bool operator !=(PropertyName obj1, string obj2)
+    {
+        return !obj1.Equals(obj2);
+    }
 
     /// <summary>   Equality operator. </summary>
     /// <param name="obj1"> The first instance to compare. </param>
     /// <param name="obj2"> The second instance to compare. </param>
     /// <returns>   The result of the operation. </returns>
-    public static bool operator ==(PropertyName obj1, object obj2) { return obj1.Equals(obj2); }
+    public static bool operator ==(PropertyName obj1, object obj2)
+    {
+        return obj1.Equals(obj2);
+    }
 
     /// <summary>   Inequality operator. </summary>
     /// <param name="obj1"> The first instance to compare. </param>
     /// <param name="obj2"> The second instance to compare. </param>
     /// <returns>   The result of the operation. </returns>
-    public static bool operator !=(PropertyName obj1, object obj2) { return !obj1.Equals(obj2); }
+    public static bool operator !=(PropertyName obj1, object obj2)
+    {
+        return !obj1.Equals(obj2);
+    }
 
 
     /// <summary>   Serves as the default hash function. </summary>

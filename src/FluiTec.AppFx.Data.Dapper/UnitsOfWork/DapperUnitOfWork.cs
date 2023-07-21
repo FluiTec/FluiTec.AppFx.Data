@@ -1,9 +1,10 @@
 ﻿using System;
-using FluiTec.AppFx.Data.UnitsOfWork;
-using Microsoft.Extensions.Logging;
 using System.Data;
 using System.Transactions;
 using FluiTec.AppFx.Data.Dapper.Providers;
+using FluiTec.AppFx.Data.Sql.StatementBuilders;
+using FluiTec.AppFx.Data.UnitsOfWork;
+using Microsoft.Extensions.Logging;
 using IsolationLevel = System.Data.IsolationLevel;
 
 namespace FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -18,10 +19,12 @@ public class DapperUnitOfWork : ParentAwareUnitOfWork
     /// <param name="logger">               The logger. </param>
     /// <param name="transactionOptions">   Options for controlling the transaction. </param>
     /// <param name="dataProvider">         The data provider. </param>
-    public DapperUnitOfWork(ILogger<IUnitOfWork>? logger, TransactionOptions transactionOptions, IDapperDataProvider dataProvider)
+    public DapperUnitOfWork(ILogger<IUnitOfWork>? logger, TransactionOptions transactionOptions,
+        IDapperDataProvider dataProvider)
         : base(logger, transactionOptions)
     {
         DataProvider = dataProvider;
+        StatementBuilder = DataProvider.StatementBuilder;
 
         Connection = dataProvider.ConnectionFactory.CreateConnection(dataProvider.ConnectionString);
         Connection.Open();
@@ -33,7 +36,8 @@ public class DapperUnitOfWork : ParentAwareUnitOfWork
     /// <param name="logger">           The logger. </param>
     /// <param name="parentUnitOfWork"> The parent unit of work. </param>
     /// <param name="dataProvider">     The data provider. </param>
-    public DapperUnitOfWork(ILogger<IUnitOfWork>? logger, IUnitOfWork parentUnitOfWork, IDapperDataProvider dataProvider) : base(logger,
+    public DapperUnitOfWork(ILogger<IUnitOfWork>? logger, IUnitOfWork parentUnitOfWork,
+        IDapperDataProvider dataProvider) : base(logger,
         parentUnitOfWork)
     {
         DataProvider = dataProvider;
@@ -55,7 +59,13 @@ public class DapperUnitOfWork : ParentAwareUnitOfWork
         }
     }
 
+    /// <summary>   Gets the data provider. </summary>
+    /// <value> The data provider. </value>
     public IDapperDataProvider DataProvider { get; }
+
+    /// <summary>   Gets the statement builder. </summary>
+    /// <value> The statement builder. </value>
+    public IStatementBuilder StatementBuilder { get; }
 
     /// <summary>   Gets or sets the connection. </summary>
     /// <value> The connection. </value>
@@ -66,8 +76,10 @@ public class DapperUnitOfWork : ParentAwareUnitOfWork
     public IDbTransaction Transaction { get; protected set; }
 
     /// <summary>   Commits no cancel. </summary>
-    /// <exception cref="T:System.InvalidOperationException">   Thrown when the requested operation
-    ///                                                         is invalid. </exception>
+    /// <exception cref="T:System.InvalidOperationException">
+    ///     Thrown when the requested operation
+    ///     is invalid.
+    /// </exception>
     protected override void CommitNoCancel()
     {
         base.CommitNoCancel();
@@ -79,8 +91,10 @@ public class DapperUnitOfWork : ParentAwareUnitOfWork
     }
 
     /// <summary>   Commits by parent no cancel. </summary>
-    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-    ///                                                 invalid. </exception>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the requested operation is
+    ///     invalid.
+    /// </exception>
     protected override void CommitByParentNoCancel()
     {
         if (IsFinished || !_ownsConnection)
@@ -104,8 +118,10 @@ public class DapperUnitOfWork : ParentAwareUnitOfWork
     }
 
     /// <summary>   Rolls back a no cancel. </summary>
-    /// <exception cref="T:System.InvalidOperationException">   Thrown when the requested operation
-    ///                                                         is invalid. </exception>
+    /// <exception cref="T:System.InvalidOperationException">
+    ///     Thrown when the requested operation
+    ///     is invalid.
+    /// </exception>
     protected override void RollbackNoCancel()
     {
         base.RollbackNoCancel();
@@ -117,8 +133,10 @@ public class DapperUnitOfWork : ParentAwareUnitOfWork
     }
 
     /// <summary>   Rolls back a by parent no cancel. </summary>
-    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-    ///                                                 invalid. </exception>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the requested operation is
+    ///     invalid.
+    /// </exception>
     protected override void RollbackByParentNoCancel()
     {
         if (IsFinished || !_ownsConnection)
@@ -142,8 +160,10 @@ public class DapperUnitOfWork : ParentAwareUnitOfWork
     }
 
     /// <summary>   Converts the given transaction level. </summary>
-    /// <exception cref="ArgumentOutOfRangeException">  Thrown when one or more arguments are outside
-    ///                                                 the required range. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown when one or more arguments are outside
+    ///     the required range.
+    /// </exception>
     /// <param name="transactionLevel"> The transaction level. </param>
     /// <returns>   An IsolationLevel. </returns>
     protected IsolationLevel Convert(System.Transactions.IsolationLevel transactionLevel)

@@ -5,7 +5,7 @@ public class DesignSchemaProject : CollectionSaveChangesAware
 {
     /// <summary>   The schemata. </summary>
     private ObservableCollectionWithItemNotify<DesignSchema> _schemata = null!;
-    
+
     /// <summary>   Gets or sets the schemata. </summary>
     /// <value> The schemata. </value>
     public ObservableCollectionWithItemNotify<DesignSchema> Schemata

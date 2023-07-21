@@ -13,21 +13,24 @@ public abstract class ModelDataDesignSource : IDataDesignSource
         var project = LoadProject();
         var design = new DesignSchemaProject
         {
-            Schemata = new ObservableCollectionWithItemNotify<DesignSchema>(project.Schemata.Select(ds => new DesignSchema
-            {
-                Name = ds.Name,
-                Entities = new ObservableCollectionWithItemNotify<DesignEntity>(ds.Entities.Select(de => new DesignEntity
+            Schemata = new ObservableCollectionWithItemNotify<DesignSchema>(project.Schemata.Select(ds =>
+                new DesignSchema
                 {
-                    Name = de.Name,
-                    Properties = new ObservableCollectionWithItemNotify<DesignProperty>(de.Properties.Select(dp => new DesignProperty
-                    {
-                        Name = dp.Name,
-                        Type = Type.GetType(dp.TypeName)!,
-                        KeyOrder = dp.KeyOrder,
-                        Nullable = dp.Nullable
-                    }))
+                    Name = ds.Name,
+                    Entities = new ObservableCollectionWithItemNotify<DesignEntity>(ds.Entities.Select(de =>
+                        new DesignEntity
+                        {
+                            Name = de.Name,
+                            Properties = new ObservableCollectionWithItemNotify<DesignProperty>(de.Properties.Select(
+                                dp => new DesignProperty
+                                {
+                                    Name = dp.Name,
+                                    Type = Type.GetType(dp.TypeName)!,
+                                    KeyOrder = dp.KeyOrder,
+                                    Nullable = dp.Nullable
+                                }))
+                        }))
                 }))
-            }))
         };
         AcceptChanges(design);
 
@@ -72,10 +75,7 @@ public abstract class ModelDataDesignSource : IDataDesignSource
             foreach (var entity in schema.Entities)
             {
                 entity.AcceptChanges();
-                foreach (var property in entity.Properties)
-                {
-                    property.AcceptChanges();
-                }
+                foreach (var property in entity.Properties) property.AcceptChanges();
             }
         }
     }

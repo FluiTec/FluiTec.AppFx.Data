@@ -26,7 +26,7 @@ public class SchemaTest
     public void CanEnumerateEmptyIEnumerable()
     {
         var schema = new EmptyTestSchema();
-        foreach(var item in schema as IEnumerable)
+        foreach (var item in schema as IEnumerable)
             Assert.IsNotNull(item);
     }
 

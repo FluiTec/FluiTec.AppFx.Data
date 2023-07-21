@@ -6,6 +6,31 @@ namespace FluiTec.AppFx.Data.SchemaDesigner.Wpfui.Services;
 
 public class ProjectService : PropertyChangedBase, IProjectService
 {
+    /// <summary>   The current design source. </summary>
+    private IDataDesignSource? _currentDesignSource;
+
+    /// <summary>   The current project. </summary>
+    private DesignSchemaProject? _currentProject;
+
+    /// <summary>   Constructor. </summary>
+    /// <param name="projectFileService">   The project file service. </param>
+    /// <param name="schemaService">        The schema service. </param>
+    /// <param name="entityService">        The entity service. </param>
+    /// <param name="propertyService">      The property service. </param>
+    public ProjectService(IProjectFileService projectFileService, ISchemaService schemaService,
+        IEntityService entityService, IPropertyService propertyService)
+    {
+        ProjectFileService = projectFileService;
+        SchemaService = schemaService;
+        EntityService = entityService;
+        PropertyService = propertyService;
+        Load();
+        ProjectFileService.PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(ProjectFileService.CurrentFile)) Load();
+        };
+    }
+
     /// <summary>   Gets the project file service. </summary>
     /// <value> The project file service. </value>
     public IProjectFileService ProjectFileService { get; }
@@ -22,12 +47,6 @@ public class ProjectService : PropertyChangedBase, IProjectService
     /// <value> The property service. </value>
     public IPropertyService PropertyService { get; }
 
-    /// <summary>   The current project. </summary>
-    private DesignSchemaProject? _currentProject;
-
-    /// <summary>   The current design source. </summary>
-    private IDataDesignSource? _currentDesignSource;
-
     /// <summary>   Gets or sets the current project. </summary>
     /// <value> The current project. </value>
     public DesignSchemaProject? CurrentProject
@@ -42,27 +61,6 @@ public class ProjectService : PropertyChangedBase, IProjectService
     {
         get => _currentDesignSource;
         private set => SetField(ref _currentDesignSource, value);
-    }
-
-    /// <summary>   Constructor. </summary>
-    /// <param name="projectFileService">   The project file service. </param>
-    /// <param name="schemaService">        The schema service. </param>
-    /// <param name="entityService">        The entity service. </param>
-    /// <param name="propertyService">      The property service. </param>
-    public ProjectService(IProjectFileService projectFileService, ISchemaService schemaService, IEntityService entityService, IPropertyService propertyService)
-    {
-        ProjectFileService = projectFileService;
-        SchemaService = schemaService;
-        EntityService = entityService;
-        PropertyService = propertyService;
-        Load();
-        ProjectFileService.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(ProjectFileService.CurrentFile))
-            {
-                Load();   
-            }
-        };
     }
 
     /// <summary>   Loads this object. </summary>

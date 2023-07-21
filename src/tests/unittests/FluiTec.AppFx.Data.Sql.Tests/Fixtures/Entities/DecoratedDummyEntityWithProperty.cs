@@ -3,6 +3,7 @@
 namespace FluiTec.AppFx.Data.Sql.Tests.Fixtures.Entities;
 
 [EntityName("Test", "Dummy")]
-public class EmptyDecoratedWithSchemaDummyEntity
+public class DecoratedDummyEntityWithProperty
 {
+    public int Id { get; set; }
 }

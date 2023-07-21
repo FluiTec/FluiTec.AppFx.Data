@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.DataProviders;
 using FluiTec.AppFx.Data.DataServices;
+using FluiTec.AppFx.Data.Reflection;
+using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Data.Repositories;
@@ -14,17 +16,28 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class, new()
 {
     /// <summary>   Specialized constructor for use only by derived class. </summary>
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
-    protected Repository(IDataService dataService, IDataProvider dataProvider)
+    /// <param name="unitOfWork">   The unit of work. </param>
+    protected Repository(IDataService dataService, IDataProvider dataProvider, IUnitOfWork unitOfWork)
     {
         DataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
         DataProvider = dataProvider ?? throw new ArgumentNullException(nameof(dataProvider));
+        UnitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
         EntityType = typeof(TEntity);
+        TypeSchema = dataService.Schema[typeof(TEntity)];
         TableName = dataProvider.NameStrategy.ToString(EntityType, dataService.EntityNameService);
         Logger = dataService.LoggerFactory?.CreateLogger<IRepository<TEntity>>();
     }
+
+    /// <summary>   Gets the type schema. </summary>
+    /// <value> The type schema. </value>
+    public ITypeSchema TypeSchema { get; }
 
     /// <summary>   Gets the data service. </summary>
     /// <value> The data service. </value>
@@ -33,6 +46,10 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
     /// <summary>   Gets the data provider. </summary>
     /// <value> The data provider. </value>
     public IDataProvider DataProvider { get; }
+
+    /// <summary>   Gets the unit of work. </summary>
+    /// <value> The unit of work. </value>
+    public IUnitOfWork UnitOfWork { get; }
 
     /// <summary>   Gets the type of the entity. </summary>
     /// <value> The type of the entity. </value>

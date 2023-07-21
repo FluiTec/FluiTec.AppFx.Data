@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluiTec.AppFx.Data.DataProviders;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Paging;
+using FluiTec.AppFx.Data.UnitsOfWork;
 
 namespace FluiTec.AppFx.Data.Repositories;
 
@@ -15,7 +16,9 @@ public abstract class PagedRepository<TEntity> : Repository<TEntity>, IPagedRepo
     /// <summary>   Specialized constructor for use only by derived class. </summary>
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
-    protected PagedRepository(IDataService dataService, IDataProvider dataProvider) : base(dataService, dataProvider)
+    /// <param name="unitOfWork">   The unit of work. </param>
+    protected PagedRepository(IDataService dataService, IDataProvider dataProvider, IUnitOfWork unitOfWork)
+        : base(dataService, dataProvider, unitOfWork)
     {
     }
 

@@ -10,7 +10,7 @@ public class TestSchema : Schema
     /// <summary>   Constructor. </summary>
     /// <param name="entityNameService">    The entity name service. </param>
     /// <param name="propertyNameService">  The property name service. </param>
-    public TestSchema(IEntityNameService entityNameService, IPropertyNameService propertyNameService) 
+    public TestSchema(IEntityNameService entityNameService, IPropertyNameService propertyNameService)
         : base(entityNameService, propertyNameService)
     {
     }

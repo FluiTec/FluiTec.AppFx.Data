@@ -9,16 +9,16 @@ namespace Samples.DesignerTest.Menus;
 /// <summary>   A schema item. </summary>
 public class SchemaItem : PropertyEditingListEditItem<DesignEntity>
 {
-    /// <summary>   Gets the schema. </summary>
-    /// <value> The schema. </value>
-    public DesignSchema Schema { get; }
-
     /// <summary>   Constructor. </summary>
     /// <param name="schema">   The schema. </param>
     public SchemaItem(DesignSchema schema) : base(schema.Name, nameof(schema.Entities), schema.Entities, NewModelFunc)
     {
         Schema = schema;
     }
+
+    /// <summary>   Gets the schema. </summary>
+    /// <value> The schema. </value>
+    public DesignSchema Schema { get; }
 
     /// <summary>   Creates a new model function. </summary>
     /// <returns>   A DesignEntity. </returns>

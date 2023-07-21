@@ -41,7 +41,8 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Margin="0,12">
-                    <TextBlock FontSize="16" Text="{Binding ViewModel.ApplicationTitle, FallbackValue=ApplicationTitle}" />
+                    <TextBlock FontSize="16"
+                               Text="{Binding ViewModel.ApplicationTitle, FallbackValue=ApplicationTitle}" />
                     <TextBlock
                         FontSize="10"
                         Foreground="{DynamicResource TextFillColorTertiaryBrush}"
@@ -78,11 +79,11 @@
                         VerticalAlignment="Top"
                         FontSize="24"
                         Navigation="{Binding ElementName=RootNavigation, Mode=OneWay}" />
-                    <ui:Snackbar 
+                    <ui:Snackbar
                         Grid.Row="2"
                         x:Name="Snackbar" />
                     <ui:Dialog
-                        Grid.Row="0" 
+                        Grid.Row="0"
                         x:Name="ContentDialog" />
                 </Grid>
             </Border>
@@ -102,7 +103,8 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" VerticalAlignment="Center"  Text="{Binding ViewModel.CurrentFile, FallbackValue=xyz.design, Mode=TwoWay}"></TextBlock>
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                               Text="{Binding ViewModel.CurrentFile, FallbackValue=xyz.design, Mode=TwoWay}" />
                 </Grid>
             </ui:TitleBar.Header>
             <ui:TitleBar.Tray>
@@ -112,8 +114,7 @@
                     MenuOnRightClick="True"
                     TooltipText="FluiTec.AppFx.Data.SchemaDesigner.Wpfui">
                     <ui:NotifyIcon.Menu>
-                        <ContextMenu>
-                        </ContextMenu>
+                        <ContextMenu />
                     </ui:NotifyIcon.Menu>
                 </ui:NotifyIcon>
             </ui:TitleBar.Tray>

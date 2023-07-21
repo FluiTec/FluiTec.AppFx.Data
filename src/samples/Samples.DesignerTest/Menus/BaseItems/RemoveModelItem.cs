@@ -8,14 +8,6 @@ namespace Samples.DesignerTest.Menus.BaseItems;
 /// <typeparam name="TModel">   Type of the model. </typeparam>
 public class RemoveModelItem<TModel> : CommandConsoleItem
 {
-    /// <summary>   Gets the models. </summary>
-    /// <value> The models. </value>
-    public IList<TModel> Models { get; }
-
-    /// <summary>   Gets the item. </summary>
-    /// <value> The item. </value>
-    public TModel Item { get; }
-
     /// <summary>   Constructor. </summary>
     /// <param name="models">   The models. </param>
     /// <param name="item">     The item. </param>
@@ -25,14 +17,19 @@ public class RemoveModelItem<TModel> : CommandConsoleItem
         Item = item;
     }
 
+    /// <summary>   Gets the models. </summary>
+    /// <value> The models. </value>
+    public IList<TModel> Models { get; }
+
+    /// <summary>   Gets the item. </summary>
+    /// <value> The item. </value>
+    public TModel Item { get; }
+
     /// <summary>   Displays the given parent. </summary>
     /// <param name="parent">   The parent. </param>
     public override void Display(IInteractiveConsoleItem? parent)
     {
-        if (AnsiConsole.Confirm($"Are you sure you want to delete '{Item}'?"))
-        {
-            Models.Remove(Item);
-        }
+        if (AnsiConsole.Confirm($"Are you sure you want to delete '{Item}'?")) Models.Remove(Item);
 
         parent!.Display(parent.Parent);
     }

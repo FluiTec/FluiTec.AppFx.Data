@@ -2,8 +2,7 @@
 
 namespace FluiTec.AppFx.Data.Sql.Tests.Fixtures.Entities;
 
-[EntityName("Dummy")]    
+[EntityName("Dummy")]
 public class EmptyDecoratedDummyEntity
 {
-
 }

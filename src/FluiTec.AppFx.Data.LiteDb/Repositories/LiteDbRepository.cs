@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.LiteDb.Providers;
+using FluiTec.AppFx.Data.LiteDb.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.UnitsOfWork;
 using LiteDB;
 
 namespace FluiTec.AppFx.Data.LiteDb.Repositories;
@@ -13,13 +16,20 @@ namespace FluiTec.AppFx.Data.LiteDb.Repositories;
 public class LiteDbRepository<TEntity> : Repository<TEntity>
     where TEntity : class, new()
 {
-    /// <summary> Constructor.</summary>
+    /// <summary>   Constructor. </summary>
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
-    public LiteDbRepository(IDataService dataService, ILiteDbDataProvider dataProvider) : base(dataService, dataProvider)
+    /// <param name="unitOfWork">   The unit of work. </param>
+    public LiteDbRepository(IDataService dataService, ILiteDbDataProvider dataProvider, IUnitOfWork unitOfWork)
+        : base(dataService, dataProvider, unitOfWork)
     {
+        UnitOfWork = unitOfWork as LiteDbUnitOfWork ?? throw new InvalidOperationException();
         Collection = dataProvider.Database.GetCollection<TEntity>();
     }
+
+    /// <summary>   Gets the unit of work. </summary>
+    /// <value> The unit of work. </value>
+    public new LiteDbUnitOfWork UnitOfWork { get; }
 
     /// <summary> Gets or sets the collection.</summary>
     /// <value> The collection.</value>
@@ -33,8 +43,10 @@ public class LiteDbRepository<TEntity> : Repository<TEntity>
     }
 
     /// <summary> Gets all asynchronous.</summary>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> all.</returns>
     public override Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
     {
