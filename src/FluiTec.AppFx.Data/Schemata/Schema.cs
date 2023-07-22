@@ -13,7 +13,7 @@ namespace FluiTec.AppFx.Data.Schemata;
 public abstract class Schema : ISchema
 {
     /// <summary>   The schemata. </summary>
-    private readonly ConcurrentDictionary<Type, Lazy<ITypeSchema>> _schemata = new();
+    protected readonly ConcurrentDictionary<Type, Lazy<ITypeSchema>> Schemata = new();
 
     /// <summary>   Specialized default constructor for use only by derived class. </summary>
     /// <param name="entityNameService">    The entity name service. </param>
@@ -39,17 +39,17 @@ public abstract class Schema : ISchema
     /// </exception>
     /// <param name="entityType">   Type of the entity. </param>
     /// <returns>   The indexed item. </returns>
-    public ITypeSchema this[Type entityType]
+    public virtual ITypeSchema this[Type entityType]
     {
         get
         {
             if (entityType == null)
                 throw new ArgumentNullException(nameof(entityType));
 
-            if (!_schemata.ContainsKey(entityType))
+            if (!Schemata.ContainsKey(entityType))
                 throw new MissingEntitySchemaException(this, entityType);
 
-            return _schemata.TryGetValue(entityType, out var schema)
+            return Schemata.TryGetValue(entityType, out var schema)
                 ? schema.Value
                 : new TypeSchema(entityType, EntityNameService, PropertyNameService);
         }
@@ -59,7 +59,7 @@ public abstract class Schema : ISchema
     /// <returns>   An enumerator that can be used to iterate through the collection. </returns>
     public IEnumerator<ITypeSchema> GetEnumerator()
     {
-        return _schemata.Values.Select(v => v.Value).GetEnumerator();
+        return Schemata.Values.Select(v => v.Value).GetEnumerator();
     }
 
     /// <summary>   Returns an enumerator that iterates through a collection. </summary>
@@ -76,8 +76,8 @@ public abstract class Schema : ISchema
     /// <param name="entityType">   Type of the entity. </param>
     protected void AddEntity(Type entityType)
     {
-        if (!_schemata.ContainsKey(entityType))
-            _schemata.TryAdd(entityType,
+        if (!Schemata.ContainsKey(entityType))
+            Schemata.TryAdd(entityType,
                 new Lazy<ITypeSchema>(() => new TypeSchema(entityType, EntityNameService, PropertyNameService)));
     }
 }
