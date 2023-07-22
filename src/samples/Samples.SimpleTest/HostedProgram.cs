@@ -1,8 +1,14 @@
 ﻿using FluiTec.AppFx.Console.Hosting;
 using FluiTec.AppFx.Data.DataProviders;
+using FluiTec.AppFx.Data.EntityNames;
+using FluiTec.AppFx.Data.PropertyNames;
+using FluiTec.AppFx.Data.Reflection;
+using FluiTec.AppFx.Data.Sql.StatementBuilders;
+using FluiTec.AppFx.Data.Sql.StatementProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Samples.TestData.DataServices;
+using Samples.TestData.Entities;
 using Samples.TestData.UnitsOfWork;
 
 namespace Samples.SimpleConsole;
@@ -33,7 +39,13 @@ public class HostedProgram : ConsoleHostedProgram
     /// <param name="args"> The arguments. </param>
     public override void Run(string[] args)
     {
-        using var uow = DataProvider.BeginUnitOfWork();
-        uow.DummyRepository.GetAll();
+        var provider1 = new MicrosoftSqlStatementBuilder();
+        var provider2 = new CachingStatementProvider(provider1);
+
+        var typeSchema = new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
+            new AttributePropertyNameService());
+
+        Console.WriteLine($"1: {provider1.GetAllStatement(typeSchema)}");
+        Console.WriteLine($"2: {provider2.GetAllStatement(typeSchema)}");
     }
 }

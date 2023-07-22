@@ -41,8 +41,6 @@ public abstract class BaseLiteDbRepositoryTest
 
     public virtual Mock<ILiteDbDataProvider> MockProvider()
     {
-        const int count = 0;
-        var items = Enumerable.Empty<DummyEntity>();
         var providerMock = new Mock<ILiteDbDataProvider>();
         providerMock
             .SetupGet(p => p.NameStrategy)

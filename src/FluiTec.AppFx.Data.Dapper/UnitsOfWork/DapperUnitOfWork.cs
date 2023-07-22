@@ -3,6 +3,7 @@ using System.Data;
 using System.Transactions;
 using FluiTec.AppFx.Data.Dapper.Providers;
 using FluiTec.AppFx.Data.Sql.StatementBuilders;
+using FluiTec.AppFx.Data.Sql.StatementProviders;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
 using IsolationLevel = System.Data.IsolationLevel;
@@ -24,7 +25,7 @@ public class DapperUnitOfWork : ParentAwareUnitOfWork
         : base(logger, transactionOptions)
     {
         DataProvider = dataProvider;
-        StatementBuilder = DataProvider.StatementBuilder;
+        StatementProvider = DataProvider.StatementProvider;
 
         Connection = dataProvider.ConnectionFactory.CreateConnection(dataProvider.ConnectionString);
         Connection.Open();
@@ -41,6 +42,7 @@ public class DapperUnitOfWork : ParentAwareUnitOfWork
         parentUnitOfWork)
     {
         DataProvider = dataProvider;
+        StatementProvider = DataProvider.StatementProvider;
 
         if (parentUnitOfWork is DapperUnitOfWork dapperUnitOfWork)
         {
@@ -63,9 +65,9 @@ public class DapperUnitOfWork : ParentAwareUnitOfWork
     /// <value> The data provider. </value>
     public IDapperDataProvider DataProvider { get; }
 
-    /// <summary>   Gets the statement builder. </summary>
-    /// <value> The statement builder. </value>
-    public IStatementBuilder StatementBuilder { get; }
+    /// <summary> Gets the statement provider.</summary>
+    /// <value> The statement provider.</value>
+    public IStatementProvider StatementProvider { get; }
 
     /// <summary>   Gets or sets the connection. </summary>
     /// <value> The connection. </value>

@@ -36,7 +36,7 @@ public class DapperRepository<TEntity> : Repository<TEntity>
     /// </returns>
     public override IEnumerable<TEntity> GetAll()
     {
-        var sql = UnitOfWork.StatementBuilder.GetAllStatement(TypeSchema);
+        var sql = UnitOfWork.StatementProvider.GetAllStatement(TypeSchema);
         return UnitOfWork.Connection.Query<TEntity>(sql, null, UnitOfWork.Transaction,
             commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
     }
@@ -49,7 +49,7 @@ public class DapperRepository<TEntity> : Repository<TEntity>
     /// <returns>   all. </returns>
     public override Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var sql = UnitOfWork.StatementBuilder.GetAllStatement(TypeSchema);
+        var sql = UnitOfWork.StatementProvider.GetAllStatement(TypeSchema);
         var query = new CommandDefinition(sql, null, UnitOfWork.Transaction,
             (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds,
             cancellationToken: cancellationToken);
