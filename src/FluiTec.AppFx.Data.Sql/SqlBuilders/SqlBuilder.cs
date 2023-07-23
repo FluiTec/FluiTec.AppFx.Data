@@ -1,12 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Runtime.CompilerServices;
 using FluiTec.AppFx.Data.Reflection;
+using FluiTec.AppFx.Data.Schemata;
 using FluiTec.AppFx.Data.Sql.Enums;
+using FluiTec.AppFx.Data.Sql.SqlBuilders.EventArguments;
+using FluiTec.AppFx.Data.Sql.StatementBuilders.EventArguments;
 
 namespace FluiTec.AppFx.Data.Sql.SqlBuilders;
 
 /// <summary>   A SQL builder. </summary>
 public abstract class SqlBuilder : ISqlBuilder
 {
+    /// <summary> Event queue for all listeners interested in SqlBuilt events.</summary>
+    public event EventHandler<SqlBuiltEventArgs>? SqlBuilt;
+
     /// <summary>   Specialized constructor for use only by derived class. </summary>
     /// <param name="sqlType">              Type of the SQL. </param>
     /// <param name="keywords">             The keywords. </param>
@@ -19,7 +28,7 @@ public abstract class SqlBuilder : ISqlBuilder
     /// <summary>   Gets a value indicating whether the supports schemata. </summary>
     /// <value> True if supports schemata, false if not. </value>
     public abstract bool SupportsSchemata { get; }
-
+    
     /// <summary>   Gets the type of the SQL. </summary>
     /// <value> The type of the SQL. </value>
     public SqlType SqlType { get; }
@@ -33,9 +42,11 @@ public abstract class SqlBuilder : ISqlBuilder
     /// <returns>   A string. </returns>
     public virtual string RenderTableName(ITypeSchema typeSchema)
     {
-        return SupportsSchemata && typeSchema.Name.Schema != null
+        var sql = SupportsSchemata && typeSchema.Name.Schema != null
             ? $"{WrapExpression(typeSchema.Name.Schema)}.{WrapExpression(typeSchema.Name.Name)}"
             : WrapExpression(typeSchema.Name.Name);
+        OnTypeSqlBuilt(sql, typeSchema);
+        return sql;
     }
 
     /// <summary>   Renders the property described by property. </summary>
@@ -43,7 +54,9 @@ public abstract class SqlBuilder : ISqlBuilder
     /// <returns>   A string. </returns>
     public virtual string RenderProperty(IPropertySchema property)
     {
-        return WrapExpression(property.Name.ColumnName);
+        var sql = WrapExpression(property.Name.ColumnName);
+        OnTypeSqlBuilt(sql, property);
+        return sql;
     }
 
     /// <summary>   Renders the list described by expressions. </summary>
@@ -58,4 +71,30 @@ public abstract class SqlBuilder : ISqlBuilder
     /// <param name="expression">   The expression. </param>
     /// <returns>   A string. </returns>
     public abstract string WrapExpression(string expression);
+
+    /// <summary> Executes the 'type SQL built' action.</summary>
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    /// <param name="sql">      The SQL. </param>
+    /// <param name="schema">   The schema. </param>
+    /// <param name="renderer"> (Optional) The renderer. </param>
+    protected virtual void OnTypeSqlBuilt(string sql, ITypeSchema schema, [CallerMemberName]string? renderer = null)
+    {
+        if (renderer == null)
+            throw new ArgumentNullException(nameof(renderer));
+        SqlBuilt?.Invoke(this, new TypeSqlBuiltEventArgs(sql, renderer, schema));
+    }
+
+    /// <summary> Executes the 'type SQL built' action.</summary>
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    /// <param name="sql">      The SQL. </param>
+    /// <param name="schema">   The schema. </param>
+    /// <param name="renderer"> (Optional) The renderer. </param>
+    protected virtual void OnTypeSqlBuilt(string sql, IPropertySchema schema, [CallerMemberName] string? renderer = null)
+    {
+        if (renderer == null)
+            throw new ArgumentNullException(nameof(renderer));
+        SqlBuilt?.Invoke(this, new PropertySqlBuiltEventArgs(sql, renderer, schema));
+    }
 }

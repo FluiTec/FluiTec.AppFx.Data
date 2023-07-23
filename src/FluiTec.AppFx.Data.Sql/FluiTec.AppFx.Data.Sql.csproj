@@ -26,7 +26,8 @@
 
 	<ItemGroup>
 	  <Folder Include="Enums\" />
-	  <Folder Include="SqlBuilders\" />
+	  <Folder Include="SqlBuilders\EventArguments\" />
+	  <Folder Include="StatementProviders\EventArguments\" />
 	</ItemGroup>
 
 	<ItemGroup>

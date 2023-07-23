@@ -1,12 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluiTec.AppFx.Data.Reflection;
 using FluiTec.AppFx.Data.Sql.Enums;
+using FluiTec.AppFx.Data.Sql.SqlBuilders.EventArguments;
 
 namespace FluiTec.AppFx.Data.Sql.SqlBuilders;
 
 /// <summary>   Interface for SQL builder. </summary>
 public interface ISqlBuilder
 {
+    /// <summary> Event queue for all listeners interested in SqlBuilt events.</summary>
+    event EventHandler<SqlBuiltEventArgs>? SqlBuilt;
+
     /// <summary>   Gets the type of the SQL. </summary>
     /// <value> The type of the SQL. </value>
     SqlType SqlType { get; }
