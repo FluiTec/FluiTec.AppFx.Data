@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Runtime.CompilerServices;
 using FluiTec.AppFx.Data.Reflection;
-using FluiTec.AppFx.Data.Schemata;
 using FluiTec.AppFx.Data.Sql.Enums;
 using FluiTec.AppFx.Data.Sql.SqlBuilders.EventArguments;
-using FluiTec.AppFx.Data.Sql.StatementBuilders.EventArguments;
 
 namespace FluiTec.AppFx.Data.Sql.SqlBuilders;
 

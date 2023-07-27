@@ -11,9 +11,6 @@ public class AttributePropertyNameService : ClassPropertyNameService
     /// <summary>   (Immutable) the property map. </summary>
     private readonly ConcurrentDictionary<ImmediateProperty, PropertyName> _propertyMap = new();
 
-    /// <summary>   (Immutable) the type map. </summary>
-    private readonly ConcurrentDictionary<Type, PropertyName> _typeMap = new();
-
     /// <summary>   Gets a name. </summary>
     /// <exception cref="ArgumentNullException">
     ///     Thrown when one or more required arguments are

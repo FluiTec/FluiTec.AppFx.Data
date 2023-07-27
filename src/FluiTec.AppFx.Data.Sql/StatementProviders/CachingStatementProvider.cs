@@ -2,12 +2,15 @@
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using FluiTec.AppFx.Data.Reflection;
+using FluiTec.AppFx.Data.Sql.StatementProviders.EventArguments;
 
 namespace FluiTec.AppFx.Data.Sql.StatementProviders;
 
 /// <summary> A caching statement provider.</summary>
 public class CachingStatementProvider : IStatementProvider
 {
+    public event EventHandler<SqlProvidedEventArgs>? SqlProvided;
+
     /// <summary> The statement cache.</summary>
     private readonly ConcurrentDictionary<string, string> _statementCache = new();
 
@@ -43,18 +46,36 @@ public class CachingStatementProvider : IStatementProvider
     protected string GetOrAddStatement(ITypeSchema typeSchema, [CallerMemberName] string? statementName = null)
     {
         var key = GetKey(typeSchema, statementName);
-        if (_statementCache.ContainsKey(key))
-            return _statementCache[key];
+        if (_statementCache.TryGetValue(key, out var statement))
+        {
+            OnTypeSqlProvided(statement, typeSchema, statementName);
+            return statement;
+        }
+
         var value = SourceStatementProvider.GetAllStatement(typeSchema);
         _statementCache[key] = value;
         return value;
     }
-
+    
     /// <summary> Gets all statement.</summary>
     /// <param name="typeSchema"> The type schema. </param>
     /// <returns> all statement.</returns>
     public string GetAllStatement(ITypeSchema typeSchema)
     {
         return GetOrAddStatement(typeSchema);
+    }
+
+    /// <summary>   Executes the 'type SQL provided' action. </summary>
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    /// <param name="sql">      The SQL. </param>
+    /// <param name="schema">   The schema. </param>
+    /// <param name="provider"> (Optional) The provider. </param>
+    protected virtual void OnTypeSqlProvided(string sql, ITypeSchema schema, [CallerMemberName] string? provider = null)
+    {
+        if (provider == null)
+            throw new ArgumentNullException(nameof(provider));
+
+        SqlProvided?.Invoke(this, new TypeSqlProvidedEventArgs(sql, provider, schema));
     }
 }
