@@ -27,7 +27,7 @@ public class TestRepository : Repository<DummyEntity>
         throw new NotImplementedException();
     }
 
-    public override Task<long> CountAsync()
+    public override Task<long> CountAsync(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

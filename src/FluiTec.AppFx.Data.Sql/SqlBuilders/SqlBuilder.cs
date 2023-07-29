@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using FluiTec.AppFx.Data.Reflection;
 using FluiTec.AppFx.Data.Sql.Enums;
 using FluiTec.AppFx.Data.Sql.SqlBuilders.EventArguments;
+using FluiTec.AppFx.Data.Sql.SqlBuilders.Keywords;
 
 namespace FluiTec.AppFx.Data.Sql.SqlBuilders;
 
@@ -33,6 +34,37 @@ public abstract class SqlBuilder : ISqlBuilder
     /// <summary>   Gets the keywords. </summary>
     /// <value> The keywords. </value>
     public ISqlKeywords Keywords { get; }
+
+    /// <summary> Executes the 'type SQL built' action.</summary>
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    /// <param name="sql">      The SQL. </param>
+    /// <param name="schema">   The schema. </param>
+    /// <param name="renderer"> (Optional) The renderer. </param>
+    protected virtual void OnTypeSqlBuilt(string sql, ITypeSchema schema, [CallerMemberName] string? renderer = null)
+    {
+        if (renderer == null)
+            throw new ArgumentNullException(nameof(renderer));
+        SqlBuilt?.Invoke(this, new TypeSqlBuiltEventArgs(sql, renderer, schema));
+    }
+
+    /// <summary> Executes the 'type SQL built' action.</summary>
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    /// <param name="sql">      The SQL. </param>
+    /// <param name="schema">   The schema. </param>
+    /// <param name="renderer"> (Optional) The renderer. </param>
+    protected virtual void OnTypeSqlBuilt(string sql, IPropertySchema schema, [CallerMemberName] string? renderer = null)
+    {
+        if (renderer == null)
+            throw new ArgumentNullException(nameof(renderer));
+        SqlBuilt?.Invoke(this, new PropertySqlBuiltEventArgs(sql, renderer, schema));
+    }
+
+    /// <summary>   Wrap expression. </summary>
+    /// <param name="expression">   The expression. </param>
+    /// <returns>   A string. </returns>
+    public abstract string WrapExpression(string expression);
 
     /// <summary>   Renders the table name described by typeSchema. </summary>
     /// <param name="typeSchema">   The type schema. </param>
@@ -64,34 +96,24 @@ public abstract class SqlBuilder : ISqlBuilder
         return string.Join($"{Keywords.ListSeparator} ", expressions);
     }
 
-    /// <summary>   Wrap expression. </summary>
-    /// <param name="expression">   The expression. </param>
-    /// <returns>   A string. </returns>
-    public abstract string WrapExpression(string expression);
+    /// <summary> Renders the parameter described by parameterName.</summary>
+    /// <param name="parameterName"> Name of the parameter. </param>
+    /// <returns> A string.</returns>
+    public virtual string RenderParameter(string parameterName) => $"@{parameterName}";
 
-    /// <summary> Executes the 'type SQL built' action.</summary>
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
-    /// <param name="sql">      The SQL. </param>
-    /// <param name="schema">   The schema. </param>
-    /// <param name="renderer"> (Optional) The renderer. </param>
-    protected virtual void OnTypeSqlBuilt(string sql, ITypeSchema schema, [CallerMemberName]string? renderer = null)
+    /// <summary> Renders the offset parameter described by parameterName.</summary>
+    /// <param name="parameterName"> Name of the parameter. </param>
+    /// <returns> A string.</returns>
+    public string RenderOffsetParameter(string parameterName)
     {
-        if (renderer == null)
-            throw new ArgumentNullException(nameof(renderer));
-        SqlBuilt?.Invoke(this, new TypeSqlBuiltEventArgs(sql, renderer, schema));
+        return $"{Keywords.OffsetExpression} {RenderParameter(parameterName)} {Keywords.OffsetRowsExpression}";
     }
 
-    /// <summary> Executes the 'type SQL built' action.</summary>
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
-    /// <param name="sql">      The SQL. </param>
-    /// <param name="schema">   The schema. </param>
-    /// <param name="renderer"> (Optional) The renderer. </param>
-    protected virtual void OnTypeSqlBuilt(string sql, IPropertySchema schema, [CallerMemberName] string? renderer = null)
+    /// <summary> Renders the fetch next parameter described by parameterName.</summary>
+    /// <param name="parameterName"> Name of the parameter. </param>
+    /// <returns> A string.</returns>
+    public string RenderFetchNextParameter(string parameterName)
     {
-        if (renderer == null)
-            throw new ArgumentNullException(nameof(renderer));
-        SqlBuilt?.Invoke(this, new PropertySqlBuiltEventArgs(sql, renderer, schema));
+        return $"{Keywords.FetchNextExpressions} {RenderParameter(parameterName)} {Keywords.FetchNextRowsExpression}";
     }
 }

@@ -68,7 +68,7 @@ public class NMemoryRepository<TEntity> : Repository<TEntity>
 
     /// <summary>   Count asynchronous. </summary>
     /// <returns>   The count. </returns>
-    public override Task<long> CountAsync()
+    public override Task<long> CountAsync(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(Table.Count);
     }

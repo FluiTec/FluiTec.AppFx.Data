@@ -35,5 +35,5 @@ public interface IRepository<TEntity>
 
     /// <summary>   Count asynchronous. </summary>
     /// <returns>   The count. </returns>
-    Task<long> CountAsync();
+    Task<long> CountAsync(CancellationToken cancellationToken = default);
 }

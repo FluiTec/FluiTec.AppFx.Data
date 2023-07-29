@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using FluiTec.AppFx.Data.Reflection;
 using FluiTec.AppFx.Data.Sql.StatementProviders.EventArguments;
@@ -19,6 +20,7 @@ public class CachingStatementProvider : IStatementProvider
     public CachingStatementProvider(IStatementProvider sourceStatementProvider)
     {
         SourceStatementProvider = sourceStatementProvider;
+        SourceStatementProvider.SqlProvided += (sender, args) => SqlProvided?.Invoke(sender, args);
     }
 
     /// <summary> Gets source statement provider.</summary>
@@ -39,13 +41,29 @@ public class CachingStatementProvider : IStatementProvider
         return $"{typeSchema.Type.FullName}:{statementName}";
     }
 
+    /// <summary> Gets a key.</summary>
+    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+    ///                                             null. </exception>
+    /// <param name="typeSchema">     The type schema. </param>
+    /// <param name="parameterNames"> List of names of the parameters. </param>
+    /// <param name="statementName">  (Optional) Name of the statement. </param>
+    /// <returns> The key.</returns>
+    protected string GetKey(ITypeSchema typeSchema, IEnumerable<string> parameterNames,
+        [CallerMemberName] string? statementName = null)
+    {
+        if (statementName == null)
+            throw new ArgumentNullException(nameof(statementName));
+
+        return $"{typeSchema.Type.FullName}:{statementName}:{string.Join('-', parameterNames)}";
+    }
+
     /// <summary> Gets or add statement.</summary>
+    /// <param name="key">           The key. </param>
     /// <param name="typeSchema">    The type schema. </param>
     /// <param name="statementName"> (Optional) Name of the statement. </param>
     /// <returns> The or add statement.</returns>
-    protected string GetOrAddStatement(ITypeSchema typeSchema, [CallerMemberName] string? statementName = null)
+    protected string GetOrAddStatement(string key, ITypeSchema typeSchema, [CallerMemberName] string? statementName = null)
     {
-        var key = GetKey(typeSchema, statementName);
         if (_statementCache.TryGetValue(key, out var statement))
         {
             OnTypeSqlProvided(statement, typeSchema, statementName);
@@ -56,13 +74,27 @@ public class CachingStatementProvider : IStatementProvider
         _statementCache[key] = value;
         return value;
     }
-    
-    /// <summary> Gets all statement.</summary>
-    /// <param name="typeSchema"> The type schema. </param>
-    /// <returns> all statement.</returns>
-    public string GetAllStatement(ITypeSchema typeSchema)
+
+    /// <summary> Gets or add statement.</summary>
+    /// <param name="typeSchema">    The type schema. </param>
+    /// <param name="statementName"> (Optional) Name of the statement. </param>
+    /// <returns> The or add statement.</returns>
+    protected string GetOrAddStatement(ITypeSchema typeSchema, [CallerMemberName] string? statementName = null)
     {
-        return GetOrAddStatement(typeSchema);
+        var key = GetKey(typeSchema, statementName);
+        return GetOrAddStatement(key, typeSchema, statementName);
+    }
+
+    /// <summary> Gets or add statement.</summary>
+    /// <param name="typeSchema">     The type schema. </param>
+    /// <param name="parameterNames"> List of names of the parameters. </param>
+    /// <param name="statementName">  (Optional) Name of the statement. </param>
+    /// <returns> The or add statement.</returns>
+    protected string GetOrAddStatement(ITypeSchema typeSchema, IEnumerable<string> parameterNames,
+        [CallerMemberName] string? statementName = null)
+    {
+        var key = GetKey(typeSchema, parameterNames, statementName);
+        return GetOrAddStatement(key, typeSchema, statementName);
     }
 
     /// <summary>   Executes the 'type SQL provided' action. </summary>
@@ -77,5 +109,31 @@ public class CachingStatementProvider : IStatementProvider
             throw new ArgumentNullException(nameof(provider));
 
         SqlProvided?.Invoke(this, new TypeSqlProvidedEventArgs(sql, provider, schema));
+    }
+
+    /// <summary> Gets all statement.</summary>
+    /// <param name="typeSchema"> The type schema. </param>
+    /// <returns> all statement.</returns>
+    public string GetAllStatement(ITypeSchema typeSchema)
+    {
+        return GetOrAddStatement(typeSchema);
+    }
+
+    /// <summary> Gets count statement.</summary>
+    /// <param name="typeSchema"> The type schema. </param>
+    /// <returns> The count statement.</returns>
+    public string GetCountStatement(ITypeSchema typeSchema)
+    {
+        return GetOrAddStatement(typeSchema);
+    }
+
+    /// <summary> Gets paging statement.</summary>
+    /// <param name="typeSchema">        The type schema. </param>
+    /// <param name="skipParameterName"> Name of the skip parameter. </param>
+    /// <param name="takeParameterName"> Name of the take parameter. </param>
+    /// <returns> The paging statement.</returns>
+    public string GetPagingStatement(ITypeSchema typeSchema, string skipParameterName, string takeParameterName)
+    {
+        return GetOrAddStatement(typeSchema, new[] { skipParameterName, takeParameterName });
     }
 }

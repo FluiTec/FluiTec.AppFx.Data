@@ -52,4 +52,60 @@ public class MicrosoftSqlStatementBuilderTest
             builder.GetAllStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty)))
         );
     }
+
+    [TestMethod]
+    public void CanCreateCountStatement()
+    {
+        var builder = GetBuilder();
+
+        Assert.AreEqual(
+            "SELECT COUNT(*) FROM [DummyEntityWithProperty]",
+            builder.GetCountStatement(GetSchema(typeof(DummyEntityWithProperty)))
+        );
+
+        Assert.AreEqual(
+            "SELECT COUNT(*) FROM [DummyEntityWithDecoratedProperty]",
+            builder.GetCountStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)))
+        );
+
+        Assert.AreEqual(
+            "SELECT COUNT(*) FROM [Test].[Dummy]",
+            builder.GetCountStatement(GetSchema(typeof(DecoratedDummyEntityWithDecoratedProperty)))
+        );
+
+        Assert.AreEqual(
+            "SELECT COUNT(*) FROM [Test].[Dummy]",
+            builder.GetCountStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty)))
+        );
+    }
+
+    [TestMethod]
+    public void CanGetPagingStatement()
+    {
+        var builder = GetBuilder();
+
+        Assert.AreEqual(
+            "SELECT [Id] FROM [DummyEntityWithProperty] ORDER BY [Id] ASC OFFSET @skipRecords ROWS FETCH NEXT @takeRecords ROWS ONLY",
+            builder.GetPagingStatement(GetSchema(typeof(DummyEntityWithProperty)), "" +
+                "skipRecords", "takeRecords")
+        );
+
+        Assert.AreEqual(
+            "SELECT [ID] FROM [DummyEntityWithDecoratedProperty] ORDER BY [ID] ASC OFFSET @skipRecords ROWS FETCH NEXT @takeRecords ROWS ONLY",
+            builder.GetPagingStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)), 
+                "skipRecords", "takeRecords")
+        );
+
+        Assert.AreEqual(
+            "SELECT [ID] FROM [Test].[Dummy] ORDER BY [ID] ASC OFFSET @skipRecords ROWS FETCH NEXT @takeRecords ROWS ONLY",
+            builder.GetPagingStatement(GetSchema(typeof(DecoratedDummyEntityWithDecoratedProperty)), 
+                "skipRecords", "takeRecords")
+        );
+
+        Assert.AreEqual(
+            "SELECT [Id] FROM [Test].[Dummy] ORDER BY [Id] ASC OFFSET @skipRecords ROWS FETCH NEXT @takeRecords ROWS ONLY",
+            builder.GetPagingStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty)), 
+                "skipRecords", "takeRecords")
+        );
+    }
 }

@@ -60,13 +60,19 @@ public class DapperRepository<TEntity> : Repository<TEntity>
     /// <returns>   A long. </returns>
     public override long Count()
     {
-        throw new NotImplementedException();
+        var sql = UnitOfWork.StatementProvider.GetCountStatement(TypeSchema);
+        return UnitOfWork.Connection.ExecuteScalar<long>(sql, null, UnitOfWork.Transaction,
+            commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
     }
 
     /// <summary>   Count asynchronous. </summary>
     /// <returns>   The count. </returns>
-    public override Task<long> CountAsync()
+    public override Task<long> CountAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var sql = UnitOfWork.StatementProvider.GetAllStatement(TypeSchema);
+        var query = new CommandDefinition(sql, null, UnitOfWork.Transaction,
+            (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds,
+            cancellationToken: cancellationToken);
+        return UnitOfWork.Connection.ExecuteScalarAsync<long>(query);
     }
 }

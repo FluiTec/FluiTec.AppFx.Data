@@ -83,5 +83,5 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
 
     /// <summary>   Count asynchronous. </summary>
     /// <returns>   The count. </returns>
-    public abstract Task<long> CountAsync();
+    public abstract Task<long> CountAsync(CancellationToken cancellationToken = default);
 }

@@ -45,7 +45,10 @@ public class HostedProgram : ConsoleHostedProgram
         var typeSchema = new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
             new AttributePropertyNameService());
 
+        provider1.SqlProvided += (sender, eventArgs) => Console.WriteLine($"P1: {eventArgs.Sql}");
+        provider2.SqlProvided += (sender, eventArgs) => Console.WriteLine($"P2: {eventArgs.Sql}");
+
         Console.WriteLine($"1: {provider1.GetAllStatement(typeSchema)}");
-        Console.WriteLine($"2: {provider2.GetAllStatement(typeSchema)}");
+        //Console.WriteLine($"2: {provider2.GetAllStatement(typeSchema)}");
     }
 }

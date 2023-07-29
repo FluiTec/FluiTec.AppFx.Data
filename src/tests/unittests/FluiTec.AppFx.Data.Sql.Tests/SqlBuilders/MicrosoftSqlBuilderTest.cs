@@ -87,4 +87,28 @@ public class MicrosoftSqlBuilderTest
 
         Assert.AreEqual("[Id], [Name]", builder.RenderList(new[] { "[Id]", "[Name]" }));
     }
+
+    [TestMethod]
+    public void CanRenderParameter()
+    {
+        var builder = GetBuilder();
+        const string param = "param";
+        Assert.AreEqual($"@{param}", builder.RenderParameter(param));
+    }
+
+    [TestMethod]
+    public void CanRenderOffsetParameter()
+    {
+        var builder = GetBuilder();
+        const string skipParameter = "skipParameter";
+        Assert.AreEqual($"OFFSET @{skipParameter} ROWS", builder.RenderOffsetParameter(skipParameter));
+    }
+
+    [TestMethod]
+    public void CanRenderFetchNextParameter()
+    {
+        var builder = GetBuilder();
+        const string takeParameter = "takeParameter";
+        Assert.AreEqual($"FETCH NEXT @{takeParameter} ROWS ONLY", builder.RenderFetchNextParameter(takeParameter));
+    }
 }

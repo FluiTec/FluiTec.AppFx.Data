@@ -14,4 +14,16 @@ public interface IStatementProvider
     /// <param name="typeSchema">   The type schema. </param>
     /// <returns>   all statement. </returns>
     string GetAllStatement(ITypeSchema typeSchema);
+
+    /// <summary> Gets count statement.</summary>
+    /// <param name="typeSchema"> The type schema. </param>
+    /// <returns> The count statement.</returns>
+    string GetCountStatement(ITypeSchema typeSchema);
+
+    /// <summary> Gets paging statement.</summary>
+    /// <param name="typeSchema">        The type schema. </param>
+    /// <param name="skipParameterName"> Name of the skip parameter. </param>
+    /// <param name="takeParameterName"> Name of the take parameter. </param>
+    /// <returns> The paging statement.</returns>
+    string GetPagingStatement(ITypeSchema typeSchema, string skipParameterName, string takeParameterName);
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluiTec.AppFx.Data.Reflection;
 using FluiTec.AppFx.Data.Sql.Enums;
 using FluiTec.AppFx.Data.Sql.SqlBuilders.EventArguments;
+using FluiTec.AppFx.Data.Sql.SqlBuilders.Keywords;
 
 namespace FluiTec.AppFx.Data.Sql.SqlBuilders;
 
@@ -38,4 +39,19 @@ public interface ISqlBuilder
     /// <param name="expressions">  The expressions. </param>
     /// <returns>   A string. </returns>
     string RenderList(IEnumerable<string> expressions);
+
+    /// <summary> Renders the parameter described by parameterName.</summary>
+    /// <param name="parameterName"> Name of the parameter. </param>
+    /// <returns> A string.</returns>
+    string RenderParameter(string parameterName);
+
+    /// <summary> Renders the offset parameter described by parameterName.</summary>
+    /// <param name="parameterName"> Name of the parameter. </param>
+    /// <returns> A string.</returns>
+    string RenderOffsetParameter(string parameterName);
+
+    /// <summary> Renders the fetch next parameter described by parameterName.</summary>
+    /// <param name="parameterName"> Name of the parameter. </param>
+    /// <returns> A string.</returns>
+    string RenderFetchNextParameter(string parameterName);
 }
