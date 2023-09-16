@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using FluiTec.AppFx.Data.Reflection;
+using FluiTec.AppFx.Data.Sql.Exceptions;
 using FluiTec.AppFx.Data.Sql.SqlBuilders;
 using FluiTec.AppFx.Data.Sql.StatementProviders.EventArguments;
 
@@ -85,6 +87,44 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
                   $"{SqlBuilder.Keywords.AscendingExpression} " +
                   $"{SqlBuilder.RenderOffsetParameter(skipParameterName)} " +
                   $"{SqlBuilder.RenderFetchNextParameter(takeParameterName)}";
+        OnTypeSqlProvided(sql, typeSchema);
+        return sql;
+    }
+
+    /// <summary>   Validates the key parameters. </summary>
+    /// <param name="entityKeys">       The entity keys. </param>
+    /// <param name="parameterKeys">    The parameter keys. </param>
+    protected void ValidateKeyParameters(IEnumerable<IKeyPropertySchema> entityKeys,
+        IDictionary<string, object> parameterKeys)
+    {
+        var keyPropertySchemata = entityKeys as IKeyPropertySchema[] ?? entityKeys.ToArray();
+
+        if (keyPropertySchemata.Length != parameterKeys.Count)
+            throw new KeyParameterMismatchException(keyPropertySchemata, parameterKeys);
+
+        foreach (var k in parameterKeys)
+        {
+            _ = keyPropertySchemata.SingleOrDefault(kp => kp.Name.ColumnName == k.Key) ?? throw new KeyParameterMismatchException(keyPropertySchemata, parameterKeys);
+        }
+    }
+
+    /// <summary>   Gets select by key statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <param name="keys">          The keys. </param>
+    /// <returns>   The select by key statement. </returns>
+    public string GetSelectByKeyStatement(ITypeSchema typeSchema, IDictionary<string, object> keys)
+    {
+        var keyProps = typeSchema.KeyProperties;
+        ValidateKeyParameters(keyProps, keys);
+        var sql = $"{SqlBuilder.Keywords.Select} " +
+                  $"{SqlBuilder.RenderList(typeSchema.MappedProperties.Select(SqlBuilder.RenderProperty))} " +
+                  $"{SqlBuilder.Keywords.From} " +
+                  $"{SqlBuilder.RenderTableName(typeSchema)} " +
+                  $"{SqlBuilder.Keywords.Where} " +
+                  $"{SqlBuilder.RenderList(keys
+                      .Select(k => SqlBuilder.RenderPropertyParameterComparison(keyProps.Single(kp => kp.Name.ColumnName == k.Key), SqlBuilder.Keywords.CompareEqualsOperator)))}"
+                  ;
+
         OnTypeSqlProvided(sql, typeSchema);
         return sql;
     }

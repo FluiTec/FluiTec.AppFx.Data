@@ -11,6 +11,10 @@ public interface ISqlKeywords
     /// <value> from. </value>
     string From { get; }
 
+    /// <summary>   Gets the where. </summary>
+    /// <value> The where. </value>
+    string Where { get; }
+
     /// <summary>   Gets the list separator. </summary>
     /// <value> The list separator. </value>
     string ListSeparator { get; }
@@ -46,4 +50,8 @@ public interface ISqlKeywords
     /// <summary> Gets the descending expression.</summary>
     /// <value> The descending expression.</value>
     string DescendingExpression { get; }
+
+    /// <summary>   Gets the compare equals operator. </summary>
+    /// <value> The compare equals operator. </value>
+    string CompareEqualsOperator { get; }
 }

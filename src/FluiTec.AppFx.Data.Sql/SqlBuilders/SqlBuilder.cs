@@ -88,6 +88,19 @@ public abstract class SqlBuilder : ISqlBuilder
         return sql;
     }
 
+    /// <summary>   Renders the property parameter comparison. </summary>
+    /// <param name="property">             The property. </param>
+    /// <param name="comparisonOperator">   The comparison operator. </param>
+    /// <param name="parameterName">        (Optional) Name of the parameter. </param>
+    /// <returns>   A string. </returns>
+    public virtual string RenderPropertyParameterComparison(IPropertySchema property, string comparisonOperator, string? parameterName = null)
+    {
+        var paramName = parameterName ?? $"p{property.Name.ColumnName}";
+        var sql = $"{WrapExpression(property.Name.ColumnName)} {comparisonOperator} {RenderParameter(paramName)}";
+        OnTypeSqlBuilt(sql, property);
+        return sql;
+    }
+
     /// <summary>   Renders the list described by expressions. </summary>
     /// <param name="expressions">  The expressions. </param>
     /// <returns>   A string. </returns>

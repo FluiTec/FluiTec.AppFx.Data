@@ -35,6 +35,13 @@ public interface ISqlBuilder
     /// <returns>   A string. </returns>
     string RenderProperty(IPropertySchema property);
 
+    /// <summary>   Renders the property parameter comparison. </summary>
+    /// <param name="property">             The property. </param>
+    /// <param name="comparisonOperator">   The comparison operator. </param>
+    /// <param name="parameterName">        (Optional) Name of the parameter. </param>
+    /// <returns>   A string. </returns>
+    string RenderPropertyParameterComparison(IPropertySchema property, string comparisonOperator, string? parameterName = null);
+
     /// <summary>   Renders the list described by expressions. </summary>
     /// <param name="expressions">  The expressions. </param>
     /// <returns>   A string. </returns>

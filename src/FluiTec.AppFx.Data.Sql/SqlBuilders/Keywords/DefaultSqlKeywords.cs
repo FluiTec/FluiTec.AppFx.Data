@@ -11,6 +11,10 @@ public class DefaultSqlKeywords : ISqlKeywords
     /// <value> from. </value>
     public string From => "FROM";
 
+    /// <summary>   Gets the where. </summary>
+    /// <value> The where. </value>
+    public string Where => "WHERE";
+
     /// <summary> Gets the list separator.</summary>
     /// <value> The list separator.</value>
     public string ListSeparator => ",";
@@ -46,4 +50,8 @@ public class DefaultSqlKeywords : ISqlKeywords
     /// <summary> Gets the descending expression.</summary>
     /// <value> The descending expression.</value>
     public string DescendingExpression => "DESC";
+
+    /// <summary>   Gets the compare equals operator. </summary>
+    /// <value> The compare equals operator. </value>
+    public string CompareEqualsOperator => "=";
 }

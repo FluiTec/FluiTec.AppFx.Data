@@ -1,6 +1,7 @@
 ﻿using FluiTec.AppFx.Data.EntityNames;
 using FluiTec.AppFx.Data.PropertyNames;
 using FluiTec.AppFx.Data.Reflection;
+using FluiTec.AppFx.Data.Sql.Exceptions;
 using FluiTec.AppFx.Data.Sql.StatementBuilders;
 using FluiTec.AppFx.Data.Sql.Tests.Fixtures.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -80,7 +81,7 @@ public class MicrosoftSqlStatementBuilderTest
     }
 
     [TestMethod]
-    public void CanGetPagingStatement()
+    public void CanCreatePagingStatement()
     {
         var builder = GetBuilder();
 
@@ -107,5 +108,54 @@ public class MicrosoftSqlStatementBuilderTest
             builder.GetPagingStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty)), 
                 "skipRecords", "takeRecords")
         );
+    }
+
+    [TestMethod]
+    public void CanCreateSelectByKeyStatementForSingleKeys()
+    {
+        var builder = GetBuilder();
+
+        Assert.AreEqual(
+            "SELECT [Id] FROM [DummyEntityWithProperty] WHERE [Id] = @pId",
+            builder.GetSelectByKeyStatement(GetSchema(typeof(DummyEntityWithProperty)), new Dictionary<string, object>(
+                new[] {new KeyValuePair<string, object>("Id", 1)}))
+        );
+
+        Assert.AreEqual(
+            "SELECT [ID] FROM [DummyEntityWithDecoratedProperty] WHERE [ID] = @pID",
+            builder.GetSelectByKeyStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)), new Dictionary<string, object>(
+                new[] { new KeyValuePair<string, object>("ID", 1) }))
+        );
+
+        Assert.AreEqual(
+            "SELECT [ID] FROM [Test].[Dummy] WHERE [ID] = @pID",
+            builder.GetSelectByKeyStatement(GetSchema(typeof(DecoratedDummyEntityWithDecoratedProperty)), new Dictionary<string, object>(
+                new[] { new KeyValuePair<string, object>("ID", 1) }))
+        );
+
+        Assert.AreEqual(
+            "SELECT [Id] FROM [Test].[Dummy] WHERE [Id] = @pId",
+            builder.GetSelectByKeyStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty)), new Dictionary<string, object>(
+                new[] { new KeyValuePair<string, object>("Id", 1) }))
+        );
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(KeyParameterMismatchException))]
+    public void ThrowsOnSelectByKeyStatementWithoutEntityKeys()
+    {
+        var builder = GetBuilder();
+
+        builder.GetSelectByKeyStatement(GetSchema(typeof(EmptyDecoratedDummyEntity)), new Dictionary<string, object>(
+            new[] { new KeyValuePair<string, object>("Id", 1) }));
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(KeyParameterMismatchException))]
+    public void ThrowsOnSelectByKeyStatementWithMissingParams()
+    {
+        var builder = GetBuilder();
+
+        builder.GetSelectByKeyStatement(GetSchema(typeof(DummyEntityWithProperty)), new Dictionary<string, object>());
     }
 }

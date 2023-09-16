@@ -11,6 +11,7 @@ public class DefaultSqlKeywordsTest
     [TestMethod]
     [DataRow("SELECT", nameof(ISqlKeywords.Select))]
     [DataRow("FROM", nameof(ISqlKeywords.From))]
+    [DataRow("WHERE", nameof(ISqlKeywords.Where))]
     [DataRow(",", nameof(ISqlKeywords.ListSeparator))]
     [DataRow("COUNT(*)", nameof(ISqlKeywords.CountAllExpression))]
     [DataRow("OFFSET", nameof(ISqlKeywords.OffsetExpression))]

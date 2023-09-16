@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluiTec.AppFx.Data.Reflection;
 using FluiTec.AppFx.Data.Sql.StatementProviders.EventArguments;
 
@@ -26,4 +27,10 @@ public interface IStatementProvider
     /// <param name="takeParameterName"> Name of the take parameter. </param>
     /// <returns> The paging statement.</returns>
     string GetPagingStatement(ITypeSchema typeSchema, string skipParameterName, string takeParameterName);
+
+    /// <summary>   Gets select by key statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <param name="keys">          The keys. </param>
+    /// <returns>   The select by key statement. </returns>
+    string GetSelectByKeyStatement(ITypeSchema typeSchema, IDictionary<string, object> keys);
 }

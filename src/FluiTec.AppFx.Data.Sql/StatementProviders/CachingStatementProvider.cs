@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using FluiTec.AppFx.Data.Reflection;
 using FluiTec.AppFx.Data.Sql.StatementProviders.EventArguments;
@@ -135,5 +136,14 @@ public class CachingStatementProvider : IStatementProvider
     public string GetPagingStatement(ITypeSchema typeSchema, string skipParameterName, string takeParameterName)
     {
         return GetOrAddStatement(typeSchema, new[] { skipParameterName, takeParameterName });
+    }
+
+    /// <summary>   Gets select by key statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <param name="key">          The key. </param>
+    /// <returns>   The select by key statement. </returns>
+    public string GetSelectByKeyStatement(ITypeSchema typeSchema, IDictionary<string, object> key)
+    {
+        return GetOrAddStatement(typeSchema, key.Select(k => k.Key));
     }
 }

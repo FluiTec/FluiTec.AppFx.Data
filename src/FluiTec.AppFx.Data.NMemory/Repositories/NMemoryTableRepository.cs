@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.NMemory.Providers;
+using FluiTec.AppFx.Data.Reflection;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Data.UnitsOfWork;
 
@@ -21,7 +22,14 @@ public class NMemoryTableRepository<TEntity> : NMemoryPagedRepository<TEntity>, 
     public NMemoryTableRepository(IDataService dataService, INMemoryDataProvider dataProvider, IUnitOfWork unitOfWork)
         : base(dataService, dataProvider, unitOfWork)
     {
+        KeyProperties = DataService.Schema[EntityType].KeyProperties
+            .OrderBy(p => p.Order)
+            .ToList();
     }
+
+    /// <summary>   Gets the key properties. </summary>
+    /// <value> The key properties. </value>
+    public IList<IKeyPropertySchema> KeyProperties { get; }
 
     /// <summary>   Gets a t entity using the given keys. </summary>
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
@@ -49,12 +57,6 @@ public class NMemoryTableRepository<TEntity> : NMemoryPagedRepository<TEntity>, 
     /// <returns>   True if it succeeds, false if it fails. </returns>
     protected bool KeysMatch(TEntity entity, IReadOnlyList<object> keys)
     {
-        var schema = DataService.Schema[EntityType];
-
-        var typeKeys = schema.KeyProperties
-            .OrderBy(p => p.Order)
-            .ToList();
-
-        return !typeKeys.Where((t, i) => !t.GetValue(entity).Equals(keys[i])).Any();
+        return !KeyProperties.Where((t, i) => !t.GetValue(entity).Equals(keys[i])).Any();
     }
 }
