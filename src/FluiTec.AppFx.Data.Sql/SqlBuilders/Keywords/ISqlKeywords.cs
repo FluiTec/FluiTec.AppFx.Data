@@ -15,9 +15,25 @@ public interface ISqlKeywords
     /// <value> The where. </value>
     string Where { get; }
 
+    /// <summary>   Gets the insert. </summary>
+    /// <value> The insert. </value>
+    string Insert { get; }
+
+    /// <summary>   Gets the into. </summary>
+    /// <value> The into. </value>
+    string Into { get; }
+
+    /// <summary>   Gets the values. </summary>
+    /// <value> The values. </value>
+    string Values { get; }
+
     /// <summary>   Gets the list separator. </summary>
     /// <value> The list separator. </value>
     string ListSeparator { get; }
+
+    /// <summary>   Gets the command separator. </summary>
+    /// <value> The command separator. </value>
+    string CommandSeparator { get; }
 
     /// <summary> Gets the total number of all expression.</summary>
     /// <value> The total number of all expression.</value>

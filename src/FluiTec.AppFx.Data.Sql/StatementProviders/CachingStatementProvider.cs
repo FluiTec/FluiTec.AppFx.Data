@@ -146,4 +146,28 @@ public class CachingStatementProvider : IStatementProvider
     {
         return GetOrAddStatement(typeSchema, key.Select(k => k.Key));
     }
+
+    /// <summary>   Gets insert single statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert single statement. </returns>
+    public string GetInsertSingleStatement(ITypeSchema typeSchema)
+    {
+        return GetOrAddStatement(typeSchema);
+    }
+
+    /// <summary>   Gets retrieve automatic insert key statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The retrieve automatic insert key statement. </returns>
+    public string GetRetrieveAutoInsertKeyStatement(ITypeSchema typeSchema)
+    {
+        return GetOrAddStatement(typeSchema);
+    }
+
+    /// <summary>   Gets insert single automatic statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert single automatic statement. </returns>
+    public string GetInsertSingleAutoStatement(ITypeSchema typeSchema)
+    {
+        return GetOrAddStatement(typeSchema);
+    }
 }

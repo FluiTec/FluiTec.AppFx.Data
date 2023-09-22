@@ -24,17 +24,24 @@ public class TypeSchema : ITypeSchema
         var props = type.GetImmediateProperties().ToList();
         var mapped = new List<ImmediateProperty>();
         var keys = new List<Tuple<ImmediateProperty, EntityKeyAttribute>>();
+        ImmediateProperty? idKey = null;
 
         foreach (var prop in props)
         {
             var mapAttr = prop.GetAttribute<UnmappedAttribute>(true);
             var keyAttr = prop.GetAttribute<EntityKeyAttribute>(true);
+            var idKeyAttr = prop.GetAttribute<IdentityKeyAttribute>(true);
 
             if (mapAttr == null)
                 mapped.Add(prop);
 
             if (keyAttr != null)
                 keys.Add(new Tuple<ImmediateProperty, EntityKeyAttribute>(prop, keyAttr));
+
+            if (idKeyAttr == null) continue;
+            if (idKey != null)
+                throw new NonSingularIdentityKeyException(type);
+            idKey = prop;
         }
 
         Properties = props
@@ -58,6 +65,8 @@ public class TypeSchema : ITypeSchema
             .OrderBy(k => k.Order)
             .ToList()
             .AsReadOnly();
+
+        IdentityKey = idKey != null ? KeyProperties.Single(kp => kp.Name == PropertyNameService.GetName(idKey)) : null;
     }
 
     /// <summary>   Gets the entity name service. </summary>
@@ -91,4 +100,12 @@ public class TypeSchema : ITypeSchema
     /// <summary>   Gets the key properties. </summary>
     /// <value> The key properties. </value>
     public IReadOnlyCollection<IKeyPropertySchema> KeyProperties { get; }
+
+    /// <summary>   Gets the identity key. </summary>
+    /// <value> The identity key. </value>
+    public IKeyPropertySchema? IdentityKey { get; }
+
+    /// <summary>   Gets a value indicating whether this object uses identity key. </summary>
+    /// <value> True if uses identity key, false if not. </value>
+    public bool UsesIdentityKey => IdentityKey != null;
 }

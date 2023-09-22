@@ -33,4 +33,19 @@ public interface IStatementProvider
     /// <param name="keys">          The keys. </param>
     /// <returns>   The select by key statement. </returns>
     string GetSelectByKeyStatement(ITypeSchema typeSchema, IDictionary<string, object> keys);
+
+    /// <summary>   Gets insert single statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert single statement. </returns>
+    string GetInsertSingleStatement(ITypeSchema typeSchema);
+
+    /// <summary>   Gets retrieve automatic insert key statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The retrieve automatic insert key statement. </returns>
+    string GetRetrieveAutoInsertKeyStatement(ITypeSchema typeSchema);
+
+    /// <summary>   Gets insert single automatic statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert single automatic statement. </returns>
+    string GetInsertSingleAutoStatement(ITypeSchema typeSchema);
 }

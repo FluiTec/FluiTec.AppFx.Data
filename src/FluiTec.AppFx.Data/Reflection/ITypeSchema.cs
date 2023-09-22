@@ -30,4 +30,12 @@ public interface ITypeSchema
     /// <summary>   Gets the key properties. </summary>
     /// <value> The key properties. </value>
     IReadOnlyCollection<IKeyPropertySchema> KeyProperties { get; }
+
+    /// <summary>   Gets the identity key. </summary>
+    /// <value> The identity key. </value>
+    IKeyPropertySchema? IdentityKey { get; }
+
+    /// <summary>   Gets a value indicating whether this object uses identity key. </summary>
+    /// <value> True if uses identity key, false if not. </value>
+    bool UsesIdentityKey { get; }
 }

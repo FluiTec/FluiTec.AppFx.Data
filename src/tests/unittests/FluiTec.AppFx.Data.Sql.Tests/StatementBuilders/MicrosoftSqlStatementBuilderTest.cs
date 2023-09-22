@@ -158,4 +158,31 @@ public class MicrosoftSqlStatementBuilderTest
 
         builder.GetSelectByKeyStatement(GetSchema(typeof(DummyEntityWithProperty)), new Dictionary<string, object>());
     }
+
+    [TestMethod]
+    public void CanCreateInsertNonIdentity()
+    {
+        var builder = GetBuilder();
+
+        Assert.AreEqual("INSERT INTO [DummyEntityWithProperty] ([Id]) VALUES (@Id)",
+            builder.GetInsertSingleStatement(GetSchema(typeof(DummyEntityWithProperty))));
+
+        Assert.AreEqual("INSERT INTO [DummyEntityWithDecoratedProperty] ([ID]) VALUES (@ID)",
+            builder.GetInsertSingleStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty))));
+
+        Assert.AreEqual("INSERT INTO [Test].[Dummy] ([ID]) VALUES (@ID)",
+            builder.GetInsertSingleStatement(GetSchema(typeof(DecoratedDummyEntityWithDecoratedProperty))));
+
+        Assert.AreEqual("INSERT INTO [Test].[Dummy] ([Id]) VALUES (@Id)",
+            builder.GetInsertSingleStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty))));
+    }
+
+    [TestMethod]
+    public void CanCreateInsertIdentity()
+    {
+        var builder = GetBuilder();
+
+        Assert.AreEqual("INSERT INTO [Test].[Dummy] ([Name]) VALUES (@Name) ; SELECT SCOPE_IDENTITY() [Id]",
+            builder.GetInsertSingleAutoStatement(GetSchema(typeof(DecoratedIdentityDummy))));
+    }
 }

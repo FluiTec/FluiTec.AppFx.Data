@@ -60,7 +60,7 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
     /// <summary> Gets count statement.</summary>
     /// <param name="typeSchema"> The type schema. </param>
     /// <returns> The count statement.</returns>
-    public string GetCountStatement(ITypeSchema typeSchema)
+    public virtual string GetCountStatement(ITypeSchema typeSchema)
     {
         var sql = $"{SqlBuilder.Keywords.Select} " +
                   $"{SqlBuilder.Keywords.CountAllExpression} " +
@@ -75,7 +75,7 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
     /// <param name="skipParameterName"> (Optional) Name of the skip parameter. </param>
     /// <param name="takeParameterName"> (Optional) Name of the take parameter. </param>
     /// <returns> The paging statement.</returns>
-    public string GetPagingStatement(ITypeSchema typeSchema, string skipParameterName,
+    public virtual string GetPagingStatement(ITypeSchema typeSchema, string skipParameterName,
         string takeParameterName)
     {
         var sql = $"{SqlBuilder.Keywords.Select} " +
@@ -112,7 +112,7 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
     /// <param name="typeSchema">   The type schema. </param>
     /// <param name="keys">          The keys. </param>
     /// <returns>   The select by key statement. </returns>
-    public string GetSelectByKeyStatement(ITypeSchema typeSchema, IDictionary<string, object> keys)
+    public virtual string GetSelectByKeyStatement(ITypeSchema typeSchema, IDictionary<string, object> keys)
     {
         var keyProps = typeSchema.KeyProperties;
         ValidateKeyParameters(keyProps, keys);
@@ -124,6 +124,48 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
                   $"{SqlBuilder.RenderList(keys
                       .Select(k => SqlBuilder.RenderPropertyParameterComparison(keyProps.Single(kp => kp.Name.ColumnName == k.Key), SqlBuilder.Keywords.CompareEqualsOperator)))}"
                   ;
+
+        OnTypeSqlProvided(sql, typeSchema);
+        return sql;
+    }
+
+    /// <summary>   Gets insert single statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert single statement. </returns>
+    public virtual string GetInsertSingleStatement(ITypeSchema typeSchema)
+    {
+        var columns = typeSchema.MappedProperties.ToList();
+
+        var sql = $"{SqlBuilder.Keywords.Insert} " +
+                  $"{SqlBuilder.Keywords.Into} " +
+                  $"{SqlBuilder.RenderTableName(typeSchema)} " +
+                  $"({SqlBuilder.RenderList(columns.Select(SqlBuilder.RenderProperty))}) " +
+                  $"{SqlBuilder.Keywords.Values} " +
+                  $"({SqlBuilder.RenderList(columns.Select(c => SqlBuilder.RenderParameter(c.Name.ColumnName)))})";
+
+        OnTypeSqlProvided(sql, typeSchema);
+        return sql;
+    }
+
+    /// <summary>   Gets retrieve automatic insert key statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The retrieve automatic insert key statement. </returns>
+    public abstract string GetRetrieveAutoInsertKeyStatement(ITypeSchema typeSchema);
+
+    /// <summary>   Gets insert single automatic statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert single automatic statement. </returns>
+    public virtual string GetInsertSingleAutoStatement(ITypeSchema typeSchema)
+    {
+        var columns = typeSchema.MappedProperties.Except(new []{ typeSchema.IdentityKey!}).ToList();
+
+        var sql = $"{SqlBuilder.Keywords.Insert} " +
+                  $"{SqlBuilder.Keywords.Into} " +
+                  $"{SqlBuilder.RenderTableName(typeSchema)} " +
+                  $"({SqlBuilder.RenderList(columns.Select(SqlBuilder.RenderProperty))}) " +
+                  $"{SqlBuilder.Keywords.Values} " +
+                  $"({SqlBuilder.RenderList(columns.Select(c => SqlBuilder.RenderParameter(c.Name.ColumnName)))}) " +
+                  $"{SqlBuilder.Keywords.CommandSeparator} {GetRetrieveAutoInsertKeyStatement(typeSchema)}";
 
         OnTypeSqlProvided(sql, typeSchema);
         return sql;

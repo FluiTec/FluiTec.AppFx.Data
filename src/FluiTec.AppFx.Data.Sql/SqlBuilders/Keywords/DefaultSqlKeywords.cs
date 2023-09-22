@@ -15,9 +15,25 @@ public class DefaultSqlKeywords : ISqlKeywords
     /// <value> The where. </value>
     public string Where => "WHERE";
 
+    /// <summary>   Gets the insert. </summary>
+    /// <value> The insert. </value>
+    public string Insert => "INSERT";
+
+    /// <summary>   Gets the into. </summary>
+    /// <value> The into. </value>
+    public string Into => "INTO";
+
+    /// <summary>   Gets the values. </summary>
+    /// <value> The values. </value>
+    public string Values => "VALUES";
+
     /// <summary> Gets the list separator.</summary>
     /// <value> The list separator.</value>
     public string ListSeparator => ",";
+
+    /// <summary>   Gets the command separator. </summary>
+    /// <value> The command separator. </value>
+    public string CommandSeparator => ";";
 
     /// <summary> Gets the total number of all expression.</summary>
     /// <value> The total number of all expression.</value>
