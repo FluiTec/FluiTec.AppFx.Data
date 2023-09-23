@@ -88,6 +88,19 @@ public abstract class SqlBuilder : ISqlBuilder
         return sql;
     }
 
+    /// <summary>   Renders the property assignment. </summary>
+    /// <param name="property">             The property. </param>
+    /// <param name="assignmentOperator">   The assignment operator. </param>
+    /// <param name="parameterName">        (Optional) Name of the parameter. </param>
+    /// <returns>   A string. </returns>
+    public string RenderPropertyAssignment(IPropertySchema property, string assignmentOperator, string? parameterName = null)
+    {
+        var paramName = parameterName ?? CreateParameterName(property);
+        var sql = $"{WrapExpression(property.Name.ColumnName)} {assignmentOperator} {RenderParameter(paramName)}";
+        OnTypeSqlBuilt(sql, property);
+        return sql;
+    }
+
     /// <summary>   Renders the property parameter comparison. </summary>
     /// <param name="property">             The property. </param>
     /// <param name="comparisonOperator">   The comparison operator. </param>
@@ -95,19 +108,30 @@ public abstract class SqlBuilder : ISqlBuilder
     /// <returns>   A string. </returns>
     public virtual string RenderPropertyParameterComparison(IPropertySchema property, string comparisonOperator, string? parameterName = null)
     {
-        var paramName = parameterName ?? $"p{property.Name.ColumnName}";
+        var paramName = parameterName ?? CreateParameterName(property);
         var sql = $"{WrapExpression(property.Name.ColumnName)} {comparisonOperator} {RenderParameter(paramName)}";
         OnTypeSqlBuilt(sql, property);
         return sql;
     }
 
+    /// <summary>   Renders the join expressions. </summary>
+    /// <param name="expressions">      The expressions. </param>
+    /// <param name="joinExpression">   The join expression. </param>
+    /// <returns>   A string. </returns>
+    public string RenderJoinExpressions(IEnumerable<string> expressions, string joinExpression)
+    {
+        return string.Join($"{joinExpression} ", expressions);
+    }
+
     /// <summary>   Renders the list described by expressions. </summary>
     /// <param name="expressions">  The expressions. </param>
     /// <returns>   A string. </returns>
-    public virtual string RenderList(IEnumerable<string> expressions)
-    {
-        return string.Join($"{Keywords.ListSeparator} ", expressions);
-    }
+    public virtual string RenderList(IEnumerable<string> expressions) => RenderJoinExpressions(expressions, Keywords.ListSeparator);
+
+    /// <summary>   Creates parameter name. </summary>
+    /// <param name="property"> The property. </param>
+    /// <returns>   The new parameter name. </returns>
+    public virtual string CreateParameterName(IPropertySchema property) => $"{property.Name.Name}";
 
     /// <summary> Renders the parameter described by parameterName.</summary>
     /// <param name="parameterName"> Name of the parameter. </param>

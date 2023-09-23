@@ -141,7 +141,7 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
                   $"{SqlBuilder.RenderTableName(typeSchema)} " +
                   $"({SqlBuilder.RenderList(columns.Select(SqlBuilder.RenderProperty))}) " +
                   $"{SqlBuilder.Keywords.Values} " +
-                  $"({SqlBuilder.RenderList(columns.Select(c => SqlBuilder.RenderParameter(c.Name.ColumnName)))})";
+                  $"({SqlBuilder.RenderList(columns.Select(c => SqlBuilder.RenderParameter(SqlBuilder.CreateParameterName(c))))})";
 
         OnTypeSqlProvided(sql, typeSchema);
         return sql;
@@ -164,8 +164,54 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
                   $"{SqlBuilder.RenderTableName(typeSchema)} " +
                   $"({SqlBuilder.RenderList(columns.Select(SqlBuilder.RenderProperty))}) " +
                   $"{SqlBuilder.Keywords.Values} " +
-                  $"({SqlBuilder.RenderList(columns.Select(c => SqlBuilder.RenderParameter(c.Name.ColumnName)))}) " +
+                  $"({SqlBuilder.RenderList(columns.Select(c => SqlBuilder.RenderParameter(SqlBuilder.CreateParameterName(c))))}) " +
                   $"{SqlBuilder.Keywords.CommandSeparator} {GetRetrieveAutoInsertKeyStatement(typeSchema)}";
+
+        OnTypeSqlProvided(sql, typeSchema);
+        return sql;
+    }
+
+    /// <summary>   Gets insert multiple statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert multiple statement. </returns>
+    public virtual string GetInsertMultipleStatement(ITypeSchema typeSchema) => GetInsertSingleStatement(typeSchema);
+
+    /// <summary>   Gets insert multiple automatic statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert multiple automatic statement. </returns>
+    public virtual string GetInsertMultipleAutoStatement(ITypeSchema typeSchema)
+    {
+        var columns = typeSchema.MappedProperties.Except(new[] { typeSchema.IdentityKey! }).ToList();
+
+        var sql = $"{SqlBuilder.Keywords.Insert} " +
+                  $"{SqlBuilder.Keywords.Into} " +
+                  $"{SqlBuilder.RenderTableName(typeSchema)} " +
+                  $"({SqlBuilder.RenderList(columns.Select(SqlBuilder.RenderProperty))}) " +
+                  $"{SqlBuilder.Keywords.Values} " +
+                  $"({SqlBuilder.RenderList(columns.Select(c => SqlBuilder.RenderParameter(SqlBuilder.CreateParameterName(c))))})";
+
+        OnTypeSqlProvided(sql, typeSchema);
+        return sql;
+    }
+
+    /// <summary>   Gets update statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The update statement. </returns>
+    public string GetUpdateStatement(ITypeSchema typeSchema)
+    {
+
+        var sql = $"{SqlBuilder.Keywords.Update} " +
+                  $"{SqlBuilder.RenderTableName(typeSchema)} " +
+                  $"{SqlBuilder.Keywords.Set} " +
+                  $"{SqlBuilder
+                      .RenderList(typeSchema.MappedProperties.Except(typeSchema.KeyProperties)
+                          .Select(p => $"{SqlBuilder
+                              .RenderPropertyAssignment(p, SqlBuilder.Keywords.AssignEqualsOperator)}"))} " +
+                  $"{SqlBuilder.Keywords.Where} " +
+                  $"{SqlBuilder
+                      .RenderJoinExpressions(typeSchema.KeyProperties
+                          .Select(kp => $"{SqlBuilder
+                              .RenderPropertyParameterComparison(kp, SqlBuilder.Keywords.CompareEqualsOperator)}"), $" {SqlBuilder.Keywords.And}")}";
 
         OnTypeSqlProvided(sql, typeSchema);
         return sql;

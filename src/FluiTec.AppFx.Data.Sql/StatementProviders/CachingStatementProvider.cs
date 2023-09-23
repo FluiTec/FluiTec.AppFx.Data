@@ -170,4 +170,28 @@ public class CachingStatementProvider : IStatementProvider
     {
         return GetOrAddStatement(typeSchema);
     }
+
+    /// <summary>   Gets insert multiple statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert multiple statement. </returns>
+    public string GetInsertMultipleStatement(ITypeSchema typeSchema)
+    {
+        return GetOrAddStatement(typeSchema);
+    }
+
+    /// <summary>   Gets insert multiple automatic statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert multiple automatic statement. </returns>
+    public string GetInsertMultipleAutoStatement(ITypeSchema typeSchema)
+    {
+        return GetOrAddStatement(typeSchema);
+    }
+
+    /// <summary>   Gets update statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The update statement. </returns>
+    public string GetUpdateStatement(ITypeSchema typeSchema)
+    {
+        return GetOrAddStatement(typeSchema);
+    }
 }

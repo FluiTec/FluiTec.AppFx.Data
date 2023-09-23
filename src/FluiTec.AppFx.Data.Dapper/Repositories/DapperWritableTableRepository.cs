@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
@@ -6,6 +8,7 @@ using FluiTec.AppFx.Data.DataProviders;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Data.UnitsOfWork;
+using static Dapper.SqlMapper;
 
 namespace FluiTec.AppFx.Data.Dapper.Repositories;
 
@@ -33,8 +36,8 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
             var sql = UnitOfWork.StatementProvider.GetInsertSingleAutoStatement(TypeSchema);
             var key = UnitOfWork.Connection.ExecuteScalar<object>(sql, entity, UnitOfWork.Transaction,
                 commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
-
-            // TODO: assign key to entity
+            var castKey = Convert.ChangeType(key, TypeSchema.IdentityKey!.PropertyType);
+            TypeSchema.IdentityKey.SetValue(entity, castKey);
         }
         else
         {
@@ -43,24 +46,77 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
                 commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
         }
 
-        throw new System.NotImplementedException();
+        return entity;
+    }
+
+    /// <summary>   Adds an asynchronous to 'cancellationToken'. </summary>
+    /// <param name="entity">               The entity to add. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    /// <returns>   The add. </returns>
+    public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    {
+        if (TypeSchema.UsesIdentityKey)
+        {
+            var sql = UnitOfWork.StatementProvider.GetInsertSingleAutoStatement(TypeSchema);
+            var query = new CommandDefinition(sql, entity, UnitOfWork.Transaction,
+                (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds, cancellationToken: cancellationToken);
+            var key = await UnitOfWork.Connection.ExecuteScalarAsync<object>(query);
+            var castKey = Convert.ChangeType(key, TypeSchema.IdentityKey!.PropertyType);
+            TypeSchema.IdentityKey.SetValue(entity, castKey);
+
+        }
+        else
+        {
+            var sql = UnitOfWork.StatementProvider.GetInsertSingleStatement(TypeSchema);
+            var query = new CommandDefinition(sql, entity, UnitOfWork.Transaction,
+                (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds, cancellationToken: cancellationToken);
+
+            await UnitOfWork.Connection.ExecuteAsync(query);
+        }
 
         return entity;
     }
 
-    public Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
-    {
-        throw new System.NotImplementedException();
-    }
-
+    /// <summary>   Adds a range. </summary>
+    /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
     public void AddRange(IEnumerable<TEntity> entities)
     {
-        throw new System.NotImplementedException();
+        if (TypeSchema.UsesIdentityKey)
+        {
+            var sql = UnitOfWork.StatementProvider.GetInsertMultipleAutoStatement(TypeSchema);
+            UnitOfWork.Connection.Execute(sql, entities, UnitOfWork.Transaction,
+                commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
+        }
+        else
+        {
+            var sql = UnitOfWork.StatementProvider.GetInsertMultipleStatement(TypeSchema);
+            UnitOfWork.Connection.Execute(sql, entities, UnitOfWork.Transaction,
+                commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
+        }
     }
 
-    public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    /// <summary>   Adds a range asynchronous to 'cancellationToken'. </summary>
+    /// <param name="entities">             An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    /// <returns>   A Task. </returns>
+    public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
-        throw new System.NotImplementedException();
+        if (TypeSchema.UsesIdentityKey)
+        {
+            var sql = UnitOfWork.StatementProvider.GetInsertMultipleAutoStatement(TypeSchema);
+            var query = new CommandDefinition(sql, entities, UnitOfWork.Transaction,
+                (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds, cancellationToken: cancellationToken);
+            await UnitOfWork.Connection.ExecuteAsync(query);
+        }
+        else
+        {
+            var sql = UnitOfWork.StatementProvider.GetInsertMultipleStatement(TypeSchema);
+            var query = new CommandDefinition(sql, entities, UnitOfWork.Transaction,
+                (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds, cancellationToken: cancellationToken);
+            await UnitOfWork.Connection.ExecuteAsync(query);
+        }
     }
 
     public TEntity Update(TEntity entity)

@@ -7,6 +7,10 @@ public class DefaultSqlKeywords : ISqlKeywords
     /// <value> The select. </value>
     public virtual string Select => "SELECT";
 
+    /// <summary>   Gets the update. </summary>
+    /// <value> The update. </value>
+    public string Update => "UPDATE";
+
     /// <summary>   Gets the source for the. </summary>
     /// <value> from. </value>
     public string From => "FROM";
@@ -26,6 +30,18 @@ public class DefaultSqlKeywords : ISqlKeywords
     /// <summary>   Gets the values. </summary>
     /// <value> The values. </value>
     public string Values => "VALUES";
+
+    /// <summary>   Gets the set. </summary>
+    /// <value> The set. </value>
+    public string Set => "SET";
+
+    /// <summary>   Gets the and. </summary>
+    /// <value> The and. </value>
+    public string And => "AND";
+
+    /// <summary>   Gets the or. </summary>
+    /// <value> The or. </value>
+    public string Or => "OR";
 
     /// <summary> Gets the list separator.</summary>
     /// <value> The list separator.</value>
@@ -66,6 +82,10 @@ public class DefaultSqlKeywords : ISqlKeywords
     /// <summary> Gets the descending expression.</summary>
     /// <value> The descending expression.</value>
     public string DescendingExpression => "DESC";
+
+    /// <summary>   Gets the assign equals operator. </summary>
+    /// <value> The assign equals operator. </value>
+    public string AssignEqualsOperator => "=";
 
     /// <summary>   Gets the compare equals operator. </summary>
     /// <value> The compare equals operator. </value>

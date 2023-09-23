@@ -11,4 +11,9 @@ public interface IKeyPropertySchema : IPropertySchema
     /// <param name="obj">  The object. </param>
     /// <returns>   The value. </returns>
     object GetValue(object obj);
+
+    /// <summary>   Sets a value. </summary>
+    /// <param name="obj">      The object. </param>
+    /// <param name="value">    The value. </param>
+    void SetValue(object obj, object value);
 }

@@ -116,25 +116,25 @@ public class MicrosoftSqlStatementBuilderTest
         var builder = GetBuilder();
 
         Assert.AreEqual(
-            "SELECT [Id] FROM [DummyEntityWithProperty] WHERE [Id] = @pId",
+            "SELECT [Id] FROM [DummyEntityWithProperty] WHERE [Id] = @Id",
             builder.GetSelectByKeyStatement(GetSchema(typeof(DummyEntityWithProperty)), new Dictionary<string, object>(
                 new[] {new KeyValuePair<string, object>("Id", 1)}))
         );
 
         Assert.AreEqual(
-            "SELECT [ID] FROM [DummyEntityWithDecoratedProperty] WHERE [ID] = @pID",
+            "SELECT [ID] FROM [DummyEntityWithDecoratedProperty] WHERE [ID] = @Id",
             builder.GetSelectByKeyStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)), new Dictionary<string, object>(
                 new[] { new KeyValuePair<string, object>("ID", 1) }))
         );
 
         Assert.AreEqual(
-            "SELECT [ID] FROM [Test].[Dummy] WHERE [ID] = @pID",
+            "SELECT [ID] FROM [Test].[Dummy] WHERE [ID] = @Id",
             builder.GetSelectByKeyStatement(GetSchema(typeof(DecoratedDummyEntityWithDecoratedProperty)), new Dictionary<string, object>(
                 new[] { new KeyValuePair<string, object>("ID", 1) }))
         );
 
         Assert.AreEqual(
-            "SELECT [Id] FROM [Test].[Dummy] WHERE [Id] = @pId",
+            "SELECT [Id] FROM [Test].[Dummy] WHERE [Id] = @Id",
             builder.GetSelectByKeyStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty)), new Dictionary<string, object>(
                 new[] { new KeyValuePair<string, object>("Id", 1) }))
         );
@@ -164,17 +164,31 @@ public class MicrosoftSqlStatementBuilderTest
     {
         var builder = GetBuilder();
 
+        // single
         Assert.AreEqual("INSERT INTO [DummyEntityWithProperty] ([Id]) VALUES (@Id)",
             builder.GetInsertSingleStatement(GetSchema(typeof(DummyEntityWithProperty))));
 
-        Assert.AreEqual("INSERT INTO [DummyEntityWithDecoratedProperty] ([ID]) VALUES (@ID)",
+        Assert.AreEqual("INSERT INTO [DummyEntityWithDecoratedProperty] ([ID]) VALUES (@Id)",
             builder.GetInsertSingleStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty))));
 
-        Assert.AreEqual("INSERT INTO [Test].[Dummy] ([ID]) VALUES (@ID)",
+        Assert.AreEqual("INSERT INTO [Test].[Dummy] ([ID]) VALUES (@Id)",
             builder.GetInsertSingleStatement(GetSchema(typeof(DecoratedDummyEntityWithDecoratedProperty))));
 
         Assert.AreEqual("INSERT INTO [Test].[Dummy] ([Id]) VALUES (@Id)",
             builder.GetInsertSingleStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty))));
+
+        //multiple
+        Assert.AreEqual("INSERT INTO [DummyEntityWithProperty] ([Id]) VALUES (@Id)",
+            builder.GetInsertMultipleStatement(GetSchema(typeof(DummyEntityWithProperty))));
+
+        Assert.AreEqual("INSERT INTO [DummyEntityWithDecoratedProperty] ([ID]) VALUES (@Id)",
+            builder.GetInsertMultipleStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty))));
+
+        Assert.AreEqual("INSERT INTO [Test].[Dummy] ([ID]) VALUES (@Id)",
+            builder.GetInsertMultipleStatement(GetSchema(typeof(DecoratedDummyEntityWithDecoratedProperty))));
+
+        Assert.AreEqual("INSERT INTO [Test].[Dummy] ([Id]) VALUES (@Id)",
+            builder.GetInsertMultipleStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty))));
     }
 
     [TestMethod]
@@ -182,7 +196,23 @@ public class MicrosoftSqlStatementBuilderTest
     {
         var builder = GetBuilder();
 
+        // single
         Assert.AreEqual("INSERT INTO [Test].[Dummy] ([Name]) VALUES (@Name) ; SELECT SCOPE_IDENTITY() [Id]",
             builder.GetInsertSingleAutoStatement(GetSchema(typeof(DecoratedIdentityDummy))));
+
+        // multiple
+        Assert.AreEqual("INSERT INTO [Test].[Dummy] ([Name]) VALUES (@Name)",
+            builder.GetInsertMultipleAutoStatement(GetSchema(typeof(DecoratedIdentityDummy))));
+    }
+
+    [TestMethod]
+    public void CanCreateUpdateStatement()
+    {
+        var builder = GetBuilder();
+        
+        Assert.AreEqual("UPDATE [Test].[Dummy] SET [Name] = @Name WHERE [Id] = @Id",
+            builder.GetUpdateStatement(GetSchema(typeof(DecoratedIdentityDummy))));
+        Assert.AreEqual("UPDATE [Test].[Dummy] SET [Name1] = @Name1, [Name2] = @Name2 WHERE [Id1] = @Id1 AND [Id2] = @Id2",
+            builder.GetUpdateStatement(GetSchema(typeof(MultiKeyMultiValueDummy))));
     }
 }

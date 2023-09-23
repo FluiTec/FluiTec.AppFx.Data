@@ -48,4 +48,19 @@ public interface IStatementProvider
     /// <param name="typeSchema">   The type schema. </param>
     /// <returns>   The insert single automatic statement. </returns>
     string GetInsertSingleAutoStatement(ITypeSchema typeSchema);
+
+    /// <summary>   Gets insert multiple statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert multiple statement. </returns>
+    string GetInsertMultipleStatement(ITypeSchema typeSchema);
+
+    /// <summary>   Gets insert multiple automatic statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The insert multiple automatic statement. </returns>
+    string GetInsertMultipleAutoStatement(ITypeSchema typeSchema);
+
+    /// <summary>   Gets update statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The update statement. </returns>
+    string GetUpdateStatement(ITypeSchema typeSchema);
 }

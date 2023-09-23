@@ -35,6 +35,13 @@ public interface ISqlBuilder
     /// <returns>   A string. </returns>
     string RenderProperty(IPropertySchema property);
 
+    /// <summary>   Renders the property assignment. </summary>
+    /// <param name="property">             The property. </param>
+    /// <param name="assignmentOperator">   The assignment operator. </param>
+    /// <param name="parameterName">        (Optional) Name of the parameter. </param>
+    /// <returns>   A string. </returns>
+    string RenderPropertyAssignment(IPropertySchema property, string assignmentOperator, string? parameterName = null);
+
     /// <summary>   Renders the property parameter comparison. </summary>
     /// <param name="property">             The property. </param>
     /// <param name="comparisonOperator">   The comparison operator. </param>
@@ -42,10 +49,21 @@ public interface ISqlBuilder
     /// <returns>   A string. </returns>
     string RenderPropertyParameterComparison(IPropertySchema property, string comparisonOperator, string? parameterName = null);
 
+    /// <summary>   Renders the join expressions. </summary>
+    /// <param name="expressions">      The expressions. </param>
+    /// <param name="joinExpression">   The join expression. </param>
+    /// <returns>   A string. </returns>
+    string RenderJoinExpressions(IEnumerable<string> expressions, string joinExpression);
+
     /// <summary>   Renders the list described by expressions. </summary>
     /// <param name="expressions">  The expressions. </param>
     /// <returns>   A string. </returns>
     string RenderList(IEnumerable<string> expressions);
+
+    /// <summary>   Creates parameter name. </summary>
+    /// <param name="property"> The property. </param>
+    /// <returns>   The new parameter name. </returns>
+    string CreateParameterName(IPropertySchema property);
 
     /// <summary> Renders the parameter described by parameterName.</summary>
     /// <param name="parameterName"> Name of the parameter. </param>

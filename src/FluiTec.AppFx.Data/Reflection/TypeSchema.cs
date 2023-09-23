@@ -61,7 +61,7 @@ public class TypeSchema : ITypeSchema
 
         KeyProperties = keys
             .Select(t => new KeyPropertySchema(t.Item1.PropertyType, PropertyNameService.GetName(t.Item1),
-                t.Item2.Order, t.Item1.GetValue))
+                t.Item2.Order, t.Item1.GetValue, t.Item1.SetValue))
             .OrderBy(k => k.Order)
             .ToList()
             .AsReadOnly();

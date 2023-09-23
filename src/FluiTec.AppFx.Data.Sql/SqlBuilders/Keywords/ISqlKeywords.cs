@@ -7,6 +7,10 @@ public interface ISqlKeywords
     /// <value> The select. </value>
     string Select { get; }
 
+    /// <summary>   Gets the update. </summary>
+    /// <value> The update. </value>
+    string Update { get; }
+
     /// <summary>   Gets the source for the. </summary>
     /// <value> from. </value>
     string From { get; }
@@ -26,6 +30,18 @@ public interface ISqlKeywords
     /// <summary>   Gets the values. </summary>
     /// <value> The values. </value>
     string Values { get; }
+
+    /// <summary>   Gets the set. </summary>
+    /// <value> The set. </value>
+    string Set { get; }
+
+    /// <summary>   Gets the and. </summary>
+    /// <value> The and. </value>
+    string And { get; }
+
+    /// <summary>   Gets the or. </summary>
+    /// <value> The or. </value>
+    string Or { get; }
 
     /// <summary>   Gets the list separator. </summary>
     /// <value> The list separator. </value>
@@ -66,6 +82,10 @@ public interface ISqlKeywords
     /// <summary> Gets the descending expression.</summary>
     /// <value> The descending expression.</value>
     string DescendingExpression { get; }
+
+    /// <summary>   Gets the assign equals operator. </summary>
+    /// <value> The assign equals operator. </value>
+    string AssignEqualsOperator { get; }
 
     /// <summary>   Gets the compare equals operator. </summary>
     /// <value> The compare equals operator. </value>
