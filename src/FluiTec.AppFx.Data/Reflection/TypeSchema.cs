@@ -45,12 +45,12 @@ public class TypeSchema : ITypeSchema
         }
 
         Properties = props
-            .Select(p => new PropertySchema(p.PropertyType, PropertyNameService.GetName(p)))
+            .Select(p => new PropertySchema(p.PropertyType, PropertyNameService.GetName(p), p.GetValue))
             .ToList()
             .AsReadOnly();
 
         MappedProperties = mapped
-            .Select(p => new PropertySchema(p.PropertyType, PropertyNameService.GetName(p)))
+            .Select(p => new PropertySchema(p.PropertyType, PropertyNameService.GetName(p), p.GetValue))
             .ToList()
             .AsReadOnly();
 

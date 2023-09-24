@@ -63,4 +63,15 @@ public interface IStatementProvider
     /// <param name="typeSchema">   The type schema. </param>
     /// <returns>   The update statement. </returns>
     string GetUpdateStatement(ITypeSchema typeSchema);
+
+    /// <summary>   Gets delete statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The delete statement. </returns>
+    string GetDeleteStatement(ITypeSchema typeSchema);
+
+    /// <summary>   Gets delete statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <param name="keys">         The keys. </param>
+    /// <returns>   The delete statement. </returns>
+    string GetDeleteStatement(ITypeSchema typeSchema, IDictionary<string, object> keys);
 }

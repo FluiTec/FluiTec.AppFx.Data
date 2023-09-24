@@ -11,6 +11,10 @@ public class DefaultSqlKeywords : ISqlKeywords
     /// <value> The update. </value>
     public string Update => "UPDATE";
 
+    /// <summary>   Gets the delete. </summary>
+    /// <value> The delete. </value>
+    public string Delete => "DELETE";
+
     /// <summary>   Gets the source for the. </summary>
     /// <value> from. </value>
     public string From => "FROM";

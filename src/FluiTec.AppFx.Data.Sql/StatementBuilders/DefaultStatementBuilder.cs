@@ -122,7 +122,8 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
                   $"{SqlBuilder.RenderTableName(typeSchema)} " +
                   $"{SqlBuilder.Keywords.Where} " +
                   $"{SqlBuilder.RenderList(keys
-                      .Select(k => SqlBuilder.RenderPropertyParameterComparison(keyProps.Single(kp => kp.Name.ColumnName == k.Key), SqlBuilder.Keywords.CompareEqualsOperator)))}"
+                      .Select(k => SqlBuilder
+                          .RenderPropertyParameterComparison(keyProps.Single(kp => kp.Name.ColumnName == k.Key), SqlBuilder.Keywords.CompareEqualsOperator)))}"
                   ;
 
         OnTypeSqlProvided(sql, typeSchema);
@@ -212,6 +213,46 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
                       .RenderJoinExpressions(typeSchema.KeyProperties
                           .Select(kp => $"{SqlBuilder
                               .RenderPropertyParameterComparison(kp, SqlBuilder.Keywords.CompareEqualsOperator)}"), $" {SqlBuilder.Keywords.And}")}";
+
+        OnTypeSqlProvided(sql, typeSchema);
+        return sql;
+    }
+
+    /// <summary>   Gets delete statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The delete statement. </returns>
+    public string GetDeleteStatement(ITypeSchema typeSchema)
+    {
+        var sql = $"{SqlBuilder.Keywords.Delete} " +
+                  $"{SqlBuilder.Keywords.From} " +
+                  $"{SqlBuilder.RenderTableName(typeSchema)} " +
+                  $"{SqlBuilder.Keywords.Where} " +
+                  $"{SqlBuilder
+                      .RenderJoinExpressions(typeSchema.KeyProperties
+                          .Select(kp => $"{SqlBuilder
+                              .RenderPropertyParameterComparison(kp, SqlBuilder.Keywords.CompareEqualsOperator)}"), $" {SqlBuilder.Keywords.And}")}";
+
+        OnTypeSqlProvided(sql, typeSchema);
+        return sql;
+    }
+
+    /// <summary>   Gets delete statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <param name="keys">         The keys. </param>
+    /// <returns>   The delete statement. </returns>
+    public string GetDeleteStatement(ITypeSchema typeSchema, IDictionary<string, object> keys)
+    {
+        var keyProps = typeSchema.KeyProperties;
+        ValidateKeyParameters(keyProps, keys);
+
+        var sql = $"{SqlBuilder.Keywords.Delete} " +
+                  $"{SqlBuilder.Keywords.From} " +
+                  $"{SqlBuilder.RenderTableName(typeSchema)} " +
+                  $"{SqlBuilder.Keywords.Where} " +
+                  $"{SqlBuilder
+                      .RenderJoinExpressions(keys
+                          .Select(kp => $"{SqlBuilder
+                              .RenderPropertyParameterComparison(keyProps.Single(p => p.Name.ColumnName == kp.Key), SqlBuilder.Keywords.CompareEqualsOperator)}"), $" {SqlBuilder.Keywords.And}")}";
 
         OnTypeSqlProvided(sql, typeSchema);
         return sql;

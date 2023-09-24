@@ -11,6 +11,10 @@ public interface ISqlKeywords
     /// <value> The update. </value>
     string Update { get; }
 
+    /// <summary>   Gets the delete. </summary>
+    /// <value> The delete. </value>
+    string Delete { get; }
+
     /// <summary>   Gets the source for the. </summary>
     /// <value> from. </value>
     string From { get; }

@@ -8,7 +8,6 @@ using FluiTec.AppFx.Data.DataProviders;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Data.UnitsOfWork;
-using static Dapper.SqlMapper;
 
 namespace FluiTec.AppFx.Data.Dapper.Repositories;
 
@@ -29,7 +28,7 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
     /// <summary>   Adds entity. </summary>
     /// <param name="entity">   The entity to add. </param>
     /// <returns>   A TEntity. </returns>
-    public TEntity Add(TEntity entity)
+    public virtual TEntity Add(TEntity entity)
     {
         if (TypeSchema.UsesIdentityKey)
         {
@@ -54,7 +53,7 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
     /// <param name="cancellationToken">    (Optional) A token that allows processing to be
     ///                                     cancelled. </param>
     /// <returns>   The add. </returns>
-    public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         if (TypeSchema.UsesIdentityKey)
         {
@@ -80,7 +79,7 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
 
     /// <summary>   Adds a range. </summary>
     /// <param name="entities"> An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
-    public void AddRange(IEnumerable<TEntity> entities)
+    public virtual void AddRange(IEnumerable<TEntity> entities)
     {
         if (TypeSchema.UsesIdentityKey)
         {
@@ -101,7 +100,7 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
     /// <param name="cancellationToken">    (Optional) A token that allows processing to be
     ///                                     cancelled. </param>
     /// <returns>   A Task. </returns>
-    public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
         if (TypeSchema.UsesIdentityKey)
         {
@@ -119,33 +118,97 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
         }
     }
 
-    public TEntity Update(TEntity entity)
+    /// <summary>   Gets update parameters. </summary>
+    /// <param name="entity">   The entity to add. </param>
+    /// <returns>   The update parameters. </returns>
+    protected virtual DynamicParameters GetUpdateParameters(TEntity entity)
     {
-        throw new System.NotImplementedException();
+        var parameters = new DynamicParameters();
+        foreach(var p in TypeSchema.MappedProperties)
+            parameters.Add(p.Name.Name, p.GetValue(entity));
+        return parameters;
     }
 
-    public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    /// <summary>   Updates the given entity. </summary>
+    /// <param name="entity">   The entity to add. </param>
+    /// <returns>   A TEntity. </returns>
+    public virtual TEntity Update(TEntity entity)
     {
-        throw new System.NotImplementedException();
+        var sql = UnitOfWork.StatementProvider.GetUpdateStatement(TypeSchema);
+        UnitOfWork.Connection.Execute(sql, GetUpdateParameters(entity), UnitOfWork.Transaction,
+            commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
+        return entity;
     }
 
-    public bool Delete(params object[] keys)
+    /// <summary>   Updates the asynchronous. </summary>
+    /// <param name="entity">               The entity to add. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    /// <returns>   The update. </returns>
+    public virtual async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        throw new System.NotImplementedException();
+        var sql = UnitOfWork.StatementProvider.GetUpdateStatement(TypeSchema);
+        var query = new CommandDefinition(sql, GetUpdateParameters(entity), UnitOfWork.Transaction,
+            (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds, cancellationToken: cancellationToken);
+        await UnitOfWork.Connection.ExecuteAsync(query);
+        return entity;
     }
 
-    public Task<bool> DeleteAsync(object[] keys, CancellationToken cancellationToken = default)
+    /// <summary>   Deletes the given keys. </summary>
+    /// <param name="keys"> A variable-length parameters list containing keys. </param>
+    /// <returns>   True if it succeeds, false if it fails. </returns>
+    public virtual bool Delete(params object[] keys)
     {
-        throw new System.NotImplementedException();
+        var namedKeys = GetNamedKey(keys);
+        var keyParameters = GetKeyParameters(namedKeys);
+        var sql = UnitOfWork.StatementProvider.GetDeleteStatement(TypeSchema, namedKeys);
+        return UnitOfWork.Connection.Execute(sql, keyParameters, UnitOfWork.Transaction, 
+            commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds) > 0;
     }
 
-    public bool Delete(TEntity entity)
+    /// <summary>   Deletes the asynchronous. </summary>
+    /// <param name="keys">                 A variable-length parameters list containing keys. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    /// <returns>   The delete. </returns>
+    public virtual async Task<bool> DeleteAsync(object[] keys, CancellationToken cancellationToken = default)
     {
-        throw new System.NotImplementedException();
+        var namedKeys = GetNamedKey(keys);
+        var keyParameters = GetKeyParameters(namedKeys);
+        var sql = UnitOfWork.StatementProvider.GetDeleteStatement(TypeSchema, namedKeys);
+        var query = new CommandDefinition(sql, keyParameters, UnitOfWork.Transaction,
+            (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds, cancellationToken: cancellationToken);
+        return await UnitOfWork.Connection.ExecuteAsync(query) > 0;
     }
 
-    public Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    /// <summary>   Deletes the given keys. </summary>
+    /// <param name="entity">   The entity to add. </param>
+    /// <returns>   True if it succeeds, false if it fails. </returns>
+    public virtual bool Delete(TEntity entity)
     {
-        throw new System.NotImplementedException();
+        var namedKeys = new Dictionary<string, object>(TypeSchema.KeyProperties
+            .OrderBy(kp => kp.Order)
+            .Select(kp => new KeyValuePair<string, object>(kp.Name.Name, kp.GetValue(entity))));
+        var keyParameters = GetKeyParameters(namedKeys);
+        var sql = UnitOfWork.StatementProvider.GetDeleteStatement(TypeSchema, namedKeys);
+        return UnitOfWork.Connection.Execute(sql, keyParameters, UnitOfWork.Transaction,
+            commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds) > 0;
+    }
+
+    /// <summary>   Deletes the asynchronous. </summary>
+    /// <param name="entity">               The entity to add. </param>
+    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+    ///                                     cancelled. </param>
+    /// <returns>   The delete. </returns>
+    public virtual async Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    {
+        var namedKeys = new Dictionary<string, object>(TypeSchema.KeyProperties
+            .OrderBy(kp => kp.Order)
+            .Select(kp => new KeyValuePair<string, object>(kp.Name.Name, kp.GetValue(entity))));
+        var keyParameters = GetKeyParameters(namedKeys);
+        var sql = UnitOfWork.StatementProvider.GetDeleteStatement(TypeSchema, namedKeys);
+        var query = new CommandDefinition(sql, keyParameters, UnitOfWork.Transaction,
+            (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds, cancellationToken: cancellationToken);
+        return await UnitOfWork.Connection.ExecuteAsync(query) > 0;
     }
 }

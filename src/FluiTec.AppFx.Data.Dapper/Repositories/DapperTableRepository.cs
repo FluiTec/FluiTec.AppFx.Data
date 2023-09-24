@@ -38,7 +38,7 @@ public class DapperTableRepository<TEntity> : DapperPagedRepository<TEntity>, IT
     protected IDictionary<string, object> GetNamedKey(params object[] keys)
     {
         var key = new ExpandoObject() as IDictionary<string, object>;
-        for (var i = 0; i < keys.Length; i++) key.Add(KeyProperties[i].Name.ColumnName, keys[i]);
+        for (var i = 0; i < keys.Length; i++) key.Add(KeyProperties[i].Name.Name, keys[i]);
         return key;
     }
 
@@ -56,7 +56,7 @@ public class DapperTableRepository<TEntity> : DapperPagedRepository<TEntity>, IT
     /// <summary>   Gets a t entity using the given keys. </summary>
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
     /// <returns>   A TEntity. </returns>
-    public TEntity? Get(params object[] keys)
+    public virtual TEntity? Get(params object[] keys)
     {
         var namedKeys = GetNamedKey(keys);
         var keyParameters = GetKeyParameters(namedKeys);
@@ -71,7 +71,7 @@ public class DapperTableRepository<TEntity> : DapperPagedRepository<TEntity>, IT
     /// <param name="cancellationToken">    (Optional) A token that allows processing to be
     ///                                     cancelled. </param>
     /// <returns>   The asynchronous. </returns>
-    public Task<TEntity?> GetAsync(object[] keys, CancellationToken cancellationToken = default)
+    public virtual Task<TEntity?> GetAsync(object[] keys, CancellationToken cancellationToken = default)
     {
         var namedKeys = GetNamedKey(keys);
         var keyParameters = GetKeyParameters(namedKeys);

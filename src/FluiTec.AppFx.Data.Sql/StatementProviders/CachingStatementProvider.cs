@@ -11,6 +11,7 @@ namespace FluiTec.AppFx.Data.Sql.StatementProviders;
 /// <summary> A caching statement provider.</summary>
 public class CachingStatementProvider : IStatementProvider
 {
+    /// <summary>   Event queue for all listeners interested in SqlProvided events. </summary>
     public event EventHandler<SqlProvidedEventArgs>? SqlProvided;
 
     /// <summary> The statement cache.</summary>
@@ -193,5 +194,22 @@ public class CachingStatementProvider : IStatementProvider
     public string GetUpdateStatement(ITypeSchema typeSchema)
     {
         return GetOrAddStatement(typeSchema);
+    }
+
+    /// <summary>   Gets delete statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <returns>   The delete statement. </returns>
+    public string GetDeleteStatement(ITypeSchema typeSchema)
+    {
+        return GetOrAddStatement(typeSchema);
+    }
+
+    /// <summary>   Gets delete statement. </summary>
+    /// <param name="typeSchema">   The type schema. </param>
+    /// <param name="keys">         The keys. </param>
+    /// <returns>   The delete statement. </returns>
+    public string GetDeleteStatement(ITypeSchema typeSchema, IDictionary<string, object> keys)
+    {
+        return GetOrAddStatement(typeSchema, keys.Select(k => k.Key));
     }
 }

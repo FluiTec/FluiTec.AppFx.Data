@@ -6,9 +6,6 @@ namespace FluiTec.AppFx.Data.Reflection;
 /// <summary>   A key property schema. </summary>
 public class KeyPropertySchema : PropertySchema, IKeyPropertySchema
 {
-    /// <summary>   (Immutable) the value accessor. </summary>
-    private readonly Func<object, object> _valueAccessor;
-
     /// <summary>   (Immutable) the set value accessor. </summary>
     private readonly Action<object, object> _setValueAccessor;
 
@@ -16,13 +13,11 @@ public class KeyPropertySchema : PropertySchema, IKeyPropertySchema
     /// <param name="propertyType">     Type of the property. </param>
     /// <param name="name">             The name. </param>
     /// <param name="order">            The order. </param>
-    /// <param name="getValueAccessor"> The get-value accessor. </param>
+    /// <param name="getValueAccessor"> The get value accessor. </param>
     /// <param name="setValueAccessor"> The set-value accessor. </param>
     public KeyPropertySchema(Type propertyType, PropertyName name, int order, Func<object, object> getValueAccessor, Action<object, object> setValueAccessor) :
-        base(
-            propertyType, name)
+        base(propertyType, name, getValueAccessor)
     {
-        _valueAccessor = getValueAccessor;
         _setValueAccessor = setValueAccessor;
         Order = order;
     }
@@ -31,13 +26,7 @@ public class KeyPropertySchema : PropertySchema, IKeyPropertySchema
     /// <value> The order. </value>
     public int Order { get; }
 
-    /// <summary>   Gets a value. </summary>
-    /// <param name="obj">  The object. </param>
-    /// <returns>   The value. </returns>
-    public object GetValue(object obj)
-    {
-        return _valueAccessor.Invoke(obj);
-    }
+    
 
     /// <summary>   Sets a value. </summary>
     /// <param name="obj">      The object. </param>

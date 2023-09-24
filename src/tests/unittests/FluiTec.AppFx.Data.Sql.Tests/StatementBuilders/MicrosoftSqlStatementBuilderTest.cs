@@ -212,7 +212,33 @@ public class MicrosoftSqlStatementBuilderTest
         
         Assert.AreEqual("UPDATE [Test].[Dummy] SET [Name] = @Name WHERE [Id] = @Id",
             builder.GetUpdateStatement(GetSchema(typeof(DecoratedIdentityDummy))));
+
         Assert.AreEqual("UPDATE [Test].[Dummy] SET [Name1] = @Name1, [Name2] = @Name2 WHERE [Id1] = @Id1 AND [Id2] = @Id2",
             builder.GetUpdateStatement(GetSchema(typeof(MultiKeyMultiValueDummy))));
+    }
+
+    [TestMethod]
+    public void CanCreateDeleteStatement()
+    {
+        var builder = GetBuilder();
+
+        Assert.AreEqual("DELETE FROM [Test].[Dummy] WHERE [Id] = @Id",
+            builder.GetDeleteStatement(GetSchema(typeof(DecoratedIdentityDummy))));
+
+        Assert.AreEqual("DELETE FROM [Test].[Dummy] WHERE [Id] = @Id",
+            builder.GetDeleteStatement(GetSchema(typeof(DecoratedIdentityDummy)), new Dictionary<string, object>(new []
+            {
+                new KeyValuePair<string, object>("Id", 1)
+            })));
+
+        Assert.AreEqual("DELETE FROM [Test].[Dummy] WHERE [Id1] = @Id1 AND [Id2] = @Id2",
+            builder.GetDeleteStatement(GetSchema(typeof(MultiKeyMultiValueDummy))));
+
+        Assert.AreEqual("DELETE FROM [Test].[Dummy] WHERE [Id1] = @Id1 AND [Id2] = @Id2",
+            builder.GetDeleteStatement(GetSchema(typeof(MultiKeyMultiValueDummy)), new Dictionary<string, object>(new[]
+            {
+                new KeyValuePair<string, object>("Id1", 1),
+                new KeyValuePair<string, object>("Id2", 2)
+            })));
     }
 }

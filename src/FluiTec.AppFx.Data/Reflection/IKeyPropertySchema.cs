@@ -7,11 +7,6 @@ public interface IKeyPropertySchema : IPropertySchema
     /// <value> The order. </value>
     int Order { get; }
 
-    /// <summary>   Gets a value. </summary>
-    /// <param name="obj">  The object. </param>
-    /// <returns>   The value. </returns>
-    object GetValue(object obj);
-
     /// <summary>   Sets a value. </summary>
     /// <param name="obj">      The object. </param>
     /// <param name="value">    The value. </param>

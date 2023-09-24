@@ -13,7 +13,7 @@ public class PropertySqlBuildEventArgsTest
     {
         var sql = "abc";
         var renderer = "xyz";
-        var schema = new PropertySchema(typeof(string), new PropertyName("Test", "Test"));
+        var schema = new PropertySchema(typeof(string), new PropertyName("Test", "Test"), _ => "Test");
 
         var instance = new PropertySqlBuiltEventArgs(sql, renderer, schema);
 
