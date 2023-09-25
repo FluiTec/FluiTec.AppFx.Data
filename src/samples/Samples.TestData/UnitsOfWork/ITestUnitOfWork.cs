@@ -10,5 +10,5 @@ public interface ITestUnitOfWork : IUnitOfWork<ITestDataService>
 {
     /// <summary>   Gets the dummy repository. </summary>
     /// <value> The dummy repository. </value>
-    public IPagedRepository<DummyEntity> DummyRepository { get; }
+    public IWritableTableDataRepository<DummyEntity> DummyRepository { get; }
 }

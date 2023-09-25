@@ -91,6 +91,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.SchemaDe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.TestData.Dapper.Mssql", "samples\Samples.TestData.Dapper.Mssql\Samples.TestData.Dapper.Mssql.csproj", "{1C29548E-986D-4B1F-B479-8064DF45DF38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.TestData.Dapper", "samples\Samples.TestData.Dapper\Samples.TestData.Dapper.csproj", "{42A799CD-F63E-446D-AA16-7F04F66EB973}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -205,6 +207,10 @@ Global
 		{1C29548E-986D-4B1F-B479-8064DF45DF38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C29548E-986D-4B1F-B479-8064DF45DF38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C29548E-986D-4B1F-B479-8064DF45DF38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42A799CD-F63E-446D-AA16-7F04F66EB973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42A799CD-F63E-446D-AA16-7F04F66EB973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42A799CD-F63E-446D-AA16-7F04F66EB973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42A799CD-F63E-446D-AA16-7F04F66EB973}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -229,6 +235,7 @@ Global
 		{BBD7C294-835D-43A4-8548-E63E66AF5053} = {5D2FF15F-140D-4097-89B0-717DB1770170}
 		{27F09028-B9B4-4741-906E-2DC9D1FABBED} = {5D2FF15F-140D-4097-89B0-717DB1770170}
 		{1C29548E-986D-4B1F-B479-8064DF45DF38} = {5D2FF15F-140D-4097-89B0-717DB1770170}
+		{42A799CD-F63E-446D-AA16-7F04F66EB973} = {5D2FF15F-140D-4097-89B0-717DB1770170}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C822F57E-7C29-4168-A404-39CD44A9B84F}

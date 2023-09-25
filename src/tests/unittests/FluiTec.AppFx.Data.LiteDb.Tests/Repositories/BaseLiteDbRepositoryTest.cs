@@ -33,9 +33,6 @@ public abstract class BaseLiteDbRepositoryTest
         serviceMock
             .SetupGet(s => s.Schema)
             .Returns(new DumbSchema());
-        serviceMock
-            .SetupGet(s => s.EntityNameService)
-            .Returns(new AttributeEntityNameService());
         return serviceMock;
     }
 

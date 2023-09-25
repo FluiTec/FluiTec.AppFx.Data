@@ -1,6 +1,4 @@
-﻿using FluiTec.AppFx.Data.EntityNames;
-using FluiTec.AppFx.Data.PropertyNames;
-using FluiTec.AppFx.Data.Schemata;
+﻿using FluiTec.AppFx.Data.Schemata;
 using Microsoft.Extensions.Logging;
 using Samples.TestData.Schemata;
 
@@ -24,15 +22,7 @@ public class TestDataService : ITestDataService
     /// <value> The name. </value>
     public string Name => nameof(ITestDataService);
 
-    /// <summary>   Gets the name service. </summary>
-    /// <value> The name service. </value>
-    public IEntityNameService EntityNameService => new AttributeEntityNameService();
-
-    /// <summary>   Gets the property name service. </summary>
-    /// <value> The property name service. </value>
-    public IPropertyNameService PropertyNameService => new AttributePropertyNameService();
-
     /// <summary>   Gets the schema. </summary>
     /// <value> The schema. </value>
-    public ISchema Schema => new TestSchema(EntityNameService, PropertyNameService);
+    public ISchema Schema => new TestSchema();
 }

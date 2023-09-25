@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluiTec.AppFx.Data.Reflection;
+using FluiTec.AppFx.Data.Sql.SqlBuilders;
 using FluiTec.AppFx.Data.Sql.StatementProviders.EventArguments;
 
 namespace FluiTec.AppFx.Data.Sql.StatementProviders;
@@ -10,7 +11,11 @@ public interface IStatementProvider
 {
     /// <summary> Event queue for all listeners interested in SqlProvided events.</summary>
     event EventHandler<SqlProvidedEventArgs>? SqlProvided;
-    
+
+    /// <summary>   Gets the SQL builder. </summary>
+    /// <value> The SQL builder. </value>
+    ISqlBuilder SqlBuilder { get; }
+
     /// <summary>   Gets all statement. </summary>
     /// <param name="typeSchema">   The type schema. </param>
     /// <returns>   all statement. </returns>

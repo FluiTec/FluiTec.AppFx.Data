@@ -31,7 +31,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
 
         EntityType = typeof(TEntity);
         TypeSchema = dataService.Schema[typeof(TEntity)];
-        TableName = dataProvider.NameStrategy.ToString(EntityType, dataService.EntityNameService);
+        TableName = dataProvider.NameStrategy.ToString(EntityType, DataService.Schema.EntityNameService);
         Logger = dataService.LoggerFactory?.CreateLogger<IRepository<TEntity>>();
     }
 

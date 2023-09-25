@@ -30,9 +30,6 @@ public abstract class BaseRepositoryTest
         serviceMock
             .SetupGet(s => s.Schema)
             .Returns(new DumbSchema());
-        serviceMock
-            .SetupGet(s => s.EntityNameService)
-            .Returns(new AttributeEntityNameService());
         return serviceMock;
     }
 
@@ -45,5 +42,5 @@ public abstract class BaseRepositoryTest
         return providerMock;
     }
 
-    public virtual Mock<IUnitOfWork> MockUnitOfWork() => new Mock<IUnitOfWork>();
+    public virtual Mock<IUnitOfWork> MockUnitOfWork() => new();
 }

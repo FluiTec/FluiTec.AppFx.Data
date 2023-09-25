@@ -9,15 +9,13 @@ using Samples.TestData.DataServices;
 using Samples.TestData.Entities;
 using Samples.TestData.UnitsOfWork;
 
-#pragma warning disable CS8618
-
 namespace Samples.TestData.NMemory;
 
 /// <summary>   A memory test unit of work. </summary>
 public class NMemoryTestUnitOfWork : NMemoryUnitOfWork, ITestUnitOfWork
 {
     /// <summary>   The dummy repository. </summary>
-    private Lazy<IPagedRepository<DummyEntity>> _dummyRepository;
+    private Lazy<IWritableTableDataRepository<DummyEntity>> _dummyRepository = null!;
 
     /// <summary>   Constructor. </summary>
     /// <exception cref="ArgumentNullException">
@@ -63,13 +61,13 @@ public class NMemoryTestUnitOfWork : NMemoryUnitOfWork, ITestUnitOfWork
 
     /// <summary>   Gets the dummy repository. </summary>
     /// <value> The dummy repository. </value>
-    public IPagedRepository<DummyEntity> DummyRepository => _dummyRepository.Value;
+    public IWritableTableDataRepository<DummyEntity> DummyRepository => _dummyRepository.Value;
 
     /// <summary>   Initializes the repositories. </summary>
     protected void InitializeRepositories()
     {
         _dummyRepository =
-            new Lazy<IPagedRepository<DummyEntity>>(() =>
-                new NMemoryPagedRepository<DummyEntity>(DataService, DataProvider, this));
+            new Lazy<IWritableTableDataRepository<DummyEntity>>(() =>
+                new NMemoryWritableTableRepository<DummyEntity>(DataService, DataProvider, this));
     }
 }

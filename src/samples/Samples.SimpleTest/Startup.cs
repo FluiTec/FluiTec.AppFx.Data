@@ -2,6 +2,7 @@
 using FluiTec.AppFx.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Samples.TestData.Dapper.Mssql;
 using Samples.TestData.DataServices;
 using Samples.TestData.NMemory;
 using Samples.TestData.UnitsOfWork;
@@ -23,7 +24,9 @@ public class Startup : DefaultStartup
         services.AddHostedService<HostedProgram>();
 
         services.AddDataOptions<ITestDataService>(context.Configuration);
+        services.AddConnectionStringOptions<ITestDataService>(context.Configuration);
         services.AddDataService<ITestDataService, TestDataService>();
         services.AddDataProvider<ITestDataService, ITestUnitOfWork, NMemoryTestDataProvider>();
+        services.AddDataProvider<ITestDataService, ITestUnitOfWork, MssqlTestDataProvider>();
     }
 }

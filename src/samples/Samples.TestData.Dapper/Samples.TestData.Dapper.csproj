@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FluiTec.AppFx.Data.Dapper.Mssql\FluiTec.AppFx.Data.Dapper.Mssql.csproj" />
-    <ProjectReference Include="..\Samples.TestData.Dapper\Samples.TestData.Dapper.csproj" />
+    <ProjectReference Include="..\..\FluiTec.AppFx.Data.Dapper\FluiTec.AppFx.Data.Dapper.csproj" />
     <ProjectReference Include="..\Samples.TestData\Samples.TestData.csproj" />
   </ItemGroup>
 

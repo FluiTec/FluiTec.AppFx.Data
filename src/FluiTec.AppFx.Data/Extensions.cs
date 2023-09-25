@@ -4,6 +4,7 @@ using FluiTec.AppFx.Data.Options;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace FluiTec.AppFx.Data;
 
@@ -19,8 +20,22 @@ public static class Extensions
     public static IServiceCollection AddDataOptions<TDataService>(this IServiceCollection services,
         IConfiguration configuration, string sectionName = "DataOptions") where TDataService : IDataService
     {
-        services.Configure<DataOptions<TDataService>>(GetSection(configuration,
-            $"{sectionName}:{typeof(TDataService).Name}", sectionName));
+        services.Configure<DataOptions<TDataService>>(GetSection(configuration, $"{sectionName}:{typeof(TDataService).Name}", sectionName));
+        return services;
+    }
+
+    /// <summary>
+    ///     An IServiceCollection extension method that adds a connection string options 2.
+    /// </summary>
+    /// <typeparam name="TDataService"> Type of the data service. </typeparam>
+    /// <param name="services">         The services to act on. </param>
+    /// <param name="configuration">    The configuration. </param>
+    /// <param name="sectionName">      (Optional) Name of the section. </param>
+    /// <returns>   An IServiceCollection. </returns>
+    public static IServiceCollection AddConnectionStringOptions<TDataService>(this IServiceCollection services,
+        IConfiguration configuration, string sectionName = "ConnectionStringOptions") where TDataService : IDataService
+    {
+        services.Configure<ConnectionStringOptions2<TDataService>>(GetSection(configuration, $"{sectionName}:{typeof(TDataService).Name}", sectionName));
         return services;
     }
 
@@ -53,6 +68,7 @@ public static class Extensions
         where TProvider : class, IDataProvider<TDataService, TUnitOfWork>
     {
         services.AddSingleton<IDataProvider<TDataService, TUnitOfWork>, TProvider>();
+        services.TryAddSingleton<DataProviderResolver<TDataService, TUnitOfWork>>();
         return services;
     }
 

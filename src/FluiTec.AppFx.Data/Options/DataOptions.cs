@@ -10,7 +10,7 @@ public class DataOptions
 {
     /// <summary>   Gets or sets the type of the provider. </summary>
     /// <value> The type of the provider. </value>
-    public ProviderType ProviderType { get; set; }
+    public ProviderType ProviderType { get; set; } = ProviderType.Undefined;
 
     /// <summary>   Gets or sets the page size. </summary>
     /// <value> The size of the page. </value>

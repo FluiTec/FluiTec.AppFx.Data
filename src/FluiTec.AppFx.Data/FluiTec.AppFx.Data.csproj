@@ -26,7 +26,6 @@
 
 	<ItemGroup>
 	  <Folder Include="DataServices\" />
-	  <Folder Include="DataProviders\" />
 	  <Folder Include="Schemata\" />
 	  <Folder Include="UnitsOfWork\" />
 	  <Folder Include="Repositories\" />

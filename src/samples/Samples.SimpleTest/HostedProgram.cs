@@ -1,10 +1,5 @@
 ﻿using FluiTec.AppFx.Console.Hosting;
 using FluiTec.AppFx.Data.DataProviders;
-using FluiTec.AppFx.Data.EntityNames;
-using FluiTec.AppFx.Data.PropertyNames;
-using FluiTec.AppFx.Data.Reflection;
-using FluiTec.AppFx.Data.Sql.StatementBuilders;
-using FluiTec.AppFx.Data.Sql.StatementProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Samples.TestData.DataServices;
@@ -19,14 +14,14 @@ namespace Samples.SimpleConsole;
 public class HostedProgram : ConsoleHostedProgram
 {
     /// <summary>   Constructor. </summary>
-    /// <param name="logger">       The logger. </param>
-    /// <param name="lifetime">     The lifetime. </param>
-    /// <param name="dataProvider"> The data provider. </param>
+    /// <param name="logger">           The logger. </param>
+    /// <param name="lifetime">         The lifetime. </param>
+    /// <param name="providerResolver"> The provider resolver. </param>
     public HostedProgram(ILogger<ConsoleHostedProgram> logger, IHostApplicationLifetime lifetime,
-        IDataProvider<ITestDataService, ITestUnitOfWork> dataProvider)
+        DataProviderResolver<ITestDataService, ITestUnitOfWork> providerResolver)
         : base(logger, lifetime)
     {
-        DataProvider = dataProvider;
+        DataProvider = providerResolver.Resolve();
     }
 
     /// <summary>   Gets the data provider. </summary>
@@ -39,16 +34,24 @@ public class HostedProgram : ConsoleHostedProgram
     /// <param name="args"> The arguments. </param>
     public override void Run(string[] args)
     {
-        var provider1 = new MicrosoftSqlStatementBuilder();
-        var provider2 = new CachingStatementProvider(provider1);
+        AddEntry();
+        ListEntries();
+    }
 
-        var typeSchema = new TypeSchema(typeof(DummyEntity), new AttributeEntityNameService(),
-            new AttributePropertyNameService());
+    public void AddEntry()
+    {
+        using var uow = DataProvider.BeginUnitOfWork();
+        uow.DummyRepository.Add(new DummyEntity { Name = "Test Manual" });
 
-        provider1.SqlProvided += (sender, eventArgs) => Console.WriteLine($"P1: {eventArgs.Sql}");
-        provider2.SqlProvided += (sender, eventArgs) => Console.WriteLine($"P2: {eventArgs.Sql}");
+        uow.Commit();
+    }
 
-        Console.WriteLine($"1: {provider1.GetAllStatement(typeSchema)}");
-        //Console.WriteLine($"2: {provider2.GetAllStatement(typeSchema)}");
+    public void ListEntries()
+    {
+        using var uow = DataProvider.BeginUnitOfWork();
+        foreach (var entity in uow.DummyRepository.GetAll())
+        {
+            Console.WriteLine($"Id: {entity.Id} - Name: {entity.Name}");
+        }
     }
 }

@@ -2,7 +2,6 @@
 using System.Data;
 using System.Transactions;
 using FluiTec.AppFx.Data.Dapper.Providers;
-using FluiTec.AppFx.Data.Sql.StatementBuilders;
 using FluiTec.AppFx.Data.Sql.StatementProviders;
 using FluiTec.AppFx.Data.UnitsOfWork;
 using Microsoft.Extensions.Logging;
