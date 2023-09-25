@@ -1,12 +1,8 @@
-﻿using FluiTec.AppFx.Data.Sql.SqlBuilders;
-using FluiTec.AppFx.Data.Sql.StatementProviders;
+﻿using FluiTec.AppFx.Data.Sql.StatementProviders;
 
 namespace FluiTec.AppFx.Data.Sql.StatementBuilders;
 
 /// <summary> Interface for statement builder.</summary>
 public interface IStatementBuilder : IStatementProvider
 {
-    /// <summary> Gets the SQL builder.</summary>
-    /// <value> The SQL builder.</value>
-    ISqlBuilder SqlBuilder { get; }
 }

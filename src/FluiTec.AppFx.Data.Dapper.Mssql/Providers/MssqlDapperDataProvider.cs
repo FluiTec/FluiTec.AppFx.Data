@@ -25,7 +25,7 @@ public abstract class MssqlDapperDataProvider<TDataService, TUnitOfWork> : Dappe
     /// <param name="dataService">              The data service. </param>
     /// <param name="options">                  Options for controlling the operation. </param>
     /// <param name="connectionStringOptions">  Options for controlling the connection string. </param>
-    protected MssqlDapperDataProvider(TDataService dataService, DataOptions options, ConnectionStringOptions2<TDataService> connectionStringOptions) 
+    protected MssqlDapperDataProvider(TDataService dataService, DataOptions options, ConnectionStringOptions<TDataService> connectionStringOptions) 
         : base(dataService, options, connectionStringOptions)
     {
     }
@@ -36,7 +36,7 @@ public abstract class MssqlDapperDataProvider<TDataService, TUnitOfWork> : Dappe
     /// <param name="dataService">                      The data service. </param>
     /// <param name="optionsMonitor">                   The options monitor. </param>
     /// <param name="connectionStringOptionsMonitor">   The connection string options monitor. </param>
-    protected MssqlDapperDataProvider(TDataService dataService, IOptionsMonitor<DataOptions> optionsMonitor, IOptionsMonitor<ConnectionStringOptions2<TDataService>> connectionStringOptionsMonitor) 
+    protected MssqlDapperDataProvider(TDataService dataService, IOptionsMonitor<DataOptions> optionsMonitor, IOptionsMonitor<ConnectionStringOptions<TDataService>> connectionStringOptionsMonitor) 
         : base(dataService, optionsMonitor, connectionStringOptionsMonitor)
     {
     }

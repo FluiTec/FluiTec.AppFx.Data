@@ -1,19 +1,12 @@
-﻿using FluiTec.AppFx.Data.DataProviders;
-using FluiTec.AppFx.Data.DataServices;
+﻿using FluiTec.AppFx.Data.DataServices;
 using System;
+using System.Collections.Generic;
 
 namespace FluiTec.AppFx.Data.Options;
 
 /// <summary>   A connection string options. </summary>
-public class ConnectionStringOptions
+public class ConnectionStringOptions : Dictionary<string, string>
 {
-    /// <summary>   Gets or sets the type of the provider. </summary>
-    /// <value> The type of the provider. </value>
-    public ProviderType ProviderType { get; set; } = ProviderType.Undefined;
-
-    /// <summary>   Gets or sets the connection string. </summary>
-    /// <value> The connection string. </value>
-    public string ConnectionString { get; set; } = string.Empty;
 }
 
 /// <summary>   A connection string options. </summary>

@@ -35,7 +35,7 @@ public static class Extensions
     public static IServiceCollection AddConnectionStringOptions<TDataService>(this IServiceCollection services,
         IConfiguration configuration, string sectionName = "ConnectionStringOptions") where TDataService : IDataService
     {
-        services.Configure<ConnectionStringOptions2<TDataService>>(GetSection(configuration, $"{sectionName}:{typeof(TDataService).Name}", sectionName));
+        services.Configure<ConnectionStringOptions<TDataService>>(GetSection(configuration, $"{sectionName}:{typeof(TDataService).Name}", sectionName));
         return services;
     }
 
