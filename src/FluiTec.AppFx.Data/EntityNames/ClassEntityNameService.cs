@@ -21,8 +21,8 @@ public class ClassEntityNameService : IEntityNameService
         if (type == null)
             throw new ArgumentNullException(nameof(type));
 
-        if (_typeMap.ContainsKey(type))
-            return _typeMap[type];
+        if (_typeMap.TryGetValue(type, out var name1))
+            return name1;
 
         var name = new EntityName(null, type.Name);
         _typeMap.TryAdd(type, name);

@@ -23,10 +23,10 @@ public class Startup : DefaultStartup
     {
         services.AddHostedService<HostedProgram>();
 
-        services.AddDataOptions<ITestDataService>(context.Configuration);
-        services.AddConnectionStringOptions<ITestDataService>(context.Configuration);
-        services.AddDataService<ITestDataService, TestDataService>();
-        services.AddDataProvider<ITestDataService, ITestUnitOfWork, NMemoryTestDataProvider>();
-        services.AddDataProvider<ITestDataService, ITestUnitOfWork, MssqlTestDataProvider>();
+        services.AddAppFxDataService<ITestDataService, TestDataService>()
+            .WithConfiguration(context.Configuration)
+            .WithProvider<ITestUnitOfWork, NMemoryTestDataProvider>()
+            .WithProvider<ITestUnitOfWork, MssqlTestDataProvider>()
+        ;
     }
 }

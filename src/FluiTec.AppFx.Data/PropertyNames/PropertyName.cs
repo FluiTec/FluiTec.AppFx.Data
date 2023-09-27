@@ -31,16 +31,38 @@ public class PropertyName : IEquatable<string>
     /// <value> The name of the property. </value>
     public string Name { get; }
 
+    /// <summary>
+    ///     Indicates whether the current object is equal to another object of the same type.
+    /// </summary>
+    /// <param name="other">    An object to compare with this object. </param>
+    /// <returns>
+    ///     <see langword="true" /> if the current object is equal to the <paramref name="other" />
+    ///     parameter; otherwise, <see langword="false" />.
+    /// </returns>
     public bool Equals(string other)
     {
         return ColumnName == other;
     }
 
+    /// <summary>
+    ///     Indicates whether the current object is equal to another object of the same type.
+    /// </summary>
+    /// <param name="other">    An object to compare with this object. </param>
+    /// <returns>
+    ///     <see langword="true" /> if the current object is equal to the <paramref name="other" />
+    ///     parameter; otherwise, <see langword="false" />.
+    /// </returns>
     protected bool Equals(PropertyName other)
     {
-        return ColumnName == other.ColumnName;
+        return ColumnName == other.ColumnName && Name == other.Name;
     }
 
+    /// <summary>   Determines whether the specified object is equal to the current object. </summary>
+    /// <param name="obj">  The object to compare with the current object. </param>
+    /// <returns>
+    ///     <see langword="true" /> if the specified object  is equal to the current object;
+    ///     otherwise, <see langword="false" />.
+    /// </returns>
     public override bool Equals(object? obj)
     {
         if (obj is null) return false;
@@ -109,6 +131,6 @@ public class PropertyName : IEquatable<string>
     /// <returns>   A hash code for the current object. </returns>
     public override int GetHashCode()
     {
-        return ColumnName.GetHashCode();
+        return Name.GetHashCode() + ColumnName.GetHashCode();
     }
 }

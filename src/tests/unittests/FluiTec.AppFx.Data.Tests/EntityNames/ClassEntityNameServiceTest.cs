@@ -15,10 +15,16 @@ public class ClassEntityNameServiceTest
     public void CanGetByName(string expectedSchema, string expectedName, Type t)
     {
         var nameService = new ClassEntityNameService();
-        var name = nameService.GetName(t);
-        Assert.IsNotNull(name);
-        Assert.AreEqual(expectedSchema, name.Schema);
-        Assert.AreEqual(expectedName, name.Name);
+        var name1 = nameService.GetName(t);
+        var name2 = nameService.GetName(t);
+
+        Assert.IsNotNull(name1);
+        Assert.AreEqual(expectedSchema, name1.Schema);
+        Assert.AreEqual(expectedName, name1.Name);
+
+        Assert.IsNotNull(name2);
+        Assert.AreEqual(expectedSchema, name2.Schema);
+        Assert.AreEqual(expectedName, name2.Name);
     }
 
     [TestMethod]

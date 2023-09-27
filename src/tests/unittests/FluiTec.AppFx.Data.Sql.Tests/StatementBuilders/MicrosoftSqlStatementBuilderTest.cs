@@ -34,12 +34,12 @@ public class MicrosoftSqlStatementBuilderTest
         var builder = GetBuilder();
 
         Assert.AreEqual(
-            "SELECT [Id] FROM [DummyEntityWithProperty]",
+            "SELECT [Id] FROM [dbo].[DummyEntityWithProperty]",
             builder.GetAllStatement(GetSchema(typeof(DummyEntityWithProperty)))
         );
 
         Assert.AreEqual(
-            "SELECT [ID] FROM [DummyEntityWithDecoratedProperty]",
+            "SELECT [ID] FROM [dbo].[DummyEntityWithDecoratedProperty]",
             builder.GetAllStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)))
         );
 
@@ -60,12 +60,12 @@ public class MicrosoftSqlStatementBuilderTest
         var builder = GetBuilder();
 
         Assert.AreEqual(
-            "SELECT COUNT(*) FROM [DummyEntityWithProperty]",
+            "SELECT COUNT(*) FROM [dbo].[DummyEntityWithProperty]",
             builder.GetCountStatement(GetSchema(typeof(DummyEntityWithProperty)))
         );
 
         Assert.AreEqual(
-            "SELECT COUNT(*) FROM [DummyEntityWithDecoratedProperty]",
+            "SELECT COUNT(*) FROM [dbo].[DummyEntityWithDecoratedProperty]",
             builder.GetCountStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)))
         );
 
@@ -86,13 +86,13 @@ public class MicrosoftSqlStatementBuilderTest
         var builder = GetBuilder();
 
         Assert.AreEqual(
-            "SELECT [Id] FROM [DummyEntityWithProperty] ORDER BY [Id] ASC OFFSET @skipRecords ROWS FETCH NEXT @takeRecords ROWS ONLY",
+            "SELECT [Id] FROM [dbo].[DummyEntityWithProperty] ORDER BY [Id] ASC OFFSET @skipRecords ROWS FETCH NEXT @takeRecords ROWS ONLY",
             builder.GetPagingStatement(GetSchema(typeof(DummyEntityWithProperty)), "" +
                 "skipRecords", "takeRecords")
         );
 
         Assert.AreEqual(
-            "SELECT [ID] FROM [DummyEntityWithDecoratedProperty] ORDER BY [ID] ASC OFFSET @skipRecords ROWS FETCH NEXT @takeRecords ROWS ONLY",
+            "SELECT [ID] FROM [dbo].[DummyEntityWithDecoratedProperty] ORDER BY [ID] ASC OFFSET @skipRecords ROWS FETCH NEXT @takeRecords ROWS ONLY",
             builder.GetPagingStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)), 
                 "skipRecords", "takeRecords")
         );
@@ -116,13 +116,13 @@ public class MicrosoftSqlStatementBuilderTest
         var builder = GetBuilder();
 
         Assert.AreEqual(
-            "SELECT [Id] FROM [DummyEntityWithProperty] WHERE [Id] = @Id",
+            "SELECT [Id] FROM [dbo].[DummyEntityWithProperty] WHERE [Id] = @Id",
             builder.GetSelectByKeyStatement(GetSchema(typeof(DummyEntityWithProperty)), new Dictionary<string, object>(
                 new[] {new KeyValuePair<string, object>("Id", 1)}))
         );
 
         Assert.AreEqual(
-            "SELECT [ID] FROM [DummyEntityWithDecoratedProperty] WHERE [ID] = @Id",
+            "SELECT [ID] FROM [dbo].[DummyEntityWithDecoratedProperty] WHERE [ID] = @Id",
             builder.GetSelectByKeyStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)), new Dictionary<string, object>(
                 new[] { new KeyValuePair<string, object>("ID", 1) }))
         );
@@ -165,10 +165,10 @@ public class MicrosoftSqlStatementBuilderTest
         var builder = GetBuilder();
 
         // single
-        Assert.AreEqual("INSERT INTO [DummyEntityWithProperty] ([Id]) VALUES (@Id)",
+        Assert.AreEqual("INSERT INTO [dbo].[DummyEntityWithProperty] ([Id]) VALUES (@Id)",
             builder.GetInsertSingleStatement(GetSchema(typeof(DummyEntityWithProperty))));
 
-        Assert.AreEqual("INSERT INTO [DummyEntityWithDecoratedProperty] ([ID]) VALUES (@Id)",
+        Assert.AreEqual("INSERT INTO [dbo].[DummyEntityWithDecoratedProperty] ([ID]) VALUES (@Id)",
             builder.GetInsertSingleStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty))));
 
         Assert.AreEqual("INSERT INTO [Test].[Dummy] ([ID]) VALUES (@Id)",
@@ -178,10 +178,10 @@ public class MicrosoftSqlStatementBuilderTest
             builder.GetInsertSingleStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty))));
 
         //multiple
-        Assert.AreEqual("INSERT INTO [DummyEntityWithProperty] ([Id]) VALUES (@Id)",
+        Assert.AreEqual("INSERT INTO [dbo].[DummyEntityWithProperty] ([Id]) VALUES (@Id)",
             builder.GetInsertMultipleStatement(GetSchema(typeof(DummyEntityWithProperty))));
 
-        Assert.AreEqual("INSERT INTO [DummyEntityWithDecoratedProperty] ([ID]) VALUES (@Id)",
+        Assert.AreEqual("INSERT INTO [dbo].[DummyEntityWithDecoratedProperty] ([ID]) VALUES (@Id)",
             builder.GetInsertMultipleStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty))));
 
         Assert.AreEqual("INSERT INTO [Test].[Dummy] ([ID]) VALUES (@Id)",

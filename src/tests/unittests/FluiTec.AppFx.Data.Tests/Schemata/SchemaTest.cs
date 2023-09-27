@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using FluiTec.AppFx.Data.Reflection;
 using FluiTec.AppFx.Data.Schemata;
 using FluiTec.AppFx.Data.Tests.Schemata.Fixtures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -75,5 +76,20 @@ public class SchemaTest
     {
         var typeSchema = new EmptyTestSchema()[typeof(UnregisteredDummyEntity)];
         Assert.IsNotNull(typeSchema);
+    }
+
+    [TestMethod]
+    public void CanFindIdentityKey()
+    {
+        var typeSchema = new IdentityDummyTestSchema()[typeof(IdentityDummyEntity)];
+        Assert.IsNotNull(typeSchema.IdentityKey);
+        Assert.IsTrue(typeSchema.UsesIdentityKey);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NonSingularIdentityKeyException))]
+    public void ThrowsOnNonSingularIdentityKey()
+    {
+        var typeSchema = new NonSingularIdentityDummyTestSchema()[typeof(NonSingularIdentityDummyEntity)];
     }
 }

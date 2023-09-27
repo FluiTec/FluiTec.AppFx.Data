@@ -25,13 +25,15 @@ public class AppFxDataBuilder<TInterface, TDataService>
     }
 
     /// <summary>   With configuration. </summary>
-    /// <param name="configuration">    The configuration. </param>
+    /// <param name="configuration">            The configuration. </param>
+    /// <param name="optionsSection">           (Optional) The options section. </param>
+    /// <param name="connectionStringsSection"> (Optional) The connection strings section. </param>
     /// <returns>   An AppFxDataBuilder&lt;TInterface,TDataService&gt; </returns>
-    public AppFxDataBuilder<TInterface, TDataService> WithConfiguration(IConfiguration configuration)
+    public AppFxDataBuilder<TInterface, TDataService> WithConfiguration(IConfiguration configuration, string optionsSection = "DataOptions", string connectionStringsSection = "ConnectionStringOptions")
     {
         return 
-            WithOptions(configuration)
-            .WithConnectionStrings(configuration);
+            WithOptions(configuration, optionsSection)
+            .WithConnectionStrings(configuration, connectionStringsSection);
     }
 
     /// <summary>   With options. </summary>
