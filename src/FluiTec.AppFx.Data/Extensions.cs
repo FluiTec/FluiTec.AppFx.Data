@@ -11,6 +11,20 @@ namespace FluiTec.AppFx.Data;
 /// <summary>   An extensions. </summary>
 public static class Extensions
 {
+    /// <summary>
+    ///     An IServiceCollection extension method that adds an application effects data service.
+    /// </summary>
+    /// <typeparam name="TInterface">   Type of the interface. </typeparam>
+    /// <typeparam name="TDataService"> Type of the data service. </typeparam>
+    /// <param name="services"> The services to act on. </param>
+    /// <returns>   An AppFxDataBuilder&lt;TInterface,TDataService&gt; </returns>
+    public static AppFxDataBuilder<TInterface, TDataService> AddAppFxDataService<TInterface, TDataService>(this IServiceCollection services)
+        where TInterface : class, IDataService
+        where TDataService : class, TInterface
+    {
+        return new AppFxDataBuilder<TInterface, TDataService>(services);
+    }
+
     /// <summary>   An IServiceCollection extension method that adds a data options. </summary>
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <param name="services">         The services to act on. </param>
@@ -77,7 +91,7 @@ public static class Extensions
     /// <param name="preferredSection"> The preferred section. </param>
     /// <param name="fallbackSection">  The fallback section. </param>
     /// <returns>   The section. </returns>
-    private static IConfigurationSection GetSection(IConfiguration configuration, string preferredSection,
+    internal static IConfigurationSection GetSection(IConfiguration configuration, string preferredSection,
         string fallbackSection)
     {
         var preferred = configuration.GetSection(preferredSection);
