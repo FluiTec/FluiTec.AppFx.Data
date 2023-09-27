@@ -12,9 +12,6 @@ namespace FluiTec.AppFx.Data.Sql.StatementBuilders;
 /// <summary>   A default statement builder. </summary>
 public abstract class DefaultStatementBuilder : IStatementBuilder
 {
-    /// <summary> Event queue for all listeners interested in SqlProvided events.</summary>
-    public event EventHandler<SqlProvidedEventArgs>? SqlProvided;
-
     /// <summary>   Specialized constructor for use only by derived class. </summary>
     /// <exception cref="ArgumentNullException">
     ///     Thrown when one or more required arguments are
@@ -26,23 +23,12 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
         SqlBuilder = sqlBuilder ?? throw new ArgumentNullException(nameof(sqlBuilder));
     }
 
+    /// <summary> Event queue for all listeners interested in SqlProvided events.</summary>
+    public event EventHandler<SqlProvidedEventArgs>? SqlProvided;
+
     /// <summary>   Gets the SQL builder. </summary>
     /// <value> The SQL builder. </value>
     public ISqlBuilder SqlBuilder { get; }
-
-    /// <summary> Executes the 'type SQL provided' action.</summary>
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
-    /// <param name="sql">      The SQL. </param>
-    /// <param name="schema">   The schema. </param>
-    /// <param name="provider"> (Optional) The provider. </param>
-    protected virtual void OnTypeSqlProvided(string sql, ITypeSchema schema, [CallerMemberName] string? provider = null)
-    {
-        if (provider == null)
-            throw new ArgumentNullException(nameof(provider));
-
-        SqlProvided?.Invoke(this, new TypeSqlProvidedEventArgs(sql, provider, schema));
-    }
 
     /// <summary>   Gets all statement. </summary>
     /// <param name="typeSchema">   The type schema. </param>
@@ -50,9 +36,9 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
     public virtual string GetAllStatement(ITypeSchema typeSchema)
     {
         var sql = $"{SqlBuilder.Keywords.Select} " +
-               $"{SqlBuilder.RenderList(typeSchema.MappedProperties.Select(SqlBuilder.RenderProperty))} " +
-               $"{SqlBuilder.Keywords.From} " +
-               $"{SqlBuilder.RenderTableName(typeSchema)}";
+                  $"{SqlBuilder.RenderList(typeSchema.MappedProperties.Select(SqlBuilder.RenderProperty))} " +
+                  $"{SqlBuilder.Keywords.From} " +
+                  $"{SqlBuilder.RenderTableName(typeSchema)}";
         OnTypeSqlProvided(sql, typeSchema);
         return sql;
     }
@@ -91,23 +77,6 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
         return sql;
     }
 
-    /// <summary>   Validates the key parameters. </summary>
-    /// <param name="entityKeys">       The entity keys. </param>
-    /// <param name="parameterKeys">    The parameter keys. </param>
-    protected void ValidateKeyParameters(IEnumerable<IKeyPropertySchema> entityKeys,
-        IDictionary<string, object> parameterKeys)
-    {
-        var keyPropertySchemata = entityKeys as IKeyPropertySchema[] ?? entityKeys.ToArray();
-
-        if (keyPropertySchemata.Length != parameterKeys.Count)
-            throw new KeyParameterMismatchException(keyPropertySchemata, parameterKeys);
-
-        foreach (var k in parameterKeys)
-        {
-            _ = keyPropertySchemata.SingleOrDefault(kp => kp.Name.ColumnName == k.Key) ?? throw new KeyParameterMismatchException(keyPropertySchemata, parameterKeys);
-        }
-    }
-
     /// <summary>   Gets select by key statement. </summary>
     /// <param name="typeSchema">   The type schema. </param>
     /// <param name="keys">          The keys. </param>
@@ -124,7 +93,7 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
                   $"{SqlBuilder.RenderList(keys
                       .Select(k => SqlBuilder
                           .RenderPropertyParameterComparison(keyProps.Single(kp => kp.Name.ColumnName == k.Key), SqlBuilder.Keywords.CompareEqualsOperator)))}"
-                  ;
+            ;
 
         OnTypeSqlProvided(sql, typeSchema);
         return sql;
@@ -158,7 +127,7 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
     /// <returns>   The insert single automatic statement. </returns>
     public virtual string GetInsertSingleAutoStatement(ITypeSchema typeSchema)
     {
-        var columns = typeSchema.MappedProperties.Except(new []{ typeSchema.IdentityKey!}).ToList();
+        var columns = typeSchema.MappedProperties.Except(new[] { typeSchema.IdentityKey! }).ToList();
 
         var sql = $"{SqlBuilder.Keywords.Insert} " +
                   $"{SqlBuilder.Keywords.Into} " +
@@ -175,7 +144,10 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
     /// <summary>   Gets insert multiple statement. </summary>
     /// <param name="typeSchema">   The type schema. </param>
     /// <returns>   The insert multiple statement. </returns>
-    public virtual string GetInsertMultipleStatement(ITypeSchema typeSchema) => GetInsertSingleStatement(typeSchema);
+    public virtual string GetInsertMultipleStatement(ITypeSchema typeSchema)
+    {
+        return GetInsertSingleStatement(typeSchema);
+    }
 
     /// <summary>   Gets insert multiple automatic statement. </summary>
     /// <param name="typeSchema">   The type schema. </param>
@@ -200,7 +172,6 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
     /// <returns>   The update statement. </returns>
     public string GetUpdateStatement(ITypeSchema typeSchema)
     {
-
         var sql = $"{SqlBuilder.Keywords.Update} " +
                   $"{SqlBuilder.RenderTableName(typeSchema)} " +
                   $"{SqlBuilder.Keywords.Set} " +
@@ -256,5 +227,37 @@ public abstract class DefaultStatementBuilder : IStatementBuilder
 
         OnTypeSqlProvided(sql, typeSchema);
         return sql;
+    }
+
+    /// <summary> Executes the 'type SQL provided' action.</summary>
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
+    /// <param name="sql">      The SQL. </param>
+    /// <param name="schema">   The schema. </param>
+    /// <param name="provider"> (Optional) The provider. </param>
+    protected virtual void OnTypeSqlProvided(string sql, ITypeSchema schema, [CallerMemberName] string? provider = null)
+    {
+        if (provider == null)
+            throw new ArgumentNullException(nameof(provider));
+
+        SqlProvided?.Invoke(this, new TypeSqlProvidedEventArgs(sql, provider, schema));
+    }
+
+    /// <summary>   Validates the key parameters. </summary>
+    /// <param name="entityKeys">       The entity keys. </param>
+    /// <param name="parameterKeys">    The parameter keys. </param>
+    protected void ValidateKeyParameters(IEnumerable<IKeyPropertySchema> entityKeys,
+        IDictionary<string, object> parameterKeys)
+    {
+        var keyPropertySchemata = entityKeys as IKeyPropertySchema[] ?? entityKeys.ToArray();
+
+        if (keyPropertySchemata.Length != parameterKeys.Count)
+            throw new KeyParameterMismatchException(keyPropertySchemata, parameterKeys);
+
+        foreach (var k in parameterKeys)
+            _ = keyPropertySchemata.SingleOrDefault(kp => kp.Name.ColumnName == k.Key) ??
+                throw new KeyParameterMismatchException(keyPropertySchemata, parameterKeys);
     }
 }

@@ -22,7 +22,8 @@ public abstract class DapperDataProvider<TDataService, TUnitOfWork> : BaseDataPr
     /// <param name="dataService">              The data service. </param>
     /// <param name="options">                  Options for controlling the operation. </param>
     /// <param name="connectionStringOptions">  Options for controlling the connection string. </param>
-    protected DapperDataProvider(TDataService dataService, DataOptions options, ConnectionStringOptions<TDataService> connectionStringOptions) : base(dataService, options)
+    protected DapperDataProvider(TDataService dataService, DataOptions options,
+        ConnectionStringOptions<TDataService> connectionStringOptions) : base(dataService, options)
     {
         if (connectionStringOptions == null) throw new ArgumentNullException(nameof(connectionStringOptions));
         ConnectionString = connectionStringOptions.Single(cso => cso.Key == SqlType.ToString()).Value;
@@ -32,12 +33,16 @@ public abstract class DapperDataProvider<TDataService, TUnitOfWork> : BaseDataPr
     /// <param name="dataService">                      The data service. </param>
     /// <param name="optionsMonitor">                   The options monitor. </param>
     /// <param name="connectionStringOptionsMonitor">   The connection string options monitor. </param>
-    protected DapperDataProvider(TDataService dataService, IOptionsMonitor<DataOptions> optionsMonitor, IOptionsMonitor<ConnectionStringOptions<TDataService>> connectionStringOptionsMonitor) : base(dataService, optionsMonitor)
+    protected DapperDataProvider(TDataService dataService, IOptionsMonitor<DataOptions> optionsMonitor,
+        IOptionsMonitor<ConnectionStringOptions<TDataService>> connectionStringOptionsMonitor) : base(dataService,
+        optionsMonitor)
     {
-        if (connectionStringOptionsMonitor == null) throw new ArgumentNullException(nameof(connectionStringOptionsMonitor));
+        if (connectionStringOptionsMonitor == null)
+            throw new ArgumentNullException(nameof(connectionStringOptionsMonitor));
         connectionStringOptionsMonitor.OnChange(o =>
             ConnectionString = o.Single(cso => cso.Key == SqlType.ToString()).Value);
-        ConnectionString = connectionStringOptionsMonitor.CurrentValue.Single(cso => cso.Key == SqlType.ToString()).Value;
+        ConnectionString = connectionStringOptionsMonitor.CurrentValue.Single(cso => cso.Key == SqlType.ToString())
+            .Value;
     }
 
     /// <summary>   Gets or sets the connection string. </summary>

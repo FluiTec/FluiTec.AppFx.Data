@@ -5,10 +5,6 @@ namespace FluiTec.AppFx.Data.Sql.StatementProviders.EventArguments;
 /// <summary> Additional information for type SQL provided events.</summary>
 public class TypeSqlProvidedEventArgs : SqlProvidedEventArgs
 {
-    /// <summary> Gets the schema.</summary>
-    /// <value> The schema.</value>
-    public ITypeSchema Schema { get; }
-
     /// <summary> Constructor.</summary>
     /// <param name="sql">      The SQL. </param>
     /// <param name="provider"> The provider. </param>
@@ -17,4 +13,8 @@ public class TypeSqlProvidedEventArgs : SqlProvidedEventArgs
     {
         Schema = schema;
     }
+
+    /// <summary> Gets the schema.</summary>
+    /// <value> The schema.</value>
+    public ITypeSchema Schema { get; }
 }

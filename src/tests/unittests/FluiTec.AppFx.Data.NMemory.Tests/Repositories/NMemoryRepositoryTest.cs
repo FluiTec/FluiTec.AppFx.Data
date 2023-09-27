@@ -10,7 +10,6 @@ namespace FluiTec.AppFx.Data.NMemory.Tests.Repositories;
 [TestClass]
 public class NMemoryRepositoryTest : BaseNMemoryRepositoryTest
 {
-
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void ThrowsOnMissingDataService()

@@ -7,7 +7,5 @@ namespace FluiTec.AppFx.Data.Sql.Tests.Fixtures.Entities;
 [EntityName("Test", "Dummy")]
 public class DecoratedDummyEntityWithDecoratedProperty
 {
-    [EntityKey]
-    [PropertyName("ID")] 
-    public int Id { get; set; }
+    [EntityKey] [PropertyName("ID")] public int Id { get; set; }
 }

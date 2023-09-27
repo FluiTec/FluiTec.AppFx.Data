@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using FluiTec.AppFx.Data.DataProviders;
 using FluiTec.AppFx.Data.DataServices;
 using FluiTec.AppFx.Data.Paging;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Data.UnitsOfWork;
-using Dapper;
 
 namespace FluiTec.AppFx.Data.Dapper.Repositories;
 
@@ -19,7 +19,7 @@ public class DapperPagedRepository<TEntity> : DapperRepository<TEntity>, IPagedR
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
     /// <param name="unitOfWork">   The unit of work. </param>
-    public DapperPagedRepository(IDataService dataService, IDataProvider dataProvider, IUnitOfWork unitOfWork) 
+    public DapperPagedRepository(IDataService dataService, IDataProvider dataProvider, IUnitOfWork unitOfWork)
         : base(dataService, dataProvider, unitOfWork)
     {
     }
@@ -44,7 +44,7 @@ public class DapperPagedRepository<TEntity> : DapperRepository<TEntity>, IPagedR
         var takeRecords = pageIndex * pageSize;
         var sql = UnitOfWork.StatementProvider.GetPagingStatement(TypeSchema, nameof(skipRecords), nameof(takeRecords));
 
-        return UnitOfWork.Connection.Query<TEntity>(sql, new[] {skipRecords, takeRecords}, UnitOfWork.Transaction,
+        return UnitOfWork.Connection.Query<TEntity>(sql, new[] { skipRecords, takeRecords }, UnitOfWork.Transaction,
             commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
     }
 
@@ -71,8 +71,10 @@ public class DapperPagedRepository<TEntity> : DapperRepository<TEntity>, IPagedR
 
     /// <summary> Gets paged asynchronous.</summary>
     /// <param name="pageIndex">         Zero-based index of the page. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The paged.</returns>
     public Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, CancellationToken cancellationToken = default)
     {
@@ -82,10 +84,13 @@ public class DapperPagedRepository<TEntity> : DapperRepository<TEntity>, IPagedR
     /// <summary> Gets paged asynchronous.</summary>
     /// <param name="pageIndex">         Zero-based index of the page. </param>
     /// <param name="pageSize">          Size of the page. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The paged.</returns>
-    public Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+    public Task<IEnumerable<TEntity>> GetPagedAsync(int pageIndex, int pageSize,
+        CancellationToken cancellationToken = default)
     {
         pageIndex = PageHelper.FixPageIndex(pageIndex);
         pageSize = PageHelper.FixPageSize(pageSize, DataProvider.PageSettings);
@@ -101,8 +106,10 @@ public class DapperPagedRepository<TEntity> : DapperRepository<TEntity>, IPagedR
 
     /// <summary> Gets paged result asynchronous.</summary>
     /// <param name="pageIndex">         Zero-based index of the page. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The paged result.</returns>
     public Task<IPagedResult<TEntity>> GetPagedResultAsync(int pageIndex, CancellationToken cancellationToken = default)
     {
@@ -112,10 +119,13 @@ public class DapperPagedRepository<TEntity> : DapperRepository<TEntity>, IPagedR
     /// <summary> Gets paged result asynchronous.</summary>
     /// <param name="pageIndex">         Zero-based index of the page. </param>
     /// <param name="pageSize">          Size of the page. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns> The paged result.</returns>
-    public async Task<IPagedResult<TEntity>> GetPagedResultAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+    public async Task<IPagedResult<TEntity>> GetPagedResultAsync(int pageIndex, int pageSize,
+        CancellationToken cancellationToken = default)
     {
         var count = await CountAsync(cancellationToken);
         var pageCount = count / pageSize + (count % pageSize > 0 ? 1 : 0);

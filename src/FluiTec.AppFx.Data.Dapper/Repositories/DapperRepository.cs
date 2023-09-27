@@ -62,7 +62,7 @@ public class DapperRepository<TEntity> : Repository<TEntity>
     {
         var sql = UnitOfWork.StatementProvider.GetCountStatement(TypeSchema);
         return UnitOfWork.Connection.ExecuteScalar<long>(sql, null, UnitOfWork.Transaction,
-            commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
+            (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
     }
 
     /// <summary>   Count asynchronous. </summary>

@@ -14,16 +14,6 @@ namespace FluiTec.AppFx.Data.Tests.Repositories;
 [TestClass]
 public abstract class BaseRepositoryTest
 {
-    private class DumbSchema : Schema
-    {
-        public DumbSchema() 
-            : base(new AttributeEntityNameService(), new AttributePropertyNameService())
-        {
-        }
-
-        public override ITypeSchema this[Type entityType] => new TypeSchema(entityType, EntityNameService, PropertyNameService);
-    }
-
     public virtual Mock<IDataService> MockService()
     {
         var serviceMock = new Mock<IDataService>();
@@ -42,5 +32,19 @@ public abstract class BaseRepositoryTest
         return providerMock;
     }
 
-    public virtual Mock<IUnitOfWork> MockUnitOfWork() => new();
+    public virtual Mock<IUnitOfWork> MockUnitOfWork()
+    {
+        return new Mock<IUnitOfWork>();
+    }
+
+    private class DumbSchema : Schema
+    {
+        public DumbSchema()
+            : base(new AttributeEntityNameService(), new AttributePropertyNameService())
+        {
+        }
+
+        public override ITypeSchema this[Type entityType] =>
+            new TypeSchema(entityType, EntityNameService, PropertyNameService);
+    }
 }

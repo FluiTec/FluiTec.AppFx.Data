@@ -10,8 +10,10 @@ public class PropertySchema : IPropertySchema
     private readonly Func<object, object> _valueAccessor;
 
     /// <summary>   Constructor. </summary>
-    /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-    ///                                             null. </exception>
+    /// <exception cref="ArgumentNullException">
+    ///     Thrown when one or more required arguments are
+    ///     null.
+    /// </exception>
     /// <param name="propertyType">     Type of the property. </param>
     /// <param name="name">             The name. </param>
     /// <param name="getValueAccessor"> The get value accessor. </param>

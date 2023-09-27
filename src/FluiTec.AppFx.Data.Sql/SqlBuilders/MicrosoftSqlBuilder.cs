@@ -22,8 +22,8 @@ public class MicrosoftSqlBuilder : SqlBuilder
     /// <returns>   A string. </returns>
     public override string RenderTableName(ITypeSchema typeSchema)
     {
-        return typeSchema.Name.Schema != null 
-            ? base.RenderTableName(typeSchema) 
+        return typeSchema.Name.Schema != null
+            ? base.RenderTableName(typeSchema)
             : $"{WrapExpression("dbo")}.{WrapExpression(typeSchema.Name.Name)}";
     }
 

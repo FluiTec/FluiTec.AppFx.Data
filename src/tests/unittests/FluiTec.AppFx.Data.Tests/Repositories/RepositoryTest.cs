@@ -53,7 +53,7 @@ public class RepositoryTest : BaseRepositoryTest
     public void SetsDataProvider()
     {
         var providerMock = MockProvider();
-        
+
         var repo = new TestRepository(MockService().Object, providerMock.Object, MockUnitOfWork().Object);
 
         Assert.AreEqual(providerMock.Object, repo.DataProvider);
@@ -88,7 +88,7 @@ public class RepositoryTest : BaseRepositoryTest
         logFactoryMock
             .Setup(f => f.CreateLogger(It.IsAny<string>()))
             .Returns(new Mock<ILogger<Repository<DummyEntity>>>().Object);
-        
+
         var repo = new TestRepository(serviceMock.Object, MockProvider().Object, MockUnitOfWork().Object);
 
         Assert.IsNotNull(repo.Logger);

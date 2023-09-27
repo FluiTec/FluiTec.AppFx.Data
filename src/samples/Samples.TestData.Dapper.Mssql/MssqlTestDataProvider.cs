@@ -17,7 +17,8 @@ public class MssqlTestDataProvider : MssqlDapperDataProvider<ITestDataService, I
     /// <param name="dataService">              The data service. </param>
     /// <param name="options">                  Options for controlling the operation. </param>
     /// <param name="connectionStringOptions">  Options for controlling the connection string. </param>
-    public MssqlTestDataProvider(ITestDataService dataService, DataOptions<ITestDataService> options, ConnectionStringOptions<ITestDataService> connectionStringOptions) 
+    public MssqlTestDataProvider(ITestDataService dataService, DataOptions<ITestDataService> options,
+        ConnectionStringOptions<ITestDataService> connectionStringOptions)
         : base(dataService, options, connectionStringOptions)
     {
     }
@@ -26,7 +27,9 @@ public class MssqlTestDataProvider : MssqlDapperDataProvider<ITestDataService, I
     /// <param name="dataService">                      The data service. </param>
     /// <param name="optionsMonitor">                   The options monitor. </param>
     /// <param name="connectionStringOptionsMonitor">   The connection string options monitor. </param>
-    public MssqlTestDataProvider(ITestDataService dataService, IOptionsMonitor<DataOptions<ITestDataService>> optionsMonitor, IOptionsMonitor<ConnectionStringOptions<ITestDataService>> connectionStringOptionsMonitor) 
+    public MssqlTestDataProvider(ITestDataService dataService,
+        IOptionsMonitor<DataOptions<ITestDataService>> optionsMonitor,
+        IOptionsMonitor<ConnectionStringOptions<ITestDataService>> connectionStringOptionsMonitor)
         : base(dataService, optionsMonitor, connectionStringOptionsMonitor)
     {
     }
@@ -35,7 +38,7 @@ public class MssqlTestDataProvider : MssqlDapperDataProvider<ITestDataService, I
     /// <returns>   A TUnitOfWork. </returns>
     public override ITestUnitOfWork BeginUnitOfWork()
     {
-        return new DapperTestUnitOfWork(new TransactionOptions(),  DataService, this);
+        return new DapperTestUnitOfWork(new TransactionOptions(), DataService, this);
     }
 
     /// <summary>   Begins unit of work. </summary>

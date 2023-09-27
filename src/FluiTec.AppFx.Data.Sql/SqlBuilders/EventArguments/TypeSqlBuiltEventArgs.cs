@@ -5,10 +5,6 @@ namespace FluiTec.AppFx.Data.Sql.SqlBuilders.EventArguments;
 /// <summary> Additional information for type SQL built events.</summary>
 public class TypeSqlBuiltEventArgs : SqlBuiltEventArgs
 {
-    /// <summary> Gets the schema.</summary>
-    /// <value> The schema.</value>
-    public ITypeSchema Schema { get; }
-
     /// <summary> Constructor.</summary>
     /// <param name="sql">      The SQL. </param>
     /// <param name="renderer"> The renderer. </param>
@@ -17,4 +13,8 @@ public class TypeSqlBuiltEventArgs : SqlBuiltEventArgs
     {
         Schema = schema;
     }
+
+    /// <summary> Gets the schema.</summary>
+    /// <value> The schema.</value>
+    public ITypeSchema Schema { get; }
 }

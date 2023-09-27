@@ -15,7 +15,8 @@ public class KeyPropertySchema : PropertySchema, IKeyPropertySchema
     /// <param name="order">            The order. </param>
     /// <param name="getValueAccessor"> The get value accessor. </param>
     /// <param name="setValueAccessor"> The set-value accessor. </param>
-    public KeyPropertySchema(Type propertyType, PropertyName name, int order, Func<object, object> getValueAccessor, Action<object, object> setValueAccessor) :
+    public KeyPropertySchema(Type propertyType, PropertyName name, int order, Func<object, object> getValueAccessor,
+        Action<object, object> setValueAccessor) :
         base(propertyType, name, getValueAccessor)
     {
         _setValueAccessor = setValueAccessor;
@@ -26,7 +27,6 @@ public class KeyPropertySchema : PropertySchema, IKeyPropertySchema
     /// <value> The order. </value>
     public int Order { get; }
 
-    
 
     /// <summary>   Sets a value. </summary>
     /// <param name="obj">      The object. </param>

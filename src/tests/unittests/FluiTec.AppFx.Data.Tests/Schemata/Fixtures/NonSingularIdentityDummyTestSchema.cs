@@ -6,7 +6,8 @@ namespace FluiTec.AppFx.Data.Tests.Schemata.Fixtures;
 
 public class NonSingularIdentityDummyTestSchema : Schema
 {
-    public NonSingularIdentityDummyTestSchema() : base(new AttributeEntityNameService(), new AttributePropertyNameService())
+    public NonSingularIdentityDummyTestSchema() : base(new AttributeEntityNameService(),
+        new AttributePropertyNameService())
     {
         AddEntity(typeof(NonSingularIdentityDummyEntity));
     }

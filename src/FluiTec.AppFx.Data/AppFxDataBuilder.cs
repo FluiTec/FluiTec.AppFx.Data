@@ -13,10 +13,6 @@ public class AppFxDataBuilder<TInterface, TDataService>
     where TInterface : class, IDataService
     where TDataService : class, TInterface
 {
-    /// <summary>   Gets the services. </summary>
-    /// <value> The services. </value>
-    public IServiceCollection Services { get; protected set; }
-
     /// <summary>   Constructor. </summary>
     /// <param name="services"> The services. </param>
     public AppFxDataBuilder(IServiceCollection services)
@@ -24,23 +20,28 @@ public class AppFxDataBuilder<TInterface, TDataService>
         Services = services.AddDataService<TInterface, TDataService>();
     }
 
+    /// <summary>   Gets the services. </summary>
+    /// <value> The services. </value>
+    public IServiceCollection Services { get; protected set; }
+
     /// <summary>   With configuration. </summary>
     /// <param name="configuration">            The configuration. </param>
     /// <param name="optionsSection">           (Optional) The options section. </param>
     /// <param name="connectionStringsSection"> (Optional) The connection strings section. </param>
     /// <returns>   An AppFxDataBuilder&lt;TInterface,TDataService&gt; </returns>
-    public AppFxDataBuilder<TInterface, TDataService> WithConfiguration(IConfiguration configuration, string optionsSection = "DataOptions", string connectionStringsSection = "ConnectionStringOptions")
+    public AppFxDataBuilder<TInterface, TDataService> WithConfiguration(IConfiguration configuration,
+        string optionsSection = "DataOptions", string connectionStringsSection = "ConnectionStringOptions")
     {
-        return 
+        return
             WithOptions(configuration, optionsSection)
-            .WithConnectionStrings(configuration, connectionStringsSection);
+                .WithConnectionStrings(configuration, connectionStringsSection);
     }
 
     /// <summary>   With options. </summary>
     /// <param name="configuration">    The configuration. </param>
     /// <param name="sectionName">      (Optional) Name of the section. </param>
     /// <returns>   An AppFxDataBuilder&lt;TInterface,TDataService&gt; </returns>
-    public AppFxDataBuilder<TInterface, TDataService> WithOptions(IConfiguration configuration, 
+    public AppFxDataBuilder<TInterface, TDataService> WithOptions(IConfiguration configuration,
         string sectionName = "DataOptions")
     {
         Services = Services.AddDataOptions<TInterface>(configuration, sectionName);

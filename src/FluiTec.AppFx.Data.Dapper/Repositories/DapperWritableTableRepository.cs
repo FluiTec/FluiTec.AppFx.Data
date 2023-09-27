@@ -21,7 +21,8 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
     /// <param name="unitOfWork">   The unit of work. </param>
-    public DapperWritableTableRepository(IDataService dataService, IDataProvider dataProvider, IUnitOfWork unitOfWork) : base(dataService, dataProvider, unitOfWork)
+    public DapperWritableTableRepository(IDataService dataService, IDataProvider dataProvider, IUnitOfWork unitOfWork) :
+        base(dataService, dataProvider, unitOfWork)
     {
     }
 
@@ -34,7 +35,7 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
         {
             var sql = UnitOfWork.StatementProvider.GetInsertSingleAutoStatement(TypeSchema);
             var key = UnitOfWork.Connection.ExecuteScalar<object>(sql, entity, UnitOfWork.Transaction,
-                commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
+                (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
             var castKey = Convert.ChangeType(key, TypeSchema.IdentityKey!.PropertyType);
             TypeSchema.IdentityKey.SetValue(entity, castKey);
         }
@@ -42,7 +43,7 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
         {
             var sql = UnitOfWork.StatementProvider.GetInsertSingleStatement(TypeSchema);
             UnitOfWork.Connection.Execute(sql, entity, UnitOfWork.Transaction,
-                commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
+                (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
         }
 
         return entity;
@@ -50,8 +51,10 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
 
     /// <summary>   Adds an asynchronous to 'cancellationToken'. </summary>
     /// <param name="entity">               The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The add. </returns>
     public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
@@ -63,7 +66,6 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
             var key = await UnitOfWork.Connection.ExecuteScalarAsync<object>(query);
             var castKey = Convert.ChangeType(key, TypeSchema.IdentityKey!.PropertyType);
             TypeSchema.IdentityKey.SetValue(entity, castKey);
-
         }
         else
         {
@@ -85,22 +87,25 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
         {
             var sql = UnitOfWork.StatementProvider.GetInsertMultipleAutoStatement(TypeSchema);
             UnitOfWork.Connection.Execute(sql, entities, UnitOfWork.Transaction,
-                commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
+                (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
         }
         else
         {
             var sql = UnitOfWork.StatementProvider.GetInsertMultipleStatement(TypeSchema);
             UnitOfWork.Connection.Execute(sql, entities, UnitOfWork.Transaction,
-                commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
+                (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
         }
     }
 
     /// <summary>   Adds a range asynchronous to 'cancellationToken'. </summary>
     /// <param name="entities">             An IEnumerable&lt;TEntity&gt; of items to append to this. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   A Task. </returns>
-    public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities,
+        CancellationToken cancellationToken = default)
     {
         if (TypeSchema.UsesIdentityKey)
         {
@@ -118,17 +123,6 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
         }
     }
 
-    /// <summary>   Gets update parameters. </summary>
-    /// <param name="entity">   The entity to add. </param>
-    /// <returns>   The update parameters. </returns>
-    protected virtual DynamicParameters GetUpdateParameters(TEntity entity)
-    {
-        var parameters = new DynamicParameters();
-        foreach(var p in TypeSchema.MappedProperties)
-            parameters.Add(p.Name.Name, p.GetValue(entity));
-        return parameters;
-    }
-
     /// <summary>   Updates the given entity. </summary>
     /// <param name="entity">   The entity to add. </param>
     /// <returns>   A TEntity. </returns>
@@ -136,14 +130,16 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
     {
         var sql = UnitOfWork.StatementProvider.GetUpdateStatement(TypeSchema);
         UnitOfWork.Connection.Execute(sql, GetUpdateParameters(entity), UnitOfWork.Transaction,
-            commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
+            (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
         return entity;
     }
 
     /// <summary>   Updates the asynchronous. </summary>
     /// <param name="entity">               The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The update. </returns>
     public virtual async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
@@ -162,14 +158,16 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
         var namedKeys = GetNamedKey(keys);
         var keyParameters = GetKeyParameters(namedKeys);
         var sql = UnitOfWork.StatementProvider.GetDeleteStatement(TypeSchema, namedKeys);
-        return UnitOfWork.Connection.Execute(sql, keyParameters, UnitOfWork.Transaction, 
-            commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds) > 0;
+        return UnitOfWork.Connection.Execute(sql, keyParameters, UnitOfWork.Transaction,
+            (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds) > 0;
     }
 
     /// <summary>   Deletes the asynchronous. </summary>
     /// <param name="keys">                 A variable-length parameters list containing keys. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The delete. </returns>
     public virtual async Task<bool> DeleteAsync(object[] keys, CancellationToken cancellationToken = default)
     {
@@ -192,13 +190,15 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
         var keyParameters = GetKeyParameters(namedKeys);
         var sql = UnitOfWork.StatementProvider.GetDeleteStatement(TypeSchema, namedKeys);
         return UnitOfWork.Connection.Execute(sql, keyParameters, UnitOfWork.Transaction,
-            commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds) > 0;
+            (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds) > 0;
     }
 
     /// <summary>   Deletes the asynchronous. </summary>
     /// <param name="entity">               The entity to add. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
     /// <returns>   The delete. </returns>
     public virtual async Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
@@ -210,5 +210,16 @@ public class DapperWritableTableRepository<TEntity> : DapperTableRepository<TEnt
         var query = new CommandDefinition(sql, keyParameters, UnitOfWork.Transaction,
             (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds, cancellationToken: cancellationToken);
         return await UnitOfWork.Connection.ExecuteAsync(query) > 0;
+    }
+
+    /// <summary>   Gets update parameters. </summary>
+    /// <param name="entity">   The entity to add. </param>
+    /// <returns>   The update parameters. </returns>
+    protected virtual DynamicParameters GetUpdateParameters(TEntity entity)
+    {
+        var parameters = new DynamicParameters();
+        foreach (var p in TypeSchema.MappedProperties)
+            parameters.Add(p.Name.Name, p.GetValue(entity));
+        return parameters;
     }
 }

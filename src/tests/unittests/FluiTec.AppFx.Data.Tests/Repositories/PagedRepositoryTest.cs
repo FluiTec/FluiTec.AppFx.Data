@@ -67,7 +67,7 @@ public class PagedRepositoryTest : BaseRepositoryTest
         logFactoryMock
             .Setup(f => f.CreateLogger(It.IsAny<string>()))
             .Returns(new Mock<ILogger<Repository<DummyEntity>>>().Object);
-       
+
         var repo = new TestPagedRepository(serviceMock.Object, MockProvider().Object, MockUnitOfWork().Object);
 
         Assert.IsNotNull(repo.Logger);

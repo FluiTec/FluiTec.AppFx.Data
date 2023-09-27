@@ -18,7 +18,8 @@ public static class Extensions
     /// <typeparam name="TDataService"> Type of the data service. </typeparam>
     /// <param name="services"> The services to act on. </param>
     /// <returns>   An AppFxDataBuilder&lt;TInterface,TDataService&gt; </returns>
-    public static AppFxDataBuilder<TInterface, TDataService> AddAppFxDataService<TInterface, TDataService>(this IServiceCollection services)
+    public static AppFxDataBuilder<TInterface, TDataService> AddAppFxDataService<TInterface, TDataService>(
+        this IServiceCollection services)
         where TInterface : class, IDataService
         where TDataService : class, TInterface
     {
@@ -34,7 +35,8 @@ public static class Extensions
     public static IServiceCollection AddDataOptions<TDataService>(this IServiceCollection services,
         IConfiguration configuration, string sectionName = "DataOptions") where TDataService : IDataService
     {
-        services.Configure<DataOptions<TDataService>>(GetSection(configuration, $"{sectionName}:{typeof(TDataService).Name}", sectionName));
+        services.Configure<DataOptions<TDataService>>(GetSection(configuration,
+            $"{sectionName}:{typeof(TDataService).Name}", sectionName));
         return services;
     }
 
@@ -49,7 +51,8 @@ public static class Extensions
     public static IServiceCollection AddConnectionStringOptions<TDataService>(this IServiceCollection services,
         IConfiguration configuration, string sectionName = "ConnectionStringOptions") where TDataService : IDataService
     {
-        services.Configure<ConnectionStringOptions<TDataService>>(GetSection(configuration, $"{sectionName}:{typeof(TDataService).Name}", sectionName));
+        services.Configure<ConnectionStringOptions<TDataService>>(GetSection(configuration,
+            $"{sectionName}:{typeof(TDataService).Name}", sectionName));
         return services;
     }
 

@@ -10,7 +10,7 @@ public class MicrosoftSqlStatementBuilder : DefaultStatementBuilder
     public MicrosoftSqlStatementBuilder() : base(new MicrosoftSqlBuilder())
     {
     }
-    
+
     /// <summary>   Gets retrieve automatic insert key statement. </summary>
     /// <param name="typeSchema">   The type schema. </param>
     /// <returns>   The retrieve automatic insert key statement. </returns>

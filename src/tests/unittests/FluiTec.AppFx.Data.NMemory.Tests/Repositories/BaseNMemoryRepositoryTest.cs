@@ -1,13 +1,13 @@
 ﻿using System.Transactions;
-using FluiTec.AppFx.Data.Tests.Repositories.Fixtures;
 using FluiTec.AppFx.Data.DataServices;
-using FluiTec.AppFx.Data.EntityNames.NameStrategies;
 using FluiTec.AppFx.Data.EntityNames;
+using FluiTec.AppFx.Data.EntityNames.NameStrategies;
 using FluiTec.AppFx.Data.NMemory.Providers;
 using FluiTec.AppFx.Data.NMemory.UnitsOfWork;
 using FluiTec.AppFx.Data.PropertyNames;
 using FluiTec.AppFx.Data.Reflection;
 using FluiTec.AppFx.Data.Schemata;
+using FluiTec.AppFx.Data.Tests.Repositories.Fixtures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NMemory.Tables;
@@ -17,16 +17,6 @@ namespace FluiTec.AppFx.Data.NMemory.Tests.Repositories;
 [TestClass]
 public abstract class BaseNMemoryRepositoryTest
 {
-    private class DumbSchema : Schema
-    {
-        public DumbSchema()
-            : base(new AttributeEntityNameService(), new AttributePropertyNameService())
-        {
-        }
-
-        public override ITypeSchema this[Type entityType] => new TypeSchema(entityType, EntityNameService, PropertyNameService);
-    }
-
     public virtual Mock<IDataService> MockService()
     {
         var serviceMock = new Mock<IDataService>();
@@ -59,5 +49,16 @@ public abstract class BaseNMemoryRepositoryTest
     public virtual Mock<NMemoryUnitOfWork> MockUnitOfWork()
     {
         return new Mock<NMemoryUnitOfWork>(null, new TransactionOptions());
+    }
+
+    private class DumbSchema : Schema
+    {
+        public DumbSchema()
+            : base(new AttributeEntityNameService(), new AttributePropertyNameService())
+        {
+        }
+
+        public override ITypeSchema this[Type entityType] =>
+            new TypeSchema(entityType, EntityNameService, PropertyNameService);
     }
 }

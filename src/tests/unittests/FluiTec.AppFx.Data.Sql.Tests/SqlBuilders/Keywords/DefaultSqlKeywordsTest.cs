@@ -6,7 +6,10 @@ namespace FluiTec.AppFx.Data.Sql.Tests.SqlBuilders.Keywords;
 [TestClass]
 public class DefaultSqlKeywordsTest
 {
-    protected virtual ISqlKeywords GetKeywords() => new DefaultSqlKeywords();
+    protected virtual ISqlKeywords GetKeywords()
+    {
+        return new DefaultSqlKeywords();
+    }
 
     [TestMethod]
     [DataRow("SELECT", nameof(ISqlKeywords.Select))]
@@ -32,13 +35,12 @@ public class DefaultSqlKeywordsTest
     [DataRow("DESC", nameof(ISqlKeywords.DescendingExpression))]
     [DataRow("=", nameof(ISqlKeywords.AssignEqualsOperator))]
     [DataRow("=", nameof(ISqlKeywords.CompareEqualsOperator))]
-
     public void CanMatch(string expected, string propertyName)
     {
         var obj = GetKeywords();
         var type = obj.GetType();
         var prop = type.GetProperty(propertyName);
-        
+
         Assert.AreEqual(expected, prop!.GetValue(obj));
     }
 }

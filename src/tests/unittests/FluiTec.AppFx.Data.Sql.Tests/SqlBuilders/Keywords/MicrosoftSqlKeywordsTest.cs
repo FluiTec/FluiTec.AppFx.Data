@@ -6,5 +6,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.SqlBuilders.Keywords;
 [TestClass]
 public class MicrosoftSqlKeywordsTest : DefaultSqlKeywordsTest
 {
-    protected override ISqlKeywords GetKeywords() => new MicrosoftSqlKeywords();
+    protected override ISqlKeywords GetKeywords()
+    {
+        return new MicrosoftSqlKeywords();
+    }
 }

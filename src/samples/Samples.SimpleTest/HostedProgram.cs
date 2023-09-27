@@ -50,8 +50,6 @@ public class HostedProgram : ConsoleHostedProgram
     {
         using var uow = DataProvider.BeginUnitOfWork();
         foreach (var entity in uow.DummyRepository.GetAll())
-        {
             Console.WriteLine($"Id: {entity.Id} - Name: {entity.Name}");
-        }
     }
 }

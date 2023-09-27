@@ -10,9 +10,6 @@ namespace FluiTec.AppFx.Data.Sql.SqlBuilders;
 /// <summary>   Interface for SQL builder. </summary>
 public interface ISqlBuilder
 {
-    /// <summary> Event queue for all listeners interested in SqlBuilt events.</summary>
-    event EventHandler<SqlBuiltEventArgs>? SqlBuilt;
-
     /// <summary>   Gets the type of the SQL. </summary>
     /// <value> The type of the SQL. </value>
     SqlType SqlType { get; }
@@ -24,6 +21,9 @@ public interface ISqlBuilder
     /// <summary>   Gets a value indicating whether the supports schemata. </summary>
     /// <value> True if supports schemata, false if not. </value>
     bool SupportsSchemata { get; }
+
+    /// <summary> Event queue for all listeners interested in SqlBuilt events.</summary>
+    event EventHandler<SqlBuiltEventArgs>? SqlBuilt;
 
     /// <summary>   Renders the table name described by typeSchema. </summary>
     /// <param name="typeSchema">   The type schema. </param>
@@ -47,7 +47,8 @@ public interface ISqlBuilder
     /// <param name="comparisonOperator">   The comparison operator. </param>
     /// <param name="parameterName">        (Optional) Name of the parameter. </param>
     /// <returns>   A string. </returns>
-    string RenderPropertyParameterComparison(IPropertySchema property, string comparisonOperator, string? parameterName = null);
+    string RenderPropertyParameterComparison(IPropertySchema property, string comparisonOperator,
+        string? parameterName = null);
 
     /// <summary>   Renders the join expressions. </summary>
     /// <param name="expressions">      The expressions. </param>

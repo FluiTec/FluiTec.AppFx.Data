@@ -15,7 +15,8 @@ public class TypeSqlBuildEventArgsTest
     {
         var sql = "abc";
         var renderer = "xyz";
-        var schema = new TypeSchema(typeof(DecoratedIdentityDummy), new AttributeEntityNameService(), new AttributePropertyNameService());
+        var schema = new TypeSchema(typeof(DecoratedIdentityDummy), new AttributeEntityNameService(),
+            new AttributePropertyNameService());
 
         var instance = new TypeSqlBuiltEventArgs(sql, renderer, schema);
 

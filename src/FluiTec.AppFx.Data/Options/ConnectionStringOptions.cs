@@ -1,6 +1,6 @@
-﻿using FluiTec.AppFx.Data.DataServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using FluiTec.AppFx.Data.DataServices;
 
 namespace FluiTec.AppFx.Data.Options;
 

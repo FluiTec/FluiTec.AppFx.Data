@@ -7,13 +7,6 @@ namespace FluiTec.AppFx.Data.Sql.Exceptions;
 /// <summary>   Exception for signalling key parameter mismatch errors. </summary>
 public class KeyParameterMismatchException : Exception
 {
-    /// <summary>   Gets the entity keys. </summary>
-    /// <value> The entity keys. </value>
-    public IEnumerable<IKeyPropertySchema> EntityKeys { get; }
-    /// <summary>   Gets the parameter keys. </summary>
-    /// <value> The parameter keys. </value>
-    public IDictionary<string, object> ParameterKeys { get; }
-
     /// <summary>   Constructor. </summary>
     /// <param name="entityKeys">       The entity keys. </param>
     /// <param name="parameterKeys">    The parameter keys. </param>
@@ -23,4 +16,12 @@ public class KeyParameterMismatchException : Exception
         EntityKeys = entityKeys;
         ParameterKeys = parameterKeys;
     }
+
+    /// <summary>   Gets the entity keys. </summary>
+    /// <value> The entity keys. </value>
+    public IEnumerable<IKeyPropertySchema> EntityKeys { get; }
+
+    /// <summary>   Gets the parameter keys. </summary>
+    /// <value> The parameter keys. </value>
+    public IDictionary<string, object> ParameterKeys { get; }
 }

@@ -4,8 +4,8 @@ namespace FluiTec.AppFx.Data.Reflection;
 
 /// <summary>   Attribute for entity keys. </summary>
 /// <remarks>
-/// Used for every key of an entity.
-/// Default order = 0
+///     Used for every key of an entity.
+///     Default order = 0
 /// </remarks>
 [AttributeUsage(AttributeTargets.Property)]
 public class EntityKeyAttribute : Attribute

@@ -93,19 +93,19 @@ public class MicrosoftSqlStatementBuilderTest
 
         Assert.AreEqual(
             "SELECT [ID] FROM [dbo].[DummyEntityWithDecoratedProperty] ORDER BY [ID] ASC OFFSET @skipRecords ROWS FETCH NEXT @takeRecords ROWS ONLY",
-            builder.GetPagingStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)), 
+            builder.GetPagingStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)),
                 "skipRecords", "takeRecords")
         );
 
         Assert.AreEqual(
             "SELECT [ID] FROM [Test].[Dummy] ORDER BY [ID] ASC OFFSET @skipRecords ROWS FETCH NEXT @takeRecords ROWS ONLY",
-            builder.GetPagingStatement(GetSchema(typeof(DecoratedDummyEntityWithDecoratedProperty)), 
+            builder.GetPagingStatement(GetSchema(typeof(DecoratedDummyEntityWithDecoratedProperty)),
                 "skipRecords", "takeRecords")
         );
 
         Assert.AreEqual(
             "SELECT [Id] FROM [Test].[Dummy] ORDER BY [Id] ASC OFFSET @skipRecords ROWS FETCH NEXT @takeRecords ROWS ONLY",
-            builder.GetPagingStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty)), 
+            builder.GetPagingStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty)),
                 "skipRecords", "takeRecords")
         );
     }
@@ -118,25 +118,28 @@ public class MicrosoftSqlStatementBuilderTest
         Assert.AreEqual(
             "SELECT [Id] FROM [dbo].[DummyEntityWithProperty] WHERE [Id] = @Id",
             builder.GetSelectByKeyStatement(GetSchema(typeof(DummyEntityWithProperty)), new Dictionary<string, object>(
-                new[] {new KeyValuePair<string, object>("Id", 1)}))
+                new[] { new KeyValuePair<string, object>("Id", 1) }))
         );
 
         Assert.AreEqual(
             "SELECT [ID] FROM [dbo].[DummyEntityWithDecoratedProperty] WHERE [ID] = @Id",
-            builder.GetSelectByKeyStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)), new Dictionary<string, object>(
-                new[] { new KeyValuePair<string, object>("ID", 1) }))
+            builder.GetSelectByKeyStatement(GetSchema(typeof(DummyEntityWithDecoratedProperty)),
+                new Dictionary<string, object>(
+                    new[] { new KeyValuePair<string, object>("ID", 1) }))
         );
 
         Assert.AreEqual(
             "SELECT [ID] FROM [Test].[Dummy] WHERE [ID] = @Id",
-            builder.GetSelectByKeyStatement(GetSchema(typeof(DecoratedDummyEntityWithDecoratedProperty)), new Dictionary<string, object>(
-                new[] { new KeyValuePair<string, object>("ID", 1) }))
+            builder.GetSelectByKeyStatement(GetSchema(typeof(DecoratedDummyEntityWithDecoratedProperty)),
+                new Dictionary<string, object>(
+                    new[] { new KeyValuePair<string, object>("ID", 1) }))
         );
 
         Assert.AreEqual(
             "SELECT [Id] FROM [Test].[Dummy] WHERE [Id] = @Id",
-            builder.GetSelectByKeyStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty)), new Dictionary<string, object>(
-                new[] { new KeyValuePair<string, object>("Id", 1) }))
+            builder.GetSelectByKeyStatement(GetSchema(typeof(DecoratedDummyEntityWithProperty)),
+                new Dictionary<string, object>(
+                    new[] { new KeyValuePair<string, object>("Id", 1) }))
         );
     }
 
@@ -209,11 +212,12 @@ public class MicrosoftSqlStatementBuilderTest
     public void CanCreateUpdateStatement()
     {
         var builder = GetBuilder();
-        
+
         Assert.AreEqual("UPDATE [Test].[Dummy] SET [Name] = @Name WHERE [Id] = @Id",
             builder.GetUpdateStatement(GetSchema(typeof(DecoratedIdentityDummy))));
 
-        Assert.AreEqual("UPDATE [Test].[Dummy] SET [Name1] = @Name1, [Name2] = @Name2 WHERE [Id1] = @Id1 AND [Id2] = @Id2",
+        Assert.AreEqual(
+            "UPDATE [Test].[Dummy] SET [Name1] = @Name1, [Name2] = @Name2 WHERE [Id1] = @Id1 AND [Id2] = @Id2",
             builder.GetUpdateStatement(GetSchema(typeof(MultiKeyMultiValueDummy))));
     }
 
@@ -226,7 +230,7 @@ public class MicrosoftSqlStatementBuilderTest
             builder.GetDeleteStatement(GetSchema(typeof(DecoratedIdentityDummy))));
 
         Assert.AreEqual("DELETE FROM [Test].[Dummy] WHERE [Id] = @Id",
-            builder.GetDeleteStatement(GetSchema(typeof(DecoratedIdentityDummy)), new Dictionary<string, object>(new []
+            builder.GetDeleteStatement(GetSchema(typeof(DecoratedIdentityDummy)), new Dictionary<string, object>(new[]
             {
                 new KeyValuePair<string, object>("Id", 1)
             })));

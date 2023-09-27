@@ -6,5 +6,8 @@ namespace FluiTec.AppFx.Data.Sql.Tests.SqlBuilders.Keywords;
 [TestClass]
 public class PostgreSqlKeywordsTest : DefaultSqlKeywordsTest
 {
-    protected override ISqlKeywords GetKeywords() => new PostgreSqlKeywords();
+    protected override ISqlKeywords GetKeywords()
+    {
+        return new PostgreSqlKeywords();
+    }
 }

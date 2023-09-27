@@ -27,6 +27,6 @@ public class Startup : DefaultStartup
             .WithConfiguration(context.Configuration)
             .WithProvider<ITestUnitOfWork, NMemoryTestDataProvider>()
             .WithProvider<ITestUnitOfWork, MssqlTestDataProvider>()
-        ;
+            ;
     }
 }

@@ -21,7 +21,8 @@ public class DapperTableRepository<TEntity> : DapperPagedRepository<TEntity>, IT
     /// <param name="dataService">  The data service. </param>
     /// <param name="dataProvider"> The data provider. </param>
     /// <param name="unitOfWork">   The unit of work. </param>
-    public DapperTableRepository(IDataService dataService, IDataProvider dataProvider, IUnitOfWork unitOfWork) : base(dataService, dataProvider, unitOfWork)
+    public DapperTableRepository(IDataService dataService, IDataProvider dataProvider, IUnitOfWork unitOfWork) : base(
+        dataService, dataProvider, unitOfWork)
     {
         KeyProperties = DataService.Schema[EntityType].KeyProperties
             .OrderBy(p => p.Order)
@@ -31,6 +32,39 @@ public class DapperTableRepository<TEntity> : DapperPagedRepository<TEntity>, IT
     /// <summary>   Gets the key properties. </summary>
     /// <value> The key properties. </value>
     public IList<IKeyPropertySchema> KeyProperties { get; }
+
+    /// <summary>   Gets a t entity using the given keys. </summary>
+    /// <param name="keys"> A variable-length parameters list containing keys. </param>
+    /// <returns>   A TEntity. </returns>
+    public virtual TEntity? Get(params object[] keys)
+    {
+        var namedKeys = GetNamedKey(keys);
+        var keyParameters = GetKeyParameters(namedKeys);
+        var sql = UnitOfWork.StatementProvider.GetSelectByKeyStatement(TypeSchema, namedKeys);
+
+        return UnitOfWork.Connection.QuerySingleOrDefault<TEntity>(sql, keyParameters, UnitOfWork.Transaction,
+            (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
+    }
+
+    /// <summary>   Gets an asynchronous. </summary>
+    /// <param name="keys">                 A variable-length parameters list containing keys. </param>
+    /// <param name="cancellationToken">
+    ///     (Optional) A token that allows processing to be
+    ///     cancelled.
+    /// </param>
+    /// <returns>   The asynchronous. </returns>
+    public virtual Task<TEntity?> GetAsync(object[] keys, CancellationToken cancellationToken = default)
+    {
+        var namedKeys = GetNamedKey(keys);
+        var keyParameters = GetKeyParameters(namedKeys);
+        var sql = UnitOfWork.StatementProvider.GetSelectByKeyStatement(TypeSchema, namedKeys);
+
+        var query = new CommandDefinition(sql, keyParameters, UnitOfWork.Transaction,
+            (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds,
+            cancellationToken: cancellationToken);
+
+        return UnitOfWork.Connection.QuerySingleOrDefaultAsync<TEntity?>(query);
+    }
 
     /// <summary>   Gets named key. </summary>
     /// <param name="keys"> A variable-length parameters list containing keys. </param>
@@ -51,35 +85,5 @@ public class DapperTableRepository<TEntity> : DapperPagedRepository<TEntity>, IT
         foreach (var key in namedKeys)
             keyParameters.Add(key.Key, key.Value);
         return keyParameters;
-    }
-
-    /// <summary>   Gets a t entity using the given keys. </summary>
-    /// <param name="keys"> A variable-length parameters list containing keys. </param>
-    /// <returns>   A TEntity. </returns>
-    public virtual TEntity? Get(params object[] keys)
-    {
-        var namedKeys = GetNamedKey(keys);
-        var keyParameters = GetKeyParameters(namedKeys);
-        var sql = UnitOfWork.StatementProvider.GetSelectByKeyStatement(TypeSchema, namedKeys);
-        
-        return UnitOfWork.Connection.QuerySingleOrDefault<TEntity>(sql, keyParameters, UnitOfWork.Transaction,
-            commandTimeout: (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds);
-    }
-
-    /// <summary>   Gets an asynchronous. </summary>
-    /// <param name="keys">                 A variable-length parameters list containing keys. </param>
-    /// <param name="cancellationToken">    (Optional) A token that allows processing to be
-    ///                                     cancelled. </param>
-    /// <returns>   The asynchronous. </returns>
-    public virtual Task<TEntity?> GetAsync(object[] keys, CancellationToken cancellationToken = default)
-    {
-        var namedKeys = GetNamedKey(keys);
-        var keyParameters = GetKeyParameters(namedKeys);
-        var sql = UnitOfWork.StatementProvider.GetSelectByKeyStatement(TypeSchema, namedKeys);
-
-        var query = new CommandDefinition(sql, keyParameters, UnitOfWork.Transaction, (int)UnitOfWork.TransactionOptions.Timeout.TotalSeconds,
-            cancellationToken: cancellationToken);
-
-        return UnitOfWork.Connection.QuerySingleOrDefaultAsync<TEntity?>(query);
     }
 }
