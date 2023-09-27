@@ -27,7 +27,8 @@ public abstract class ModelDataDesignSource : IDataDesignSource
                                     Name = dp.Name,
                                     Type = Type.GetType(dp.TypeName)!,
                                     KeyOrder = dp.KeyOrder,
-                                    Nullable = dp.Nullable
+                                    Nullable = dp.Nullable,
+                                    IdentityKey = dp.IdentityKey
                                 }))
                         }))
                 }))
@@ -54,7 +55,8 @@ public abstract class ModelDataDesignSource : IDataDesignSource
                         Name = dp.Name,
                         TypeName = dp.Type.AssemblyQualifiedName!,
                         KeyOrder = dp.KeyOrder,
-                        Nullable = dp.Nullable
+                        Nullable = dp.Nullable,
+                        IdentityKey = dp.IdentityKey
                     }).ToList()
                 }).ToList()
             }).ToList()

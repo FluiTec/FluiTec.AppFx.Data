@@ -72,6 +72,10 @@
                                     Text="{Binding Nullable, Mode=OneWay}" />
                                 <TextBlock
                                     Margin="12,6,0,0"
+                                    ToolTip="Property:IdentityKey"
+                                    Text="{Binding IdentityKey, Mode=OneWay}" />
+                                <TextBlock
+                                    Margin="12,6,0,0"
                                     ToolTip="Property:KeyOrder"
                                     Text="{Binding KeyOrder, Mode=OneWay}" />
                             </StackPanel>
@@ -80,7 +84,7 @@
                                 Grid.Column="1"
                                 Margin="12,0,0,6"
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                Text="Property [Name, Type, Nullable, KeyOrder]" />
+                                Text="Property [Name, Type, Nullable, KeyOrder, IdentityKey]" />
                             <ui:Button Grid.Column="2" Grid.Row="0" Icon="Edit20" Content="Edit"
                                        Command="{Binding ElementName=ListView, Path=DataContext.ViewModel.EditPropertyCommand}"
                                        CommandParameter="{Binding}" />

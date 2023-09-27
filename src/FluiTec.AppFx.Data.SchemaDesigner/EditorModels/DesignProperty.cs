@@ -6,6 +6,7 @@ public class DesignProperty : SaveChangesAware
     private int? _keyOrder;
     private string _name = null!;
     private bool _nullable;
+    private bool _identityKey;
     private Type _type = null!;
 
     /// <summary>   Gets or sets the name. </summary>
@@ -30,6 +31,14 @@ public class DesignProperty : SaveChangesAware
     {
         get => _nullable;
         set => SetField(ref _nullable, value);
+    }
+
+    /// <summary>   Gets or sets a value indicating whether the identity key. </summary>
+    /// <value> True if identity key, false if not. </value>
+    public bool IdentityKey
+    {
+        get => _identityKey;
+        set => SetField(ref _identityKey, value);
     }
 
     /// <summary>   Gets or sets the key order. </summary>

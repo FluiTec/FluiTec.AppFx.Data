@@ -60,6 +60,14 @@
                 <StackPanel Orientation="Horizontal">
                     <Label MinWidth="100" Margin="5,0,0,0" VerticalAlignment="Center"
                            Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">
+                        IdentityKey:
+                    </Label>
+                    <CheckBox Margin="5,0,0,0"
+                              IsChecked="{Binding ViewModel.PropertyService.CurrentProperty.IdentityKey, Mode=TwoWay}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label MinWidth="100" Margin="5,0,0,0" VerticalAlignment="Center"
+                           Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">
                         KeyOrder:
                     </Label>
                     <ui:NumberBox Margin="5,0,0,0"

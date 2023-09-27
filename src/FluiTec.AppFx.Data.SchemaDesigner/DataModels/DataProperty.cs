@@ -13,6 +13,10 @@ public class DataProperty
     /// <value> True if nullable, false if not. </value>
     public bool Nullable { get; set; } = false;
 
+    /// <summary>   Gets or sets a value indicating whether the identity key. </summary>
+    /// <value> True if identity key, false if not. </value>
+    public bool IdentityKey { get; set; } = false;
+
     /// <summary>   Gets or sets the key order. </summary>
     /// <value> The key order. </value>
     public int? KeyOrder { get; set; } = null!;
